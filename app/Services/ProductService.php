@@ -79,7 +79,7 @@ class ProductService
 
         $options = ProductUtility::get_attribute_options($collection);
 
-        $combinations = Combinations::makeCombinations($options);
+        $combinations = make_combinations($options);
         if (count($combinations[0]) > 0) {
             foreach ($combinations as $key => $combination) {
                 $str = ProductUtility::get_combination_string($combination, $collection);
@@ -228,7 +228,7 @@ class ProductService
 
         $options = ProductUtility::get_attribute_options($collection);
 
-        $combinations = Combinations::makeCombinations($options);
+        $combinations = make_combinations($options);
         if (count($combinations[0]) > 0) {
             foreach ($combinations as $key => $combination) {
                 $str = ProductUtility::get_combination_string($combination, $collection);
