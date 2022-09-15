@@ -35,7 +35,7 @@
                                 }
                             @endphp
                             <select class="form-control aiz-selectpicker mb-2 mb-md-0" name="code" data-live-search="true" >
-                                @foreach(\File::files(base_path('public/assets/img/flags')) as $path)
+                                @foreach(\File::files(base_path('assets/img/flags')) as $path)
                                     @if(!in_array(pathinfo($path)['filename'],$languagesArray))
                                     <option
                                         value="{{ pathinfo($path)['filename'] }}"
