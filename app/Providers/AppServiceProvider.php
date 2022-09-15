@@ -2,23 +2,13 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-  /**
-   * Bootstrap any application services.
-   *
-   * @return void
-   */
-  public function boot()
-  {
-    Schema::defaultStringLength(191);
-    Paginator::useBootstrap();
-  }
-
   /**
    * Register any application services.
    *
@@ -27,5 +17,23 @@ class AppServiceProvider extends ServiceProvider
   public function register()
   {
     //
+  }
+
+  /**
+   * Bootstrap any application services.
+   *
+   * @return void
+   */
+  public function boot()
+  {
+    //Schema Default String Length
+    Schema::defaultStringLength(191);
+
+    // User Bootstrap as paginator
+    Paginator::useBootstrap();
+
+    if ($this->app->environment('production')) {
+      URL::forceScheme('https');
+    }
   }
 }
