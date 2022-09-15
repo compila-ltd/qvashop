@@ -7,7 +7,7 @@
                         @if ($message->user->avatar_original != null)
                             <img src="{{ uploaded_asset($message->user->avatar_original) }}" class="rounded-circle">
                         @else
-                            <img src="{{ static_asset('assets/img/avatar-place.png') }}" class="rounded-circle">
+                            <img src="{{ asset('assets/img/avatar-place.png') }}" class="rounded-circle">
                         @endif
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                         @if ($message->user->avatar_original != null)
                             <img src="{{ uploaded_asset($message->user->avatar_original) }}" class="rounded-circle">
                         @else
-                            <img src="{{ static_asset('assets/img/avatar-place.png') }}" class="rounded-circle">
+                            <img src="{{ asset('assets/img/avatar-place.png') }}" class="rounded-circle">
                         @endif
                     </div>
                 </div>

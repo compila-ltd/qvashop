@@ -15,8 +15,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700">
 
     <!-- aiz core css -->
-    <link rel="stylesheet" href="{{ static_asset('assets/css/vendors.css') }}">
-    <link rel="stylesheet" href="{{ static_asset('assets/css/aiz-core.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/vendors.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/aiz-core.css') }}">
 
     <script>
         var AIZ = AIZ || {};
@@ -30,8 +30,8 @@
         </div>
 
     </div><!-- .aiz-main-wrapper -->
-    <script src="{{ static_asset('assets/js/vendors.js') }}" ></script>
-    <script src="{{ static_asset('assets/js/aiz-core.js') }}" ></script>
+    <script src="{{ asset('assets/js/vendors.js') }}" ></script>
+    <script src="{{ asset('assets/js/aiz-core.js') }}" ></script>
 
     @yield('script')
 

@@ -3,9 +3,9 @@
         <div class="p-4 text-xl-center mb-4 border-bottom bg-primary text-white position-relative">
             <span class="avatar avatar-md mb-3">
                 @if (Auth::user()->avatar_original != null)
-                    <img src="{{ uploaded_asset(Auth::user()->avatar_original) }}" onerror="this.onerror=null;this.src='{{ static_asset('assets/img/avatar-place.png') }}';">
+                    <img src="{{ uploaded_asset(Auth::user()->avatar_original) }}" onerror="this.onerror=null;this.src='{{ asset('assets/img/avatar-place.png') }}';">
                 @else
-                    <img src="{{ static_asset('assets/img/avatar-place.png') }}" class="image rounded-circle" onerror="this.onerror=null;this.src='{{ static_asset('assets/img/avatar-place.png') }}';">
+                    <img src="{{ asset('assets/img/avatar-place.png') }}" class="image rounded-circle" onerror="this.onerror=null;this.src='{{ asset('assets/img/avatar-place.png') }}';">
                 @endif
             </span>
             <h4 class="h5 fs-16 mb-1 fw-600">{{ Auth::user()->name }}</h4>

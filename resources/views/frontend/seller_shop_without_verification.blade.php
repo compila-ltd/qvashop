@@ -46,8 +46,8 @@
                         <img
                             height="70"
                             class="lazyload"
-                            src="{{ static_asset('assets/img/placeholder.jpg') }}"
-                            data-src="@if ($shop->logo !== null) {{ uploaded_asset($shop->logo) }} @else {{ static_asset('assets/img/placeholder.jpg') }} @endif"
+                            src="{{ asset('assets/img/placeholder.jpg') }}"
+                            data-src="@if ($shop->logo !== null) {{ uploaded_asset($shop->logo) }} @else {{ asset('assets/img/placeholder.jpg') }} @endif"
                             alt="{{ $shop->name }}"
                         >
                         <div class="pl-4">

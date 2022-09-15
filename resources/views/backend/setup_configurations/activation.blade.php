@@ -232,7 +232,7 @@
             </div>
             <div class="card-body">
                 <div class="clearfix">
-                    <img class="float-left" src="{{ static_asset('assets/img/cards/paypal.png') }}" height="30">
+                    <img class="float-left" src="{{ asset('assets/img/cards/paypal.png') }}" height="30">
                     <label class="aiz-switch aiz-switch-success mb-0 float-right">
                         <input type="checkbox" onchange="updateSettings(this, 'paypal_payment')" <?php if(get_setting('paypal_payment') == 1) echo "checked";?>>
                         <span class="slider round"></span>
@@ -251,7 +251,7 @@
             </div>
             <div class="card-body text-center">
                 <div class="clearfix">
-                    <img   class="float-left" src="{{ static_asset('assets/img/cards/stripe.png') }}" height="30">
+                    <img   class="float-left" src="{{ asset('assets/img/cards/stripe.png') }}" height="30">
                     <label class="aiz-switch aiz-switch-success mb-0 float-right">
                         <input type="checkbox" onchange="updateSettings(this, 'stripe_payment')" <?php if(get_setting('stripe_payment') == 1) echo "checked";?>>
                         <span class="slider round"></span>
@@ -270,7 +270,7 @@
             </div>
             <div class="card-body text-center">
                 <div class="clearfix">
-                    <img   class="float-left" src="{{ static_asset('assets/img/cards/mercadopago.png') }}" height="30">
+                    <img   class="float-left" src="{{ asset('assets/img/cards/mercadopago.png') }}" height="30">
                     <label class="aiz-switch aiz-switch-success mb-0 float-right">
                         <input type="checkbox" onchange="updateSettings(this, 'mercadopago_payment')" <?php if(get_setting('mercadopago_payment') == 1) echo "checked";?>>
                         <span class="slider round"></span>
@@ -291,7 +291,7 @@
             </div>
             <div class="card-body text-center">
                 <div class="clearfix">
-                    <img class="float-left" src="{{ static_asset('assets/img/cards/sslcommerz.png') }}" height="30">
+                    <img class="float-left" src="{{ asset('assets/img/cards/sslcommerz.png') }}" height="30">
                     <label class="aiz-switch aiz-switch-success mb-0 float-right">
                         <input type="checkbox" onchange="updateSettings(this, 'sslcommerz_payment')" <?php if(get_setting('sslcommerz_payment') == 1) echo "checked";?>>
                         <span class="slider round"></span>
@@ -312,7 +312,7 @@
             </div>
             <div class="card-body text-center">
                 <div class="clearfix">
-                    <img class="float-left" src="{{ static_asset('assets/img/cards/instamojo.png') }}" height="30">
+                    <img class="float-left" src="{{ asset('assets/img/cards/instamojo.png') }}" height="30">
                     <label class="aiz-switch aiz-switch-success mb-0 float-right">
                         <input type="checkbox" onchange="updateSettings(this, 'instamojo_payment')" <?php if(get_setting('instamojo_payment') == 1) echo "checked";?>>
                         <span class="slider round"></span>
@@ -331,7 +331,7 @@
             </div>
             <div class="card-body text-center">
                 <div class="clearfix">
-                    <img class="float-left" src="{{ static_asset('assets/img/cards/rozarpay.png') }}" height="30">
+                    <img class="float-left" src="{{ asset('assets/img/cards/rozarpay.png') }}" height="30">
                     <label class="aiz-switch aiz-switch-success mb-0 float-right">
                         <input type="checkbox" onchange="updateSettings(this, 'razorpay')" <?php if(get_setting('razorpay') == 1) echo "checked";?>>
                         <span class="slider round"></span>
@@ -352,7 +352,7 @@
             </div>
             <div class="card-body text-center">
                 <div class="clearfix">
-                    <img class="float-left" src="{{ static_asset('assets/img/cards/paystack.png') }}" height="30">
+                    <img class="float-left" src="{{ asset('assets/img/cards/paystack.png') }}" height="30">
                     <label class="aiz-switch aiz-switch-success mb-0 float-right">
                         <input type="checkbox" onchange="updateSettings(this, 'paystack')" <?php if(get_setting('paystack') == 1) echo "checked";?>>
                         <span class="slider round"></span>
@@ -373,7 +373,7 @@
             </div>
             <div class="card-body text-center">
                 <div class="clearfix">
-                    <img class="float-left" src="{{ static_asset('assets/img/cards/vogue.png') }}" height="30">
+                    <img class="float-left" src="{{ asset('assets/img/cards/vogue.png') }}" height="30">
                     <label class="aiz-switch aiz-switch-success mb-0 float-right">
                         <input type="checkbox" onchange="updateSettings(this, 'voguepay')" <?php if(get_setting('voguepay') == 1) echo "checked";?>>
                         <span class="slider round"></span>
@@ -392,7 +392,7 @@
             </div>
             <div class="card-body text-center">
                 <div class="clearfix">
-                    <img class="float-left" src="{{ static_asset('assets/img/cards/payhere.png') }}" height="30">
+                    <img class="float-left" src="{{ asset('assets/img/cards/payhere.png') }}" height="30">
                     <label class="aiz-switch aiz-switch-success mb-0 float-right">
                         <input type="checkbox" onchange="updateSettings(this, 'payhere')" <?php if(get_setting('payhere') == 1) echo "checked";?>>
                         <span class="slider round"></span>
@@ -413,7 +413,7 @@
             </div>
             <div class="card-body text-center">
                 <div class="clearfix">
-                    <img class="float-left" src="{{ static_asset('assets/img/cards/ngenius.png') }}" height="30">
+                    <img class="float-left" src="{{ asset('assets/img/cards/ngenius.png') }}" height="30">
                     <label class="aiz-switch aiz-switch-success mb-0 float-right">
                         <input type="checkbox" onchange="updateSettings(this, 'ngenius')" <?php if(get_setting('ngenius') == 1) echo "checked";?>>
                         <span class="slider round"></span>
@@ -433,7 +433,7 @@
             </div>
             <div class="card-body text-center">
                 <div class="clearfix">
-                    <img class="float-left" src="{{ static_asset('assets/img/cards/iyzico.png') }}" height="30">
+                    <img class="float-left" src="{{ asset('assets/img/cards/iyzico.png') }}" height="30">
                     <label class="aiz-switch aiz-switch-success mb-0 float-right">
                         <input type="checkbox" onchange="updateSettings(this, 'iyzico')" <?php if(get_setting('iyzico') == 1) echo "checked";?>>
                         <span class="slider round"></span>
@@ -453,7 +453,7 @@
             </div>
             <div class="card-body text-center">
                 <div class="clearfix">
-                    <img class="float-left" src="{{ static_asset('assets/img/cards/bkash.png') }}" height="30">
+                    <img class="float-left" src="{{ asset('assets/img/cards/bkash.png') }}" height="30">
                     <label class="aiz-switch aiz-switch-success mb-0 float-right">
                         <input type="checkbox" onchange="updateSettings(this, 'bkash')" <?php if(get_setting('bkash') == 1) echo "checked";?>>
                         <span class="slider round"></span>
@@ -473,7 +473,7 @@
             </div>
             <div class="card-body text-center">
                 <div class="clearfix">
-                    <img class="float-left" src="{{ static_asset('assets/img/cards/nagad.png') }}" height="30">
+                    <img class="float-left" src="{{ asset('assets/img/cards/nagad.png') }}" height="30">
                     <label class="aiz-switch aiz-switch-success mb-0 float-right">
                         <input type="checkbox" onchange="updateSettings(this, 'nagad')" <?php if(get_setting('nagad') == 1) echo "checked";?>>
                         <span class="slider round"></span>
@@ -493,7 +493,7 @@
             </div>
             <div class="card-body text-center">
                 <div class="clearfix">
-                    <img class="float-left" src="{{ static_asset('assets/img/cards/proxypay.png') }}" height="30">
+                    <img class="float-left" src="{{ asset('assets/img/cards/proxypay.png') }}" height="30">
                     <label class="aiz-switch aiz-switch-success mb-0 float-right">
                         <input type="checkbox" onchange="updateSettings(this, 'proxypay')" <?php if(get_setting('proxypay') == '1') echo "checked";?>>
                         <span class="slider round"></span>
@@ -513,7 +513,7 @@
             </div>
             <div class="card-body text-center">
                 <div class="clearfix">
-                    <img class="float-left" src="{{ static_asset('assets/img/cards/aamarpay.png') }}" height="30">
+                    <img class="float-left" src="{{ asset('assets/img/cards/aamarpay.png') }}" height="30">
                     <label class="aiz-switch aiz-switch-success mb-0 float-right">
                         <input type="checkbox" onchange="updateSettings(this, 'aamarpay')" @if(get_setting('aamarpay') == '1') checked @endif>
                         <span class="slider round"></span>
@@ -533,7 +533,7 @@
             </div>
             <div class="card-body text-center">
                 <div class="clearfix">
-                    <img class="float-left" src="{{ static_asset('assets/img/cards/authorizenet.png') }}" height="30">
+                    <img class="float-left" src="{{ asset('assets/img/cards/authorizenet.png') }}" height="30">
                     <label class="aiz-switch aiz-switch-success mb-0 float-right">
                         <input type="checkbox" onchange="updateSettings(this, 'authorizenet')" <?php if(get_setting('authorizenet') == 1) echo "checked";?>>
                         <span class="slider round"></span>
@@ -553,7 +553,7 @@
             </div>
             <div class="card-body text-center">
                 <div class="clearfix">
-                    <img class="float-left" src="{{ static_asset('assets/img/cards/payku.png') }}" height="30">
+                    <img class="float-left" src="{{ asset('assets/img/cards/payku.png') }}" height="30">
                     <label class="aiz-switch aiz-switch-success mb-0 float-right">
                         <input type="checkbox" onchange="updateSettings(this, 'payku')" <?php if(get_setting('payku') == 1) echo "checked";?>>
                         <span class="slider round"></span>
@@ -573,7 +573,7 @@
             </div>
             <div class="card-body text-center">
                 <div class="clearfix">
-                    <img class="float-left" src="{{ static_asset('assets/img/cards/cod.png') }}" height="30">
+                    <img class="float-left" src="{{ asset('assets/img/cards/cod.png') }}" height="30">
                     <label class="aiz-switch aiz-switch-success mb-0 float-right">
                         <input type="checkbox" onchange="updateSettings(this, 'cash_payment')" <?php if(get_setting('cash_payment') == 1) echo "checked";?>>
                         <span class="slider round"></span>

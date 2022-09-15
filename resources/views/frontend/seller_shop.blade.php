@@ -36,8 +36,8 @@
                         <img
                             height="70"
                             class="lazyload"
-                            src="{{ static_asset('assets/img/placeholder.jpg') }}"
-                            data-src="@if ($shop->logo !== null) {{ uploaded_asset($shop->logo) }} @else {{ static_asset('assets/img/placeholder.jpg') }} @endif"
+                            src="{{ asset('assets/img/placeholder.jpg') }}"
+                            data-src="@if ($shop->logo !== null) {{ uploaded_asset($shop->logo) }} @else {{ asset('assets/img/placeholder.jpg') }} @endif"
                             alt="{{ $shop->name }}"
                         >
                         <div class="pl-4 text-left">
@@ -121,7 +121,7 @@
                     @if ($shop->sliders != null)
                         @foreach (explode(',',$shop->sliders) as $key => $slide)
                             <div class="carousel-box">
-                                <img class="d-block w-100 lazyload rounded h-200px h-lg-380px img-fit" src="{{ static_asset('assets/img/placeholder-rect.jpg') }}" data-src="{{ uploaded_asset($slide) }}" alt="{{ $key }} offer">
+                                <img class="d-block w-100 lazyload rounded h-200px h-lg-380px img-fit" src="{{ asset('assets/img/placeholder-rect.jpg') }}" data-src="{{ uploaded_asset($slide) }}" alt="{{ $key }} offer">
                             </div>
                         @endforeach
                     @endif

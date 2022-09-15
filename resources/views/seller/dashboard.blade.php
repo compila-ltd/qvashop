@@ -421,14 +421,14 @@
                 class="card mb-0 @if (addon_is_activated('seller_subscription')) px-4 py-5 @else p-5 h-100 @endif d-flex align-items-center justify-content-center">
                 @if (Auth::user()->shop->verification_status == 0)
                     <div class="my-n4 py-1 text-center">
-                        <img src="{{ static_asset('assets/img/non_verified.png') }}" alt=""
+                        <img src="{{ asset('assets/img/non_verified.png') }}" alt=""
                             class="w-xxl-130px w-90px d-block">
                         <a href="{{ route('seller.shop.verify') }}"
                             class="btn btn-sm btn-primary">{{ translate('Verify Now') }}</a>
                     </div>
                 @else
                     <div class="my-2 py-1">
-                        <img src="{{ static_asset('assets/img/verified.png') }}" alt="" width="">
+                        <img src="{{ asset('assets/img/verified.png') }}" alt="" width="">
                     </div>
                 @endif
             </div>
@@ -548,10 +548,10 @@
                             <div class="position-relative">
                                 <a href="{{ route('product', $product->slug) }}" class="d-block">
                                     <img class="img-fit lazyload mx-auto h-210px"
-                                        src="{{ static_asset('assets/img/placeholder.jpg') }}"
+                                        src="{{ asset('assets/img/placeholder.jpg') }}"
                                         data-src="{{ uploaded_asset($product->thumbnail_img) }}"
                                         alt="{{ $product->getTranslation('name') }}"
-                                        onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
+                                        onerror="this.onerror=null;this.src='{{ asset('assets/img/placeholder.jpg') }}';">
                                 </a>
                             </div>
                             <div class="p-md-3 p-2 text-left">

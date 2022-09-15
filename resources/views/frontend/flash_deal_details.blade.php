@@ -6,7 +6,7 @@
     <div style="background-color:{{ $flash_deal->background_color }}">
         <section class="text-center mb-5">
             <img
-                src="{{ static_asset('assets/img/placeholder-rect.jpg') }}"
+                src="{{ asset('assets/img/placeholder-rect.jpg') }}"
                 data-src="{{ uploaded_asset($flash_deal->banner) }}"
                 alt="{{ $flash_deal->title }}"
                 class="img-fit w-100 lazyload"

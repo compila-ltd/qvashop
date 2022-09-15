@@ -7,7 +7,7 @@
 	<style media="all">
 		@font-face {
             font-family: 'Roboto';
-            src: url("{{ static_asset('fonts/Roboto-Regular.ttf') }}") format("truetype");
+            src: url("{{ asset('fonts/Roboto-Regular.ttf') }}") format("truetype");
             font-weight: normal;
             font-style: normal;
         }
@@ -70,7 +70,7 @@
 						@if($logo != null)
 							<img loading="lazy"  src="{{ uploaded_asset($logo) }}" height="40" style="display:inline-block;">
 						@else
-							<img loading="lazy"  src="{{ static_asset('assets/img/logo.png') }}" height="40" style="display:inline-block;">
+							<img loading="lazy"  src="{{ asset('assets/img/logo.png') }}" height="40" style="display:inline-block;">
 						@endif
 					</td>
 				</tr>

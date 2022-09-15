@@ -11,11 +11,11 @@
                 <a href="{{ route('products.category', $category->slug) }}" class="text-truncate text-reset py-2 px-3 d-block">
                     <img
                         class="cat-image lazyload mr-2 opacity-60"
-                        src="{{ static_asset('assets/img/placeholder.jpg') }}"
+                        src="{{ asset('assets/img/placeholder.jpg') }}"
                         data-src="{{ uploaded_asset($category->icon) }}"
                         width="16"
                         alt="{{ $category->getTranslation('name') }}"
-                        onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';"
+                        onerror="this.onerror=null;this.src='{{ asset('assets/img/placeholder.jpg') }}';"
                     >
                     <span class="cat-name">{{ $category->getTranslation('name') }}</span>
                 </a>

@@ -26,7 +26,7 @@
                     <td>{{ translate('4. After uploading products you need to edit them and set products images and choices.')}}</td>
                 </tr>
             </table>
-            <a href="{{ static_asset('download/product_bulk_demo.xlsx') }}" download><button class="btn btn-primary mt-2">{{ translate('Download CSV') }}</button></a>
+            <a href="{{ asset('download/product_bulk_demo.xlsx') }}" download><button class="btn btn-primary mt-2">{{ translate('Download CSV') }}</button></a>
         </div>
     </div>
 

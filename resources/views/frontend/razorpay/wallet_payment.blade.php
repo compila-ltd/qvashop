@@ -2,9 +2,9 @@
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" href="{{ static_asset('assets/css/vendors.css') }}">
-    <link rel="stylesheet" href="{{ static_asset('assets/css/aiz-core.css') }}">
-    <link rel="stylesheet" href="{{ static_asset('assets/css/custom-style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/vendors.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/aiz-core.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/custom-style.css') }}">
 </head>
 <body>
 
@@ -30,7 +30,7 @@
 </section>
 
 <!-- SCRIPTS -->
-<script src="{{ static_asset('assets/js/vendors.js') }}"></script>
+<script src="{{ asset('assets/js/vendors.js') }}"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {

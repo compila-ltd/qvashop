@@ -44,7 +44,7 @@ class ShopDetailsCollection extends JsonResource
 
             'rating' => (double) $this->rating,
             'verified'=> $this->verification_status==1?true:false,
-            'verified_img'=> $this->verification_status==1?static_asset("assets/img/verified.png"):static_asset("assets/img/non_verified.png"),
+            'verified_img'=> $this->verification_status==1?asset("assets/img/verified.png"):asset("assets/img/non_verified.png"),
             'verify_text'=> $this->verification_status==1?translate("Verified seller"):translate("Non-Verified seller"),
             'email'=> $this->user->email,
             'products'=> $this->user->products()->count(),

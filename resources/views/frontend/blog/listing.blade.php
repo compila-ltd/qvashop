@@ -33,7 +33,7 @@
                 <div class="card mb-3 overflow-hidden shadow-sm">
                     <a href="{{ url("blog").'/'. $blog->slug }}" class="text-reset d-block">
                         <img
-                            src="{{ static_asset('assets/img/placeholder-rect.jpg') }}"
+                            src="{{ asset('assets/img/placeholder-rect.jpg') }}"
                             data-src="{{ uploaded_asset($blog->banner) }}"
                             alt="{{ $blog->title }}"
                             class="img-fluid lazyload "

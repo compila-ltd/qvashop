@@ -4,9 +4,9 @@
 <head>
     <title></title>
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no"/>
-    <link rel="stylesheet" href="{{ static_asset('assets/css/vendors.css') }}">
-    <link rel="stylesheet" href="{{ static_asset('assets/css/aiz-core.css') }}">
-    <link rel="stylesheet" href="{{ static_asset('assets/css/custom-style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/vendors.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/aiz-core.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/custom-style.css') }}">
 </head>
 <body>
     <section class="py-4 mb-4 bg-light">
@@ -16,7 +16,7 @@
     </section>
 
     <!-- SCRIPTS -->
-    <script src="{{ static_asset('assets/js/vendors.js') }}"></script>
+    <script src="{{ asset('assets/js/vendors.js') }}"></script>
 
     @if (get_setting('bkash_sandbox') == 1)
         <script src="https://scripts.sandbox.bka.sh/versions/1.2.0-beta/checkout/bKash-checkout-sandbox.js"></script>

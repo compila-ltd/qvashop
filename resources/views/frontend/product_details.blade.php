@@ -51,18 +51,18 @@
                                     @foreach ($photos as $key => $photo)
                                         <div class="carousel-box img-zoom rounded">
                                             <img class="img-fluid lazyload"
-                                                src="{{ static_asset('assets/img/placeholder.jpg') }}"
+                                                src="{{ asset('assets/img/placeholder.jpg') }}"
                                                 data-src="{{ uploaded_asset($photo) }}"
-                                                onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
+                                                onerror="this.onerror=null;this.src='{{ asset('assets/img/placeholder.jpg') }}';">
                                         </div>
                                     @endforeach
                                     @foreach ($detailedProduct->stocks as $key => $stock)
                                         @if ($stock->image != null)
                                             <div class="carousel-box img-zoom rounded">
                                                 <img class="img-fluid lazyload"
-                                                    src="{{ static_asset('assets/img/placeholder.jpg') }}"
+                                                    src="{{ asset('assets/img/placeholder.jpg') }}"
                                                     data-src="{{ uploaded_asset($stock->image) }}"
-                                                    onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
+                                                    onerror="this.onerror=null;this.src='{{ asset('assets/img/placeholder.jpg') }}';">
                                             </div>
                                         @endif
                                     @endforeach
@@ -75,9 +75,9 @@
                                     @foreach ($photos as $key => $photo)
                                         <div class="carousel-box c-pointer border p-1 rounded">
                                             <img class="lazyload mw-100 size-50px mx-auto"
-                                                src="{{ static_asset('assets/img/placeholder.jpg') }}"
+                                                src="{{ asset('assets/img/placeholder.jpg') }}"
                                                 data-src="{{ uploaded_asset($photo) }}"
-                                                onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
+                                                onerror="this.onerror=null;this.src='{{ asset('assets/img/placeholder.jpg') }}';">
                                         </div>
                                     @endforeach
                                     @foreach ($detailedProduct->stocks as $key => $stock)
@@ -85,9 +85,9 @@
                                             <div class="carousel-box c-pointer border p-1 rounded"
                                                 data-variation="{{ $stock->variant }}">
                                                 <img class="lazyload mw-100 size-50px mx-auto"
-                                                    src="{{ static_asset('assets/img/placeholder.jpg') }}"
+                                                    src="{{ asset('assets/img/placeholder.jpg') }}"
                                                     data-src="{{ uploaded_asset($stock->image) }}"
-                                                    onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
+                                                    onerror="this.onerror=null;this.src='{{ asset('assets/img/placeholder.jpg') }}';">
                                             </div>
                                         @endif
                                     @endforeach
@@ -431,7 +431,7 @@
                                             @if ($refund_sticker != null)
                                                 <img src="{{ uploaded_asset($refund_sticker) }}" height="36">
                                             @else
-                                                <img src="{{ static_asset('assets/img/refund-sticker.jpg') }}"
+                                                <img src="{{ asset('assets/img/refund-sticker.jpg') }}"
                                                     height="36">
                                             @endif
                                         </a>
@@ -553,10 +553,10 @@
                                                 <a href="{{ route('product', $top_product->slug) }}"
                                                     class="d-block text-reset">
                                                     <img class="img-fit lazyload h-xxl-110px h-xl-80px h-120px"
-                                                        src="{{ static_asset('assets/img/placeholder.jpg') }}"
+                                                        src="{{ asset('assets/img/placeholder.jpg') }}"
                                                         data-src="{{ uploaded_asset($top_product->thumbnail_img) }}"
                                                         alt="{{ $top_product->getTranslation('name') }}"
-                                                        onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
+                                                        onerror="this.onerror=null;this.src='{{ asset('assets/img/placeholder.jpg') }}';">
                                                 </a>
                                             </div>
                                             <div class="col-7 text-left">
@@ -637,11 +637,11 @@
                                                 <li class="media list-group-item d-flex">
                                                     <span class="avatar avatar-md mr-3">
                                                         <img class="lazyload"
-                                                            src="{{ static_asset('assets/img/placeholder.jpg') }}"
-                                                            onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';"
+                                                            src="{{ asset('assets/img/placeholder.jpg') }}"
+                                                            onerror="this.onerror=null;this.src='{{ asset('assets/img/placeholder.jpg') }}';"
                                                             @if ($review->user->avatar_original != null) data-src="{{ uploaded_asset($review->user->avatar_original) }}"
                                                         @else
-                                                            data-src="{{ static_asset('assets/img/placeholder.jpg') }}" @endif>
+                                                            data-src="{{ asset('assets/img/placeholder.jpg') }}" @endif>
                                                     </span>
                                                     <div class="media-body text-left">
                                                         <div class="d-flex justify-content-between">
@@ -695,10 +695,10 @@
                                                 <a href="{{ route('product', $related_product->slug) }}"
                                                     class="d-block">
                                                     <img class="img-fit lazyload mx-auto h-140px h-md-210px"
-                                                        src="{{ static_asset('assets/img/placeholder.jpg') }}"
+                                                        src="{{ asset('assets/img/placeholder.jpg') }}"
                                                         data-src="{{ uploaded_asset($related_product->thumbnail_img) }}"
                                                         alt="{{ $related_product->getTranslation('name') }}"
-                                                        onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
+                                                        onerror="this.onerror=null;this.src='{{ asset('assets/img/placeholder.jpg') }}';">
                                                 </a>
                                             </div>
                                             <div class="p-md-3 p-2 text-left">

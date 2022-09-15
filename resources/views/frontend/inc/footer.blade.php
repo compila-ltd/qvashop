@@ -36,9 +36,9 @@
                 <div class="mt-4">
                     <a href="{{ route('home') }}" class="d-block">
                         @if(get_setting('footer_logo') != null)
-                            <img class="lazyload" src="{{ static_asset('assets/img/placeholder-rect.jpg') }}" data-src="{{ uploaded_asset(get_setting('footer_logo')) }}" alt="{{ env('APP_NAME') }}" height="44">
+                            <img class="lazyload" src="{{ asset('assets/img/placeholder-rect.jpg') }}" data-src="{{ uploaded_asset(get_setting('footer_logo')) }}" alt="{{ env('APP_NAME') }}" height="44">
                         @else
-                            <img class="lazyload" src="{{ static_asset('assets/img/placeholder-rect.jpg') }}" data-src="{{ static_asset('assets/img/logo.png') }}" alt="{{ env('APP_NAME') }}" height="44">
+                            <img class="lazyload" src="{{ asset('assets/img/placeholder-rect.jpg') }}" data-src="{{ asset('assets/img/logo.png') }}" alt="{{ env('APP_NAME') }}" height="44">
                         @endif
                     </a>
                     <div class="my-3">
@@ -58,12 +58,12 @@
                     <div class="w-300px mw-100 mx-auto mx-md-0">
                         @if(get_setting('play_store_link') != null)
                             <a href="{{ get_setting('play_store_link') }}" target="_blank" class="d-inline-block mr-3 ml-0">
-                                <img src="{{ static_asset('assets/img/play.png') }}" class="mx-100 h-40px">
+                                <img src="{{ asset('assets/img/play.png') }}" class="mx-100 h-40px">
                             </a>
                         @endif
                         @if(get_setting('app_store_link') != null)
                             <a href="{{ get_setting('app_store_link') }}" target="_blank" class="d-inline-block">
-                                <img src="{{ static_asset('assets/img/app.png') }}" class="mx-100 h-40px">
+                                <img src="{{ asset('assets/img/app.png') }}" class="mx-100 h-40px">
                             </a>
                         @endif
                     </div>
@@ -283,7 +283,7 @@
                         @if(Auth::user()->photo != null)
                             <img src="{{ custom_asset(Auth::user()->avatar_original)}}" class="rounded-circle size-20px">
                         @else
-                            <img src="{{ static_asset('assets/img/avatar-place.png') }}" class="rounded-circle size-20px">
+                            <img src="{{ asset('assets/img/avatar-place.png') }}" class="rounded-circle size-20px">
                         @endif
                     </span>
                     <span class="d-block fs-10 fw-600 opacity-60">{{ translate('Account') }}</span>
@@ -294,7 +294,7 @@
                         @if(Auth::user()->photo != null)
                             <img src="{{ custom_asset(Auth::user()->avatar_original)}}" class="rounded-circle size-20px">
                         @else
-                            <img src="{{ static_asset('assets/img/avatar-place.png') }}" class="rounded-circle size-20px">
+                            <img src="{{ asset('assets/img/avatar-place.png') }}" class="rounded-circle size-20px">
                         @endif
                     </span>
                     <span class="d-block fs-10 fw-600 opacity-60">{{ translate('Account') }}</span>
@@ -303,7 +303,7 @@
         @else
             <a href="{{ route('user.login') }}" class="text-reset d-block text-center pb-2 pt-3">
                 <span class="d-block mx-auto">
-                    <img src="{{ static_asset('assets/img/avatar-place.png') }}" class="rounded-circle size-20px">
+                    <img src="{{ asset('assets/img/avatar-place.png') }}" class="rounded-circle size-20px">
                 </span>
                 <span class="d-block fs-10 fw-600 opacity-60">{{ translate('Account') }}</span>
             </a>
