@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Category;
 use App\Models\Product;
-use Artisan;
-use Cache;
-use CoreComponentRepository;
+use App\Models\Category;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Artisan;
 
 class AdminController extends Controller
 {
@@ -17,14 +16,13 @@ class AdminController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function admin_dashboard(Request $request)
-    {   
-        CoreComponentRepository::initializeCache();
+    {
         $root_categories = Category::where('level', 0)->get();
 
-        $cached_graph_data = Cache::remember('cached_graph_data', 86400, function() use ($root_categories){
+        $cached_graph_data = Cache::remember('cached_graph_data', 86400, function () use ($root_categories) {
             $num_of_sale_data = null;
             $qty_data = null;
-            foreach ($root_categories as $key => $category){
+            foreach ($root_categories as $key => $category) {
                 $category_ids = \App\Utility\CategoryUtility::children_ids($category->id);
                 $category_ids[] = $category->id;
 
@@ -37,8 +35,8 @@ class AdminController extends Controller
                         $qty += $stock->qty;
                     }
                 }
-                $qty_data .= $qty.',';
-                $num_of_sale_data .= $sale.',';
+                $qty_data .= $qty . ',';
+                $num_of_sale_data .= $sale . ',';
             }
             $item['num_of_sale_data'] = $num_of_sale_data;
             $item['qty_data'] = $qty_data;

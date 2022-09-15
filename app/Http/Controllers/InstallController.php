@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use URL;
-use DB;
-use Hash;
-use App\Models\BusinessSetting;
 use App\Models\User;
-use CoreComponentRepository;
+use Illuminate\Http\Request;
+use App\Models\BusinessSetting;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Hash;
 
 class InstallController extends Controller
 {

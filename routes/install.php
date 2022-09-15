@@ -10,6 +10,7 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InstallController;
 
 Route::controller(InstallController::class)->group(function () {

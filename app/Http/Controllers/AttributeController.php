@@ -7,7 +7,6 @@ use App\Models\Attribute;
 use App\Models\Color;
 use App\Models\AttributeTranslation;
 use App\Models\AttributeValue;
-use CoreComponentRepository;
 use Str;
 
 class AttributeController extends Controller

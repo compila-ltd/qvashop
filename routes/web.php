@@ -44,7 +44,6 @@ use App\Http\Controllers\Payment\VoguepayController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Payment\InstamojoController;
 use App\Http\Controllers\Payment\SslcommerzController;
-use App\Http\Controllers\Payment\MercadopagoController;
 use App\Http\Controllers\Payment\AuthorizenetController;
 
 /*
@@ -181,13 +180,6 @@ Route::controller(CartController::class)->group(function () {
     Route::post('/cart/removeFromCart', 'removeFromCart')->name('cart.removeFromCart');
     Route::post('/cart/updateQuantity', 'updateQuantity')->name('cart.updateQuantity');
 });
-
-//Mercadopago START
-Route::controller(MercadopagoController::class)->group(function () {
-    Route::any('/mercadopago/payment/done', 'paymentstatus')->name('mercadopago.done');
-    Route::any('/mercadopago/payment/cancel', 'callback')->name('mercadopago.cancel');
-});
-//Mercadopago 
 
 // SSLCOMMERZ Start
 Route::controller(SslcommerzController::class)->group(function () {

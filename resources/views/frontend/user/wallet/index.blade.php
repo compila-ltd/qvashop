@@ -114,9 +114,6 @@
                                     @if (get_setting('stripe_payment') == 1)
                                     <option value="stripe">{{ translate('Stripe')}}</option>
                                     @endif
-                                    @if (get_setting('mercadopago_payment') == 1)
-                                    <option value="mercadopago">{{ translate('Mercadopago')}}</option>
-                                    @endif
                                     @if(get_setting('toyyibpay_payment') == 1)
                                     <option value="toyyibpay">{{ translate('ToyyibPay')}}</option>
                                     @endif

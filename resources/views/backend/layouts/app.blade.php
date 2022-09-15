@@ -87,9 +87,12 @@
 	@yield('script')
 
 	<script type="text/javascript">
-		@foreach(session('flash_notification', collect())->toArray() as $message)
-		AIZ.plugins.notify("{{ $message['level '] }}', '{{ $message['message'] }}");
-		@endforeach
+		
+		{{-- 
+			@foreach(session('flash_notification', collect())->toArray() as $message)
+			AIZ.plugins.notify("{{ $message['level '] }}', '{{ $message['message'] }}");
+			@endforeach
+		--}}
 
 
 		if ($('#lang-change').length > 0) {

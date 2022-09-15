@@ -174,7 +174,6 @@ return [
         Laracon21\Timezones\TimezonesServiceProvider::class,
         niklasravnsborg\LaravelPdf\PdfServiceProvider::class,
         Unicodeveloper\Paystack\PaystackServiceProvider::class,
-        MehediIitdu\CoreComponentRepository\CoreComponentRepositoryServiceProvider::class,
         Laracon21\Combinations\CombinationsServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Anand\LaravelPaytmWallet\PaytmWalletServiceProvider::class,

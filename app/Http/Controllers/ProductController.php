@@ -2,24 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProductRequest;
-use Illuminate\Http\Request;
+use Combinations;
+use Carbon\Carbon;
+use App\Models\Cart;
 use App\Models\Product;
-use App\Models\ProductTranslation;
 use App\Models\Category;
 use App\Models\ProductTax;
+use Illuminate\Http\Request;
 use App\Models\AttributeValue;
-use App\Models\Cart;
-use Carbon\Carbon;
-use Combinations;
-use CoreComponentRepository;
-use Artisan;
-use Cache;
-use Str;
 use App\Services\ProductService;
+use App\Models\ProductTranslation;
 use App\Services\ProductTaxService;
-use App\Services\ProductFlashDealService;
+use App\Http\Requests\ProductRequest;
 use App\Services\ProductStockService;
+use Illuminate\Support\Facades\Artisan;
+use App\Services\ProductFlashDealService;
 
 class ProductController extends Controller
 {
@@ -44,7 +41,7 @@ class ProductController extends Controller
         $this->middleware(['permission:show_all_products'])->only('all_products');
         $this->middleware(['permission:show_in_house_products'])->only('admin_products');
         $this->middleware(['permission:show_seller_products'])->only('seller_products');
-        $this->middleware(['permission:product_edit'])->only('admin_product_edit','seller_product_edit');
+        $this->middleware(['permission:product_edit'])->only('admin_product_edit', 'seller_product_edit');
         $this->middleware(['permission:product_duplicate'])->only('duplicate');
         $this->middleware(['permission:product_delete'])->only('destroy');
     }
@@ -159,7 +156,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        CoreComponentRepository::initializeCache();
+        // CoreComponentRepository::initializeCache();
 
         $categories = Category::where('parent_id', 0)
             ->where('digital', 0)
@@ -196,7 +193,7 @@ class ProductController extends Controller
         $request->merge(['product_id' => $product->id]);
 
         //VAT & Tax
-        if($request->tax_id) {
+        if ($request->tax_id) {
             $this->productTaxService->store($request->only([
                 'tax_id', 'tax', 'tax_type', 'product_id'
             ]));
@@ -245,8 +242,6 @@ class ProductController extends Controller
      */
     public function admin_product_edit(Request $request, $id)
     {
-        CoreComponentRepository::initializeCache();
-
         $product = Product::findOrFail($id);
         if ($product->digital == 1) {
             return redirect('admin/digitalproducts/' . $id . '/edit');
@@ -392,7 +387,7 @@ class ProductController extends Controller
         $product_new = $product->replicate();
         $product_new->slug = $product_new->slug . '-' . Str::random(5);
         $product_new->save();
-        
+
         //Product Stock
         $this->productStockService->product_duplicate_store($product->stocks, $product_new);
 
@@ -440,7 +435,7 @@ class ProductController extends Controller
         }
 
         $product->save();
-        
+
         Artisan::call('view:clear');
         Artisan::call('cache:clear');
         return 1;
@@ -463,7 +458,7 @@ class ProductController extends Controller
         }
 
         $product->save();
-        
+
         Artisan::call('view:clear');
         Artisan::call('cache:clear');
         return 1;
