@@ -10,7 +10,6 @@
                 </div>
                 <div class="card-body">
                     <form class="form-horizontal" action="{{ route('payment_method.update') }}" method="POST">
-                        <input type="hidden" name="payment_method" value="paypal">
                         @csrf
                         <div class="form-group row">
                             <input type="hidden" name="types[]" value="AWS_ACCESS_KEY_ID">
@@ -89,7 +88,6 @@
                 </div>
                 <div class="card-body">
                     <form class="form-horizontal" action="{{ route('payment_method.update') }}" method="POST">
-                        <input type="hidden" name="payment_method" value="paypal">
                         @csrf
                         <div class="form-group row">
                             <input type="hidden" name="types[]" value="CACHE_DRIVER">
@@ -131,7 +129,6 @@
                 </div>
                 <div class="card-body">
                     <form class="form-horizontal" action="{{ route('payment_method.update') }}" method="POST">
-                        <input type="hidden" name="payment_method" value="paypal">
                         @csrf
                         <div class="form-group row">
                             <input type="hidden" name="types[]" value="REDIS_HOST">

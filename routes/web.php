@@ -1,51 +1,51 @@
 <?php
 
-use App\Http\Controllers\AddressController;
-use App\Http\Controllers\AizUploadController;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\VerificationController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\CompareController;
-use App\Http\Controllers\ConversationController;
-use App\Http\Controllers\CurrencyController;
-use App\Http\Controllers\CustomerPackageController;
-use App\Http\Controllers\CustomerProductController;
 use App\Http\Controllers\DemoController;
-use App\Http\Controllers\DigitalProductController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\InvoiceController;
-use App\Http\Controllers\LanguageController;
-use App\Http\Controllers\MessageController;
-use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\PurchaseHistoryController;
+use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SearchController;
-use App\Http\Controllers\SubscriberController;
-use App\Http\Controllers\SupportTicketController;
 use App\Http\Controllers\WalletController;
-
-use App\Http\Controllers\Payment\AamarpayController;
-use App\Http\Controllers\Payment\AuthorizenetController;
+use App\Http\Controllers\AddressController;
+use App\Http\Controllers\CompareController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CurrencyController;
+use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\AizUploadController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\SubscriberController;
+use App\Http\Controllers\ConversationController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ProductQueryController;
 use App\Http\Controllers\Payment\BkashController;
-use App\Http\Controllers\Payment\InstamojoController;
-use App\Http\Controllers\Payment\MercadopagoController;
+use App\Http\Controllers\Payment\NagadController;
+
+use App\Http\Controllers\Payment\PaykuController;
+use App\Http\Controllers\SupportTicketController;
+use App\Http\Controllers\DigitalProductController;
+use App\Http\Controllers\Payment\IyzicoController;
+use App\Http\Controllers\Payment\StripeController;
+use App\Http\Controllers\CustomerPackageController;
+use App\Http\Controllers\CustomerProductController;
 use App\Http\Controllers\Payment\NgeniusController;
 use App\Http\Controllers\Payment\PayhereController;
-use App\Http\Controllers\Payment\PaypalController;
+use App\Http\Controllers\PurchaseHistoryController;
+use App\Http\Controllers\Payment\AamarpayController;
 use App\Http\Controllers\Payment\PaystackController;
-use App\Http\Controllers\Payment\SslcommerzController;
 use App\Http\Controllers\Payment\RazorpayController;
-use App\Http\Controllers\Payment\StripeController;
 use App\Http\Controllers\Payment\VoguepayController;
-use App\Http\Controllers\Payment\IyzicoController;
-use App\Http\Controllers\Payment\NagadController;
-use App\Http\Controllers\Payment\PaykuController;
-use App\Http\Controllers\ProductQueryController;
-use App\Http\Controllers\ShopController;
-use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\Payment\InstamojoController;
+use App\Http\Controllers\Payment\SslcommerzController;
+use App\Http\Controllers\Payment\MercadopagoController;
+use App\Http\Controllers\Payment\AuthorizenetController;
 
 /*
   |--------------------------------------------------------------------------
@@ -69,7 +69,7 @@ Route::controller(DemoController::class)->group(function () {
     Route::get('/migrate_attribute_values', 'migrate_attribute_values');
 });
 
-Route::get('/refresh-csrf', function() {
+Route::get('/refresh-csrf', function () {
     return csrf_token();
 });
 
@@ -151,7 +151,7 @@ Route::post('/language', [LanguageController::class, 'changeLanguage'])->name('l
 Route::post('/currency', [CurrencyController::class, 'changeCurrency'])->name('currency.change');
 
 
-Route::get('/sitemap.xml', function() {
+Route::get('/sitemap.xml', function () {
     return base_path('sitemap.xml');
 });
 
@@ -181,13 +181,6 @@ Route::controller(CartController::class)->group(function () {
     Route::post('/cart/removeFromCart', 'removeFromCart')->name('cart.removeFromCart');
     Route::post('/cart/updateQuantity', 'updateQuantity')->name('cart.updateQuantity');
 });
-
-//Paypal START
-Route::controller(PaypalController::class)->group(function () {
-    Route::get('/paypal/payment/done', 'getDone')->name('payment.done');
-    Route::get('/paypal/payment/cancel', 'getCancel')->name('payment.cancel');
-});
-//Paypal END
 
 //Mercadopago START
 Route::controller(MercadopagoController::class)->group(function () {
@@ -226,7 +219,7 @@ Route::controller(CompareController::class)->group(function () {
 // Subscribe
 Route::resource('subscribers', SubscriberController::class);
 
-Route::group(['middleware' => ['user', 'verified', 'unbanned']], function() {
+Route::group(['middleware' => ['user', 'verified', 'unbanned']], function () {
 
     Route::controller(HomeController::class)->group(function () {
         Route::get('/dashboard', 'dashboard')->name('dashboard');
@@ -235,15 +228,14 @@ Route::group(['middleware' => ['user', 'verified', 'unbanned']], function() {
         Route::post('/new-user-email', 'update_email')->name('user.change.email');
         Route::post('/user/update-profile', 'userProfileUpdate')->name('user.profile.update');
     });
-    
-    Route::get('/all-notifications', [NotificationController::class, 'index'])->name('all-notifications');
 
+    Route::get('/all-notifications', [NotificationController::class, 'index'])->name('all-notifications');
 });
 
-Route::group(['middleware' => ['customer', 'verified', 'unbanned']], function() {
+Route::group(['middleware' => ['customer', 'verified', 'unbanned']], function () {
 
     // Checkout Routs
-    Route::group(['prefix' => 'checkout'], function() {
+    Route::group(['prefix' => 'checkout'], function () {
         Route::controller(CheckoutController::class)->group(function () {
             Route::get('/', 'get_shipping_info')->name('checkout.shipping_info');
             Route::any('/delivery_info', 'store_shipping_info')->name('checkout.store_shipping_infostore');
@@ -256,7 +248,7 @@ Route::group(['middleware' => ['customer', 'verified', 'unbanned']], function() 
             Route::post('/remove_coupon_code', 'remove_coupon_code')->name('checkout.remove_coupon_code');
             //Club point
             Route::post('/apply-club-point', 'apply_club_point')->name('checkout.apply_club_point');
-            Route::post('/remove-club-point', 'remove_club_point')->name('checkout.remove_club_point'); 
+            Route::post('/remove-club-point', 'remove_club_point')->name('checkout.remove_club_point');
         });
     });
 
@@ -283,7 +275,7 @@ Route::group(['middleware' => ['customer', 'verified', 'unbanned']], function() 
     Route::post('support_ticket/reply', [SupportTicketController::class, 'seller_store'])->name('support_ticket.seller_store');
 
     // Customer Package
-    Route::post('/customer_packages/purchase',[CustomerPackageController::class, 'purchase_package'])->name('customer_packages.purchase');
+    Route::post('/customer_packages/purchase', [CustomerPackageController::class, 'purchase_package'])->name('customer_packages.purchase');
 
     // Customer Product
     Route::resource('customer_products', CustomerProductController::class);
@@ -301,23 +293,22 @@ Route::group(['middleware' => ['customer', 'verified', 'unbanned']], function() 
     Route::controller(DigitalProductController::class)->group(function () {
         Route::get('/digital-products/download/{id}', 'download')->name('digital-products.download');
     });
-
 });
 
-Route::group(['middleware' => ['auth']], function() {
-    
+Route::group(['middleware' => ['auth']], function () {
+
     Route::get('invoice/{order_id}', [InvoiceController::class, 'invoice_download'])->name('invoice.download');
 
     // Reviews
     Route::resource('/reviews', ReviewController::class);
-    
+
     // Product Conversation
     Route::resource('conversations', ConversationController::class);
     Route::controller(ConversationController::class)->group(function () {
         Route::get('/conversations/destroy/{id}', 'destroy')->name('conversations.destroy');
         Route::post('conversations/refresh', 'refresh')->name('conversations.refresh');
     });
-    
+
     // Product Query
     Route::resource('product-queries', ProductQueryController::class);
 
@@ -398,8 +389,8 @@ Route::get('/nagad/callback', [NagadController::class, 'verify'])->name('nagad.c
 
 //aamarpay
 Route::controller(AamarpayController::class)->group(function () {
-    Route::post('/aamarpay/success','success')->name('aamarpay.success');
-    Route::post('/aamarpay/fail','fail')->name('aamarpay.fail');
+    Route::post('/aamarpay/success', 'success')->name('aamarpay.success');
+    Route::post('/aamarpay/fail', 'fail')->name('aamarpay.fail');
 });
 
 //Authorize-Net-Payment
@@ -421,5 +412,3 @@ Route::controller(PageController::class)->group(function () {
     //Custom page
     Route::get('/{slug}', 'show_custom_page')->name('custom-pages.show_custom_page');
 });
-
-

@@ -24,12 +24,19 @@ use App\Models\BusinessSetting;
 use App\Models\CustomerPackage;
 use App\Utility\SendSMSUtility;
 use App\Utility\CategoryUtility;
+use Laracon21\Timezones\Timezones;
+use Illuminate\Support\Facades\App;
 use App\Models\SellerPackagePayment;
 use App\Utility\NotificationUtility;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\V2\CarrierCollection;
 use App\Http\Controllers\AffiliateController;
 use App\Http\Controllers\ClubPointController;
 use App\Http\Controllers\CommissionController;
+use Laracon21\Colorcodeconverter\Colorcodeconverter;
 
 //sensSMS function for OTP
 if (!function_exists('sendSMS')) {
@@ -141,7 +148,7 @@ if (!function_exists('verified_sellers_id')) {
     function verified_sellers_id()
     {
         return Cache::rememberForever('verified_sellers_id', function () {
-            return App\Models\Shop::where('verification_status', 1)->pluck('user_id')->toArray();
+            return Shop::where('verification_status', 1)->pluck('user_id')->toArray();
         });
     }
 }
@@ -1204,6 +1211,7 @@ if (!function_exists('product_restock')) {
 
 //Commission Calculation
 if (!function_exists('calculateCommissionAffilationClubPoint')) {
+
     function calculateCommissionAffilationClubPoint($order)
     {
         (new CommissionController)->calculateCommission($order);

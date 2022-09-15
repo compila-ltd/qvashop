@@ -25,21 +25,6 @@ class PaymentTypesController
         $payment_types = array();
 
         if ($list == "online" || $list == "both") {
-            if (get_setting('paypal_payment') == 1) {
-                $payment_type = array();
-                $payment_type['payment_type'] = 'paypal_payment';
-                $payment_type['payment_type_key'] = 'paypal';
-                $payment_type['image'] = asset('assets/img/cards/paypal.png');
-                $payment_type['name'] = "Paypal";
-                $payment_type['title'] = "Checkout with Paypal";
-                $payment_type['offline_payment_id'] = 0;
-                $payment_type['details'] = "";
-                if ($mode == 'wallet') {
-                    $payment_type['title'] = "Recharge with Paypal";
-                }
-
-                $payment_types[] = $payment_type;
-            }
 
             if (get_setting('stripe_payment') == 1) {
                 $payment_type = array();
