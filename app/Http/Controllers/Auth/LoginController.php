@@ -43,7 +43,7 @@ class LoginController extends Controller
      */
     public function redirectToProvider($provider)
     {
-        if(request()->get('query') == 'mobile_app'){
+        if (request()->get('query') == 'mobile_app') {
             request()->session()->put('login_from', 'mobile_app');
         }
         return Socialite::driver($provider)->redirect();
@@ -76,8 +76,7 @@ class LoginController extends Controller
         if ($existingUserByProviderId) {
             //proceed to login
             auth()->login($existingUserByProviderId, true);
-        }
-        else {
+        } else {
             //check if email exist
             $existingUser = User::where('email', $user->email)->first();
 
@@ -121,7 +120,7 @@ class LoginController extends Controller
         if (session('link') != null) {
             return redirect(session('link'));
         } else {
-            if(auth()->user()->user_type == 'seller') {
+            if (auth()->user()->user_type == 'seller') {
                 return redirect()->route('seller.dashboard');
             }
             return redirect()->route('dashboard');
@@ -132,7 +131,7 @@ class LoginController extends Controller
     {
         $return_provider = '';
         $result = false;
-        if($provider) {
+        if ($provider) {
             $return_provider = $provider;
             $result = true;
         }
@@ -193,7 +192,6 @@ class LoginController extends Controller
         }
 
         if (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff') {
-            CoreComponentRepository::instantiateShopRepository();
             return redirect()->route('admin.dashboard');
         } elseif (auth()->user()->user_type == 'seller') {
             return redirect()->route('seller.dashboard');
