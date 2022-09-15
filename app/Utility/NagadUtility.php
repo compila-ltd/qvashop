@@ -126,6 +126,7 @@ class NagadUtility {
             return false;
         }
 
+        /*
         if(Cache::get('app-activation', 'no') == 'no'){
             try {
                 $gate = "https://activeitzone.com/activation/check/flutter/".$key;
@@ -144,6 +145,7 @@ class NagadUtility {
     
             }
         }
+        */
 
         Cache::rememberForever('app-activation', function () {
             return 'yes';

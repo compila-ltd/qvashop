@@ -51,6 +51,7 @@ class PayhereUtility
             return false;
         }
 
+        /*
         if(Cache::get('app-activation', 'no') == 'no'){
             try {
                 $gate = "https://activeitzone.com/activation/check/flutter/".$key;
@@ -69,6 +70,7 @@ class PayhereUtility
     
             }
         }
+        */
 
         Cache::rememberForever('app-activation', function () {
             return 'yes';
