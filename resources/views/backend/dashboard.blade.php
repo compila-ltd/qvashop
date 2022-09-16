@@ -173,9 +173,9 @@
         type: 'doughnut',
         data: {
             labels: [
-                '{{translate('Total published products')}}',
-                '{{translate('Total sellers products')}}',
-                '{{translate('Total admin products')}}'
+                "{{translate('Total published products')}}",
+                "{{translate('Total sellers products')}}",
+                "{{translate('Total admin products')}}"
             ],
             datasets: [
                 {
@@ -219,9 +219,9 @@
         type: 'doughnut',
         data: {
             labels: [
-                '{{translate('Total sellers')}}',
-                '{{translate('Total approved sellers')}}',
-                '{{translate('Total pending sellers')}}'
+                "{{translate('Total sellers')}}",
+                "{{translate('Total approved sellers')}}",
+                "{{translate('Total pending sellers')}}"
             ],
             datasets: [
                 {
@@ -265,11 +265,11 @@
         data: {
             labels: [
                 @foreach ($root_categories as $key => $category)
-                '{{ $category->getTranslation('name') }}',
+                "{{ $category->getTranslation('name') }}",
                 @endforeach
             ],
             datasets: [{
-                label: '{{ translate('Number of sale') }}',
+                label: "{{ translate('Number of sale') }}",
                 data: [
                     {{ $cached_graph_data['num_of_sale_data'] }}
                 ],
@@ -328,7 +328,7 @@
         data: {
             labels: [
                 @foreach ($root_categories as $key => $category)
-                '{{ $category->getTranslation('name') }}',
+                "{{ $category->getTranslation('name') }}",
                 @endforeach
             ],
             datasets: [{

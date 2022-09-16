@@ -176,7 +176,6 @@ return [
         Anand\LaravelPaytmWallet\PaytmWalletServiceProvider::class,
         KingFlamez\Rave\RaveServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
-        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
         /*
          * Package Service Providers...

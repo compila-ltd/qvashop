@@ -8,7 +8,6 @@
         "php": "^8.0",
         "anandsiddharth/laravel-paytm-wallet": "^2.0.0",
         "authorizenet/authorizenet": "^2.0",
-        "barryvdh/laravel-ide-helper": "^2.10",
         "cinetpay/cinetpay-php": "^1.9",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^7.3",

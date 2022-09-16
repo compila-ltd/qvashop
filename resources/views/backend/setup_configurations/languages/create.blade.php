@@ -9,7 +9,7 @@
             </div>
             <div class="card-body">
                 <form class="form-horizontal" action="{{ route('languages.store') }}" method="POST" enctype="multipart/form-data">
-                	@csrf
+                    @csrf
                     <div class="form-group row">
                         <div class="col-lg-3">
                             <label class="col-from-label">{{ translate('Name') }}</label>
@@ -24,17 +24,13 @@
                         </div>
                         <div class="col-lg-9">
                             @php
-                                $languagesArray = \App\Models\Language::pluck('code')->toarray();
+                            $languagesArray = \App\Models\Language::pluck('code')->toarray();
                             @endphp
-                            <select class="form-control aiz-selectpicker mb-2 mb-md-0" name="code" data-live-search="true" >
-                                @foreach(\File::files(base_path('assets/img/flags')) as $path)
-
-                                    @if(!in_array(pathinfo($path)['filename'],$languagesArray))
-
-                                        <option value="{{ pathinfo($path)['filename'] }}" data-content="<div class=''><img src='{{ asset('assets/img/flags/'.pathinfo($path)['filename'].'.png') }}' class='mr-2'><span>{{ strtoupper(pathinfo($path)['filename']) }}</span></div>"></option>
-
-                                    @endif
-
+                            <select class="form-control aiz-selectpicker mb-2 mb-md-0" name="code" data-live-search="true">
+                                @foreach(\File::files(base_path('public/assets/img/flags')) as $path)
+                                @if(!in_array(pathinfo($path)['filename'],$languagesArray))
+                                <option value="{{ pathinfo($path)['filename'] }}" data-content="<div class=''><img src='{{ asset('assets/img/flags/'.pathinfo($path)['filename'].'.png') }}' class='mr-2'><span>{{ strtoupper(pathinfo($path)['filename']) }}</span></div>"></option>
+                                @endif
                                 @endforeach
                             </select>
                         </div>

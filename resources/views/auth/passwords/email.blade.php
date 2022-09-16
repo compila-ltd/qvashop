@@ -127,13 +127,13 @@
                 $('.email-form-group').removeClass('d-none');
                 $('input[name=phone]').val(null);
                 isPhoneShown = false;
-                $(el).html('{{ translate('Use Phone Instead') }}');
+                $(el).html("{{ translate('Use Phone Instead') }}");
             } else {
                 $('.phone-form-group').removeClass('d-none');
                 $('.email-form-group').addClass('d-none');
                 $('input[name=email]').val(null);
                 isPhoneShown = true;
-                $(el).html('{{ translate('Use Email Instead') }}');
+                $(el).html("{{ translate('Use Email Instead') }}");
             }
         }
     </script>
