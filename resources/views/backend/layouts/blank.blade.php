@@ -39,7 +39,7 @@
 
     <script type="text/javascript">
         {{-- 
-            @foreach(session('flash_notification', collect()) - > toArray() as $message)
+            @foreach(session('flash_notification', collect())->toArray() as $message)
             AIZ.plugins.notify("{{ $message['level'] }}", "{{ $message['message'] }}");
             @endforeach
         --}}
