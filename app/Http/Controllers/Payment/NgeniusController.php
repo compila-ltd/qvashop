@@ -1,11 +1,11 @@
 <?php
 namespace App\Http\Controllers\Payment;
 
-use App\Http\Controllers\Controller;
-use App\Models\CustomerPackage;
 use App\Models\CombinedOrder;
+use App\Models\CustomerPackage;
 use App\Utility\NgeniusUtility;
-use Session;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Session;
 
 class NgeniusController extends Controller
 {
@@ -31,7 +31,6 @@ class NgeniusController extends Controller
             //will be redirected
             NgeniusUtility::make_payment(route('ngenius.seller_package_payment_callback'),"seller_package_payment",$amount);
         }
-
 
         $seller_package_id = Session::get('payment_data')['seller_package_id'];
         $seller_package  = \App\Models\SellerPackage::findOrFail($seller_package_id);

@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use App\Models\CombinedOrder;
 use App\Models\CustomerPackage;
 use App\Models\SellerPackage;
-use Session;
+use Illuminate\Support\Facades\Session;
 
 
 class StripeController extends Controller

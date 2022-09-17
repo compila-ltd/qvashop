@@ -2,29 +2,25 @@
 
 namespace App\Http\Controllers\Payment;
 
-use App\Http\Controllers\Controller;
-use App\Http\Controllers\CheckoutController;
 use App\Models\User;
 use App\Models\Wallet;
-use App\Models\CombinedOrder;
-use App\Utility\PayhereUtility;
-use App\Models\CustomerPackage;
-use Session;
-use Auth;
 use Illuminate\Http\Request;
+use App\Models\CombinedOrder;
+use App\Models\CustomerPackage;
+use App\Utility\PayhereUtility;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\CheckoutController;
 
 class PayhereController extends Controller
 {
     private $security_key;
 
-    public function __construct()
+    public function pay(Request $request)
     {
-
-    }
-
-    public function pay(Request $request){
-        if(Session::has('payment_type')){
-            if(Session::get('payment_type') == 'cart_payment'){
+        if (Session::has('payment_type')) {
+            if (Session::get('payment_type') == 'cart_payment') {
                 $combined_order = CombinedOrder::findOrFail($request->session()->get('combined_order_id'));
                 $combined_order_id = $combined_order->id;
                 $amount = $combined_order->grand_total;
@@ -35,9 +31,7 @@ class PayhereController extends Controller
                 $address = json_decode($combined_order->shipping_address)->address;
                 $city = json_decode($combined_order->shipping_address)->city;
                 return PayhereUtility::create_checkout_form($combined_order_id, $amount, $first_name, $last_name, $phone, $email, $address, $city);
-            }
-
-            elseif (Session::get('payment_type') == 'wallet_payment') {
+            } elseif (Session::get('payment_type') == 'wallet_payment') {
                 $order_id = rand(100000, 999999);
                 $user_id = Auth::user()->id;
                 $amount = $request->amount;
@@ -47,10 +41,9 @@ class PayhereController extends Controller
                 $email = Auth::user()->email;
                 $address = 'dummy address';
                 $city = 'Colombo';
-        
+
                 return PayhereUtility::create_wallet_form($user_id, $order_id, $amount, $first_name, $last_name, $phone, $email, $address, $city);
-            }
-            elseif (Session::get('payment_type') == 'customer_package_payment') {
+            } elseif (Session::get('payment_type') == 'customer_package_payment') {
                 $customer_package = CustomerPackage::findOrFail(Session::get('payment_data')['customer_package_id']);
                 $order_id = rand(100000, 999999);
                 $user_id = Auth::user()->id;
@@ -62,7 +55,7 @@ class PayhereController extends Controller
                 $email = Auth::user()->email;
                 $address = 'dummy address';
                 $city = 'Colombo';
-    
+
                 return PayhereUtility::create_customer_package_form($user_id, $package_id, $order_id, $amount, $first_name, $last_name, $phone, $email, $address, $city);
             }
         }
@@ -109,9 +102,8 @@ class PayhereController extends Controller
         $address = '22/b baker street';
         $city = 'Colombo';
 
-        return PayhereUtility::create_customer_package_form($user_id,$package_id, $order_id, $amount, $first_name, $last_name, $phone, $email, $address, $city);
+        return PayhereUtility::create_customer_package_form($user_id, $package_id, $order_id, $amount, $first_name, $last_name, $phone, $email, $address, $city);
     }
-
 
     //sample response
     /*
@@ -134,7 +126,6 @@ class PayhereController extends Controller
     }
     */
 
-
     //checkout related functions ------------------------------------<starts>
     public static function checkout_notify()
     {
@@ -151,7 +142,7 @@ class PayhereController extends Controller
 
         if (($local_md5sig === $md5sig) and ($status_code == 2)) {
             //custom_1 will have order_id
-            return PayhereController::checkout_success($_POST['custom_1'],$_POST);
+            return PayhereController::checkout_success($_POST['custom_1'], $_POST);
         }
 
         return PayhereController::checkout_incomplete();
@@ -174,7 +165,7 @@ class PayhereController extends Controller
         return PayhereController::checkout_incomplete();
     }
 
-    public static function checkout_success($combined_order_id,$responses)
+    public static function checkout_success($combined_order_id, $responses)
     {
         $payment_details = json_encode($responses);
         $checkoutController = new CheckoutController;
@@ -207,7 +198,7 @@ class PayhereController extends Controller
 
         if (($local_md5sig === $md5sig) and ($status_code == 2)) {
             //custom_1 will have user_id
-            return PayhereController::wallet_success($_POST['custom_1'],$payhere_amount,$_POST);
+            return PayhereController::wallet_success($_POST['custom_1'], $payhere_amount, $_POST);
         }
 
         return PayhereController::wallet_incomplete();
@@ -227,7 +218,7 @@ class PayhereController extends Controller
         return PayhereController::wallet_incomplete();
     }
 
-    public static function wallet_success($id,$amount,$payment_details)
+    public static function wallet_success($id, $amount, $payment_details)
     {
         $user = User::find($id);
         $user->balance = $user->balance + $amount;
@@ -265,7 +256,7 @@ class PayhereController extends Controller
 
         if (($local_md5sig === $md5sig) and ($status_code == 2)) {
             //custom_1 will have user_id custom_2 will have package_id
-            return PayhereController::customer_package_success($_POST['custom_1'],$_POST['custom_2'],$_POST);
+            return PayhereController::customer_package_success($_POST['custom_1'], $_POST['custom_2'], $_POST);
         }
 
         return PayhereController::customer_package_incomplete();
@@ -283,7 +274,7 @@ class PayhereController extends Controller
         return PayhereController::customer_package_incomplete();
     }
 
-    public static function customer_package_success($id,$customer_package_id,$payment_details)
+    public static function customer_package_success($id, $customer_package_id, $payment_details)
     {
         $user = User::findOrFail($id);
         $user->customer_package_id = $customer_package_id;

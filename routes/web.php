@@ -1,9 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\DemoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ShopController;
@@ -25,8 +25,8 @@ use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProductQueryController;
 use App\Http\Controllers\Payment\BkashController;
-use App\Http\Controllers\Payment\NagadController;
 
+use App\Http\Controllers\Payment\NagadController;
 use App\Http\Controllers\Payment\PaykuController;
 use App\Http\Controllers\SupportTicketController;
 use App\Http\Controllers\DigitalProductController;
@@ -56,17 +56,6 @@ use App\Http\Controllers\Payment\AuthorizenetController;
   | contains the "web" middleware group. Now create something great!
   |
  */
-
-Route::controller(DemoController::class)->group(function () {
-    Route::get('/demo/cron_1', 'cron_1');
-    Route::get('/demo/cron_2', 'cron_2');
-    Route::get('/convert_assets', 'convert_assets');
-    Route::get('/convert_category', 'convert_category');
-    Route::get('/convert_tax', 'convertTaxes');
-    Route::get('/insert_product_variant_forcefully', 'insert_product_variant_forcefully');
-    Route::get('/update_seller_id_in_orders/{id_min}/{id_max}', 'update_seller_id_in_orders');
-    Route::get('/migrate_attribute_values', 'migrate_attribute_values');
-});
 
 Route::get('/refresh-csrf', function () {
     return csrf_token();
@@ -102,7 +91,6 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/users/registration', 'registration')->name('user.registration');
     Route::post('/users/login/cart', 'cart_login')->name('cart.login.submit');
     // Route::get('/new-page', 'new_page')->name('new_page');
-
 
     //Home Page
     Route::get('/', 'index')->name('home');
@@ -148,7 +136,6 @@ Route::post('/language', [LanguageController::class, 'changeLanguage'])->name('l
 
 // Currency Switch
 Route::post('/currency', [CurrencyController::class, 'changeCurrency'])->name('currency.change');
-
 
 Route::get('/sitemap.xml', function () {
     return base_path('sitemap.xml');
@@ -212,7 +199,6 @@ Route::controller(CompareController::class)->group(function () {
 Route::resource('subscribers', SubscriberController::class);
 
 Route::group(['middleware' => ['user', 'verified', 'unbanned']], function () {
-
     Route::controller(HomeController::class)->group(function () {
         Route::get('/dashboard', 'dashboard')->name('dashboard');
         Route::get('/profile', 'profile')->name('profile');
@@ -220,7 +206,6 @@ Route::group(['middleware' => ['user', 'verified', 'unbanned']], function () {
         Route::post('/new-user-email', 'update_email')->name('user.change.email');
         Route::post('/user/update-profile', 'userProfileUpdate')->name('user.profile.update');
     });
-
     Route::get('/all-notifications', [NotificationController::class, 'index'])->name('all-notifications');
 });
 
@@ -319,18 +304,19 @@ Route::group(['middleware' => ['auth']], function () {
 
 Route::resource('shops', ShopController::class);
 
+// Different Payment Methods Webhook
 Route::get('/instamojo/payment/pay-success', [InstamojoController::class, 'success'])->name('instamojo.success');
-
-Route::post('rozer/payment/pay-success', [RazorpayController::class, 'payment'])->name('payment.rozer');
-
+Route::post('/rozer/payment/pay-success', [RazorpayController::class, 'payment'])->name('payment.rozer');
 Route::get('/paystack/payment/callback', [PaystackController::class, 'handleGatewayCallback']);
+
+// QvaPay WebHook
+Route::post('/qvapay/payment/pay-success', [QvaPayController::class, 'payment'])->name('payment.qvapay');
 
 Route::controller(VoguepayController::class)->group(function () {
     Route::get('/vogue-pay', 'showForm');
     Route::get('/vogue-pay/success/{id}', 'paymentSuccess');
     Route::get('/vogue-pay/failure/{id}', 'paymentFailure');
 });
-
 
 //Iyzico
 Route::any('/iyzico/payment/callback/{payment_type}/{amount?}/{payment_method?}/{combined_order_id?}/{customer_package_id?}/{seller_package_id?}', [IyzicoController::class, 'callback'])->name('iyzico.callback');
@@ -359,7 +345,6 @@ Route::controller(PayhereController::class)->group(function () {
     Route::any('/payhere/customer_package_payment/return', 'customer_package_return')->name('payhere.customer_package_payment.return');
     Route::any('/payhere/customer_package_payment/cancel', 'customer_package_cancel')->name('payhere.customer_package_payment.cancel');
 });
-
 
 //N-genius
 Route::controller(NgeniusController::class)->group(function () {
@@ -400,7 +385,6 @@ Route::controller(BlogController::class)->group(function () {
 Route::controller(PageController::class)->group(function () {
     //mobile app balnk page for webview
     Route::get('/mobile-page/{slug}', 'mobile_custom_page')->name('mobile.custom-pages');
-
     //Custom page
     Route::get('/{slug}', 'show_custom_page')->name('custom-pages.show_custom_page');
 });

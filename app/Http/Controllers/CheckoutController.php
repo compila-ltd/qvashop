@@ -2,30 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Utility\PayfastUtility;
-use Illuminate\Http\Request;
-use App\Models\Category;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Coupon;
-use App\Models\CouponUsage;
 use App\Models\Address;
 use App\Models\Carrier;
-use App\Models\CombinedOrder;
 use App\Models\Product;
-use App\Utility\PayhereUtility;
+use App\Models\Category;
+use App\Models\CouponUsage;
+use Illuminate\Http\Request;
+use App\Models\CombinedOrder;
 use App\Utility\NotificationUtility;
-use Session;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class CheckoutController extends Controller
 {
-
-    public function __construct()
-    {
-        //
-    }
-
     //check the selected payment gateway and redirect to that controller accordingly
     public function checkout(Request $request)
     {
@@ -44,6 +36,7 @@ class CheckoutController extends Controller
         // Minumum order amount check end
         
         if ($request->payment_option != null) {
+            
             (new OrderController)->store($request);
 
             $request->session()->put('payment_type', 'cart_payment');

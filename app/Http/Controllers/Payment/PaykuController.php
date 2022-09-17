@@ -13,8 +13,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use SebaCarrasco93\LaravelPayku\Facades\LaravelPayku;
 use SebaCarrasco93\LaravelPayku\Models\PaykuTransaction;
-use Session;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class PaykuController
 {

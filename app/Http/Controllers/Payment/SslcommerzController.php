@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Payment;
 
 use App\Http\Controllers\Controller;
@@ -12,8 +13,8 @@ use App\Http\Controllers\CustomerPackageController;
 use App\Http\Controllers\SellerPackageController;
 use App\Http\Controllers\SSLCommerz;
 use App\Models\User;
-use Session;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 session_start();
 
@@ -24,8 +25,10 @@ class SslcommerzController extends Controller
         # Here you have to receive all the order data to initate the payment.
         # Lets your oder trnsaction informations are saving in a table called "orders"
         # In orders table order uniq identity is "order_id","order_status" field contain status of the transaction, "grand_total" is the order amount to be paid and "currency" is for storing Site Currency which will be checked with paid currency.
-        if(Session::has('payment_type')){
-            if(Session::get('payment_type') == 'cart_payment'){
+        if (Session::has('payment_type')) {
+
+            if (Session::get('payment_type') == 'cart_payment') {
+
                 $combined_order = CombinedOrder::findOrFail($request->session()->get('combined_order_id'));
                 $post_data = array();
                 $post_data['total_amount'] = $combined_order->grand_total; # You cant not pay less than 10
@@ -50,9 +53,8 @@ class SslcommerzController extends Controller
                 // $post_data['cus_country'] = $request->session()->get('shipping_info')['country'];
                 // $post_data['cus_phone'] = $request->session()->get('shipping_info')['phone'];
                 // $post_data['cus_email'] = $request->session()->get('shipping_info')['email'];
-                
-            }
-            elseif (Session::get('payment_type') == 'wallet_payment') {
+
+            } elseif (Session::get('payment_type') == 'wallet_payment') {
                 $post_data = array();
                 $post_data['total_amount'] = $request->session()->get('payment_data')['amount']; # You cant not pay less than 10
                 $post_data['currency'] = "BDT";
@@ -68,9 +70,9 @@ class SslcommerzController extends Controller
                 // $_SESSION['payment_values']['payment_data']=$request->session()->get('payment_data');
                 // $_SESSION['payment_values']['payment_type']=$request->session()->get('payment_type');
                 #End to save these value  in session to pick in success page.
-                
-            }
-            elseif (Session::get('payment_type') == 'customer_package_payment') {
+
+            } elseif (Session::get('payment_type') == 'customer_package_payment') {
+
                 $customer_package = CustomerPackage::findOrFail(Session::get('payment_data')['customer_package_id']);
                 $post_data = array();
                 $post_data['total_amount'] = $customer_package->amount; # You cant not pay less than 10
@@ -87,8 +89,8 @@ class SslcommerzController extends Controller
                 // $_SESSION['payment_values']['payment_data']=$request->session()->get('payment_data');
                 // $_SESSION['payment_values']['payment_type']=$request->session()->get('payment_type');
                 #End to save these value  in session to pick in success page.
-            }
-            elseif (Session::get('payment_type') == 'seller_package_payment') {
+            } elseif (Session::get('payment_type') == 'seller_package_payment') {
+
                 $seller_package = SellerPackage::findOrFail(Session::get('payment_data')['seller_package_id']);
                 $post_data = array();
                 $post_data['total_amount'] = $seller_package->amount; # You cant not pay less than 10
@@ -107,7 +109,7 @@ class SslcommerzController extends Controller
                 #End to save these value  in session to pick in success page.
 
             }
-            
+
             # CUSTOMER INFORMATION
             $user = Auth::user();
             $post_data['cus_name'] = $user->name;
@@ -119,7 +121,7 @@ class SslcommerzController extends Controller
             $post_data['cus_email'] = $user->email;
         }
 
-        $server_name=$request->root()."/";
+        $server_name = $request->root() . "/";
         $post_data['success_url'] = $server_name . "sslcommerz/success";
         $post_data['fail_url'] = $server_name . "sslcommerz/fail";
         $post_data['cancel_url'] = $server_name . "sslcommerz/cancel";
@@ -140,45 +142,39 @@ class SslcommerzController extends Controller
         // $post_data['value_d'] = "ref004";
 
         $sslc = new SSLCommerz();
-        
+
         # initiate(Transaction Data , false: Redirect to SSLCOMMERZ gateway/ true: Show all the Payement gateway here )
         $payment_options = $sslc->initiate($post_data, false);
         if (!is_array($payment_options)) {
             print_r($payment_options);
             $payment_options = array();
         }
-
     }
 
     public function success(Request $request)
     {
-        //echo "Transaction is Successful";
-
         $sslc = new SSLCommerz();
         #Start to received these value from session. which was saved in index function.
         $tran_id = $request->value_a;
         #End to received these value from session. which was saved in index function.
         $payment = json_encode($request->all());
 
-        if(isset($request->value_c)){
-            if($request->value_c == 'cart_payment'){
+        if (isset($request->value_c)) {
+            if ($request->value_c == 'cart_payment') {
                 return (new CheckoutController)->checkout_done($request->value_b, $payment);
-            }
-            elseif ($request->value_c == 'wallet_payment') {
+            } elseif ($request->value_c == 'wallet_payment') {
                 $data['amount'] = $request->value_b;
                 $data['payment_method'] = 'sslcommerz';
                 Auth::login(User::find($request->value_d));
 
                 return (new WalletController)->wallet_payment_done($data, $payment);
-            }
-            elseif ($request->value_c == 'customer_package_payment') {
+            } elseif ($request->value_c == 'customer_package_payment') {
                 $data['customer_package_id'] = $request->value_b;
                 $data['payment_method'] = 'sslcommerz';
                 Auth::login(User::find($request->value_d));
 
                 return (new CustomerPackageController)->purchase_payment_done($data, $payment);
-            }
-            elseif ($request->value_c == 'seller_package_payment') {
+            } elseif ($request->value_c == 'seller_package_payment') {
                 $data['seller_package_id'] = $request->value_b;
                 $data['payment_method'] = 'sslcommerz';
                 Auth::login(User::find($request->value_d));
@@ -196,52 +192,45 @@ class SslcommerzController extends Controller
         return redirect()->route('home');
     }
 
-     public function cancel(Request $request)
+    public function cancel(Request $request)
     {
         $request->session()->forget('order_id');
         $request->session()->forget('payment_data');
         flash(translate('Payment cancelled'))->error();
-    	return redirect()->route('home');
+        return redirect()->route('home');
     }
 
-     public function ipn(Request $request)
+    public function ipn(Request $request)
     {
         #Received all the payement information from the gateway
-      if($request->input('tran_id')) #Check transation id is posted or not.
-      {
+        if ($request->input('tran_id')) #Check transation id is posted or not.
+        {
 
-          $tran_id = $request->input('tran_id');
+            $tran_id = $request->input('tran_id');
 
-          #Check order status in order tabel against the transaction id or order id.
-          $combined_order = CombinedOrder::findOrFail($request->session()->get('combined_order_id'));
+            #Check order status in order tabel against the transaction id or order id.
+            $combined_order = CombinedOrder::findOrFail($request->session()->get('combined_order_id'));
 
-                if($order->payment_status =='Pending')
-                {
-                    $sslc = new SSLCommerz();
-                    $validation = $sslc->orderValidate($tran_id, $order->grand_total, 'BDT', $request->all());
-                    if($validation == TRUE)
-                    {
-                        /*
+            if ($order->payment_status == 'Pending') {
+                $sslc = new SSLCommerz();
+                $validation = $sslc->orderValidate($tran_id, $order->grand_total, 'BDT', $request->all());
+                if ($validation == TRUE) {
+                    /*
                         That means IPN worked. Here you need to update order status
                         in order table as Processing or Complete.
                         Here you can also sent sms or email for successfull transaction to customer
                         */
-                        echo "Transaction is successfully Complete";
-                    }
-                    else
-                    {
-                        /*
+                    echo "Transaction is successfully Complete";
+                } else {
+                    /*
                         That means IPN worked, but Transation validation failed.
                         Here you need to update order status as Failed in order table.
                         */
 
-                        echo "validation Fail";
-                    }
-
+                    echo "validation Fail";
                 }
-        }
-        else
-        {
+            }
+        } else {
             echo "Inavalid Data";
         }
     }

@@ -11,8 +11,8 @@ use Illuminate\Http\Request;
 use App\Models\CombinedOrder;
 use App\Models\CustomerPackage;
 use App\Models\SellerPackage;
-use Auth;
-use Session;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Paystack;
 
 class PaystackController extends Controller
@@ -52,7 +52,6 @@ class PaystackController extends Controller
             return Paystack::getAuthorizationUrl()->redirectNow();
         }
     }
-
 
     /**
      * Obtain Paystack payment information
@@ -112,7 +111,6 @@ class PaystackController extends Controller
             } else {
                 return response()->json(['result' => false, 'message' => "Payment unsuccessful", 'payment_details' => $payment_details]);
             }
-
         }
     }
 }
