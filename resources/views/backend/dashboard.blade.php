@@ -332,7 +332,7 @@
                 @endforeach
             ],
             datasets: [{
-                label: '{{ translate('Number of Stock') }}',
+                label: "{{ translate('Number of Stock') }}",
                 data: [
                     {{ $cached_graph_data['qty_data'] }}
                 ],

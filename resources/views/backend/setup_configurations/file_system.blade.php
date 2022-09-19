@@ -187,19 +187,16 @@
         } else {
             var value = 0;
         }
-        $.post('{{ route('
-            business_settings.update.activation ') }}', {
+        $.post("{{ route('business_settings.update.activation ') }}", {
                 _token: '{{ csrf_token() }}',
                 type: type,
                 value: value
             },
             function(data) {
                 if (data == '1') {
-                    AIZ.plugins.notify('success', '{{ translate('
-                        Settings updated successfully ') }}');
+                    AIZ.plugins.notify('success', "{{ translate('Settings updated successfully ') }}");
                 } else {
-                    AIZ.plugins.notify('danger', '{{ translate('
-                        Something went wrong ') }}');
+                    AIZ.plugins.notify('danger', "{{ translate('Something went wrong') }}");
                 }
             });
     }
