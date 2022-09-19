@@ -31,7 +31,6 @@ use App\Http\Controllers\Payment\PaykuController;
 use App\Http\Controllers\SupportTicketController;
 use App\Http\Controllers\DigitalProductController;
 use App\Http\Controllers\Payment\IyzicoController;
-use App\Http\Controllers\Payment\StripeController;
 use App\Http\Controllers\CustomerPackageController;
 use App\Http\Controllers\CustomerProductController;
 use App\Http\Controllers\Payment\NgeniusController;
@@ -177,16 +176,6 @@ Route::controller(SslcommerzController::class)->group(function () {
     Route::POST('/sslcommerz/ipn', 'ipn');
 });
 //SSLCOMMERZ END
-
-//Stipe Start
-Route::controller(StripeController::class)->group(function () {
-    Route::get('stripe', 'stripe');
-    Route::post('/stripe/create-checkout-session', 'create_checkout_session')->name('stripe.get_token');
-    Route::any('/stripe/payment/callback', 'callback')->name('stripe.callback');
-    Route::get('/stripe/success', 'success')->name('stripe.success');
-    Route::get('/stripe/cancel', 'cancel')->name('stripe.cancel');
-});
-//Stripe END
 
 // Compare
 Route::controller(CompareController::class)->group(function () {

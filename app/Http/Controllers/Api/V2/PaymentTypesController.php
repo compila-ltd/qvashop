@@ -26,22 +26,6 @@ class PaymentTypesController
 
         if ($list == "online" || $list == "both") {
 
-            if (get_setting('stripe_payment') == 1) {
-                $payment_type = array();
-                $payment_type['payment_type'] = 'stripe_payment';
-                $payment_type['payment_type_key'] = 'stripe';
-                $payment_type['image'] = asset('assets/img/cards/stripe.png');
-                $payment_type['name'] = "Stripe";
-                $payment_type['title'] = "Checkout with Stripe";
-                $payment_type['offline_payment_id'] = 0;
-                $payment_type['details'] = "";
-                if ($mode == 'wallet') {
-                    $payment_type['title'] = "Recharge with Stripe";
-                }
-
-                $payment_types[] = $payment_type;
-            }
-
             if (get_setting('razorpay') == 1) {
                 $payment_type = array();
                 $payment_type['payment_type'] = 'razorpay';

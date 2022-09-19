@@ -112,9 +112,6 @@
                         <div class="col-md-10">
                             <div class="mb-3">
                                 <select class="form-control selectpicker" data-live-search="true" name="payment_option">
-                                    @if (get_setting('stripe_payment') == 1)
-                                    <option value="stripe">{{ translate('Stripe')}}</option>
-                                    @endif
                                     @if(get_setting('toyyibpay_payment') == 1)
                                     <option value="toyyibpay">{{ translate('ToyyibPay')}}</option>
                                     @endif

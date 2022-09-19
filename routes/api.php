@@ -174,12 +174,6 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function () {
 
     // Route::post('coupon/apply', 'App\Http\Controllers\Api\V2\CouponController@apply')->middleware('auth:sanctum');
 
-    Route::any('stripe', 'App\Http\Controllers\Api\V2\StripeController@stripe');
-    Route::any('/stripe/create-checkout-session', 'App\Http\Controllers\Api\V2\StripeController@create_checkout_session')->name('api.stripe.get_token');
-    Route::any('/stripe/payment/callback', 'App\Http\Controllers\Api\V2\StripeController@callback')->name('api.stripe.callback');
-    Route::any('/stripe/success', 'App\Http\Controllers\Api\V2\StripeController@success')->name('api.stripe.success');
-    Route::any('/stripe/cancel', 'App\Http\Controllers\Api\V2\StripeController@cancel')->name('api.stripe.cancel');
-
     Route::any('razorpay/pay-with-razorpay', 'App\Http\Controllers\Api\V2\RazorpayController@payWithRazorpay')->name('api.razorpay.payment');
     Route::any('razorpay/payment', 'App\Http\Controllers\Api\V2\RazorpayController@payment')->name('api.razorpay.payment');
     Route::post('razorpay/success', 'App\Http\Controllers\Api\V2\RazorpayController@success')->name('api.razorpay.success');
