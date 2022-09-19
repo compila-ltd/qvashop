@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Seller;
 
-use Illuminate\Http\Request;
-use App\Models\Address;
 use App\Models\City;
 use App\Models\State;
-use Auth;
+use App\Models\Address;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AddressController extends Controller
 {
@@ -45,9 +45,9 @@ class AddressController extends Controller
         $data['address_data'] = Address::findOrFail($id);
         $data['states'] = State::where('status', 1)->where('country_id', $data['address_data']->country_id)->get();
         $data['cities'] = City::where('status', 1)->where('state_id', $data['address_data']->state_id)->get();
-        
+
         $returnHTML = view('seller.profile.address_edit_modal', $data)->render();
-        return response()->json(array('data' => $data, 'html'=>$returnHTML));
+        return response()->json(array('data' => $data, 'html' => $returnHTML));
     }
 
     /**
@@ -60,7 +60,7 @@ class AddressController extends Controller
     public function update(Request $request, $id)
     {
         $address = Address::findOrFail($id);
-        
+
         $address->address       = $request->address;
         $address->country_id    = $request->country_id;
         $address->state_id      = $request->state_id;
@@ -85,7 +85,7 @@ class AddressController extends Controller
     public function destroy($id)
     {
         $address = Address::findOrFail($id);
-        if(!$address->set_default){
+        if (!$address->set_default) {
             $address->delete();
             return back();
         }
@@ -93,29 +93,32 @@ class AddressController extends Controller
         return back();
     }
 
-    public function getStates(Request $request) {
+    public function getStates(Request $request)
+    {
         $states = State::where('status', 1)->where('country_id', $request->country_id)->get();
-        $html = '<option value="">'.translate("Select State").'</option>';
-        
+        $html = '<option value="">' . translate("Select State") . '</option>';
+
         foreach ($states as $state) {
             $html .= '<option value="' . $state->id . '">' . $state->name . '</option>';
         }
-        
-        echo json_encode($html);
-    }
-    
-    public function getCities(Request $request) {
-        $cities = City::where('status', 1)->where('state_id', $request->state_id)->get();
-        $html = '<option value="">'.translate("Select City").'</option>';
-        
-        foreach ($cities as $row) {
-            $html .= '<option value="' . $row->id . '">' . $row->getTranslation('name') . '</option>';
-        }
-        
+
         echo json_encode($html);
     }
 
-    public function set_default($id){
+    public function getCities(Request $request)
+    {
+        $cities = City::where('status', 1)->where('state_id', $request->state_id)->get();
+        $html = '<option value="">' . translate("Select City") . '</option>';
+
+        foreach ($cities as $row) {
+            $html .= '<option value="' . $row->id . '">' . $row->getTranslation('name') . '</option>';
+        }
+
+        echo json_encode($html);
+    }
+
+    public function set_default($id)
+    {
         foreach (Auth::user()->addresses as $key => $address) {
             $address->set_default = 0;
             $address->save();
