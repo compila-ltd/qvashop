@@ -45,8 +45,13 @@
     <meta property="fb:app_id" content="{{ env('FACEBOOK_PIXEL_ID') }}">
     @endif
 
-    <!-- Favicon -->
-    <link rel="icon" href="{{ uploaded_asset(get_setting('site_icon')) }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&display=swap" rel="stylesheet">
@@ -58,7 +63,6 @@
     @endif
     <link rel="stylesheet" href="{{ asset('assets/css/aiz-core.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/custom-style.css') }}">
-
 
     <script>
         var AIZ = AIZ || {};
@@ -93,29 +97,9 @@
         }
 
         :root {
-            --primary: {
-                    {
-                    get_setting('base_color', '#e62d04')
-                }
-            }
-
-            ;
-
-            --hov-primary: {
-                    {
-                    get_setting('base_hov_color', '#c52907')
-                }
-            }
-
-            ;
-
-            --soft-primary: {
-                    {
-                    hex2rgba(get_setting('base_color', '#e62d04'), .15)
-                }
-            }
-
-            ;
+            --primary: "{{ get_setting('base_color', '#e62d04') }}";
+            --hov-primary: "{{ get_setting('base_hov_color', '#c52907') }}";
+            --soft-primary: "{{ hex2rgba(get_setting('base_color', '#e62d04'), .15) }}";
         }
 
         #map {
@@ -291,10 +275,10 @@
     @endif
 
     <script>
-        {{-- 
-            @foreach(session('flash_notification', collect())->toArray() as $message)
-            AIZ.plugins.notify("{{ $message['level'] }}", "{{ $message['message '] }}");
-            @endforeach
+        {{--
+        @foreach(session('flash_notification', collect())->toArray() as $message)
+        AIZ.plugins.notify("{{ $message['level'] }}", "{{ $message['message '] }}");
+        @endforeach
         --}}
     </script>
 
