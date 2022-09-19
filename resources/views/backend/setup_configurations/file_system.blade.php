@@ -187,7 +187,7 @@
         } else {
             var value = 0;
         }
-        $.post("{{ route('business_settings.update.activation ') }}", {
+        $.post("{{ route('business_settings.update.activation') }}", {
                 _token: '{{ csrf_token() }}',
                 type: type,
                 value: value
