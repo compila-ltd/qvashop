@@ -420,9 +420,8 @@ class BusinessSettingsController extends Controller
 
     public function updateActivationSettings(Request $request)
     {
-        $env_changes = ['FORCE_HTTPS', 'FILESYSTEM_DRIVER'];
+        $env_changes = ['FILESYSTEM_DRIVER'];
         if (in_array($request->type, $env_changes)) {
-
             return $this->updateActivationSettingsInEnv($request);
         }
 
@@ -452,18 +451,7 @@ class BusinessSettingsController extends Controller
 
     public function updateActivationSettingsInEnv($request)
     {
-        if ($request->type == 'FORCE_HTTPS' && $request->value == '1') {
-            $this->overWriteEnvFile($request->type, 'On');
-
-            if (strpos(env('APP_URL'), 'http:') !== FALSE) {
-                $this->overWriteEnvFile('APP_URL', str_replace("http:", "https:", env('APP_URL')));
-            }
-        } elseif ($request->type == 'FORCE_HTTPS' && $request->value == '0') {
-            $this->overWriteEnvFile($request->type, 'Off');
-            if (strpos(env('APP_URL'), 'https:') !== FALSE) {
-                $this->overWriteEnvFile('APP_URL', str_replace("https:", "http:", env('APP_URL')));
-            }
-        } elseif ($request->type == 'FILESYSTEM_DRIVER' && $request->value == '1') {
+        if ($request->type == 'FILESYSTEM_DRIVER' && $request->value == '1') {
             $this->overWriteEnvFile($request->type, 's3');
         } elseif ($request->type == 'FILESYSTEM_DRIVER' && $request->value == '0') {
             $this->overWriteEnvFile($request->type, 'local');

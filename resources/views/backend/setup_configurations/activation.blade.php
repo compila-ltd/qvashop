@@ -7,19 +7,6 @@
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6 text-center">{{translate('HTTPS Activation')}}</h5>
-            </div>
-            <div class="card-body text-center">
-                <label class="aiz-switch aiz-switch-success mb-0">
-                    <input type="checkbox" onchange="updateSettings(this, 'FORCE_HTTPS')" <?php if (env('FORCE_HTTPS') == 'On') echo "checked"; ?>>
-                    <span class="slider round"></span>
-                </label>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="card">
-            <div class="card-header">
                 <h3 class="mb-0 h6 text-center">{{translate('Maintenance Mode Activation')}}</h3>
             </div>
             <div class="card-body text-center">
