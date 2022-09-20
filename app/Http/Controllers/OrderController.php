@@ -112,8 +112,7 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $carts = Cart::where('user_id', Auth::user()->id)
-            ->get();
+        $carts = Cart::where('user_id', Auth::user()->id)->get();
 
         if ($carts->isEmpty()) {
             flash(translate('Your cart is empty'))->warning();
@@ -271,37 +270,6 @@ class OrderController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param int $id
@@ -339,7 +307,6 @@ class OrderController extends Controller
                 $this->destroy($order_id);
             }
         }
-
         return 1;
     }
 
@@ -517,7 +484,6 @@ class OrderController extends Controller
 
             NotificationUtility::sendFirebaseNotification($request);
         }
-
 
         if (addon_is_activated('otp_system') && SmsTemplate::where('identifier', 'payment_status_change')->first()->status == 1) {
             try {

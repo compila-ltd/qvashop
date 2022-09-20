@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\Api\V2\Seller\ConversationController;
-use App\Http\Controllers\Api\V2\Seller\CouponController;
-use App\Http\Controllers\Api\V2\Seller\OrderController;
-use App\Http\Controllers\Api\V2\Seller\ProductController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V2\Seller\ShopController;
+use App\Http\Controllers\Api\V2\Seller\OrderController;
+use App\Http\Controllers\Api\V2\Seller\CouponController;
 use App\Http\Controllers\Api\V2\Seller\RefundController;
+use App\Http\Controllers\Api\V2\Seller\ProductController;
+use App\Http\Controllers\Api\V2\Seller\ConversationController;
 use App\Http\Controllers\Api\V2\Seller\SellerPackageController;
 use App\Http\Controllers\Api\V2\Seller\WithdrawRequestController;
 
@@ -17,10 +18,9 @@ Route::group(['prefix' => 'v2/seller', 'middleware' => ['app_language', 'auth:sa
         Route::post('orders/items/{id}', 'getOrderItems');
         Route::post('orders/update-delivery-status', 'update_delivery_status');
         Route::post('orders/update-payment-status', 'update_payment_status');
-        
         // Route::apiResource('shops', 'App\Http\Controllers\Api\V2\ShopController')->only('index');
     });
-    
+
     //Shop Section
     Route::controller(ShopController::class)->group(function () {
         Route::get('payment-history', 'payment_histories');
@@ -41,13 +41,14 @@ Route::group(['prefix' => 'v2/seller', 'middleware' => ['app_language', 'auth:sa
         Route::post('refunds/approve', 'request_approval_vendor');
         Route::post('refunds/reject', 'reject_refund_request');
     });
+
     //Withdraw Request Section
     Route::controller(WithdrawRequestController::class)->group(function () {
         Route::get('withdraw-request', 'index');
         Route::post('withdraw-request/store', 'store');
     });
 
-     //Product Section
+    //Product Section
     Route::controller(ProductController::class)->group(function () {
         Route::get('products/all', 'index');
         Route::post('product/change-featured', 'change_featured_status');
@@ -84,5 +85,4 @@ Route::group(['prefix' => 'v2/seller', 'middleware' => ['app_language', 'auth:sa
         Route::post('seller-package/offline-payment', 'purchase_package_offline');
         Route::post('seller-package/free-package', 'purchase_free_package');
     });
-
 });

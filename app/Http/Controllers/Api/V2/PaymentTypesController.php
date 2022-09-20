@@ -26,22 +26,6 @@ class PaymentTypesController
 
         if ($list == "online" || $list == "both") {
 
-            if (get_setting('razorpay') == 1) {
-                $payment_type = array();
-                $payment_type['payment_type'] = 'razorpay';
-                $payment_type['payment_type_key'] = 'razorpay';
-                $payment_type['image'] = asset('assets/img/cards/rozarpay.png');
-                $payment_type['name'] = "Razorpay";
-                $payment_type['title'] = "Checkout with Razorpay";
-                $payment_type['offline_payment_id'] = 0;
-                $payment_type['details'] = "";
-                if ($mode == 'wallet') {
-                    $payment_type['title'] = "Recharge with Razorpay";
-                }
-
-                $payment_types[] = $payment_type;
-            }
-
             if (get_setting('paystack') == 1) {
                 $payment_type = array();
                 $payment_type['payment_type'] = 'paystack';

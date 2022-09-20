@@ -50,7 +50,7 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function () {
     Route::apiResource('banners', 'App\Http\Controllers\Api\V2\BannerController')->only('index');
 
     Route::get('brands/top', 'App\Http\Controllers\Api\V2\BrandController@top');
-    Route::apiResource('brands', 'App\Http\Controllers\Api\V2\BrandController')->only('index');
+    //Route::apiResource('brands', 'App\Http\Controllers\Api\V2\BrandController')->only('index');
 
     Route::apiResource('business-settings', 'App\Http\Controllers\Api\V2\BusinessSettingController')->only('index');
 
@@ -64,7 +64,7 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function () {
 
     Route::apiResource('currencies', 'App\Http\Controllers\Api\V2\CurrencyController')->only('index');
 
-    Route::apiResource('customers', 'App\Http\Controllers\Api\V2\CustomerController')->only('show');
+    //Route::apiResource('customers', 'App\Http\Controllers\Api\V2\CustomerController')->only('show');
 
     Route::apiResource('general-settings', 'App\Http\Controllers\Api\V2\GeneralSettingController')->only('index');
 
@@ -143,7 +143,7 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function () {
     Route::get('wishlists-add-product', 'App\Http\Controllers\Api\V2\WishlistController@add')->middleware('auth:sanctum');
     Route::get('wishlists-remove-product', 'App\Http\Controllers\Api\V2\WishlistController@remove')->middleware('auth:sanctum');
     Route::get('wishlists', 'App\Http\Controllers\Api\V2\WishlistController@index')->middleware('auth:sanctum');
-    Route::apiResource('wishlists', 'App\Http\Controllers\Api\V2\WishlistController')->except(['index', 'update', 'show']);
+    Route::apiResource('wishlists', 'App\Http\Controllers\Api\V2\WishlistController')->except(['index', 'update', 'show', 'store', 'destroy']);
 
     Route::get('policies/seller', 'App\Http\Controllers\Api\V2\PolicyController@sellerPolicy')->name('policies.seller');
     Route::get('policies/support', 'App\Http\Controllers\Api\V2\PolicyController@supportPolicy')->name('policies.support');
@@ -174,11 +174,6 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function () {
     Route::get('states-by-country/{country_id}', 'App\Http\Controllers\Api\V2\AddressController@getStatesByCountry');
 
     // Route::post('coupon/apply', 'App\Http\Controllers\Api\V2\CouponController@apply')->middleware('auth:sanctum');
-
-    // RazorPay
-    // Route::any('razorpay/pay-with-razorpay', 'App\Http\Controllers\Api\V2\RazorpayController@payWithRazorpay')->name('api.razorpay.payment');
-    // Route::any('razorpay/payment', 'App\Http\Controllers\Api\V2\RazorpayController@payment')->name('api.razorpay.payment');
-    // Route::post('razorpay/success', 'App\Http\Controllers\Api\V2\RazorpayController@success')->name('api.razorpay.success');
 
     Route::any('paystack/init', 'App\Http\Controllers\Api\V2\PaystackController@init')->name('api.paystack.init');
     Route::post('paystack/success', 'App\Http\Controllers\Api\V2\PaystackController@success')->name('api.paystack.success');

@@ -2,12 +2,12 @@
 
 @section('content')
 
-<h4 class="text-center text-muted">{{translate('System')}}</h4>
+<h4 class="text-center text-muted">{{ translate('System') }}</h4>
 <div class="row">
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
-                <h3 class="mb-0 h6 text-center">{{translate('Maintenance Mode Activation')}}</h3>
+                <h3 class="mb-0 h6 text-center">{{ translate('Maintenance Mode Activation') }}</h3>
             </div>
             <div class="card-body text-center">
                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -20,7 +20,7 @@
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
-                <h3 class="mb-0 h6 text-center">{{translate('Disable image encoding?')}}</h3>
+                <h3 class="mb-0 h6 text-center">{{ translate('Disable image encoding?') }}</h3>
             </div>
             <div class="card-body text-center">
                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -32,13 +32,12 @@
     </div>
 </div>
 
-
-<h4 class="text-center text-muted mt-4">{{translate('Business Related')}}</h4>
+<h4 class="text-center text-muted mt-4">{{ translate('Business Related') }}</h4>
 <div class="row">
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
-                <h3 class="mb-0 h6 text-center">{{translate('Vendor System Activation')}}</h3>
+                <h3 class="mb-0 h6 text-center">{{ translate('Vendor System Activation') }}</h3>
             </div>
             <div class="card-body text-center">
                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -51,7 +50,7 @@
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
-                <h3 class="mb-0 h6 text-center">{{translate('Classified Product')}}</h3>
+                <h3 class="mb-0 h6 text-center">{{ translate('Classified Product') }}</h3>
             </div>
             <div class="card-body text-center">
                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -215,6 +214,27 @@
 <h4 class="text-center text-muted mt-4">{{translate('Payment Related')}}</h4>
 
 <div class="row">
+
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="mb-0 h6 text-center">{{ translate('QvaPay Activation') }}</h3>
+            </div>
+            <div class="card-body text-center">
+                <div class="clearfix">
+                    <img class="float-left" src="{{ asset('assets/img/cards/qvapay.png') }}" height="30">
+                    <label class="aiz-switch aiz-switch-success mb-0 float-right">
+                        <input type="checkbox" onchange="updateSettings(this, 'qvapay')" <?php if (get_setting('qvapay') == 1) echo "checked"; ?>>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="alert" style="color: #004085;background-color: #cce5ff;border-color: #b8daff;margin-bottom:0;margin-top:10px;">
+                    {{ translate('You need to configure QvaPay correctly to enable this feature') }}. <a href="{{ route('payment_method.index') }}">{{ translate('Configure Now') }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
@@ -251,25 +271,6 @@
                 </div>
                 <div class="alert" style="color: #004085;background-color: #cce5ff;border-color: #b8daff;margin-bottom:0;margin-top:10px;">
                     {{ translate('You need to configure Instamojo Payment correctly to enable this feature') }}. <a href="{{ route('payment_method.index') }}">{{ translate('Configure Now') }}</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="mb-0 h6 text-center">{{translate('Razor Pay Activation')}}</h3>
-            </div>
-            <div class="card-body text-center">
-                <div class="clearfix">
-                    <img class="float-left" src="{{ asset('assets/img/cards/rozarpay.png') }}" height="30">
-                    <label class="aiz-switch aiz-switch-success mb-0 float-right">
-                        <input type="checkbox" onchange="updateSettings(this, 'razorpay')" <?php if (get_setting('razorpay') == 1) echo "checked"; ?>>
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-                <div class="alert" style="color: #004085;background-color: #cce5ff;border-color: #b8daff;margin-bottom:0;margin-top:10px;">
-                    {{ translate('You need to configure Razor correctly to enable this feature') }}. <a href="{{ route('payment_method.index') }}">{{ translate('Configure Now') }}</a>
                 </div>
             </div>
         </div>
@@ -337,10 +338,11 @@
     </div>
 </div>
 <div class="row">
+
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
-                <h3 class="mb-0 h6 text-center">{{translate('Ngenius Activation')}}</h3>
+                <h3 class="mb-0 h6 text-center">{{ translate('Ngenius Activation') }}</h3>
             </div>
             <div class="card-body text-center">
                 <div class="clearfix">

@@ -11,11 +11,12 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SellerPackageController;
 
 //Admin
 Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function(){
-    Route::resource('seller_packages', SellerPackageController::class);
+    Route::resource('seller_packages', SellerPackageController::class)->except('edit', 'destroy');
     Route::controller(SellerPackageController::class)->group(function () {
         Route::get('/seller_packages/edit/{id}', 'edit')->name('seller_packages.edit');
         Route::get('/seller_packages/destroy/{id}', 'destroy')->name('seller_packages.destroy');

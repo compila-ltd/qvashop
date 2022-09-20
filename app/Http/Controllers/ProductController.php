@@ -318,13 +318,10 @@ class ProductController extends Controller
         }
 
         // Product Translations
+        $request->merge(['lang' => env('DEFAULT_LANGUAGE') ? env('DEFAULT_LANGUAGE') : 'en']);
         ProductTranslation::updateOrCreate(
-            $request->only([
-                'lang', 'product_id'
-            ]),
-            $request->only([
-                'name', 'unit', 'description'
-            ])
+            $request->only(['lang', 'product_id']),
+            $request->only(['name', 'unit', 'description'])
         );
 
         flash(translate('Product has been updated successfully'))->success();

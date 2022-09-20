@@ -418,6 +418,9 @@ class BusinessSettingsController extends Controller
         return back();
     }
 
+    /**
+     * Update Settings
+     */
     public function updateActivationSettings(Request $request)
     {
         $env_changes = ['FILESYSTEM_DRIVER'];

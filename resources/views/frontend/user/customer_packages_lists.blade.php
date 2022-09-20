@@ -121,9 +121,6 @@
                                     @if(get_setting('instamojo_payment') == 1)
                                     <option value="instamojo">{{ translate('Instamojo')}}</option>
                                     @endif
-                                    @if(get_setting('razorpay') == 1)
-                                    <option value="razorpay">{{ translate('RazorPay')}}</option>
-                                    @endif
                                     @if(get_setting('paystack') == 1)
                                     <option value="paystack">{{ translate('PayStack')}}</option>
                                     @endif

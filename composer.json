@@ -27,7 +27,6 @@
         "niklasravnsborg/laravel-pdf": "^4.0",
         "osenco/mpesa": "^1.20",
         "predis/predis": "^1.1",
-        "razorpay/razorpay": "2.0.0",
         "sebacarrasco93/laravel-payku": "^1.0",
         "simplesoftwareio/simple-qrcode": "^4.2",
         "spatie/db-dumper": "2.21.1",

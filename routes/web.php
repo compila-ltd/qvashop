@@ -30,15 +30,12 @@ use App\Http\Controllers\Payment\NagadController;
 use App\Http\Controllers\Payment\PaykuController;
 use App\Http\Controllers\SupportTicketController;
 use App\Http\Controllers\DigitalProductController;
-use App\Http\Controllers\Payment\IyzicoController;
 use App\Http\Controllers\CustomerPackageController;
 use App\Http\Controllers\CustomerProductController;
 use App\Http\Controllers\Payment\NgeniusController;
-use App\Http\Controllers\Payment\PayhereController;
 use App\Http\Controllers\PurchaseHistoryController;
 use App\Http\Controllers\Payment\AamarpayController;
 use App\Http\Controllers\Payment\PaystackController;
-use App\Http\Controllers\Payment\RazorpayController;
 use App\Http\Controllers\Payment\VoguepayController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Payment\InstamojoController;
@@ -79,13 +76,13 @@ Route::controller(LoginController::class)->group(function () {
 });
 
 Route::controller(VerificationController::class)->group(function () {
-    Route::get('/email/resend', 'resend')->name('verification.resend');
+    //TODO Route::get('/email/resend', 'resend')->name('verification.resend');
     Route::get('/verification-confirmation/{code}', 'verification_confirmation')->name('email.verification.confirmation');
 });
 
 Route::controller(HomeController::class)->group(function () {
     Route::get('/email_change/callback', 'email_change_callback')->name('email_change.callback');
-    Route::post('/password/reset/email/submit', 'reset_password_with_code')->name('password.update');
+    //TODO Route::post('/password/reset/email/submit', 'reset_password_with_code')->name('password.update');
     Route::get('/users/login', 'login')->name('user.login');
     Route::get('/users/registration', 'registration')->name('user.registration');
     Route::post('/users/login/cart', 'cart_login')->name('cart.login.submit');
@@ -218,7 +215,7 @@ Route::group(['middleware' => ['customer', 'verified', 'unbanned']], function ()
     });
 
     // Purchase History
-    Route::resource('purchase_history', PurchaseHistoryController::class);
+    Route::resource('purchase_history', PurchaseHistoryController::class)->except('destroy');
     Route::controller(PurchaseHistoryController::class)->group(function () {
         Route::get('/purchase_history/details/{id}', 'purchase_history_details')->name('purchase_history.details');
         Route::get('/purchase_history/destroy/{id}', 'order_cancel')->name('purchase_history.destroy');
@@ -243,7 +240,7 @@ Route::group(['middleware' => ['customer', 'verified', 'unbanned']], function ()
     Route::post('/customer_packages/purchase', [CustomerPackageController::class, 'purchase_package'])->name('customer_packages.purchase');
 
     // Customer Product
-    Route::resource('customer_products', CustomerProductController::class);
+    Route::resource('customer_products', CustomerProductController::class)->except('edit', 'destroy');
     Route::controller(CustomerProductController::class)->group(function () {
         Route::get('/customer_products/{id}/edit', 'edit')->name('customer_products.edit');
         Route::post('/customer_products/published', 'updatePublished')->name('customer_products.published');
@@ -265,10 +262,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('invoice/{order_id}', [InvoiceController::class, 'invoice_download'])->name('invoice.download');
 
     // Reviews
-    Route::resource('/reviews', ReviewController::class);
+    Route::resource('/reviews', ReviewController::class)->except('index');
 
     // Product Conversation
-    Route::resource('conversations', ConversationController::class);
+    Route::resource('conversations', ConversationController::class)->except('destroy');
     Route::controller(ConversationController::class)->group(function () {
         Route::get('/conversations/destroy/{id}', 'destroy')->name('conversations.destroy');
         Route::post('conversations/refresh', 'refresh')->name('conversations.refresh');
@@ -280,7 +277,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('messages', MessageController::class);
 
     //Address
-    Route::resource('addresses', AddressController::class);
+    Route::resource('addresses', AddressController::class)->except('update', 'destroy');
     Route::controller(AddressController::class)->group(function () {
         Route::post('/get-states', 'getStates')->name('get-state');
         Route::post('/get-cities', 'getCities')->name('get-city');
@@ -290,15 +287,14 @@ Route::group(['middleware' => ['auth']], function () {
     });
 });
 
-Route::resource('shops', ShopController::class);
+Route::resource('shops', ShopController::class)->except('index');
 
 // Different Payment Methods Webhook
 Route::get('/instamojo/payment/pay-success', [InstamojoController::class, 'success'])->name('instamojo.success');
-Route::post('/rozer/payment/pay-success', [RazorpayController::class, 'payment'])->name('payment.rozer');
 Route::get('/paystack/payment/callback', [PaystackController::class, 'handleGatewayCallback']);
 
 // QvaPay WebHook
-Route::post('/qvapay/payment/pay-success', [QvaPayController::class, 'payment'])->name('payment.qvapay');
+Route::post('/qvapay/payment/pay-success', [QvapayController::class, 'payment'])->name('payment.qvapay');
 
 Route::controller(VoguepayController::class)->group(function () {
     Route::get('/vogue-pay', 'showForm');
@@ -306,33 +302,7 @@ Route::controller(VoguepayController::class)->group(function () {
     Route::get('/vogue-pay/failure/{id}', 'paymentFailure');
 });
 
-//Iyzico
-Route::any('/iyzico/payment/callback/{payment_type}/{amount?}/{payment_method?}/{combined_order_id?}/{customer_package_id?}/{seller_package_id?}', [IyzicoController::class, 'callback'])->name('iyzico.callback');
-
-Route::get('/customer-products/admin', [IyzicoController::class, 'initPayment'])->name('profile.edit');
-
-//payhere below
-Route::controller(PayhereController::class)->group(function () {
-    Route::get('/payhere/checkout/testing', 'checkout_testing')->name('payhere.checkout.testing');
-    Route::get('/payhere/wallet/testing', 'wallet_testing')->name('payhere.checkout.testing');
-    Route::get('/payhere/customer_package/testing', 'customer_package_testing')->name('payhere.customer_package.testing');
-
-    Route::any('/payhere/checkout/notify', 'checkout_notify')->name('payhere.checkout.notify');
-    Route::any('/payhere/checkout/return', 'checkout_return')->name('payhere.checkout.return');
-    Route::any('/payhere/checkout/cancel', 'chekout_cancel')->name('payhere.checkout.cancel');
-
-    Route::any('/payhere/wallet/notify', 'wallet_notify')->name('payhere.wallet.notify');
-    Route::any('/payhere/wallet/return', 'wallet_return')->name('payhere.wallet.return');
-    Route::any('/payhere/wallet/cancel', 'wallet_cancel')->name('payhere.wallet.cancel');
-
-    Route::any('/payhere/seller_package_payment/notify', 'seller_package_notify')->name('payhere.seller_package_payment.notify');
-    Route::any('/payhere/seller_package_payment/return', 'seller_package_payment_return')->name('payhere.seller_package_payment.return');
-    Route::any('/payhere/seller_package_payment/cancel', 'seller_package_payment_cancel')->name('payhere.seller_package_payment.cancel');
-
-    Route::any('/payhere/customer_package_payment/notify', 'customer_package_notify')->name('payhere.customer_package_payment.notify');
-    Route::any('/payhere/customer_package_payment/return', 'customer_package_return')->name('payhere.customer_package_payment.return');
-    Route::any('/payhere/customer_package_payment/cancel', 'customer_package_cancel')->name('payhere.customer_package_payment.cancel');
-});
+// TODO: Remove Payhere
 
 //N-genius
 Route::controller(NgeniusController::class)->group(function () {

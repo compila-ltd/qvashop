@@ -132,9 +132,6 @@
                                     @if (get_setting('ngenius') == 1)
                                     <option value="ngenius">{{ translate('Ngenius')}}</option>
                                     @endif
-                                    @if (get_setting('razorpay') == 1)
-                                    <option value="razorpay">{{ translate('Razorpay')}}</option>
-                                    @endif
                                     @if (get_setting('iyzico') == 1)
                                     <option value="iyzico">{{ translate('Iyzico')}}</option>
                                     @endif

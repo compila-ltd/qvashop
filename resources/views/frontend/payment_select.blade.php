@@ -96,14 +96,14 @@
                                             </label>
                                         </div>
                                         @endif
-                                        @if (get_setting('razorpay') == 1)
+                                        @if (get_setting('qvapay') == 1)
                                         <div class="col-6 col-md-4">
                                             <label class="aiz-megabox d-block mb-3">
-                                                <input value="razorpay" class="online_payment" type="radio" name="payment_option" checked>
+                                                <input value="qvapay" class="online_payment" type="radio" name="payment_option" checked>
                                                 <span class="d-block aiz-megabox-elem p-3">
-                                                    <img src="{{ asset('assets/img/cards/rozarpay.png') }}" class="img-fluid mb-2">
+                                                    <img src="{{ asset('assets/img/cards/qvapay.png') }}" class="img-fluid mb-2">
                                                     <span class="d-block text-center">
-                                                        <span class="d-block fw-600 fs-15">{{ translate('Razorpay') }}</span>
+                                                        <span class="d-block fw-600 fs-15">{{ translate('QvaPay') }}</span>
                                                     </span>
                                                 </span>
                                             </label>
