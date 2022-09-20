@@ -58,7 +58,7 @@ Route::get('/admin', [AdminController::class, 'admin_dashboard'])->name('admin.d
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
 
     // category
-    Route::resource('categories', CategoryController::class)->except(['index', 'edit', 'destroy']);
+    Route::resource('categories', CategoryController::class);
     Route::controller(CategoryController::class)->group(function () {
         Route::get('/categories/edit/{id}', 'edit')->name('categories.edit');
         Route::get('/categories/destroy/{id}', 'destroy')->name('categories.destroy');
@@ -66,7 +66,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     });
 
     // Brand
-    Route::resource('brands', BrandController::class)->except('edit', 'destroy');
+    Route::resource('brands', BrandController::class);
     Route::controller(BrandController::class)->group(function () {
         Route::get('/brands/edit/{id}', 'edit')->name('brands.edit');
         Route::get('/brands/destroy/{id}', 'destroy')->name('brands.destroy');
@@ -97,7 +97,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     });
 
     // Digital Product
-    Route::resource('digitalproducts', DigitalProductController::class)->except('edit', 'destroy');
+    Route::resource('digitalproducts', DigitalProductController::class);
     Route::controller(DigitalProductController::class)->group(function () {
         Route::get('/digitalproducts/edit/{id}', 'edit')->name('digitalproducts.edit');
         Route::get('/digitalproducts/destroy/{id}', 'destroy')->name('digitalproducts.destroy');
@@ -121,7 +121,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     });
 
     // Seller
-    Route::resource('sellers', SellerController::class)->except('destroy');
+    Route::resource('sellers', SellerController::class);
     Route::controller(SellerController::class)->group(function () {
         Route::get('sellers_ban/{id}', 'ban')->name('sellers.ban');
         Route::get('/sellers/destroy/{id}', 'destroy')->name('sellers.destroy');
@@ -150,7 +150,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     });
 
     // Customer
-    Route::resource('customers', CustomerController::class)->except('destroy');
+    Route::resource('customers', CustomerController::class);
     Route::controller(CustomerController::class)->group(function () {
         Route::get('customers_ban/{customer}', 'ban')->name('customers.ban');
         Route::get('/customers/login/{id}', 'login')->name('customers.login');
@@ -222,7 +222,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     });
 
     //Tax
-    Route::resource('tax', TaxController::class)->except('edit', 'destroy');
+    Route::resource('tax', TaxController::class);
     Route::controller(TaxController::class)->group(function () {
         Route::get('/tax/edit/{id}', 'edit')->name('tax.edit');
         Route::get('/tax/destroy/{id}', 'destroy')->name('tax.destroy');
@@ -230,7 +230,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     });
 
     // Language
-    Route::resource('/languages', LanguageController::class)->except(['update', 'destroy']);
+    Route::resource('/languages', LanguageController::class);
     Route::controller(LanguageController::class)->group(function () {
         Route::post('/languages/{id}/update', 'update')->name('languages.update');
         Route::get('/languages/destroy/{id}', 'destroy')->name('languages.destroy');
@@ -256,7 +256,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         });
 
         // Custom Page
-        Route::resource('custom-pages', PageController::class)->except('edit', 'destroy');
+        Route::resource('custom-pages', PageController::class);
         Route::controller(PageController::class)->group(function () {
             Route::get('/custom-pages/edit/{id}', 'edit')->name('custom-pages.edit');
             Route::get('/custom-pages/destroy/{id}', 'destroy')->name('custom-pages.destroy');
@@ -264,7 +264,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     });
 
     // Staff Roles
-    Route::resource('roles', RoleController::class)->except('edit', 'destroy');
+    Route::resource('roles', RoleController::class);
     Route::controller(RoleController::class)->group(function () {
         Route::get('/roles/edit/{id}', 'edit')->name('roles.edit');
         Route::get('/roles/destroy/{id}', 'destroy')->name('roles.destroy');
@@ -272,11 +272,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     });
 
     // Staff
-    Route::resource('staffs', StaffController::class)->except('destroy');
+    Route::resource('staffs', StaffController::class);
     Route::get('/staffs/destroy/{id}', [StaffController::class, 'destroy'])->name('staffs.destroy');
 
     // Flash Deal
-    Route::resource('flash_deals', FlashDealController::class)->except('edit', 'destroy');
+    Route::resource('flash_deals', FlashDealController::class);
     Route::controller(FlashDealController::class)->group(function () {
         Route::get('/flash_deals/edit/{id}', 'edit')->name('flash_deals.edit');
         Route::get('/flash_deals/destroy/{id}', 'destroy')->name('flash_deals.destroy');
@@ -293,7 +293,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     });
 
     // Order
-    Route::resource('orders', OrderController::class)->except('destroy');
+    Route::resource('orders', OrderController::class);
     Route::controller(OrderController::class)->group(function () {
         // All Orders
         Route::get('/all_orders', 'all_orders')->name('all_orders.index');
@@ -335,18 +335,18 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     });
 
     //Blog Section
-    Route::resource('blog-category', BlogCategoryController::class)->except('destroy');
+    Route::resource('blog-category', BlogCategoryController::class);
     Route::get('/blog-category/destroy/{id}', [BlogCategoryController::class, 'destroy'])->name('blog-category.destroy');
 
     // Blog
-    Route::resource('blog', BlogController::class)->except('destroy');
+    Route::resource('blog', BlogController::class);
     Route::controller(BlogController::class)->group(function () {
         Route::get('/blog/destroy/{id}', 'destroy')->name('blog.destroy');
         Route::post('/blog/change-status', 'change_status')->name('blog.change-status');
     });
 
     //Coupons
-    Route::resource('coupon', CouponController::class)->except('destroy');
+    Route::resource('coupon', CouponController::class);
     Route::controller(CouponController::class)->group(function () {
         Route::get('/coupon/destroy/{id}', 'destroy')->name('coupon.destroy');
         //Coupon Form
@@ -368,7 +368,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     });
 
     //Pickup_Points
-    Route::resource('pick_up_points', PickupPointController::class)->except('edit', 'destroy');
+    Route::resource('pick_up_points', PickupPointController::class);
     Route::controller(PickupPointController::class)->group(function () {
         Route::get('/pick_up_points/edit/{id}', 'edit')->name('pick_up_points.edit');
         Route::get('/pick_up_points/destroy/{id}', 'destroy')->name('pick_up_points.destroy');
@@ -388,7 +388,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     });
 
     // Product Attribute
-    Route::resource('attributes', AttributeController::class)->except('edit', 'destroy');
+    Route::resource('attributes', AttributeController::class);
     Route::controller(AttributeController::class)->group(function () {
         Route::get('/attributes/edit/{id}', 'edit')->name('attributes.edit');
         Route::get('/attributes/destroy/{id}', 'destroy')->name('attributes.destroy');
@@ -442,7 +442,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
 
 
     // Zones
-    Route::resource('zones', ZoneController::class)->except('destroy');
+    Route::resource('zones', ZoneController::class);
     Route::get('/zones/destroy/{id}', [ZoneController::class, 'destroy'])->name('zones.destroy');
 
     Route::resource('cities', CityController::class)->except('edit', 'destroy');
@@ -456,7 +456,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::view('/system/server-status', 'backend.system.server_status')->name('system_server');
 
     // uploaded files
-    Route::resource('/uploaded-files', AizUploadController::class)->except('destroy');;
+    Route::resource('/uploaded-files', AizUploadController::class);
     Route::controller(AizUploadController::class)->group(function () {
         Route::any('/uploaded-files/file-info', 'file_info')->name('uploaded-files.info');
         Route::get('/uploaded-files/destroy/{id}', 'destroy')->name('uploaded-files.destroy');

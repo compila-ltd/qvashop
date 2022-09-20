@@ -121,7 +121,7 @@
                             @can('view_product_categories')
                                 <li class="aiz-side-nav-item">
                                     <a href="{{route('categories.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['categories.index', 'categories.create', 'categories.edit'])}}">
-                                        <span class="aiz-side-nav-text">{{translate('Category')}}</span>
+                                        <span class="aiz-side-nav-text">{{ translate('Category') }}</span>
                                     </a>
                                 </li>
                             @endcan
