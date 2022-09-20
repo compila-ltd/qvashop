@@ -79,7 +79,7 @@
     					<div class="card card-file aiz-uploader-select c-default" title="{{ $file_name }}.{{ $file->extension }}">
     						<div class="card-file-thumb">
     							@if($file->type == 'image')
-    								<img src="{{ $file_path }}" class="img-fit">
+    								<img src="{{ env('DO_URL') }}{{ $file_path }}" class="img-fit">
     							@elseif($file->type == 'video')
     								<i class="las la-file-video"></i>
     							@else
