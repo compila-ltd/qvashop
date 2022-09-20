@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Category;
 use App\Models\Product;
-use App\Models\CategoryTranslation;
-use App\Utility\CategoryUtility;
+use App\Models\Category;
 use Illuminate\Support\Str;
-use Cache;
+use Illuminate\Http\Request;
+use App\Utility\CategoryUtility;
+use App\Models\CategoryTranslation;
+use Illuminate\Support\Facades\Cache;
 
 class CategoryController extends Controller
 {

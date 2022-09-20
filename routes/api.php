@@ -19,6 +19,7 @@ Route::group(['prefix' => 'v2/auth', 'middleware' => ['app_language']], function
 });
 
 Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function () {
+
     Route::prefix('delivery-boy')->group(function () {
         Route::get('dashboard-summary/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@dashboard_summary')->middleware('auth:sanctum');
         Route::get('deliveries/completed/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@completed_delivery')->middleware('auth:sanctum');
@@ -174,9 +175,10 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function () {
 
     // Route::post('coupon/apply', 'App\Http\Controllers\Api\V2\CouponController@apply')->middleware('auth:sanctum');
 
-    Route::any('razorpay/pay-with-razorpay', 'App\Http\Controllers\Api\V2\RazorpayController@payWithRazorpay')->name('api.razorpay.payment');
-    Route::any('razorpay/payment', 'App\Http\Controllers\Api\V2\RazorpayController@payment')->name('api.razorpay.payment');
-    Route::post('razorpay/success', 'App\Http\Controllers\Api\V2\RazorpayController@success')->name('api.razorpay.success');
+    // RazorPay
+    // Route::any('razorpay/pay-with-razorpay', 'App\Http\Controllers\Api\V2\RazorpayController@payWithRazorpay')->name('api.razorpay.payment');
+    // Route::any('razorpay/payment', 'App\Http\Controllers\Api\V2\RazorpayController@payment')->name('api.razorpay.payment');
+    // Route::post('razorpay/success', 'App\Http\Controllers\Api\V2\RazorpayController@success')->name('api.razorpay.success');
 
     Route::any('paystack/init', 'App\Http\Controllers\Api\V2\PaystackController@init')->name('api.paystack.init');
     Route::post('paystack/success', 'App\Http\Controllers\Api\V2\PaystackController@success')->name('api.paystack.success');

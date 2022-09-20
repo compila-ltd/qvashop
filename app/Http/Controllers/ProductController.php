@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Combinations;
 use Carbon\Carbon;
 use App\Models\Cart;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\ProductTax;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\AttributeValue;
 use App\Services\ProductService;
@@ -15,6 +15,7 @@ use App\Models\ProductTranslation;
 use App\Services\ProductTaxService;
 use App\Http\Requests\ProductRequest;
 use App\Services\ProductStockService;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Artisan;
 use App\Services\ProductFlashDealService;
 
@@ -210,7 +211,7 @@ class ProductController extends Controller
         ]), $product);
 
         // Product Translations
-        $request->merge(['lang' => env('DEFAULT_LANGUAGE')]);
+        $request->merge(['lang' => env('DEFAULT_LANGUAGE') ? env('DEFAULT_LANGUAGE') : 'en']);
         ProductTranslation::create($request->only([
             'lang', 'name', 'unit', 'description', 'product_id'
         ]));
