@@ -295,7 +295,7 @@ Route::get('/instamojo/payment/pay-success', [InstamojoController::class, 'succe
 Route::get('/paystack/payment/callback', [PaystackController::class, 'handleGatewayCallback']);
 
 // QvaPay WebHook
-Route::get('/qvapay/payment/pay-success', [QvapayController::class, 'success'])->name('payment.qvapay');
+Route::get('/qvapay/payment/pay-success/' . config('qvapay.callback_secret'), [QvapayController::class, 'success'])->name('payment.qvapay');
 
 Route::controller(VoguepayController::class)->group(function () {
     Route::get('/vogue-pay', 'showForm');

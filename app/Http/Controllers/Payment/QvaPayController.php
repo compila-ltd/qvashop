@@ -55,7 +55,6 @@ class QvapayController extends Controller
     // /qvapay/payment/pay-success
     public function success(Request $request)
     {
-        
         if ($request->has('remote_id') && $request->has('id') && $request->has('uuid')) {
 
             //$combined_order = CombinedOrder::findOrFail($request->remote_id);
