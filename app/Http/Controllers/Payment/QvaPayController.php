@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Payment;
 use Illuminate\Http\Request;
 use App\Models\CombinedOrder;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\CheckoutController;
 
 class QvapayController extends Controller
 {
@@ -28,6 +29,7 @@ class QvapayController extends Controller
         if (Session::has('payment_type')) {
 
             if (Session::get('payment_type') == 'cart_payment') {
+
                 $combined_order = CombinedOrder::findOrFail(Session::get('combined_order_id'));
 
                 // Create a QvaPay invoice
@@ -53,16 +55,31 @@ class QvapayController extends Controller
     // /qvapay/payment/pay-success
     public function success(Request $request)
     {
+        
+        if ($request->has('remote_id') && $request->has('id') && $request->has('uuid')) {
+
+            //$combined_order = CombinedOrder::findOrFail($request->remote_id);
+
+            $input = $request->all();
+            $payment_details = json_encode(array('id' => $request['id'], 'method' => 'QvaPay', 'amount' => "", 'currency' => 'USD'));
+
+            return (new CheckoutController)->checkout_done($input['remote_id'], $payment_details);
+
+        } else {
+            return redirect()->route('home');
+        }
+
         /*
         //Input items of form
         $input = $request->all();
+
         //get API Configuration
         $api = new Api(env('RAZOR_KEY'), env('RAZOR_SECRET'));
 
         //Fetch payment information by razorpay_payment_id
         $payment = $api->payment->fetch($input['razorpay_payment_id']);
 
-        if (count($input)  && !empty($input['razorpay_payment_id'])) {
+        if (count($input) && !empty($input['razorpay_payment_id'])) {
             $payment_detalis = null;
             try {
                 $response = $api->payment->fetch($input['razorpay_payment_id'])->capture(array('amount' => $payment['amount']));

@@ -30,6 +30,7 @@ use App\Http\Controllers\Payment\NagadController;
 use App\Http\Controllers\Payment\PaykuController;
 use App\Http\Controllers\SupportTicketController;
 use App\Http\Controllers\DigitalProductController;
+use App\Http\Controllers\Payment\QvapayController;
 use App\Http\Controllers\CustomerPackageController;
 use App\Http\Controllers\CustomerProductController;
 use App\Http\Controllers\Payment\NgeniusController;
@@ -294,7 +295,7 @@ Route::get('/instamojo/payment/pay-success', [InstamojoController::class, 'succe
 Route::get('/paystack/payment/callback', [PaystackController::class, 'handleGatewayCallback']);
 
 // QvaPay WebHook
-Route::post('/qvapay/payment/pay-success', [QvapayController::class, 'payment'])->name('payment.qvapay');
+Route::get('/qvapay/payment/pay-success', [QvapayController::class, 'success'])->name('payment.qvapay');
 
 Route::controller(VoguepayController::class)->group(function () {
     Route::get('/vogue-pay', 'showForm');
