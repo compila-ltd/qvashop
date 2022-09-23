@@ -31,9 +31,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\V2\CarrierCollection;
-use App\Http\Controllers\AffiliateController;
-use App\Http\Controllers\ClubPointController;
-use App\Http\Controllers\CommissionController;
 
 //sensSMS function for OTP
 if (!function_exists('sendSMS')) {
@@ -1385,6 +1382,7 @@ if (!function_exists('product_restock')) {
 }
 
 //Commission Calculation
+/*
 if (!function_exists('calculateCommissionAffilationClubPoint')) {
 
     function calculateCommissionAffilationClubPoint($order)
@@ -1405,6 +1403,7 @@ if (!function_exists('calculateCommissionAffilationClubPoint')) {
         $order->save();
     }
 }
+*/
 
 // Addon Activation Check
 if (!function_exists('addon_is_activated')) {

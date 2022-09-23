@@ -57,9 +57,7 @@ Route::group(['prefix' => 'v2/seller', 'middleware' => ['app_language', 'auth:sa
         Route::get('product/duplicate/{id}', 'duplicate');
         Route::get('product/delete/{id}', 'destroy');
         Route::get('products/remaining-uploads', 'remainingUploads');
-
         Route::get('products/reviews', 'product_reviews');
-
         Route::get('products/search', 'search');
     });
 

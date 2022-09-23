@@ -285,7 +285,9 @@ Route::group(['middleware' => ['auth']], function () {
     });
 });
 
-Route::resource('shops', ShopController::class);
+// Shops routes
+Route::resource('shops', ShopController::class)->except('store');
+Route::post('/shops/store', 'ShopController@store')->name('shops.store');
 
 // Different Payment Methods Webhook
 Route::get('/instamojo/payment/pay-success', [InstamojoController::class, 'success'])->name('instamojo.success');

@@ -13,9 +13,10 @@
 
 //Admin
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AffiliateController;
 
-Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function(){
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
     Route::controller(AffiliateController::class)->group(function () {
         Route::get('/affiliate', 'index')->name('affiliate.index');
         Route::post('/affiliate/affiliate_option_store', 'affiliate_option_store')->name('affiliate.store');
@@ -44,7 +45,6 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
         Route::get('/affiliate/withdraw_request/reject/{id}', 'reject_withdraw_request')->name('affiliate.withdraw_request.reject');
 
         Route::get('/affiliate/logs', 'affiliate_logs_admin')->name('affiliate.logs.admin');
-
     });
 });
 
@@ -54,7 +54,7 @@ Route::controller(AffiliateController::class)->group(function () {
     Route::post('/affiliate/store', 'store_affiliate_user')->name('affiliate.store_affiliate_user');
 });
 
-Route::group(['middleware' => ['auth']], function(){
+Route::group(['middleware' => ['auth']], function () {
     Route::controller(AffiliateController::class)->group(function () {
         Route::get('/affiliate/user', 'user_index')->name('affiliate.user.index');
         Route::get('/affiliate/user/payment_history', 'user_payment_history')->name('affiliate.user.payment_history');

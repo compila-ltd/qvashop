@@ -11,9 +11,7 @@
 |
 */
 
-//Admin
-
-use App\Http\Controllers\ClubPointController;
+use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function(){
     Route::controller(ClubPointController::class)->group(function () {

@@ -14,13 +14,12 @@ class ClubpointController extends Controller
     public function get_list()
     {
         $club_points = ClubPoint::where('user_id', auth()->user()->id)->latest()->paginate(10);
-
         return new ClubpointCollection($club_points);
     }
 
     public function convert_into_wallet(Request $request)
     {
-        $club_point_convert_rate = get_setting( 'club_point_convert_rate');
+        $club_point_convert_rate = get_setting('club_point_convert_rate');
         $club_point = ClubPoint::find($request->id);
         $wallet = new Wallet;
         $wallet->user_id = auth()->user()->id;
@@ -39,5 +38,4 @@ class ClubpointController extends Controller
             'message' => translate('Successfully converted')
         ]);
     }
-
 }

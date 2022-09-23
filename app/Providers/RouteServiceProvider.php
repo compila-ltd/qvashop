@@ -17,7 +17,7 @@ class RouteServiceProvider extends ServiceProvider
    *
    * @var string
    */
-   protected $namespace = null;
+  protected $namespace = null;
 
   /**
    * Define your route model bindings, pattern filters, etc.
@@ -40,39 +40,39 @@ class RouteServiceProvider extends ServiceProvider
    */
   public function map()
   {
-     $this->mapApiRoutes();
+    $this->mapApiRoutes();
 
-     $this->mapApiSellerRoutes();
-    
-     $this->mapAdminRoutes();
+    $this->mapApiSellerRoutes();
 
-     $this->mapSellerRoutes();
-    
-     $this->mapAffiliateRoutes();
-    
-     $this->mapRefundRoutes();
-    
-     $this->mapClubPointsRoutes();
-    
-     $this->mapOtpRoutes();
-    
-     $this->mapOfflinePaymentRoutes();
-    
-     $this->mapAfricanPaymentGatewayRoutes();
-    
-     $this->mapPaytmRoutes();
-    
-     $this->mapPosRoutes();
-    
-     $this->mapSellerPackageRoutes();
-    
-     $this->mapDeliveryBoyRoutes();
-    
-     $this->mapAuctionRoutes();
+    $this->mapAdminRoutes();
 
-     $this->mapWholesaleRoutes();
-    
-     $this->mapWebRoutes();
+    $this->mapSellerRoutes();
+
+    $this->mapAffiliateRoutes();
+
+    $this->mapRefundRoutes();
+
+    $this->mapClubPointsRoutes();
+
+    $this->mapOtpRoutes();
+
+    $this->mapOfflinePaymentRoutes();
+
+    $this->mapAfricanPaymentGatewayRoutes();
+
+    $this->mapPaytmRoutes();
+
+    $this->mapPosRoutes();
+
+    $this->mapSellerPackageRoutes();
+
+    $this->mapDeliveryBoyRoutes();
+
+    $this->mapAuctionRoutes();
+
+    $this->mapWholesaleRoutes();
+
+    $this->mapWebRoutes();
 
     // $this->mapInstallRoutes();
 
@@ -89,8 +89,8 @@ class RouteServiceProvider extends ServiceProvider
   protected function mapWholesaleRoutes()
   {
     Route::middleware('web')
-       ->namespace($this->namespace)
-       ->group(base_path('routes/wholesale.php'));
+      ->namespace($this->namespace)
+      ->group(base_path('routes/wholesale.php'));
   }
 
   /**
@@ -103,11 +103,11 @@ class RouteServiceProvider extends ServiceProvider
   protected function mapDeliveryBoyRoutes()
   {
     Route::middleware('web')
-       ->namespace($this->namespace)
-       ->group(base_path('routes/delivery_boy.php'));
+      ->namespace($this->namespace)
+      ->group(base_path('routes/delivery_boy.php'));
   }
 
-    /**
+  /**
    * Define the "auction" routes for the application.
    *
    * These routes all receive session state, CSRF protection, etc.
@@ -117,8 +117,8 @@ class RouteServiceProvider extends ServiceProvider
   protected function mapAuctionRoutes()
   {
     Route::middleware('web')
-       ->namespace($this->namespace)
-       ->group(base_path('routes/auction.php'));
+      ->namespace($this->namespace)
+      ->group(base_path('routes/auction.php'));
   }
 
   /**
@@ -131,8 +131,8 @@ class RouteServiceProvider extends ServiceProvider
   protected function mapSellerPackageRoutes()
   {
     Route::middleware('web')
-       ->namespace($this->namespace)
-       ->group(base_path('routes/seller_package.php'));
+      ->namespace($this->namespace)
+      ->group(base_path('routes/seller_package.php'));
   }
 
   /**
@@ -144,9 +144,9 @@ class RouteServiceProvider extends ServiceProvider
    */
   protected function mapAffiliateRoutes()
   {
-    Route::middleware('web')
-       ->namespace($this->namespace)
-       ->group(base_path('routes/affiliate.php'));
+    //Route::middleware('web')
+    //  ->namespace($this->namespace)
+    //  ->group(base_path('routes/affiliate.php'));
   }
 
   /**
@@ -159,8 +159,8 @@ class RouteServiceProvider extends ServiceProvider
   protected function mapOfflinePaymentRoutes()
   {
     Route::middleware('web')
-       ->namespace($this->namespace)
-       ->group(base_path('routes/offline_payment.php'));
+      ->namespace($this->namespace)
+      ->group(base_path('routes/offline_payment.php'));
   }
 
 
@@ -174,8 +174,8 @@ class RouteServiceProvider extends ServiceProvider
   protected function mapPaytmRoutes()
   {
     Route::middleware('web')
-       ->namespace($this->namespace)
-       ->group(base_path('routes/paytm.php'));
+      ->namespace($this->namespace)
+      ->group(base_path('routes/paytm.php'));
   }
 
   /**
@@ -188,8 +188,8 @@ class RouteServiceProvider extends ServiceProvider
   protected function mapAfricanPaymentGatewayRoutes()
   {
     Route::middleware('web')
-       ->namespace($this->namespace)
-       ->group(base_path('routes/african_pg.php'));
+      ->namespace($this->namespace)
+      ->group(base_path('routes/african_pg.php'));
   }
 
   /**
@@ -202,8 +202,8 @@ class RouteServiceProvider extends ServiceProvider
   protected function mapRefundRoutes()
   {
     Route::middleware('web')
-       ->namespace($this->namespace)
-       ->group(base_path('routes/refund_request.php'));
+      ->namespace($this->namespace)
+      ->group(base_path('routes/refund_request.php'));
   }
 
   /**
@@ -216,8 +216,8 @@ class RouteServiceProvider extends ServiceProvider
   protected function mapClubPointsRoutes()
   {
     Route::middleware('web')
-       ->namespace($this->namespace)
-       ->group(base_path('routes/club_points.php'));
+      ->namespace($this->namespace)
+      ->group(base_path('routes/club_points.php'));
   }
 
   /**
@@ -230,8 +230,8 @@ class RouteServiceProvider extends ServiceProvider
   protected function mapOtpRoutes()
   {
     Route::middleware('web')
-       ->namespace($this->namespace)
-       ->group(base_path('routes/otp.php'));
+      ->namespace($this->namespace)
+      ->group(base_path('routes/otp.php'));
   }
 
   /**
@@ -244,8 +244,8 @@ class RouteServiceProvider extends ServiceProvider
   protected function mapPosRoutes()
   {
     Route::middleware('web')
-       ->namespace($this->namespace)
-       ->group(base_path('routes/pos.php'));
+      ->namespace($this->namespace)
+      ->group(base_path('routes/pos.php'));
   }
 
   /**
@@ -258,8 +258,8 @@ class RouteServiceProvider extends ServiceProvider
   protected function mapUpdateRoutes()
   {
     Route::middleware('web')
-       ->namespace($this->namespace)
-       ->group(base_path('routes/update.php'));
+      ->namespace($this->namespace)
+      ->group(base_path('routes/update.php'));
   }
 
   /**
@@ -272,8 +272,8 @@ class RouteServiceProvider extends ServiceProvider
   protected function mapInstallRoutes()
   {
     Route::middleware('web')
-       ->namespace($this->namespace)
-       ->group(base_path('routes/install.php'));
+      ->namespace($this->namespace)
+      ->group(base_path('routes/install.php'));
   }
 
   /**
@@ -286,8 +286,8 @@ class RouteServiceProvider extends ServiceProvider
   protected function mapWebRoutes()
   {
     Route::middleware('web')
-       ->namespace($this->namespace)
-       ->group(base_path('routes/web.php'));
+      ->namespace($this->namespace)
+      ->group(base_path('routes/web.php'));
   }
 
   /**
@@ -300,8 +300,8 @@ class RouteServiceProvider extends ServiceProvider
   protected function mapAdminRoutes()
   {
     Route::middleware('web')
-       ->namespace($this->namespace)
-       ->group(base_path('routes/admin.php'));
+      ->namespace($this->namespace)
+      ->group(base_path('routes/admin.php'));
   }
 
   /**
@@ -314,8 +314,8 @@ class RouteServiceProvider extends ServiceProvider
   protected function mapSellerRoutes()
   {
     Route::middleware('web')
-       ->namespace($this->namespace)
-       ->group(base_path('routes/seller.php'));
+      ->namespace($this->namespace)
+      ->group(base_path('routes/seller.php'));
   }
 
   /**
@@ -328,9 +328,9 @@ class RouteServiceProvider extends ServiceProvider
   protected function mapApiSellerRoutes()
   {
     Route::prefix('api')
-       ->middleware('api')
-       ->namespace($this->namespace)
-       ->group(base_path('routes/api_seller.php'));
+      ->middleware('api')
+      ->namespace($this->namespace)
+      ->group(base_path('routes/api_seller.php'));
   }
 
   /**
@@ -342,22 +342,21 @@ class RouteServiceProvider extends ServiceProvider
    */
   protected function mapApiRoutes()
   {
-    Route::prefix('api')
-       ->middleware('api')
-       ->namespace($this->namespace)
-       ->group(base_path('routes/api.php'));
+    // Route::prefix('api')
+    //   ->middleware('api')
+    //   ->namespace($this->namespace)
+    //   ->group(base_path('routes/api.php'));
   }
 
   /**
-     * Configure the rate limiters for the application.
-     *
-     * @return void
-     */
-    protected function configureRateLimiting()
-    {
-        RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(600)->by(optional($request->user())->id ?: $request->ip());
-        });
-    }
-
+   * Configure the rate limiters for the application.
+   *
+   * @return void
+   */
+  protected function configureRateLimiting()
+  {
+    RateLimiter::for('api', function (Request $request) {
+      return Limit::perMinute(600)->by(optional($request->user())->id ?: $request->ip());
+    });
+  }
 }

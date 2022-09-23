@@ -13,7 +13,6 @@
         "guzzlehttp/guzzle": "^7.3",
         "instamojo/instamojo-php": "^0.4.0",
         "intervention/image": "^2.5",
-        "iyzico/iyzipay-php": "^2.0",
         "kingflamez/laravelrave": "^4.2",
         "laracasts/flash": "^3.0",
         "laravel/framework": "^8.83",

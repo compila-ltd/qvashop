@@ -36,7 +36,6 @@ class QvapayController extends Controller
 
         // Get the data from the request
         if (Session::has('payment_type')) {
-
             if (Session::get('payment_type') == 'cart_payment') {
                 return redirect($this->create_invoice(CombinedOrder::findOrFail(Session::get('combined_order_id'))));
             } elseif (Session::get('payment_type') == 'wallet_payment') {
@@ -131,9 +130,9 @@ class QvapayController extends Controller
         $data = [
             "app_id" => $this->app_key,
             "app_secret" => $this->app_secret,
-            "amount" => $combined_order['grand_total'],
-            "description" => "QvaShop order " . $combined_order['id'],
-            "remote_id" => $combined_order['id'],
+            "amount" => $combined_order->grand_total,
+            "description" => "QvaShop order " . $combined_order->id,
+            "remote_id" => $combined_order->id,
             "signed" => 1
         ];
 
