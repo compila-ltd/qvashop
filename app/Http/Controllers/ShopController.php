@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Shop;
 use App\Models\User;
+use Illuminate\Http\Request;
 use App\Models\BusinessSetting;
-use Auth;
-use Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Notifications\EmailVerificationNotification;
 
 class ShopController extends Controller
@@ -37,14 +37,14 @@ class ShopController extends Controller
     public function create()
     {
         if (Auth::check()) {
-			if((Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'customer')) {
-				flash(translate('Admin or Customer can not be a seller'))->error();
-				return back();
-			} if(Auth::user()->user_type == 'seller'){
-				flash(translate('This user already a seller'))->error();
-				return back();
-			}
-            
+            if ((Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'customer')) {
+                flash(translate('Admin or Customer can not be a seller'))->error();
+                return back();
+            }
+            if (Auth::user()->user_type == 'seller') {
+                flash(translate('This user already a seller'))->error();
+                return back();
+            }
         } else {
             return view('frontend.seller_form');
         }
@@ -85,6 +85,7 @@ class ShopController extends Controller
         }
 
         if (Shop::where('user_id', $user->id)->first() == null) {
+            
             $shop = new Shop;
             $shop->user_id = $user->id;
             $shop->name = $request->name;

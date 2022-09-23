@@ -260,7 +260,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('invoice/{order_id}', [InvoiceController::class, 'invoice_download'])->name('invoice.download');
 
     // Reviews
-    Route::resource('/reviews', ReviewController::class)->except('index');
+    Route::resource('/reviews', ReviewController::class);
 
     // Product Conversation
     Route::resource('conversations', ConversationController::class)->except('destroy');
@@ -285,7 +285,7 @@ Route::group(['middleware' => ['auth']], function () {
     });
 });
 
-Route::resource('shops', ShopController::class)->except('index');
+Route::resource('shops', ShopController::class);
 
 // Different Payment Methods Webhook
 Route::get('/instamojo/payment/pay-success', [InstamojoController::class, 'success'])->name('instamojo.success');
