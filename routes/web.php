@@ -24,7 +24,6 @@ use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProductQueryController;
-use App\Http\Controllers\Payment\BkashController;
 
 use App\Http\Controllers\Payment\NagadController;
 use App\Http\Controllers\Payment\PaykuController;
@@ -35,9 +34,7 @@ use App\Http\Controllers\CustomerPackageController;
 use App\Http\Controllers\CustomerProductController;
 use App\Http\Controllers\Payment\NgeniusController;
 use App\Http\Controllers\PurchaseHistoryController;
-use App\Http\Controllers\Payment\AamarpayController;
 use App\Http\Controllers\Payment\PaystackController;
-use App\Http\Controllers\Payment\VoguepayController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Payment\InstamojoController;
 use App\Http\Controllers\Payment\SslcommerzController;
@@ -297,14 +294,6 @@ Route::get('/paystack/payment/callback', [PaystackController::class, 'handleGate
 // QvaPay WebHook
 Route::get('/qvapay/payment/pay-success/' . config('qvapay.callback_secret'), [QvapayController::class, 'success'])->name('payment.qvapay');
 
-Route::controller(VoguepayController::class)->group(function () {
-    Route::get('/vogue-pay', 'showForm');
-    Route::get('/vogue-pay/success/{id}', 'paymentSuccess');
-    Route::get('/vogue-pay/failure/{id}', 'paymentFailure');
-});
-
-// TODO: Remove Payhere
-
 //N-genius
 Route::controller(NgeniusController::class)->group(function () {
     Route::any('ngenius/cart_payment_callback', 'cart_payment_callback')->name('ngenius.cart_payment_callback');
@@ -313,21 +302,8 @@ Route::controller(NgeniusController::class)->group(function () {
     Route::any('ngenius/seller_package_payment_callback', 'seller_package_payment_callback')->name('ngenius.seller_package_payment_callback');
 });
 
-//bKash
-Route::controller(BkashController::class)->group(function () {
-    Route::post('/bkash/createpayment', 'checkout')->name('bkash.checkout');
-    Route::post('/bkash/executepayment', 'excecute')->name('bkash.excecute');
-    Route::get('/bkash/success', 'success')->name('bkash.success');
-});
-
 //Nagad
 Route::get('/nagad/callback', [NagadController::class, 'verify'])->name('nagad.callback');
-
-//aamarpay
-Route::controller(AamarpayController::class)->group(function () {
-    Route::post('/aamarpay/success', 'success')->name('aamarpay.success');
-    Route::post('/aamarpay/fail', 'fail')->name('aamarpay.fail');
-});
 
 //Authorize-Net-Payment
 Route::post('/dopay/online', [AuthorizenetController::class, 'handleonlinepay'])->name('dopay.online');

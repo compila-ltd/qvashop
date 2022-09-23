@@ -124,9 +124,6 @@
                                     @if(get_setting('paystack') == 1)
                                     <option value="paystack">{{ translate('PayStack')}}</option>
                                     @endif
-                                    @if(get_setting('voguepay') == 1)
-                                    <option value="voguepay">{{ translate('Voguepay')}}</option>
-                                    @endif
                                     @if(get_setting('payhere') == 1)
                                     <option value="payhere">{{ translate('Payhere')}}</option>
                                     @endif
@@ -138,9 +135,6 @@
                                     @endif
                                     @if(get_setting('nagad') == 1)
                                     <option value="nagad">{{ translate('Nagad')}}</option>
-                                    @endif
-                                    @if(get_setting('bkash') == 1)
-                                    <option value="bkash">{{ translate('Bkash')}}</option>
                                     @endif
                                     @if(addon_is_activated('african_pg'))
                                     @if(get_setting('mpesa') == 1)

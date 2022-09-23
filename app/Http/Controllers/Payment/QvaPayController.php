@@ -4,10 +4,15 @@ namespace App\Http\Controllers\Payment;
 
 use Illuminate\Http\Request;
 use App\Models\CombinedOrder;
+use App\Models\SellerPackage;
+use App\Models\CustomerPackage;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CustomerPackageController;
+use App\Http\Controllers\Api\V2\Seller\SellerPackageController;
 
 class QvapayController extends Controller
 {
@@ -24,30 +29,25 @@ class QvapayController extends Controller
 
     public function pay()
     {
+        if (Auth::user()->phone == null) {
+            flash('Please add phone number to your profile')->warning();
+            return redirect()->route('profile');
+        }
 
         // Get the data from the request
         if (Session::has('payment_type')) {
 
             if (Session::get('payment_type') == 'cart_payment') {
-
-                $combined_order = CombinedOrder::findOrFail(Session::get('combined_order_id'));
-
-                // Create a QvaPay invoice
-                $qvapay_invoice = $this->create_invoice($combined_order);
-
-                // Redirect to to QvaPay payment page
-                return redirect($qvapay_invoice);
-            }
-
-            /*
-            elseif (Session::get('payment_type') == 'wallet_payment') {
-                return view('frontend.razor_wallet.wallet_payment_Razorpay');
+                return redirect($this->create_invoice(CombinedOrder::findOrFail(Session::get('combined_order_id'))));
+            } elseif (Session::get('payment_type') == 'wallet_payment') {
+                $amount = round(Session::get('payment_data')['amount']);
             } elseif (Session::get('payment_type') == 'customer_package_payment') {
-                return view('frontend.razor_wallet.customer_package_payment_Razorpay');
+                $customer_package = CustomerPackage::findOrFail(Session::get('payment_data')['customer_package_id']);
+                $amount = round($customer_package->amount);
             } elseif (Session::get('payment_type') == 'seller_package_payment') {
-                return view('frontend.razor_wallet.seller_package_payment_Razorpay');
+                $seller_package = SellerPackage::findOrFail(Session::get('payment_data')['seller_package_id']);
+                $amount = round($seller_package->amount);
             }
-            */
         }
     }
 
@@ -62,19 +62,29 @@ class QvapayController extends Controller
             $input = $request->all();
             $payment_details = json_encode(array('id' => $request['id'], 'method' => 'QvaPay', 'amount' => "", 'currency' => 'USD'));
 
-            return (new CheckoutController)->checkout_done($input['remote_id'], $payment_details);
+            $payment_type = 'cart_payment';
+
+            // Always process this data
+            if ($payment_type == 'cart_payment') {
+                return (new CheckoutController)->checkout_done($input['remote_id'], $payment_details);
+            }
+    
+            if ($payment_type == 'wallet_payment') {
+                return (new WalletController)->wallet_payment_done(json_decode($request->opt_c), json_encode($request->all()));
+            }
+    
+            if ($payment_type == 'customer_package_payment') {
+                return (new CustomerPackageController)->purchase_payment_done(json_decode($request->opt_c), json_encode($request->all()));
+            }
+            if ($payment_type == 'seller_package_payment') {
+                return (new SellerPackageController)->purchase_payment_done(json_decode($request->opt_c), json_encode($request->all()));
+            }
 
         } else {
             return redirect()->route('home');
         }
 
         /*
-        //Input items of form
-        $input = $request->all();
-
-        //get API Configuration
-        $api = new Api(env('RAZOR_KEY'), env('RAZOR_SECRET'));
-
         //Fetch payment information by razorpay_payment_id
         $payment = $api->payment->fetch($input['razorpay_payment_id']);
 
@@ -134,7 +144,6 @@ class QvapayController extends Controller
         if ($response->successful()) {
             // Get the response body
             $response_body = $response->json();
-
             // Check if the response body is successful
             if (isset($response_body['signedUrl'])) {
                 // Return the invoice

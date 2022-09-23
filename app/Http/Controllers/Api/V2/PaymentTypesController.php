@@ -58,22 +58,6 @@ class PaymentTypesController
                 $payment_types[] = $payment_type;
             }
 
-            if (get_setting('bkash') == 1) {
-                $payment_type = array();
-                $payment_type['payment_type'] = 'bkash';
-                $payment_type['payment_type_key'] = 'bkash';
-                $payment_type['image'] = asset('assets/img/cards/bkash.png');
-                $payment_type['name'] = "Bkash";
-                $payment_type['title'] = "Checkout with Bkash";
-                $payment_type['offline_payment_id'] = 0;
-                $payment_type['details'] = "";
-                if ($mode == 'wallet') {
-                    $payment_type['title'] = "Recharge with Bkash";
-                }
-
-                $payment_types[] = $payment_type;
-            }
-
             if (get_setting('nagad') == 1) {
                 $payment_type = array();
                 $payment_type['payment_type'] = 'nagad';

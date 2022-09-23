@@ -5,70 +5,6 @@
     <div class="row">
         <div class="col-md-6">
             <div class="card">
-                <div class="card-header ">
-                    <h5 class="mb-0 h6">{{translate('Bkash Credential')}}</h5>
-                </div>
-                <div class="card-body">
-                    <form class="form-horizontal" action="{{ route('payment_method.update') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="payment_method" value="bkash">
-                        <div class="form-group row">
-                            <input type="hidden" name="types[]" value="BKASH_CHECKOUT_APP_KEY">
-                            <div class="col-md-4">
-                                <label class="col-from-label">{{translate('BKASH CHECKOUT APP KEY')}}</label>
-                            </div>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" name="BKASH_CHECKOUT_APP_KEY" value="{{  env('BKASH_CHECKOUT_APP_KEY') }}" placeholder="{{translate('BKASH CHECKOUT APP KEY')}}" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <input type="hidden" name="types[]" value="BKASH_CHECKOUT_APP_SECRET">
-                            <div class="col-md-4">
-                                <label class="col-from-label">{{translate('BKASH CHECKOUT APP SECRET')}}</label>
-                            </div>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" name="BKASH_CHECKOUT_APP_SECRET" value="{{  env('BKASH_CHECKOUT_APP_SECRET') }}" placeholder="{{translate('BKASH CHECKOUT APP SECRET')}}" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <input type="hidden" name="types[]" value="BKASH_CHECKOUT_USER_NAME">
-                            <div class="col-md-4">
-                                <label class="col-from-label">{{translate('BKASH CHECKOUT USER NAME')}}</label>
-                            </div>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" name="BKASH_CHECKOUT_USER_NAME" value="{{  env('BKASH_CHECKOUT_USER_NAME') }}" placeholder="{{translate('BKASH CHECKOUT USER NAME')}}" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <input type="hidden" name="types[]" value="BKASH_CHECKOUT_PASSWORD">
-                            <div class="col-md-4">
-                                <label class="col-from-label">{{translate('BKASH CHECKOUT PASSWORD')}}</label>
-                            </div>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" name="BKASH_CHECKOUT_PASSWORD" value="{{  env('BKASH_CHECKOUT_PASSWORD') }}" placeholder="{{translate('BKASH CHECKOUT PASSWORD')}}" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-4">
-                                <label class="col-from-label">{{translate('Bkash Sandbox Mode')}}</label>
-                            </div>
-                            <div class="col-md-8">
-                                <label class="aiz-switch aiz-switch-success mb-0">
-                                    <input value="1" name="bkash_sandbox" type="checkbox" @if (get_setting('bkash_sandbox')==1) checked @endif>
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group mb-0 text-right">
-                            <button type="submit" class="btn btn-sm btn-primary">{{translate('Save')}}</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="card">
                 <div class="card-header">
                     <h5 class="mb-0 h6 ">{{translate('Nagad Credential')}}</h5>
                 </div>
@@ -163,52 +99,6 @@
                             <div class="col-md-8">
                                 <label class="aiz-switch aiz-switch-success mb-0">
                                     <input value="1" name="sslcommerz_sandbox" type="checkbox" @if (get_setting('sslcommerz_sandbox')==1) checked @endif>
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group mb-0 text-right">
-                            <button type="submit" class="btn btn-sm btn-primary">{{translate('Save')}}</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header ">
-                    <h5 class="mb-0 h6">{{translate('Aamarpay Credential')}}</h5>
-                </div>
-                <div class="card-body">
-                    <form class="form-horizontal" action="{{ route('payment_method.update') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="payment_method" value="aamarpay">
-                        <div class="form-group row">
-                            <input type="hidden" name="types[]" value="AAMARPAY_STORE_ID">
-                            <div class="col-md-4">
-                                <label class="col-from-label">{{translate('Aamarpay Store Id')}}</label>
-                            </div>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" name="AAMARPAY_STORE_ID" value="{{  env('AAMARPAY_STORE_ID') }}" placeholder="{{translate('Aamarpay Store Id')}}" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <input type="hidden" name="types[]" value="AAMARPAY_SIGNATURE_KEY">
-                            <div class="col-md-4">
-                                <label class="col-from-label">{{translate('Aamarpay signature key')}}</label>
-                            </div>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" name="AAMARPAY_SIGNATURE_KEY" value="{{  env('AAMARPAY_SIGNATURE_KEY') }}" placeholder="{{translate('Aamarpay signature key')}}" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-4">
-                                <label class="col-from-label">{{translate('Aamarpay Sandbox Mode')}}</label>
-                            </div>
-                            <div class="col-md-8">
-                                <label class="aiz-switch aiz-switch-success mb-0">
-                                    <input value="1" name="aamarpay_sandbox" type="checkbox" @if (get_setting('aamarpay_sandbox')==1) checked @endif>
                                     <span class="slider round"></span>
                                 </label>
                             </div>
@@ -461,43 +351,6 @@
                                     Currency must be <b>AED</b> or <b>USD</b> or <b>EUR</b><br>
                                     If kept empty, <b>AED</b> will be used automatically
                                 </div>
-                            </div>
-                        </div>
-                        <div class="form-group mb-0 text-right">
-                            <button type="submit" class="btn btn-sm btn-primary">{{translate('Save')}}</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0 h6 ">{{translate('VoguePay Credential')}}</h5>
-                </div>
-                <div class="card-body">
-                    <form class="form-horizontal" action="{{ route('payment_method.update') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="payment_method" value="voguepay">
-                        <div class="form-group row">
-                            <input type="hidden" name="types[]" value="VOGUE_MERCHANT_ID">
-                            <div class="col-md-4">
-                                <label class="col-from-label">{{translate('MERCHANT ID')}}</label>
-                            </div>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" name="VOGUE_MERCHANT_ID" value="{{  env('VOGUE_MERCHANT_ID') }}" placeholder="{{ translate('MERCHANT ID') }}" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-4">
-                                <label class="col-from-label">{{translate('Sandbox Mode')}}</label>
-                            </div>
-                            <div class="col-md-8">
-                                <label class="aiz-switch aiz-switch-success mb-0">
-                                    <input value="1" name="voguepay_sandbox" type="checkbox" @if (get_setting('voguepay_sandbox')==1) checked @endif>
-                                    <span class="slider round"></span>
-                                </label>
                             </div>
                         </div>
                         <div class="form-group mb-0 text-right">

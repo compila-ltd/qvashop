@@ -186,11 +186,6 @@ class SSLCommerz
                                     $options['mobile'][0]['link'] = "<a class='hvr-pop' href='" . $this->sslc_data['redirectGatewayURL'] . "dbblmobilebanking'><img style='width:60px; height:60px' src='" . $this->_get_image("dbblmobilebanking", $this->sslc_data) . "' alt='dbblmobilebanking'/></a>";
                                 }
 
-                                if ($gw_value == 'bkash') {
-                                    $options['mobile'][1]['name'] = "Bkash";
-                                    $options['mobile'][1]['link'] = "<a class='hvr-pop' href='" . $this->sslc_data['redirectGatewayURL'] . "bkash'><img style='width:60px; height:60px' src='" . $this->_get_image("bkash", $this->sslc_data) . "' alt='bkash'/></a>";
-                                }
-
                                 if ($gw_value == 'abbank') {
                                     $options['mobile'][2]['name'] = "AB Direct";
                                     $options['mobile'][2]['link'] = "<a class='hvr-pop' href='" . $this->sslc_data['redirectGatewayURL'] . "abbank'><img style='width:60px; height:60px' src='" . $this->_get_image("abbank", $this->sslc_data) . "' alt='abbank'/></a>";

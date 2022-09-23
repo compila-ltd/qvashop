@@ -122,19 +122,6 @@
                                             </label>
                                         </div>
                                         @endif
-                                        @if (get_setting('voguepay') == 1)
-                                        <div class="col-6 col-md-4">
-                                            <label class="aiz-megabox d-block mb-3">
-                                                <input value="voguepay" class="online_payment" type="radio" name="payment_option" checked>
-                                                <span class="d-block aiz-megabox-elem p-3">
-                                                    <img src="{{ asset('assets/img/cards/vogue.png') }}" class="img-fluid mb-2">
-                                                    <span class="d-block text-center">
-                                                        <span class="d-block fw-600 fs-15">{{ translate('VoguePay') }}</span>
-                                                    </span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                        @endif
                                         @if (get_setting('payhere') == 1)
                                         <div class="col-6 col-md-4">
                                             <label class="aiz-megabox d-block mb-3">
@@ -182,32 +169,6 @@
                                                     <img src="{{ asset('assets/img/cards/nagad.png') }}" class="img-fluid mb-2">
                                                     <span class="d-block text-center">
                                                         <span class="d-block fw-600 fs-15">{{ translate('Nagad') }}</span>
-                                                    </span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                        @endif
-                                        @if (get_setting('bkash') == 1)
-                                        <div class="col-6 col-md-4">
-                                            <label class="aiz-megabox d-block mb-3">
-                                                <input value="bkash" class="online_payment" type="radio" name="payment_option" checked>
-                                                <span class="d-block aiz-megabox-elem p-3">
-                                                    <img src="{{ asset('assets/img/cards/bkash.png') }}" class="img-fluid mb-2">
-                                                    <span class="d-block text-center">
-                                                        <span class="d-block fw-600 fs-15">{{ translate('Bkash') }}</span>
-                                                    </span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                        @endif
-                                        @if (get_setting('aamarpay') == 1)
-                                        <div class="col-6 col-md-4">
-                                            <label class="aiz-megabox d-block mb-3">
-                                                <input value="aamarpay" class="online_payment" type="radio" name="payment_option" checked>
-                                                <span class="d-block aiz-megabox-elem p-3">
-                                                    <img src="{{ asset('assets/img/cards/aamarpay.png') }}" class="img-fluid mb-2">
-                                                    <span class="d-block text-center">
-                                                        <span class="d-block fw-600 fs-15">{{ translate('Aamarpay') }}</span>
                                                     </span>
                                                 </span>
                                             </label>

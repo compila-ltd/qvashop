@@ -123,9 +123,6 @@
                                     @if (get_setting('paystack') == 1)
                                     <option value="paystack">{{ translate('Paystack')}}</option>
                                     @endif
-                                    @if (get_setting('voguepay') == 1)
-                                    <option value="voguepay">{{ translate('VoguePay')}}</option>
-                                    @endif
                                     @if (get_setting('payhere') == 1)
                                     <option value="payhere">{{ translate('Payhere')}}</option>
                                     @endif
@@ -134,9 +131,6 @@
                                     @endif
                                     @if (get_setting('iyzico') == 1)
                                     <option value="iyzico">{{ translate('Iyzico')}}</option>
-                                    @endif
-                                    @if (get_setting('bkash') == 1)
-                                    <option value="bkash">{{ translate('Bkash')}}</option>
                                     @endif
                                     @if (get_setting('nagad') == 1)
                                     <option value="nagad">{{ translate('Nagad')}}</option>

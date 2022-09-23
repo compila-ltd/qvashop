@@ -25,8 +25,7 @@ class VerifyCsrfToken extends Middleware
         '/payhere*',
         '/iyzico*',
         '/payfast*',
-        '/bkash*',
-        '/aamarpay*',
+        '/qvapay*',
         '/mock_payments',
         '/lnmo*'
     ];
