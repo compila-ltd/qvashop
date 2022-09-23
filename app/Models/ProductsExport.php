@@ -36,8 +36,8 @@ class ProductsExport implements FromCollection, WithMapping, WithHeadings
     }
 
     /**
-    * @var Product $product
-    */
+     * @var Product $product
+     */
     public function map($product): array
     {
         $qty = 0;
@@ -56,7 +56,7 @@ class ProductsExport implements FromCollection, WithMapping, WithHeadings
             $product->unit_price,
             $product->purchase_price,
             $product->unit,
-//            $product->current_stock,
+            //$product->current_stock,
             $qty,
         ];
     }

@@ -8,17 +8,16 @@ class Staff extends Model
 {
     public function user()
     {
-    return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function role()
     {
-    return $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class);
     }
 
     public function pick_up_point()
     {
-    	return $this->hasOne(PickupPoint::class);
+        return $this->hasOne(PickupPoint::class);
     }
-
 }

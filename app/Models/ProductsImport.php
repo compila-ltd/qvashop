@@ -2,18 +2,18 @@
 
 namespace App\Models;
 
-use App\Models\Product;
-use App\Models\ProductStock;
+use Storage;
+use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Product;
+use Illuminate\Support\Str;
+use App\Models\ProductStock;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\ToCollection;
-use Illuminate\Support\Str;
-use Auth;
-use Carbon\Carbon;
-use Storage;
 
 //class ProductsImport implements ToModel, WithHeadingRow, WithValidation
 class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, ToModel

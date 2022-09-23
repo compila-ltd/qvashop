@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Database\Eloquent\Model;
-use App;
 
 class City extends Model
 {

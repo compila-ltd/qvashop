@@ -38,11 +38,4 @@ class EmailVerificationNotification extends Notification
             ->view('emails.verification', ['array' => $array])
             ->subject(translate('Email Verification - ').env('APP_NAME'));
     }
-
-    public function toArray($notifiable)
-    {
-        return [
-            //
-        ];
-    }
 }

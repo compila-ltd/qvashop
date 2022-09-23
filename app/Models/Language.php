@@ -7,5 +7,4 @@ use App;
 
 class Language extends Model
 {
-  //
 }

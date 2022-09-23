@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Database\Eloquent\Model;
-use App;
+
 
 class Product extends Model
 {
-
     protected $guarded = ['choice_attributes'];
 
     protected $with = ['product_translations', 'taxes'];
