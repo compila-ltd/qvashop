@@ -11,12 +11,12 @@
 <div class="card">
 	<ul class="nav nav-tabs nav-fill border-light">
 		@foreach (\App\Models\Language::all() as $key => $language)
-			<li class="nav-item">
-				<a class="nav-link text-reset @if ($language->code == $lang) active @else bg-soft-dark border-light border-left-0 @endif py-3" href="{{ route('custom-pages.edit', ['id'=>$page->slug, 'lang'=> $language->code] ) }}">
-					<img src="{{ asset('assets/img/flags/'.$language->code.'.png') }}" height="11" class="mr-1">
-					<span>{{$language->name}}</span>
-				</a>
-			</li>
+		<li class="nav-item">
+			<a class="nav-link text-reset @if ($language->code == $lang) active @else bg-soft-dark border-light border-left-0 @endif py-3" href="{{ route('custom-pages.edit', ['id'=>$page->slug, 'lang'=> $language->code] ) }}">
+				<img src="{{ asset('assets/img/flags/'.$language->code.'.png') }}" height="11" class="mr-1">
+				<span>{{$language->name}}</span>
+			</a>
+		</li>
 		@endforeach
 	</ul>
 
@@ -37,32 +37,25 @@
 			</div>
 
 
-				<div class="form-group row">
-					<label class="col-sm-2 col-from-label" for="name">{{translate('Link')}} <span class="text-danger">*</span></label>
-					<div class="col-sm-10">
-						<div class="input-group d-block d-md-flex">
-							@if($page->type == 'custom_page')
-								<div class="input-group-prepend"><span class="input-group-text flex-grow-1">{{ route('home') }}/</span></div>
-								<input type="text" class="form-control w-100 w-md-auto" placeholder="{{ translate('Slug') }}" name="slug" value="{{ $page->slug }}">
-							@else
-								<input class="form-control w-100 w-md-auto" value="{{ route('home') }}/{{ $page->slug }}" disabled>
-							@endif
-						</div>
-						<small class="form-text text-muted">{{ translate('Use character, number, hypen only') }}</small>
+			<div class="form-group row">
+				<label class="col-sm-2 col-from-label" for="name">{{ translate('Link') }} <span class="text-danger">*</span></label>
+				<div class="col-sm-10">
+					<div class="input-group d-block d-md-flex">
+						@if($page->type == 'custom_page')
+						<div class="input-group-prepend"><span class="input-group-text flex-grow-1">{{ route('home') }}/</span></div>
+						<input type="text" class="form-control w-100 w-md-auto" placeholder="{{ translate('Slug') }}" name="slug" value="{{ $page->slug }}">
+						@else
+						<input class="form-control w-100 w-md-auto" value="{{ route('home') }}/{{ $page->slug }}" disabled>
+						@endif
 					</div>
+					<small class="form-text text-muted">{{ translate('Use character, number, hypen only') }}</small>
 				</div>
+			</div>
 
 			<div class="form-group row">
-				<label class="col-sm-2 col-from-label" for="name">{{translate('Add Content')}} <span class="text-danger">*</span></label>
+				<label class="col-sm-2 col-from-label" for="name">{{ translate('Add Content') }} <span class="text-danger">*</span></label>
 				<div class="col-sm-10">
-					<textarea
-						class="aiz-text-editor form-control"
-						placeholder="{{translate('Content..')}}"
-						data-buttons='[["font", ["bold", "underline", "italic", "clear"]],["para", ["ul", "ol", "paragraph"]],["style", ["style"]],["color", ["color"]],["table", ["table"]],["insert", ["link", "picture", "video"]],["view", ["fullscreen", "codeview", "undo", "redo"]]]'
-						data-min-height="300"
-						name="content"
-						required
-					>{!! $page->getTranslation('content',$lang) !!}</textarea>
+					<textarea class="aiz-text-editor form-control" placeholder="{{translate('Content..')}}" data-buttons='[["font", ["bold", "underline", "italic", "clear"]],["para", ["ul", "ol", "paragraph"]],["style", ["style"]],["color", ["color"]],["table", ["table"]],["insert", ["link", "picture", "video"]],["view", ["fullscreen", "codeview", "undo", "redo"]]]' data-min-height="300" name="content" required>{!! $page->getTranslation('content',$lang) !!}</textarea>
 				</div>
 			</div>
 		</div>
@@ -73,7 +66,7 @@
 		<div class="card-body px-0">
 
 			<div class="form-group row">
-				<label class="col-sm-2 col-from-label" for="name">{{translate('Meta Title')}}</label>
+				<label class="col-sm-2 col-from-label" for="name">{{ translate('Meta Title') }}</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" placeholder="{{translate('Title')}}" name="meta_title" value="{{ $page->meta_title }}">
 				</div>
@@ -87,7 +80,7 @@
 			</div>
 
 			<div class="form-group row">
-				<label class="col-sm-2 col-from-label" for="name">{{translate('Keywords')}}</label>
+				<label class="col-sm-2 col-from-label" for="name">{{ translate('Keywords') }}</label>
 				<div class="col-sm-10">
 					<textarea class="resize-off form-control" placeholder="{{translate('Keyword, Keyword')}}" name="keywords">{!! $page->keywords !!}</textarea>
 					<small class="text-muted">{{ translate('Separate with coma') }}</small>
@@ -95,11 +88,11 @@
 			</div>
 
 			<div class="form-group row">
-				<label class="col-sm-2 col-from-label" for="name">{{translate('Meta Image')}}</label>
+				<label class="col-sm-2 col-from-label" for="name">{{ translate('Meta Image') }}</label>
 				<div class="col-sm-10">
 					<div class="input-group " data-toggle="aizuploader" data-type="image">
-							<div class="input-group-prepend">
-								<div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse') }}</div>
+						<div class="input-group-prepend">
+							<div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse') }}</div>
 						</div>
 						<div class="form-control file-amount">{{ translate('Choose File') }}</div>
 						<input type="hidden" name="meta_image" class="selected-files" value="{{ $page->meta_image }}">
