@@ -85,7 +85,6 @@ class ShopController extends Controller
         }
 
         if (Shop::where('user_id', $user->id)->first() == null) {
-            
             $shop = new Shop;
             $shop->user_id = $user->id;
             $shop->name = $request->name;

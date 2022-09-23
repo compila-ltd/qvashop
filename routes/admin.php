@@ -248,10 +248,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         });
 
         // Custom Page
-        Route::resource('custom-pages', PageController::class);
+        Route::resource('custom-pages', PageController::class)->except('edit', 'destroy');
         Route::controller(PageController::class)->group(function () {
-            //Route::get('/custom-pages/edit/{id}', 'edit')->name('custom-pages.edit');
-            //Route::get('/custom-pages/destroy/{id}', 'destroy')->name('custom-pages.destroy');
+            Route::get('/custom-pages/edit/{id}', 'edit')->name('custom-pages.edit');
+            Route::get('/custom-pages/destroy/{id}', 'destroy')->name('custom-pages.destroy');
         });
     });
 
@@ -268,10 +268,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     //Route::get('/staffs/destroy/{id}', [StaffController::class, 'destroy'])->name('staffs.destroy');
 
     // Flash Deal
-    Route::resource('flash_deals', FlashDealController::class);
+    Route::resource('flash_deals', FlashDealController::class)->except('edit', 'destroy');
     Route::controller(FlashDealController::class)->group(function () {
-        //Route::get('/flash_deals/edit/{id}', 'edit')->name('flash_deals.edit');
-        //Route::get('/flash_deals/destroy/{id}', 'destroy')->name('flash_deals.destroy');
+        Route::get('/flash_deals/edit/{id}', 'edit')->name('flash_deals.edit');
+        Route::get('/flash_deals/destroy/{id}', 'destroy')->name('flash_deals.destroy');
         Route::post('/flash_deals/update_status', 'update_status')->name('flash_deals.update_status');
         Route::post('/flash_deals/update_featured', 'update_featured')->name('flash_deals.update_featured');
         Route::post('/flash_deals/product_discount', 'product_discount')->name('flash_deals.product_discount');
