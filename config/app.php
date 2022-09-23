@@ -174,7 +174,6 @@ return [
         Unicodeveloper\Paystack\PaystackServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Anand\LaravelPaytmWallet\PaytmWalletServiceProvider::class,
-        KingFlamez\Rave\RaveServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
         /*
