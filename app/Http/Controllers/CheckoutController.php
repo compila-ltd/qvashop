@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Payment\QvapayController;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Coupon;
@@ -43,15 +44,9 @@ class CheckoutController extends Controller
 
             
             if ($request->session()->get('combined_order_id') != null) {
-                
-                // If block for Online payment, wallet and cash on delivery. Else block for Offline payment
-                $decorator = __NAMESPACE__ . '\\Payment\\' . str_replace(' ', '', ucwords(str_replace('_', ' ', $request->payment_option))) . "Controller";
-                
-                dump(class_exists($decorator));
-                dd($decorator);
 
-                if (class_exists($decorator)) {
-                    return (new $decorator)->pay($request);
+                if ($request->payment_option == 'qvapay') {
+                    return (new QvapayController)->pay($request);
                 } else {
                     $combined_order = CombinedOrder::findOrFail($request->session()->get('combined_order_id'));
                     $manual_payment_data = array(
