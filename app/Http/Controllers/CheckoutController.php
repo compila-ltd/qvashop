@@ -38,11 +38,10 @@ class CheckoutController extends Controller
         if ($request->payment_option != null) {
 
             (new OrderController)->store($request);
-            $request->session()->put('payment_type', 'cart_payment');            
+            $request->session()->put('payment_type', 'cart_payment');
             $data['combined_order_id'] = $request->session()->get('combined_order_id');
             $request->session()->put('payment_data', $data);
 
-            
             if ($request->session()->get('combined_order_id') != null) {
 
                 if ($request->payment_option == 'qvapay') {
@@ -64,7 +63,6 @@ class CheckoutController extends Controller
                     return redirect()->route('order_confirmed');
                 }
             }
-
         } else {
             flash(translate('Select Payment Option.'))->warning();
             return back();

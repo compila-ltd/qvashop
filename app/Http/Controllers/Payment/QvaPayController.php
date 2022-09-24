@@ -29,7 +29,6 @@ class QvapayController extends Controller
 
     public function pay()
     {
-        
         if (Auth::user()->phone == null) {
             flash('Please add phone number to your profile')->warning();
             return redirect()->route('profile');
@@ -68,18 +67,17 @@ class QvapayController extends Controller
             if ($payment_type == 'cart_payment') {
                 return (new CheckoutController)->checkout_done($input['remote_id'], $payment_details);
             }
-    
+
             if ($payment_type == 'wallet_payment') {
                 return (new WalletController)->wallet_payment_done(json_decode($request->opt_c), json_encode($request->all()));
             }
-    
+
             if ($payment_type == 'customer_package_payment') {
                 return (new CustomerPackageController)->purchase_payment_done(json_decode($request->opt_c), json_encode($request->all()));
             }
             if ($payment_type == 'seller_package_payment') {
                 return (new SellerPackageController)->purchase_payment_done(json_decode($request->opt_c), json_encode($request->all()));
             }
-
         } else {
             return redirect()->route('home');
         }
