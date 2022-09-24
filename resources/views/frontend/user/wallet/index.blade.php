@@ -117,9 +117,6 @@
                                     @if (get_setting('sslcommerz_payment') == 1)
                                     <option value="sslcommerz">{{ translate('SSLCommerz')}}</option>
                                     @endif
-                                    @if (get_setting('paystack') == 1)
-                                    <option value="paystack">{{ translate('Paystack')}}</option>
-                                    @endif
                                     @if (get_setting('payhere') == 1)
                                     <option value="payhere">{{ translate('Payhere')}}</option>
                                     @endif

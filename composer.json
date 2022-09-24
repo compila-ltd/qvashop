@@ -13,7 +13,7 @@
         "laracasts/flash": "^3.0",
         "laravel/framework": "^9.0",
         "laravel/sanctum": "^2.12",
-        "laravel/socialite": "^5.0",
+        "laravel/socialite": "^5.5",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
         "lcobucci/jwt": "^4.2.1",
@@ -25,8 +25,7 @@
         "simplesoftwareio/simple-qrcode": "^4.2",
         "spatie/db-dumper": "3.3.0",
         "spatie/laravel-permission": "^5.5",
-        "twilio/sdk": "^6.1",
-        "unicodeveloper/laravel-paystack": "^1.0"
+        "twilio/sdk": "^6.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",
