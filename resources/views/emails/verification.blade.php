@@ -66,7 +66,6 @@
                                             </td>
                                         </tr>
                                     </table>
-                                    <!-- END Intro -->
                                 </td>
                             </tr>
                             <tr>
@@ -77,7 +76,6 @@
                     </td>
                 </tr>
             </table>
-            <!-- END Container -->
         </td>
     </tr>
 </table>
