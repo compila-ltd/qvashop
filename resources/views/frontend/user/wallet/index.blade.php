@@ -129,9 +129,6 @@
                                     @if (get_setting('iyzico') == 1)
                                     <option value="iyzico">{{ translate('Iyzico')}}</option>
                                     @endif
-                                    @if (get_setting('payku') == 1)
-                                    <option value="payku">{{ translate('Payku')}}</option>
-                                    @endif
                                     @if(addon_is_activated('african_pg'))
                                     @if (get_setting('mpesa') == 1)
                                     <option value="mpesa">{{ translate('Mpesa')}}</option>
@@ -145,9 +142,6 @@
                                     @endif
                                     @if (addon_is_activated('paytm') && get_setting('paytm_payment'))
                                     <option value="paytm">{{ translate('Paytm')}}</option>
-                                    @endif
-                                    @if(get_setting('authorizenet') == 1)
-                                    <option value="authorizenet">{{ translate('Authorize Net')}}</option>
                                     @endif
                                 </select>
                             </div>

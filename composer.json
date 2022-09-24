@@ -7,7 +7,6 @@
     "require": {
         "php": "^8.1",
         "anandsiddharth/laravel-paytm-wallet": "^2.0.0",
-        "authorizenet/authorizenet": "^2.0",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^7.3",
         "intervention/image": "^2.5",
@@ -23,7 +22,6 @@
         "niklasravnsborg/laravel-pdf": "^4.0",
         "osenco/mpesa": "^1.20",
         "predis/predis": "^1.1",
-        "sebacarrasco93/laravel-payku": "^1.0",
         "simplesoftwareio/simple-qrcode": "^4.2",
         "spatie/db-dumper": "3.3.0",
         "spatie/laravel-permission": "^5.5",

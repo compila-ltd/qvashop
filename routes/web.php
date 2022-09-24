@@ -24,9 +24,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\NotificationController;
-
 use App\Http\Controllers\ProductQueryController;
-use App\Http\Controllers\Payment\PaykuController;
 use App\Http\Controllers\SupportTicketController;
 use App\Http\Controllers\DigitalProductController;
 use App\Http\Controllers\CustomerPackageController;
@@ -35,7 +33,6 @@ use App\Http\Controllers\Payment\NgeniusController;
 use App\Http\Controllers\PurchaseHistoryController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Payment\SslcommerzController;
-use App\Http\Controllers\Payment\AuthorizenetController;
 
 /*
   |--------------------------------------------------------------------------
@@ -296,12 +293,6 @@ Route::controller(NgeniusController::class)->group(function () {
     Route::any('ngenius/customer_package_payment_callback', 'customer_package_payment_callback')->name('ngenius.customer_package_payment_callback');
     Route::any('ngenius/seller_package_payment_callback', 'seller_package_payment_callback')->name('ngenius.seller_package_payment_callback');
 });
-
-//Authorize-Net-Payment
-Route::post('/dopay/online', [AuthorizenetController::class, 'handleonlinepay'])->name('dopay.online');
-
-//payku
-Route::get('/payku/callback/{id}', [PaykuController::class, 'callback'])->name('payku.result');
 
 //Blog Section
 Route::controller(BlogController::class)->group(function () {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "515593b624629e9b225c0739059d0fb9",
+    "content-hash": "33fcebb57b473bfde328ff9cd1cecfc6",
     "packages": [
         {
             "name": "anandsiddharth/laravel-paytm-wallet",
@@ -61,49 +61,6 @@
                 "source": "https://github.com/anandsiddharth/laravel-paytm-wallet/tree/v2.0.0"
             },
             "time": "2020-10-28T06:22:20+00:00"
-        },
-        {
-            "name": "authorizenet/authorizenet",
-            "version": "2.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/AuthorizeNet/sdk-php.git",
-                "reference": "a3e76f96f674d16e892f87c58bedb99dada4b067"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/AuthorizeNet/sdk-php/zipball/a3e76f96f674d16e892f87c58bedb99dada4b067",
-                "reference": "a3e76f96f674d16e892f87c58bedb99dada4b067",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "ext-json": "*",
-                "php": ">=5.6"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "lib"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "proprietary"
-            ],
-            "description": "Official PHP SDK for Authorize.Net",
-            "homepage": "http://developer.authorize.net",
-            "keywords": [
-                "authorize.net",
-                "authorizenet",
-                "ecommerce",
-                "payment"
-            ],
-            "support": {
-                "issues": "https://github.com/AuthorizeNet/sdk-php/issues",
-                "source": "https://github.com/AuthorizeNet/sdk-php/tree/2.0.2"
-            },
-            "time": "2021-03-31T18:22:14+00:00"
         },
         {
             "name": "aws/aws-crt-php",
@@ -4684,62 +4641,6 @@
                 }
             ],
             "time": "2022-09-16T03:22:46+00:00"
-        },
-        {
-            "name": "sebacarrasco93/laravel-payku",
-            "version": "1.0.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sebacarrasco93/laravel-payku.git",
-                "reference": "5c699bc48905a73b565768eb2ca007984939830a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sebacarrasco93/laravel-payku/zipball/5c699bc48905a73b565768eb2ca007984939830a",
-                "reference": "5c699bc48905a73b565768eb2ca007984939830a",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/guzzle": "^7.0.1",
-                "php": "^7.3|^8.0"
-            },
-            "require-dev": {
-                "orchestra/testbench": "^6.18",
-                "pestphp/pest": "^1.3"
-            },
-            "type": "package",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "SebaCarrasco93\\LaravelPayku\\LaravelPaykuServiceProvider",
-                        "SebaCarrasco93\\LaravelPayku\\RouteServiceProvider"
-                    ],
-                    "aliases": {
-                        "LaravelPayku": "SebaCarrasco93\\LaravelPayku\\Facades\\LaravelPayku"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "SebaCarrasco93\\LaravelPayku\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Seba Carrasco Poblete",
-                    "email": "sebacarrasco93@gmail.com"
-                }
-            ],
-            "description": "Payku Package for Laravel",
-            "support": {
-                "issues": "https://github.com/sebacarrasco93/laravel-payku/issues",
-                "source": "https://github.com/sebacarrasco93/laravel-payku/tree/1.0.4"
-            },
-            "time": "2021-12-15T16:37:38+00:00"
         },
         {
             "name": "setasign/fpdi",

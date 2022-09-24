@@ -148,32 +148,6 @@
                                             </label>
                                         </div>
                                         @endif
-                                        @if (get_setting('authorizenet') == 1)
-                                        <div class="col-6 col-md-4">
-                                            <label class="aiz-megabox d-block mb-3">
-                                                <input value="authorizenet" class="online_payment" type="radio" name="payment_option" checked>
-                                                <span class="d-block aiz-megabox-elem p-3">
-                                                    <img src="{{ asset('assets/img/cards/authorizenet.png') }}" class="img-fluid mb-2">
-                                                    <span class="d-block text-center">
-                                                        <span class="d-block fw-600 fs-15">{{ translate('Authorize Net') }}</span>
-                                                    </span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                        @endif
-                                        @if (get_setting('payku') == 1)
-                                        <div class="col-6 col-md-4">
-                                            <label class="aiz-megabox d-block mb-3">
-                                                <input value="payku" class="online_payment" type="radio" name="payment_option" checked>
-                                                <span class="d-block aiz-megabox-elem p-3">
-                                                    <img src="{{ asset('assets/img/cards/payku.png') }}" class="img-fluid mb-2">
-                                                    <span class="d-block text-center">
-                                                        <span class="d-block fw-600 fs-15">{{ translate('Payku') }}</span>
-                                                    </span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                        @endif
                                         @if (addon_is_activated('african_pg'))
                                         @if (get_setting('mpesa') == 1)
                                         <div class="col-6 col-md-4">
