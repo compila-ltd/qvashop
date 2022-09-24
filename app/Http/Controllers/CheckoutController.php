@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Payment\QvapayController;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Coupon;
@@ -16,6 +15,7 @@ use App\Models\CombinedOrder;
 use App\Utility\NotificationUtility;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\Payment\QvapayController;
 
 class CheckoutController extends Controller
 {
