@@ -7,6 +7,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\QvaPayController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\WalletController;
@@ -23,12 +24,11 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\ProductQueryController;
 
+use App\Http\Controllers\ProductQueryController;
 use App\Http\Controllers\Payment\PaykuController;
 use App\Http\Controllers\SupportTicketController;
 use App\Http\Controllers\DigitalProductController;
-use App\Http\Controllers\Payment\QvapayController;
 use App\Http\Controllers\CustomerPackageController;
 use App\Http\Controllers\CustomerProductController;
 use App\Http\Controllers\Payment\NgeniusController;
@@ -287,7 +287,7 @@ Route::resource('shops', ShopController::class)->except('store');
 Route::post('/shops/store', [ShopController::class, 'store'])->name('shops.store');
 
 // QvaPay WebHook
-Route::get('/qvapay/payment/pay-success/' . config('qvapay.callback_secret'), [QvapayController::class, 'success'])->name('payment.qvapay');
+Route::get('/qvapay/payment/pay-success/' . config('qvapay.callback_secret'), [QvaPayController::class, 'success'])->name('payment.qvapay');
 
 //N-genius
 Route::controller(NgeniusController::class)->group(function () {

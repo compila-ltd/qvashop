@@ -15,7 +15,7 @@ use App\Models\CombinedOrder;
 use App\Utility\NotificationUtility;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use App\Http\Controllers\Payment\QvapayController;
+use App\Http\Controllers\QvaPayController;
 
 class CheckoutController extends Controller
 {
@@ -45,7 +45,8 @@ class CheckoutController extends Controller
             if ($request->session()->get('combined_order_id') != null) {
 
                 if ($request->payment_option == 'qvapay') {
-                    return (new QvapayController)->pay($request);
+                    $qvapay = new QvaPayController;
+                    return $qvapay->pay($request);
                 } else {
                     $combined_order = CombinedOrder::findOrFail($request->session()->get('combined_order_id'));
                     $manual_payment_data = array(

@@ -1,20 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Payment;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CombinedOrder;
 use App\Models\SellerPackage;
 use App\Models\CustomerPackage;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
-use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\CustomerPackageController;
 use App\Http\Controllers\Api\V2\Seller\SellerPackageController;
 
-class QvapayController extends Controller
+class QvaPayController extends Controller
 {
     private $base_url = "https://qvapay.com/api/v1/create_invoice";
     private $app_key;
