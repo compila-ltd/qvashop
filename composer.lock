@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3928abcf4f1bcf31cb8942e92dc3705b",
+    "content-hash": "515593b624629e9b225c0739059d0fb9",
     "packages": [
         {
             "name": "anandsiddharth/laravel-paytm-wallet",
@@ -358,57 +358,6 @@
                 }
             ],
             "time": "2022-08-10T22:54:19+00:00"
-        },
-        {
-            "name": "cinetpay/cinetpay-php",
-            "version": "1.9.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cinetpay/cinetpay-php-legacy.git",
-                "reference": "8a4a53bce076036fc5d6781bee839719780f2028"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cinetpay/cinetpay-php-legacy/zipball/8a4a53bce076036fc5d6781bee839719780f2028",
-                "reference": "8a4a53bce076036fc5d6781bee839719780f2028",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "ext-json": "*",
-                "php": ">=5.6.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "CinetPay": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fawaz Adisa",
-                    "email": "adisaf@programmer.net",
-                    "role": "Developer"
-                }
-            ],
-            "description": "easily integrate cinetpay's gateway on your php web site.",
-            "homepage": "https://github.com/cinetpay/cinetpay-php-legacy",
-            "keywords": [
-                "cinetpay",
-                "integration",
-                "mobile",
-                "money"
-            ],
-            "support": {
-                "email": "support@cinetpay.com",
-                "issues": "https://github.com/cinetpay/cinetpay-php-legacy/issues",
-                "source": "https://github.com/cinetpay/cinetpay-php-legacy/tree/v1.9.2"
-            },
-            "time": "2020-11-30T00:00:00+00:00"
         },
         {
             "name": "dasprid/enum",
@@ -1410,56 +1359,6 @@
                 }
             ],
             "time": "2022-08-28T14:45:39+00:00"
-        },
-        {
-            "name": "instamojo/instamojo-php",
-            "version": "0.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Instamojo/instamojo-php.git",
-                "reference": "99dc50bf008be77be84f447607e416f73f319904"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Instamojo/instamojo-php/zipball/99dc50bf008be77be84f447607e416f73f319904",
-                "reference": "99dc50bf008be77be84f447607e416f73f319904",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Instamojo\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Instamojo and contributors",
-                    "email": "dev@instamojo.com",
-                    "homepage": "https://github.com/instamojo/instamojo-php/contributors"
-                }
-            ],
-            "description": "This is composer wrapper for instamojo-php",
-            "homepage": "https://github.com/instamojo/instamojo-php/",
-            "keywords": [
-                "api",
-                "instamojo",
-                "php",
-                "wrapper"
-            ],
-            "support": {
-                "docs": "https://github.com/instamojo/instamojo-php/",
-                "email": "support@instamojo.com",
-                "issues": "https://github.com/instamojo/instamojo-php/issues",
-                "source": "https://github.com/Instamojo/instamojo-php/tree/0.4"
-            },
-            "time": "2019-05-05T17:03:40+00:00"
         },
         {
             "name": "intervention/image",

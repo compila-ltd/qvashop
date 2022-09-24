@@ -83,19 +83,6 @@
                                             </label>
                                         </div>
                                         @endif
-                                        @if (get_setting('instamojo_payment') == 1)
-                                        <div class="col-6 col-md-4">
-                                            <label class="aiz-megabox d-block mb-3">
-                                                <input value="instamojo" class="online_payment" type="radio" name="payment_option" checked>
-                                                <span class="d-block aiz-megabox-elem p-3">
-                                                    <img src="{{ asset('assets/img/cards/instamojo.png') }}" class="img-fluid mb-2">
-                                                    <span class="d-block text-center">
-                                                        <span class="d-block fw-600 fs-15">{{ translate('Instamojo') }}</span>
-                                                    </span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                        @endif
                                         @if (get_setting('qvapay') == 1)
                                         <div class="col-6 col-md-4">
                                             <label class="aiz-megabox d-block mb-3">

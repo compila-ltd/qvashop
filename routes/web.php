@@ -36,7 +36,6 @@ use App\Http\Controllers\Payment\NgeniusController;
 use App\Http\Controllers\PurchaseHistoryController;
 use App\Http\Controllers\Payment\PaystackController;
 use App\Http\Controllers\Auth\VerificationController;
-use App\Http\Controllers\Payment\InstamojoController;
 use App\Http\Controllers\Payment\SslcommerzController;
 use App\Http\Controllers\Payment\AuthorizenetController;
 
@@ -288,10 +287,6 @@ Route::group(['middleware' => ['auth']], function () {
 // Shops routes
 Route::resource('shops', ShopController::class)->except('store');
 Route::post('/shops/store', [ShopController::class, 'store'])->name('shops.store');
-
-// Different Payment Methods Webhook
-Route::get('/instamojo/payment/pay-success', [InstamojoController::class, 'success'])->name('instamojo.success');
-Route::get('/paystack/payment/callback', [PaystackController::class, 'handleGatewayCallback']);
 
 // QvaPay WebHook
 Route::get('/qvapay/payment/pay-success/' . config('qvapay.callback_secret'), [QvapayController::class, 'success'])->name('payment.qvapay');
