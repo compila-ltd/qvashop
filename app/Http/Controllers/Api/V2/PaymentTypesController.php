@@ -26,54 +26,6 @@ class PaymentTypesController
 
         if ($list == "online" || $list == "both") {
 
-            if (get_setting('paystack') == 1) {
-                $payment_type = array();
-                $payment_type['payment_type'] = 'paystack';
-                $payment_type['payment_type_key'] = 'paystack';
-                $payment_type['image'] = asset('assets/img/cards/paystack.png');
-                $payment_type['name'] = "Paystack";
-                $payment_type['title'] = "Checkout with Paystack";
-                $payment_type['offline_payment_id'] = 0;
-                $payment_type['details'] = "";
-                if ($mode == 'wallet') {
-                    $payment_type['title'] = "Recharge with Paystack";
-                }
-
-                $payment_types[] = $payment_type;
-            }
-
-            if (get_setting('iyzico') == 1) {
-                $payment_type = array();
-                $payment_type['payment_type'] = 'iyzico';
-                $payment_type['payment_type_key'] = 'iyzico';
-                $payment_type['image'] = asset('assets/img/cards/iyzico.png');
-                $payment_type['name'] = "Iyzico";
-                $payment_type['title'] = "Checkout with Iyzico";
-                $payment_type['offline_payment_id'] = 0;
-                $payment_type['details'] = "";
-                if ($mode == 'wallet') {
-                    $payment_type['title'] = "Recharge with Iyzico";
-                }
-
-                $payment_types[] = $payment_type;
-            }
-
-            if (get_setting('nagad') == 1) {
-                $payment_type = array();
-                $payment_type['payment_type'] = 'nagad';
-                $payment_type['payment_type_key'] = 'nagad';
-                $payment_type['image'] = asset('assets/img/cards/nagad.png');
-                $payment_type['name'] = "Nagad";
-                $payment_type['title'] = "Checkout with Nagad";
-                $payment_type['offline_payment_id'] = 0;
-                $payment_type['details'] = "";
-                if ($mode == 'wallet') {
-                    $payment_type['title'] = "Recharge with Nagad";
-                }
-
-                $payment_types[] = $payment_type;
-            }
-
             if (get_setting('sslcommerz_payment') == 1) {
                 $payment_type = array();
                 $payment_type['payment_type'] = 'sslcommerz_payment';
@@ -85,24 +37,6 @@ class PaymentTypesController
                 $payment_type['details'] = "";
                 if ($mode == 'wallet') {
                     $payment_type['title'] = "Recharge with Sslcommerz";
-                }
-
-                $payment_types[] = $payment_type;
-            }
-
-
-            //African Payment Gateways
-            if (addon_is_activated('african_pg') && get_setting('flutterwave') == 1) {
-                $payment_type = array();
-                $payment_type['payment_type'] = 'flutterwave';
-                $payment_type['payment_type_key'] = 'flutterwave';
-                $payment_type['image'] = asset('assets/img/cards/flutterwave.png');
-                $payment_type['name'] = "Flutterwave";
-                $payment_type['title'] = "Checkout with Flutterwave";
-                $payment_type['offline_payment_id'] = 0;
-                $payment_type['details'] = "";
-                if ($mode == 'wallet') {
-                    $payment_type['title'] = "Recharge with Flutterwave";
                 }
 
                 $payment_types[] = $payment_type;
@@ -125,8 +59,6 @@ class PaymentTypesController
             }
 
         }
-
-
 
         // you cannot recharge wallet by wallet or cash payment
         if ($mode != 'wallet' && $mode != 'seller_package' && $list != "offline") {
@@ -183,10 +115,6 @@ class PaymentTypesController
                 $payment_types[] = $payment_type;
             }
         }
-
-
-
-
 
         return response()->json($payment_types);
     }

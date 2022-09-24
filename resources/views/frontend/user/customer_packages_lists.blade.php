@@ -130,9 +130,6 @@
                                     @if(get_setting('iyzico') == 1)
                                     <option value="iyzico">{{ translate('Iyzico')}}</option>
                                     @endif
-                                    @if(get_setting('nagad') == 1)
-                                    <option value="nagad">{{ translate('Nagad')}}</option>
-                                    @endif
                                     @if(addon_is_activated('african_pg'))
                                     @if(get_setting('mpesa') == 1)
                                     <option value="mpesa">{{ translate('Mpesa')}}</option>

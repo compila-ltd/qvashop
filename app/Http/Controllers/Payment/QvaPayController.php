@@ -110,6 +110,22 @@ class QvapayController extends Controller
                 }
             }
         }
+
+                if (json_decode($json)->status == 'Success') {
+            $payment_type = Session::get('payment_type');
+            if ($payment_type == 'cart_payment') {
+                return (new CheckoutController)->checkout_done(Session::get('combined_order_id'), $json);
+            }
+            if ($payment_type == 'wallet_payment') {
+                return (new WalletController)->wallet_payment_done(Session::get('payment_data'), $json);
+            }
+            if ($payment_type == 'customer_package_payment') {
+                return (new CustomerPackageController)->purchase_payment_done(Session::get('payment_data'), $json);
+            }
+            if ($payment_type == 'seller_package_payment') {
+                return (new SellerPackageController)->purchase_payment_done(Session::get('payment_data'), $json);
+            }
+        }
         */
     }
 

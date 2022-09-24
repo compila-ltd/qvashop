@@ -181,10 +181,6 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function () {
     Route::any('iyzico/callback', 'App\Http\Controllers\Api\V2\IyzicoController@callback')->name('api.iyzico.callback');
     Route::post('iyzico/success', 'App\Http\Controllers\Api\V2\IyzicoController@success')->name('api.iyzico.success');
 
-    Route::get('nagad/begin', 'App\Http\Controllers\Api\V2\NagadController@begin')->middleware('auth:sanctum');
-    Route::any('nagad/verify/{payment_type}', 'App\Http\Controllers\Api\V2\NagadController@verify')->name('app.nagad.callback_url');
-    Route::post('nagad/process', 'App\Http\Controllers\Api\V2\NagadController@process');
-
     Route::get('sslcommerz/begin', 'App\Http\Controllers\Api\V2\SslCommerzController@begin');
     Route::post('sslcommerz/success', 'App\Http\Controllers\Api\V2\SslCommerzController@payment_success');
     Route::post('sslcommerz/fail', 'App\Http\Controllers\Api\V2\SslCommerzController@payment_fail');

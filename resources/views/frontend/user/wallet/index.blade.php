@@ -129,9 +129,6 @@
                                     @if (get_setting('iyzico') == 1)
                                     <option value="iyzico">{{ translate('Iyzico')}}</option>
                                     @endif
-                                    @if (get_setting('nagad') == 1)
-                                    <option value="nagad">{{ translate('Nagad')}}</option>
-                                    @endif
                                     @if (get_setting('payku') == 1)
                                     <option value="payku">{{ translate('Payku')}}</option>
                                     @endif

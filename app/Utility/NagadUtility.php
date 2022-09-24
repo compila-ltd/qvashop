@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Utility;
+
 use Cache;
 
-class NagadUtility {
+class NagadUtility
+{
     /**
      * Generate Random string
      */
@@ -100,7 +102,6 @@ class NagadUtility {
         $ResultArray = json_decode($resultdata, true);
         curl_close($url);
         return $ResultArray;
-
     }
 
     public static function HttpGet($url)
