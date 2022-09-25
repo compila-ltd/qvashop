@@ -43,7 +43,7 @@ class HomeController extends Controller
             return filter_products(Product::where('published', 1)->where('todays_deal', '1'))->get();
         });
 
-        $newest_products = Cache::remember('newest_products', 3600, function () {
+        $newest_products = Cache::remember('newest_products', 7200, function () {
             return filter_products(Product::latest())->limit(12)->get();
         });
 
