@@ -19,6 +19,7 @@ npm-debug.log
 yarn-error.log
 .DS_Store
 .idea/
+/tests
 
 updates/
 resources/lang/en.json
