@@ -11,7 +11,6 @@ use App\Http\Middleware\IsUnbanned;
 use App\Http\Middleware\AppLanguage;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
-
 class Kernel extends HttpKernel
 {
     /**
