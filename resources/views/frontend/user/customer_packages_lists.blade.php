@@ -112,22 +112,8 @@
                         <div class="col-md-10">
                             <div class="mb-3">
                                 <select class="form-control selectpicker" data-live-search="true" name="payment_option">
-                                    @if(get_setting('toyyibpay_payment') == 1)
-                                    <option value="toyyibpay">{{ translate('ToyyibPay')}}</option>
-                                    @endif
-                                    @if(get_setting('iyzico') == 1)
-                                    <option value="iyzico">{{ translate('Iyzico')}}</option>
-                                    @endif
-                                    @if(addon_is_activated('african_pg'))
-                                    @if(get_setting('mpesa') == 1)
-                                    <option value="mpesa">{{ translate('Mpesa')}}</option>
-                                    @endif
-                                    @if(get_setting('flutterwave') == 1)
-                                    <option value="flutterwave">{{ translate('Flutterwave')}}</option>
-                                    @endif
-                                    @if (get_setting('payfast') == 1)
-                                    <option value="payfast">{{ translate('PayFast')}}</option>
-                                    @endif
+                                    @if(get_setting('qvapay') == 1)
+                                    <option value="qvapay">{{ translate('Qvapay')}}</option>
                                     @endif
                                 </select>
                             </div>
