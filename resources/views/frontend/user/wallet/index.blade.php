@@ -111,14 +111,8 @@
                         <div class="col-md-8">
                             <div class="mb-3">
                                 <select class="form-control selectpicker" data-minimum-results-for-search="Infinity" name="payment_option" data-live-search="true">
-                                    @if(get_setting('toyyibpay_payment') == 1)
-                                    <option value="toyyibpay">{{ translate('ToyyibPay')}}</option>
-                                    @endif
-                                    @if (get_setting('payhere') == 1)
-                                    <option value="payhere">{{ translate('Payhere')}}</option>
-                                    @endif
-                                    @if (get_setting('iyzico') == 1)
-                                    <option value="iyzico">{{ translate('Iyzico')}}</option>
+                                    @if(get_setting('qvapay') == 1)
+                                    <option value="qvapay">{{ translate('Qvapay')}}</option>
                                     @endif
                                 </select>
                             </div>

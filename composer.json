@@ -30,6 +30,7 @@
         "barryvdh/laravel-debugbar": "^3.6",
         "beyondcode/laravel-dump-server": "^1.0",
         "filp/whoops": "^2.0",
+        "laravel/dusk": "^7.0",
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^6.1",
         "phpunit/phpunit": "^9.0",
