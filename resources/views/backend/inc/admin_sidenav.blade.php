@@ -812,27 +812,6 @@
                 @endcanany
                 @endif
 
-                <!-- Paytm Addon -->
-                @if (addon_is_activated('paytm') && auth()->user()->can('asian_payment_gateway_configuration'))
-                <li class="aiz-side-nav-item">
-                    <a href="#" class="aiz-side-nav-link">
-                        <i class="las la-mobile-alt aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{ translate('Asian Payment Gateway') }}</span>
-                        @if (env("DEMO_MODE") == "On")
-                        <span class="badge badge-inline badge-danger">Addon</span>
-                        @endif
-                        <span class="aiz-side-nav-arrow"></span>
-                    </a>
-                    <ul class="aiz-side-nav-list level-2">
-                        <li class="aiz-side-nav-item">
-                            <a href="{{ route('paytm.index') }}" class="aiz-side-nav-link">
-                                <span class="aiz-side-nav-text">{{ translate('Set Asian PG Credentials') }}</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                @endif
-
                 <!-- Club Point Addon-->
                 @if (addon_is_activated('club_point'))
                 @canany(['club_point_configurations','set_club_points','view_users_club_points'])

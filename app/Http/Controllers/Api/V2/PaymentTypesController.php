@@ -26,6 +26,7 @@ class PaymentTypesController
 
         if ($list == "online" || $list == "both") {
 
+            /*
             if (addon_is_activated('paytm')) {
                 $payment_type = array();
                 $payment_type['payment_type'] = 'paytm';
@@ -41,6 +42,7 @@ class PaymentTypesController
 
                 $payment_types[] = $payment_type;
             }
+            */
         }
 
         // you cannot recharge wallet by wallet or cash payment

@@ -150,32 +150,6 @@
                                         </div>
                                         @endif
                                         @endif
-                                        @if (addon_is_activated('paytm') && get_setting('paytm_payment') == 1)
-                                        <div class="col-6 col-md-4">
-                                            <label class="aiz-megabox d-block mb-3">
-                                                <input value="paytm" class="online_payment" type="radio" name="payment_option" checked>
-                                                <span class="d-block aiz-megabox-elem p-3">
-                                                    <img src="{{ asset('assets/img/cards/paytm.jpg') }}" class="img-fluid mb-2">
-                                                    <span class="d-block text-center">
-                                                        <span class="d-block fw-600 fs-15">{{ translate('Paytm') }}</span>
-                                                    </span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                        @endif
-                                        @if (addon_is_activated('paytm') && get_setting('toyyibpay_payment') == 1)
-                                        <div class="col-6 col-md-4">
-                                            <label class="aiz-megabox d-block mb-3">
-                                                <input value="toyyibpay" class="online_payment" type="radio" name="payment_option" checked>
-                                                <span class="d-block aiz-megabox-elem p-3">
-                                                    <img src="{{ asset('assets/img/cards/toyyibpay.png') }}" class="img-fluid mb-2">
-                                                    <span class="d-block text-center">
-                                                        <span class="d-block fw-600 fs-15">{{ translate('ToyyibPay') }}</span>
-                                                    </span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                        @endif
                                         @if (get_setting('cash_payment') == 1)
                                         @php
                                         $digital = 0;

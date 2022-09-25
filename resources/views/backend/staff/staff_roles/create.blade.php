@@ -26,7 +26,7 @@
                 @foreach ($permission_groups as $key => $permission_group)
                     @php
                         $check = true;
-                        $addons = array("offline_payment", "club_point", "pos_system", "paytm", "seller_subscription", "otp_system", "refund_request", "affiliate_system", "african_pg", "delivery_boy", "auction", "wholesale");
+                        $addons = array("offline_payment", "club_point", "pos_system", "seller_subscription", "otp_system", "refund_request", "affiliate_system", "african_pg", "delivery_boy", "auction", "wholesale");
                         
                         if(in_array($permission_group[0]['section'], $addons)){
 

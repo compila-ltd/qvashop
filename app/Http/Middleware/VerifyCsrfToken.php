@@ -20,7 +20,6 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         '/config_content',
-        '/paytm*',
         '/payhere*',
         '/iyzico*',
         '/payfast*',

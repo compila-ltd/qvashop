@@ -120,20 +120,6 @@
                                     @if (get_setting('iyzico') == 1)
                                     <option value="iyzico">{{ translate('Iyzico')}}</option>
                                     @endif
-                                    @if(addon_is_activated('african_pg'))
-                                    @if (get_setting('mpesa') == 1)
-                                    <option value="mpesa">{{ translate('Mpesa')}}</option>
-                                    @endif
-                                    @if (get_setting('flutterwave') == 1)
-                                    <option value="flutterwave">{{ translate('Flutterwave')}}</option>
-                                    @endif
-                                    @if (get_setting('payfast') == 1)
-                                    <option value="payfast">{{ translate('PayFast')}}</option>
-                                    @endif
-                                    @endif
-                                    @if (addon_is_activated('paytm') && get_setting('paytm_payment'))
-                                    <option value="paytm">{{ translate('Paytm')}}</option>
-                                    @endif
                                 </select>
                             </div>
                         </div>

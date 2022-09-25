@@ -6,7 +6,6 @@
     "type": "project",
     "require": {
         "php": "^8.1",
-        "anandsiddharth/laravel-paytm-wallet": "^2.0.0",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^7.3",
         "intervention/image": "^2.5",
