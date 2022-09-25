@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9f2e212bb94b99f8f60be0a10dc991ca",
+    "content-hash": "05721e8f089180a5958d6fbfce03a0dc",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -3592,49 +3592,6 @@
             "time": "2022-08-01T11:03:24+00:00"
         },
         {
-            "name": "osenco/mpesa",
-            "version": "v1.20.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/osenco/mpesa.git",
-                "reference": "2672bbdd994fbb644f9734e71833bf0118c12759"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/osenco/mpesa/zipball/2672bbdd994fbb644f9734e71833bf0118c12759",
-                "reference": "2672bbdd994fbb644f9734e71833bf0118c12759",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.0"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/helpers.php"
-                ],
-                "psr-4": {
-                    "Osen\\Mpesa\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Osen Concepts",
-                    "email": "hi@osen.co.ke"
-                }
-            ],
-            "description": "Intuitive Mpesa SDK for PHP Apps. Just Plug 'N Play",
-            "support": {
-                "issues": "https://github.com/osenco/mpesa/issues",
-                "source": "https://github.com/osenco/mpesa/tree/master"
-            },
-            "time": "2020-05-19T05:07:14+00:00"
-        },
-        {
             "name": "paragonie/random_compat",
             "version": "v9.99.100",
             "source": {
@@ -4585,6 +4542,67 @@
                 }
             ],
             "time": "2022-09-16T03:22:46+00:00"
+        },
+        {
+            "name": "renatomarinho/laravel-page-speed",
+            "version": "2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/renatomarinho/laravel-page-speed.git",
+                "reference": "ac71e0aa2882bfc10d170dc67e591216d02ab859"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/renatomarinho/laravel-page-speed/zipball/ac71e0aa2882bfc10d170dc67e591216d02ab859",
+                "reference": "ac71e0aa2882bfc10d170dc67e591216d02ab859",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^6.0 || ^7.0 || ^8.0 || ^9.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.4",
+                "orchestra/testbench": "^4.0 || ^5.0 || ^6.0 || ^7.0",
+                "phpunit/phpunit": "^8.5 || ^9.0",
+                "squizlabs/php_codesniffer": "^3.6"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "RenatoMarinho\\LaravelPageSpeed\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "RenatoMarinho\\LaravelPageSpeed\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Renato Marinho",
+                    "email": "renato.marinho@s2move.com"
+                }
+            ],
+            "description": "Laravel Page Speed",
+            "keywords": [
+                "html",
+                "laravel",
+                "minify",
+                "optimize",
+                "page speed"
+            ],
+            "support": {
+                "issues": "https://github.com/renatomarinho/laravel-page-speed/issues",
+                "source": "https://github.com/renatomarinho/laravel-page-speed/tree/2.1.0"
+            },
+            "time": "2022-03-14T18:28:48+00:00"
         },
         {
             "name": "setasign/fpdi",
