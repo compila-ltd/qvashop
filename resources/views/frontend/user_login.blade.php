@@ -69,33 +69,6 @@
                                     </div>
                                 </form>
 
-                                @if (env("DEMO_MODE") == "On")
-                                <div class="mb-5">
-                                    <table class="table table-bordered mb-0">
-                                        <tbody>
-                                            <tr>
-                                                <td>{{ translate('Seller Account')}}</td>
-                                                <td>
-                                                    <button class="btn btn-info btn-sm" onclick="autoFillSeller()">{{ translate('Copy credentials') }}</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>{{ translate('Customer Account')}}</td>
-                                                <td>
-                                                    <button class="btn btn-info btn-sm" onclick="autoFillCustomer()">{{ translate('Copy credentials') }}</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>{{ translate('Delivery Boy Account')}}</td>
-                                                <td>
-                                                    <button class="btn btn-info btn-sm" onclick="autoFillDeliveryBoy()">{{ translate('Copy credentials') }}</button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                @endif
-
                                 @if(get_setting('google_login') == 1 || get_setting('facebook_login') == 1 || get_setting('twitter_login') == 1)
                                 <div class="separator mb-3">
                                     <span class="bg-white px-3 opacity-60">{{ translate('Or Login With')}}</span>

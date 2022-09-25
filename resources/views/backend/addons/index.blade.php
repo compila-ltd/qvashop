@@ -33,11 +33,9 @@
                                     <div class="mr-md-3 ml-0">
                                         <p><small>{{ translate('Version')}}: </small>{{ $addon->version }}</p>
                                     </div>
-                                    @if (env('DEMO_MODE') != 'On')
                                     <div class="mr-md-3 ml-0">
                                         <p><small>{{ translate('Purchase code')}}: </small>{{ $addon->purchase_code }}</p>
                                     </div>
-                                    @endif
                                     <div class="ml-auto mr-0">
                                         <label class="aiz-switch mb-0">
                                             <input type="checkbox" onchange="updateStatus(this, {{ $addon->id }})" <?php if ($addon->activated) echo "checked"; ?>>

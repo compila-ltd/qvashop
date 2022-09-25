@@ -2,30 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Auth;
-use Hash;
-use App\Models\Category;
-use App\Models\FlashDeal;
-use App\Models\Brand;
-use App\Models\Product;
-use App\Models\PickupPoint;
-use App\Models\CustomerPackage;
-use App\Models\User;
+use App\Models\Page;
 use App\Models\Shop;
+use App\Models\User;
+use App\Models\Brand;
 use App\Models\Order;
 use App\Models\Coupon;
-use Cookie;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\FlashDeal;
+use App\Models\PickupPoint;
 use Illuminate\Support\Str;
-use App\Mail\SecondEmailVerifyMailManager;
-use App\Models\AffiliateConfig;
-use App\Models\Page;
 use App\Models\ProductQuery;
-use Mail;
-use Illuminate\Auth\Events\PasswordReset;
-use Cache;
-use Illuminate\Support\Facades\Response;
+use Illuminate\Http\Request;
+use App\Models\AffiliateConfig;
+use App\Models\CustomerPackage;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Auth\Events\PasswordReset;
+use App\Mail\SecondEmailVerifyMailManager;
 
 class HomeController extends Controller
 {
@@ -149,11 +148,6 @@ class HomeController extends Controller
 
     public function userProfileUpdate(Request $request)
     {
-        if (env('DEMO_MODE') == 'On') {
-            flash(translate('Sorry! the action is not permitted in demo '))->error();
-            return back();
-        }
-
         $user = Auth::user();
         $user->name = $request->name;
         $user->address = $request->address;
@@ -562,7 +556,7 @@ class HomeController extends Controller
 
     public function reset_password_with_code(Request $request)
     {
-        
+
         if (($user = User::where('email', $request->email)->where('verification_code', $request->code)->first()) != null) {
             if ($request->password == $request->password_confirmation) {
                 $user->password = Hash::make($request->password);

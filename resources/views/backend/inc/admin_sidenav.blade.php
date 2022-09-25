@@ -33,9 +33,6 @@
                     <a href="#" class="aiz-side-nav-link">
                         <i class="las la-tasks aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('POS System') }}</span>
-                        @if (env("DEMO_MODE") == "On")
-                        <span class="badge badge-inline badge-danger">Addon</span>
-                        @endif
                         <span class="aiz-side-nav-arrow"></span>
                     </a>
                     <ul class="aiz-side-nav-list level-2">
@@ -164,9 +161,6 @@
                     <a href="#" class="aiz-side-nav-link">
                         <i class="las la-gavel aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('Auction Products') }}</span>
-                        @if (env("DEMO_MODE") == "On")
-                        <span class="badge badge-inline badge-danger">Addon</span>
-                        @endif
                         <span class="aiz-side-nav-arrow"></span>
                     </a>
                     <!--Submenu-->
@@ -218,9 +212,6 @@
                     <a href="#" class="aiz-side-nav-link">
                         <i class="las la-luggage-cart aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('Wholesale Products') }}</span>
-                        @if (env("DEMO_MODE") == "On")
-                        <span class="badge badge-inline badge-danger">Addon</span>
-                        @endif
                         <span class="aiz-side-nav-arrow"></span>
                     </a>
                     <ul class="aiz-side-nav-list level-2">
@@ -308,9 +299,6 @@
                     <a href="#" class="aiz-side-nav-link">
                         <i class="las la-truck aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('Delivery Boy') }}</span>
-                        @if (env("DEMO_MODE") == "On")
-                        <span class="badge badge-inline badge-danger">Addon</span>
-                        @endif
                         <span class="aiz-side-nav-arrow"></span>
                     </a>
                     <ul class="aiz-side-nav-list level-2">
@@ -368,9 +356,6 @@
                     <a href="#" class="aiz-side-nav-link">
                         <i class="las la-backward aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('Refunds') }}</span>
-                        @if (env("DEMO_MODE") == "On")
-                        <span class="badge badge-inline badge-danger">Addon</span>
-                        @endif
                         <span class="aiz-side-nav-arrow"></span>
                     </a>
                     <ul class="aiz-side-nav-list level-2">
@@ -489,9 +474,6 @@
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('seller_packages.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['seller_packages.index', 'seller_packages.create', 'seller_packages.edit']) }}">
                                 <span class="aiz-side-nav-text">{{ translate('Seller Packages') }}</span>
-                                @if (env("DEMO_MODE") == "On")
-                                <span class="badge badge-inline badge-danger">Addon</span>
-                                @endif
                             </a>
                         </li>
                         @endcanany
@@ -630,9 +612,6 @@
                         <li class="aiz-side-nav-item">
                             <a href="{{route('sms.index') }}" class="aiz-side-nav-link">
                                 <span class="aiz-side-nav-text">{{ translate('Bulk SMS') }}</span>
-                                @if (env("DEMO_MODE") == "On")
-                                <span class="badge badge-inline badge-danger">Addon</span>
-                                @endif
                             </a>
                         </li>
                         @endif
@@ -709,9 +688,6 @@
                     <a href="#" class="aiz-side-nav-link">
                         <i class="las la-link aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('Affiliate System') }}</span>
-                        @if (env("DEMO_MODE") == "On")
-                        <span class="badge badge-inline badge-danger">Addon</span>
-                        @endif
                         <span class="aiz-side-nav-arrow"></span>
                     </a>
                     <ul class="aiz-side-nav-list level-2">
@@ -769,9 +745,6 @@
                     <a href="#" class="aiz-side-nav-link">
                         <i class="las la-money-check-alt aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('Offline Payment System') }}</span>
-                        @if (env("DEMO_MODE") == "On")
-                        <span class="badge badge-inline badge-danger">Addon</span>
-                        @endif
                         <span class="aiz-side-nav-arrow"></span>
                     </a>
                     <ul class="aiz-side-nav-list level-2">
@@ -801,9 +774,6 @@
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('offline_seller_package_payment_request.index') }}" class="aiz-side-nav-link">
                                 <span class="aiz-side-nav-text">{{ translate('Offline Seller Package Payments') }}</span>
-                                @if (env("DEMO_MODE") == "On")
-                                <span class="badge badge-inline badge-danger">Addon</span>
-                                @endif
                             </a>
                         </li>
                         @endif
@@ -819,9 +789,6 @@
                     <a href="#" class="aiz-side-nav-link">
                         <i class="lab la-btc aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('Club Point System') }}</span>
-                        @if (env("DEMO_MODE") == "On")
-                        <span class="badge badge-inline badge-danger">Addon</span>
-                        @endif
                         <span class="aiz-side-nav-arrow"></span>
                     </a>
                     <ul class="aiz-side-nav-list level-2">
@@ -858,9 +825,6 @@
                     <a href="#" class="aiz-side-nav-link">
                         <i class="las la-phone aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('OTP System') }}</span>
-                        @if (env("DEMO_MODE") == "On")
-                        <span class="badge badge-inline badge-danger">Addon</span>
-                        @endif
                         <span class="aiz-side-nav-arrow"></span>
                     </a>
                     <ul class="aiz-side-nav-list level-2">
@@ -896,9 +860,6 @@
                     <a href="#" class="aiz-side-nav-link">
                         <i class="las la-phone aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('African Payment Gateway Addon') }}</span>
-                        @if (env("DEMO_MODE") == "On")
-                        <span class="badge badge-inline badge-danger">Addon</span>
-                        @endif
                         <span class="aiz-side-nav-arrow"></span>
                     </a>
                     <ul class="aiz-side-nav-list level-2">
