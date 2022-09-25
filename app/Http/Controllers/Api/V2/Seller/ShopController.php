@@ -2,26 +2,21 @@
 
 namespace App\Http\Controllers\Api\V2\Seller;
 
-use App\Http\Resources\V2\Seller\ProductCollection;
-use App\Http\Resources\V2\Seller\ProductMiniCollection;
-use App\Http\Resources\V2\Seller\CommissionHistoryResource;
-use App\Http\Resources\V2\Seller\SellerPackageResource;
-use App\Http\Resources\V2\Seller\SellerPaymentResource;
-use App\Http\Resources\V2\ShopCollection;
-use App\Http\Resources\V2\ShopDetailsCollection;
-use App\Models\Category;
-use App\Models\CommissionHistory;
+use Carbon\Carbon;
+use App\Models\Shop;
 use App\Models\Order;
-use App\Models\OrderDetail;
 use App\Models\Payment;
 use App\Models\Product;
-use App\Models\Shop;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Utility\SearchUtility;
-use Cache;
-use Carbon\Carbon;
-use DB;
-use Response;
+use App\Models\CommissionHistory;
+use Illuminate\Support\Facades\DB;
+use App\Http\Resources\V2\ShopCollection;
+use App\Http\Resources\V2\ShopDetailsCollection;
+use App\Http\Resources\V2\Seller\ProductCollection;
+use App\Http\Resources\V2\Seller\SellerPaymentResource;
+use App\Http\Resources\V2\Seller\CommissionHistoryResource;
 
 class ShopController extends Controller
 {
@@ -40,15 +35,11 @@ class ShopController extends Controller
         //return new ShopCollection($shop_query->paginate(10));
     }
 
-
-
     public function update(Request $request)
     {
-
-        
-        $shop = Shop::where('user_id',auth()->user()->id)->first();
-        $successMessage='Shop info updated successfully';
-        $failedMessage='Shop info updated failed';
+        $shop = Shop::where('user_id', auth()->user()->id)->first();
+        $successMessage = 'Shop info updated successfully';
+        $failedMessage = 'Shop info updated failed';
 
         if ($request->has('name') && $request->has('address')) {
             if ($request->has('shipping_cost')) {
@@ -79,26 +70,24 @@ class ShopController extends Controller
             $shop->google = $request->google;
             $shop->twitter = $request->twitter;
             $shop->youtube = $request->youtube;
-        }elseif(           
-        $request->has('cash_on_delivery_status') ||
-        $request->has('bank_payment_status') ||
-        $request->has('bank_name') ||
-        $request->has('bank_acc_name') ||
-        $request->has('bank_acc_no') ||
-        $request->has('bank_routing_no')
-        ){
-            
-                $shop->cash_on_delivery_status = $request->cash_on_delivery_status;
-                $shop->bank_payment_status = $request->bank_payment_status;
-                $shop->bank_name = $request->bank_name;
-                $shop->bank_acc_name = $request->bank_acc_name;
-                $shop->bank_acc_no = $request->bank_acc_no;
-                $shop->bank_routing_no = $request->bank_routing_no;
+        } elseif (
+            $request->has('cash_on_delivery_status') ||
+            $request->has('bank_payment_status') ||
+            $request->has('bank_name') ||
+            $request->has('bank_acc_name') ||
+            $request->has('bank_acc_no') ||
+            $request->has('bank_routing_no')
+        ) {
 
-                $successMessage='Payment info updated successfully';
-        
-    
-        }else {
+            $shop->cash_on_delivery_status = $request->cash_on_delivery_status;
+            $shop->bank_payment_status = $request->bank_payment_status;
+            $shop->bank_name = $request->bank_name;
+            $shop->bank_acc_name = $request->bank_acc_name;
+            $shop->bank_acc_no = $request->bank_acc_no;
+            $shop->bank_routing_no = $request->bank_routing_no;
+
+            $successMessage = 'Payment info updated successfully';
+        } else {
             $shop->sliders = $request->sliders;
         }
 
@@ -107,7 +96,6 @@ class ShopController extends Controller
         }
 
         return $this->failed(translate($failedMessage));
-        
     }
 
 
@@ -119,25 +107,24 @@ class ShopController extends Controller
             ->select(DB::raw("sum(grand_total) as total, DATE_FORMAT(created_at, '%b-%d') as date"))
             ->groupBy(DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d')"))
             ->get()->toArray();
-       //dd($data->toArray());
-      
+
         //$array_date = [];
         $sales_array = [];
-		for ($i=0; $i<7; $i++) {
-            $new_date = date("M-d", strtotime(($i+1)." days ago"));
-    		//$array_date[] = date("M-d", strtotime($i." days ago"));
-            
+        for ($i = 0; $i < 7; $i++) {
+            $new_date = date("M-d", strtotime(($i + 1) . " days ago"));
+            //$array_date[] = date("M-d", strtotime($i." days ago"));
+
             $sales_array[$i]['date'] = $new_date;
             $sales_array[$i]['total'] = 0;
-          
-        	if(!empty($data)) {
+
+            if (!empty($data)) {
                 $key = array_search($new_date, array_column($data, 'date'));
-              	if(is_numeric($key)) {
-                	$sales_array[$i]['total'] = $data[$key]['total'];
-              	}
-        	}
-		}
-        
+                if (is_numeric($key)) {
+                    $sales_array[$i]['total'] = $data[$key]['total'];
+                }
+            }
+        }
+
         return Response()->json($sales_array);
     }
 
@@ -164,33 +151,30 @@ class ShopController extends Controller
             ->orderBy('num_of_sale', 'desc'))
             ->limit(12)
             ->get();
-            
+
         return new ProductCollection($products);
     }
 
     public function info()
     {
-       // dd(auth()->user()->shop);
         return new ShopDetailsCollection(auth()->user()->shop);
     }
 
     public function pacakge()
     {
-        $shop=auth()->user()->shop;
+        $shop = auth()->user()->shop;
 
         return response()->json([
             'result' => true,
             'id' => $shop->id,
             'package_name' => $shop->seller_package->name,
             'package_img' => uploaded_asset($shop->seller_package->logo)
-            
         ]);
     }
 
     public function profile()
     {
         $user = auth()->user();
-
 
         return response()->json([
             'result' => true,
@@ -201,7 +185,6 @@ class ShopController extends Controller
             'avatar' => $user->avatar,
             'avatar_original' => uploaded_asset($user->avatar_original),
             'phone' => $user->phone
-            
         ]);
     }
 
