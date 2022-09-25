@@ -19,7 +19,6 @@
         "league/flysystem-aws-s3-v3": "^3.0",
         "maatwebsite/excel": "^3.1",
         "niklasravnsborg/laravel-pdf": "^4.0",
-        "osenco/mpesa": "^1.20",
         "predis/predis": "^1.1",
         "simplesoftwareio/simple-qrcode": "^4.2",
         "spatie/db-dumper": "3.3.0",

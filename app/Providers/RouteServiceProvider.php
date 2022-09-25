@@ -55,8 +55,6 @@ class RouteServiceProvider extends ServiceProvider
 
     $this->mapOfflinePaymentRoutes();
 
-    $this->mapAfricanPaymentGatewayRoutes();
-
     $this->mapPosRoutes();
 
     $this->mapSellerPackageRoutes();
@@ -152,20 +150,6 @@ class RouteServiceProvider extends ServiceProvider
     Route::middleware('web')
       ->namespace($this->namespace)
       ->group(base_path('routes/offline_payment.php'));
-  }
-
-  /**
-   * Define the "offline payment" routes for the application.
-   *
-   * These routes all receive session state, CSRF protection, etc.
-   *
-   * @return void
-   */
-  protected function mapAfricanPaymentGatewayRoutes()
-  {
-    Route::middleware('web')
-      ->namespace($this->namespace)
-      ->group(base_path('routes/african_pg.php'));
   }
 
   /**
