@@ -86,20 +86,12 @@
 
 	@yield('modal')
 
-
 	<script src="{{ asset('assets/js/vendors.js') }}"></script>
 	<script src="{{ asset('assets/js/aiz-core.js') }}"></script>
 
 	@yield('script')
 
 	<script type="text/javascript">
-		
-		{{-- 
-			@foreach(session('flash_notification', collect())->toArray() as $message)
-			AIZ.plugins.notify("{{ $message['level '] }}', '{{ $message['message'] }}");
-			@endforeach
-		--}}
-
 
 		if ($('#lang-change').length > 0) {
 			$('#lang-change .dropdown-menu a').each(function() {

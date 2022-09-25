@@ -214,10 +214,9 @@
     gtag('config', 'UA-242712334-1');
     </script>
 
-    @if (get_setting('facebook_pixel') == 1)
     <!-- Facebook Pixel Code -->
     <script>
-        ! function(f, b, e, v, n, t, s) {
+        !function(f, b, e, v, n, t, s) {
             if (f.fbq) return;
             n = f.fbq = function() {
                 n.callMethod ?
@@ -234,16 +233,15 @@
             s = b.getElementsByTagName(e)[0];
             s.parentNode.insertBefore(t, s)
         }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', "{{ env('FACEBOOK_PIXEL_ID ') }}");
+        fbq('init', "1099529614262652");
         fbq('track', 'PageView');
     </script>
     <noscript>
-        <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id={{ env('FACEBOOK_PIXEL_ID') }}&ev=PageView&noscript=1" />
+        <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1099529614262652&ev=PageView&noscript=1" />
     </noscript>
     <!-- End Facebook Pixel Code -->
-    @endif
 
-    @if (get_setting('facebook_chat') == 1)
+    <!-- Facebook Chat Code -->
     <script type="text/javascript">
         window.fbAsyncInit = function() {
             FB.init({
@@ -251,7 +249,6 @@
                 version: 'v3.3'
             });
         };
-
         (function(d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) return;
@@ -262,10 +259,8 @@
         }(document, 'script', 'facebook-jssdk'));
     </script>
     <div id="fb-root"></div>
-    <!-- Your customer chat code -->
-    <div class="fb-customerchat" attribution=setup_tool page_id="{{ env('FACEBOOK_PAGE_ID') }}">
-    </div>
-    @endif
+    <div class="fb-customerchat" attribution=setup_tool page_id="100291932862392"></div>
+    <!-- End Facebook Chat Code -->
 
     <script>
         $(document).ready(function() {
