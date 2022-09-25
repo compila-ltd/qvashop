@@ -29,7 +29,6 @@ use App\Http\Controllers\SupportTicketController;
 use App\Http\Controllers\DigitalProductController;
 use App\Http\Controllers\CustomerPackageController;
 use App\Http\Controllers\CustomerProductController;
-use App\Http\Controllers\Payment\NgeniusController;
 use App\Http\Controllers\PurchaseHistoryController;
 use App\Http\Controllers\Auth\VerificationController;
 
@@ -274,14 +273,6 @@ Route::post('/shops/store', [ShopController::class, 'store'])->name('shops.store
 
 // QvaPay WebHook
 Route::get('/qvapay/payment/pay-success/' . config('qvapay.callback_secret'), [QvaPayController::class, 'success'])->name('payment.qvapay');
-
-//N-genius
-Route::controller(NgeniusController::class)->group(function () {
-    Route::any('ngenius/cart_payment_callback', 'cart_payment_callback')->name('ngenius.cart_payment_callback');
-    Route::any('ngenius/wallet_payment_callback', 'wallet_payment_callback')->name('ngenius.wallet_payment_callback');
-    Route::any('ngenius/customer_package_payment_callback', 'customer_package_payment_callback')->name('ngenius.customer_package_payment_callback');
-    Route::any('ngenius/seller_package_payment_callback', 'seller_package_payment_callback')->name('ngenius.seller_package_payment_callback');
-});
 
 //Blog Section
 Route::controller(BlogController::class)->group(function () {
