@@ -32,7 +32,6 @@ use App\Http\Controllers\CustomerProductController;
 use App\Http\Controllers\Payment\NgeniusController;
 use App\Http\Controllers\PurchaseHistoryController;
 use App\Http\Controllers\Auth\VerificationController;
-use App\Http\Controllers\Payment\SslcommerzController;
 
 /*
   |--------------------------------------------------------------------------
@@ -154,16 +153,6 @@ Route::controller(CartController::class)->group(function () {
     Route::post('/cart/removeFromCart', 'removeFromCart')->name('cart.removeFromCart');
     Route::post('/cart/updateQuantity', 'updateQuantity')->name('cart.updateQuantity');
 });
-
-// SSLCOMMERZ Start
-Route::controller(SslcommerzController::class)->group(function () {
-    Route::get('/sslcommerz/pay', 'index');
-    Route::POST('/sslcommerz/success', 'success');
-    Route::POST('/sslcommerz/fail', 'fail');
-    Route::POST('/sslcommerz/cancel', 'cancel');
-    Route::POST('/sslcommerz/ipn', 'ipn');
-});
-//SSLCOMMERZ END
 
 // Compare
 Route::controller(CompareController::class)->group(function () {

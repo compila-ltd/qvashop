@@ -178,11 +178,6 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function () {
     Route::any('iyzico/callback', 'App\Http\Controllers\Api\V2\IyzicoController@callback')->name('api.iyzico.callback');
     Route::post('iyzico/success', 'App\Http\Controllers\Api\V2\IyzicoController@success')->name('api.iyzico.success');
 
-    Route::get('sslcommerz/begin', 'App\Http\Controllers\Api\V2\SslCommerzController@begin');
-    Route::post('sslcommerz/success', 'App\Http\Controllers\Api\V2\SslCommerzController@payment_success');
-    Route::post('sslcommerz/fail', 'App\Http\Controllers\Api\V2\SslCommerzController@payment_fail');
-    Route::post('sslcommerz/cancel', 'App\Http\Controllers\Api\V2\SslCommerzController@payment_cancel');
-
     Route::any('flutterwave/payment/url', 'App\Http\Controllers\Api\V2\FlutterwaveController@getUrl')->name('api.flutterwave.url');
     Route::any('flutterwave/payment/callback', 'App\Http\Controllers\Api\V2\FlutterwaveController@callback')->name('api.flutterwave.callback');
 

@@ -26,22 +26,6 @@ class PaymentTypesController
 
         if ($list == "online" || $list == "both") {
 
-            if (get_setting('sslcommerz_payment') == 1) {
-                $payment_type = array();
-                $payment_type['payment_type'] = 'sslcommerz_payment';
-                $payment_type['payment_type_key'] = 'sslcommerz';
-                $payment_type['image'] = asset('assets/img/cards/sslcommerz.png');
-                $payment_type['name'] = "Sslcommerz";
-                $payment_type['title'] = "Checkout with Sslcommerz";
-                $payment_type['offline_payment_id'] = 0;
-                $payment_type['details'] = "";
-                if ($mode == 'wallet') {
-                    $payment_type['title'] = "Recharge with Sslcommerz";
-                }
-
-                $payment_types[] = $payment_type;
-            }
-
             if (addon_is_activated('paytm')) {
                 $payment_type = array();
                 $payment_type['payment_type'] = 'paytm';
@@ -57,7 +41,6 @@ class PaymentTypesController
 
                 $payment_types[] = $payment_type;
             }
-
         }
 
         // you cannot recharge wallet by wallet or cash payment

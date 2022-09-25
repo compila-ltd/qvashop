@@ -4,15 +4,14 @@
 
 namespace App\Http\Controllers\Api\V2;
 
-use App\Http\Controllers\OTPVerificationController;
-use App\Models\BusinessSetting;
-use App\Models\Customer;
-use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\User;
+use Illuminate\Http\Request;
+use App\Models\BusinessSetting;
+use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
+use App\Http\Controllers\OTPVerificationController;
 use App\Notifications\AppEmailVerificationNotification;
-use Hash;
-use Socialite;
 
 
 
@@ -45,7 +44,7 @@ class AuthController extends Controller
         }
 
         $user->email_verified_at = null;
-        if($user->email != null){
+        if ($user->email != null) {
             if (BusinessSetting::where('type', 'email_verification')->first()->value != 1) {
                 $user->email_verified_at = date('Y-m-d H:m:s');
             }
@@ -173,7 +172,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        
+
         $user = request()->user();
         $user->tokens()->where('id', $user->currentAccessToken()->id)->delete();
 
@@ -204,8 +203,7 @@ class AuthController extends Controller
                 ]);
                 break;
             case 'google':
-                $social_user = Socialite::driver('google')
-                    ->scopes(['profile', 'email']);
+                $social_user = Socialite::driver('google')->scopes(['profile', 'email']);
                 break;
             default:
                 $social_user = null;
@@ -229,19 +227,19 @@ class AuthController extends Controller
         } else {
 
             $existingUserByMail = User::where('email', $request->email)->first();
-            if($existingUserByMail){
+            if ($existingUserByMail) {
 
                 return response()->json(['result' => false, 'message' => translate('You can not login with this provider'), 'user' => null]);
-            }else{
-                
-            $user = new User([
-                'name' => $request->name,
-                'email' => $request->email,
-                'provider_id' => $request->provider,
-                'email_verified_at' => Carbon::now()
-            ]);
-            $user->save();
-        }
+            } else {
+
+                $user = new User([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'provider_id' => $request->provider,
+                    'email_verified_at' => Carbon::now()
+                ]);
+                $user->save();
+            }
         }
         return $this->loginSuccess($user);
     }
