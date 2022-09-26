@@ -177,14 +177,25 @@ class HomeController extends Controller
         }
     }
 
+    // Load Featured Products
     public function load_featured_section()
     {
-        return view('frontend.partials.featured_products_section');
+        // Cache featured products
+        $featured_products = Cache::remember('featured_products', 3600, function () {
+            return filter_products(Product::where('published', 1)->where('featured', '1'))->limit(12)->get();
+        });
+
+        return view('frontend.partials.featured_products_section', compact('featured_products'));
     }
 
+    // Best Selleing products
     public function load_best_selling_section()
     {
-        return view('frontend.partials.best_selling_section');
+        $best_selling_products = Cache::remember('best_selling_products', 86400, function () {
+            return filter_products(Product::where('published', 1)->orderBy('num_of_sale', 'desc'))->limit(20)->get();
+        });
+
+        return view('frontend.partials.best_selling_section', compact('best_selling_products'));
     }
 
     public function load_auction_products_section()
@@ -195,16 +206,25 @@ class HomeController extends Controller
         return view('auction.frontend.auction_products_section');
     }
 
+    // Home categories
+    // TODO: Optimize the App\Models\Category::find
     public function load_home_categories_section()
     {
-        return view('frontend.partials.home_categories_section');
+        $home_categories = json_decode(get_setting('home_categories'));
+        return view('frontend.partials.home_categories_section', compact('home_categories'));
     }
 
+    // Best Sellers
     public function load_best_sellers_section()
     {
-        return view('frontend.partials.best_sellers_section');
+        $best_selers = Cache::remember('best_selers', 86400, function () {
+            return \App\Models\Shop::where('verification_status', 1)->orderBy('num_of_sale', 'desc')->take(20)->get();
+        });
+
+        return view('frontend.partials.best_sellers_section', compact('best_selers'));
     }
 
+    // Track Order Page
     public function trackOrder(Request $request)
     {
         if ($request->has('order_code')) {
@@ -216,20 +236,25 @@ class HomeController extends Controller
         return view('frontend.track_order');
     }
 
+    // Product Page
     public function product(Request $request, $slug)
     {
-        $detailedProduct = Product::with('reviews', 'brand', 'stocks', 'user', 'user.shop')->where('auction_product', 0)->where('slug', $slug)->where('approved', 1)->first();
+        // Cache product by 5 minutes
+        //$detailedProduct = Product::with('reviews', 'brand', 'stocks', 'user', 'user.shop')->where('auction_product', 0)->where('slug', $slug)->where('approved', 1)->first();
+        $detailedProduct = Cache::remember('product_' . $slug, 300, function () use ($slug) {
+            return Product::with('reviews', 'brand', 'stocks', 'user', 'user.shop')->where('auction_product', 0)->where('slug', $slug)->where('approved', 1)->first();
+        });
 
         $product_queries = ProductQuery::where('product_id', $detailedProduct->id)->where('customer_id', '!=', Auth::id())->latest('id')->paginate(10);
         $total_query = ProductQuery::where('product_id', $detailedProduct->id)->count();
-        
+
         // Pagination using Ajax
         if (request()->ajax()) {
             return Response::json(View::make('frontend.partials.product_query_pagination', array('product_queries' => $product_queries))->render());
         }
-        
+
         if ($detailedProduct != null && $detailedProduct->published) {
-            
+
             if ($request->has('product_referral_code') && addon_is_activated('affiliate_system')) {
                 $affiliate_validation_time = AffiliateConfig::where('type', 'validation_time')->first();
                 $cookie_minute = 30 * 24;
@@ -254,9 +279,15 @@ class HomeController extends Controller
         abort(404);
     }
 
+    // Shop Page
     public function shop($slug)
     {
-        $shop  = Shop::where('slug', $slug)->first();
+        // Cache Shop for 5 minutes
+        //$shop = Shop::where('slug', $slug)->first();
+        $shop = Cache::remember('shop_' . $slug, 300, function () use ($slug) {
+            return Shop::where('slug', $slug)->first();
+        });
+
         if ($shop != null) {
             if ($shop->verification_status != 0) {
                 return view('frontend.seller_shop', compact('shop'));
@@ -267,30 +298,49 @@ class HomeController extends Controller
         abort(404);
     }
 
+    // Filter Shop
     public function filter_shop($slug, $type)
     {
-        $shop  = Shop::where('slug', $slug)->first();
+        // Cache Shop for 5 minutes
+        //$shop  = Shop::where('slug', $slug)->first();
+        $shop = Cache::remember('shop_' . $slug, 300, function () use ($slug) {
+            return Shop::where('slug', $slug)->first();
+        });
+
         if ($shop != null && $type != null) {
             return view('frontend.seller_shop', compact('shop', 'type'));
         }
         abort(404);
     }
 
+    // All Categories
     public function all_categories(Request $request)
     {
-        $categories = Category::where('level', 0)->orderBy('order_level', 'desc')->get();
+        // Cache All categpries by 30 minutes
+        //$categories = Category::where('level', 0)->orderBy('order_level', 'desc')->get();
+        $categories = Cache::remember('all_categories_level_0_ordered', 1800, function () {
+            return Category::where('level', 0)->orderBy('order_level', 'desc')->get();
+        });
+
         return view('frontend.all_category', compact('categories'));
     }
 
+    // All Brands
     public function all_brands(Request $request)
     {
-        $categories = Category::all();
-        return view('frontend.all_brand', compact('categories'));
-    }
+        // Cache All Brands by 30 minutes
+        //$categories = Category::all();
+        $categories = Cache::remember('all_categories', 1800, function () {
+            return Category::all();
+        });
 
-    public function home_settings(Request $request)
-    {
-        return view('home_settings.index');
+        // Cache all brands by 30 minutes
+        //$brands = Brand::all();
+        $brands = Cache::remember('all_brands', 1800, function () {
+            return Brand::all();
+        });
+
+        return view('frontend.all_brand', compact('categories', 'brands'));
     }
 
     public function top_10_settings(Request $request)
