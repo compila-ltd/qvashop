@@ -388,7 +388,7 @@
         $(this).find('.default').addClass('d-none');
         var email = $("input[name=email]").val();
 
-        $.post("{{ route('user.new.verify ') }}", {
+        $.post("{{ route('user.new.verify') }}", {
                 _token: '{{ csrf_token() }}',
                 email: email
             },

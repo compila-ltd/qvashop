@@ -12,7 +12,6 @@ use App\Notifications\EmailVerificationNotification;
 
 class ShopController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('user', ['only' => ['index']]);
@@ -85,6 +84,7 @@ class ShopController extends Controller
         }
 
         if (Shop::where('user_id', $user->id)->first() == null) {
+
             $shop = new Shop;
             $shop->user_id = $user->id;
             $shop->name = $request->name;
@@ -110,32 +110,5 @@ class ShopController extends Controller
 
         flash(translate('Sorry! Something went wrong.'))->error();
         return back();
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    public function destroy($id)
-    {
-        //
     }
 }
