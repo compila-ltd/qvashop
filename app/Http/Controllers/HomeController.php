@@ -218,17 +218,18 @@ class HomeController extends Controller
 
     public function product(Request $request, $slug)
     {
-        $detailedProduct  = Product::with('reviews', 'brand', 'stocks', 'user', 'user.shop')->where('auction_product', 0)->where('slug', $slug)->where('approved', 1)->first();
+        $detailedProduct = Product::with('reviews', 'brand', 'stocks', 'user', 'user.shop')->where('auction_product', 0)->where('slug', $slug)->where('approved', 1)->first();
 
         $product_queries = ProductQuery::where('product_id', $detailedProduct->id)->where('customer_id', '!=', Auth::id())->latest('id')->paginate(10);
         $total_query = ProductQuery::where('product_id', $detailedProduct->id)->count();
+        
         // Pagination using Ajax
         if (request()->ajax()) {
             return Response::json(View::make('frontend.partials.product_query_pagination', array('product_queries' => $product_queries))->render());
         }
-        // End of Pagination using Ajax
-
+        
         if ($detailedProduct != null && $detailedProduct->published) {
+            
             if ($request->has('product_referral_code') && addon_is_activated('affiliate_system')) {
                 $affiliate_validation_time = AffiliateConfig::where('type', 'validation_time')->first();
                 $cookie_minute = 30 * 24;
@@ -240,8 +241,9 @@ class HomeController extends Controller
 
                 $referred_by_user = User::where('referral_code', $request->product_referral_code)->first();
 
-                $affiliateController = new AffiliateController;
-                $affiliateController->processAffiliateStats($referred_by_user->id, 1, 0, 0, 0);
+                // TODO: Implement Affliate System
+                // $affiliateController = new AffiliateController;
+                // $affiliateController->processAffiliateStats($referred_by_user->id, 1, 0, 0, 0);
             }
             if ($detailedProduct->digital == 1) {
                 return view('frontend.digital_product_details', compact('detailedProduct', 'product_queries', 'total_query'));

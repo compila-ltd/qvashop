@@ -15,6 +15,7 @@ use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CompareController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\LanguageController;
@@ -47,6 +48,9 @@ Route::get('/refresh-csrf', function () {
     return csrf_token();
 });
 
+// Sitemap generator
+Route::get('/sitemap-generator', [SitemapController::class, 'generate'])->name('sitemap-generator');
+
 // AIZ Uploader
 Route::controller(AizUploadController::class)->group(function () {
     Route::post('/aiz-uploader', 'show_uploader');
@@ -56,6 +60,7 @@ Route::controller(AizUploadController::class)->group(function () {
     Route::get('/aiz-uploader/download/{id}', 'attachment_download')->name('download_attachment');
 });
 
+// Auth ROutes
 Auth::routes(['verify' => true]);
 
 // Login
@@ -65,12 +70,14 @@ Route::controller(LoginController::class)->group(function () {
     Route::get('/social-login/{provider}/callback', 'handleProviderCallback')->name('social.callback');
 });
 
+// Email Verification
 Route::controller(VerificationController::class)->group(function () {
     //TODO Route::get('/email/resend', 'resend')->name('verification.resend');
     Route::get('/verification-confirmation/{code}', 'verification_confirmation')->name('email.verification.confirmation');
 });
 
 Route::controller(HomeController::class)->group(function () {
+
     Route::get('/email_change/callback', 'email_change_callback')->name('email_change.callback');
     //TODO Route::post('/password/reset/email/submit', 'reset_password_with_code')->name('password.update');
     Route::get('/users/login', 'login')->name('user.login');
@@ -122,10 +129,6 @@ Route::post('/language', [LanguageController::class, 'changeLanguage'])->name('l
 // Currency Switch
 Route::post('/currency', [CurrencyController::class, 'changeCurrency'])->name('currency.change');
 
-Route::get('/sitemap.xml', function () {
-    return base_path('sitemap.xml');
-});
-
 // Classified Product
 Route::controller(CustomerProductController::class)->group(function () {
     Route::get('/customer-products', 'customer_products_listing')->name('customer.products');
@@ -176,7 +179,7 @@ Route::group(['middleware' => ['user', 'verified', 'unbanned']], function () {
 
 Route::group(['middleware' => ['customer', 'verified', 'unbanned']], function () {
 
-    // Checkout Routs
+    // Checkout Routes
     Route::group(['prefix' => 'checkout'], function () {
         Route::controller(CheckoutController::class)->group(function () {
             Route::get('/', 'get_shipping_info')->name('checkout.shipping_info');
@@ -280,9 +283,8 @@ Route::controller(BlogController::class)->group(function () {
     Route::get('/blog/{slug}', 'blog_details')->name('blog.details');
 });
 
+// Static Pages
 Route::controller(PageController::class)->group(function () {
-    //mobile app balnk page for webview
     Route::get('/mobile-page/{slug}', 'mobile_custom_page')->name('mobile.custom-pages');
-    //Custom page
     Route::get('/{slug}', 'show_custom_page')->name('custom-pages.show_custom_page');
 });
