@@ -516,7 +516,7 @@ class HomeController extends Controller
     public function privacypolicy()
     {
         // cache this for a week
-        $page = Cache::remember('privacy_policy_page', 10080, function () use ($page) {
+        $page = Cache::remember('privacy_policy_page', 10080, function () {
             return Page::where('type', 'privacy_policy_page')->first();
         });
 
@@ -549,7 +549,11 @@ class HomeController extends Controller
     // premium Package index
     public function premium_package_index()
     {
-        $customer_packages = CustomerPackage::all();
+        // Cache this for a day
+        $customer_packages = Cache::remember('premium_packages', 1440, function () {
+            return CustomerPackage::all();
+        });
+        
         return view('frontend.user.customer_packages_lists', compact('customer_packages'));
     }
 
