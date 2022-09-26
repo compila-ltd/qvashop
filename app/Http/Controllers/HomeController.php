@@ -462,33 +462,58 @@ class HomeController extends Controller
         );
     }
 
+    // Seller Policy
     public function sellerpolicy()
     {
-        $page =  Page::where('type', 'seller_policy_page')->first();
+        // cache this for a week
+        $policy = Cache::remember('seller_policy_page', 10080, function () {
+            return Page::where('slug', 'seller_policy_page')->first();
+        });
+        
         return view("frontend.policies.sellerpolicy", compact('page'));
     }
 
+    // Return Policy
     public function returnpolicy()
     {
-        $page =  Page::where('type', 'return_policy_page')->first();
+        // cache this for a week
+        $page = Cache::remember('return_policy_page', 10080, function () {
+            return Page::where('type', 'return_policy_page')->first();
+        });
+
         return view("frontend.policies.returnpolicy", compact('page'));
     }
 
+    // Support Policy
     public function supportpolicy()
     {
-        $page =  Page::where('type', 'support_policy_page')->first();
+        // cache this for a week
+        $page = Cache::remember('support_policy_page', 10080, function () {
+            return Page::where('type', 'support_policy_page')->first();
+        });
+
         return view("frontend.policies.supportpolicy", compact('page'));
     }
 
+    // Terms
     public function terms()
     {
-        $page =  Page::where('type', 'terms_conditions_page')->first();
+        // cache this for a week
+        $page = Cache::remember('terms_page', 10080, function () {
+            return Page::where('type', 'terms_conditions_page')->first();
+        });
+
         return view("frontend.policies.terms", compact('page'));
     }
 
+    // Privacy Policy
     public function privacypolicy()
     {
-        $page =  Page::where('type', 'privacy_policy_page')->first();
+        // cache this for a week
+        $page = Cache::remember('privacy_policy_page', 10080, function () use ($page) {
+            return Page::where('type', 'privacy_policy_page')->first();
+        });
+
         return view("frontend.policies.privacypolicy", compact('page'));
     }
 
