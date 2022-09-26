@@ -2,16 +2,10 @@
 
 namespace App\Http\Controllers\Api\V2\Seller;
 
-use App\Http\Resources\V2\Seller\SellerPackageResource;
 use Illuminate\Http\Request;
 use App\Models\SellerPackage;
 use App\Models\SellerPackagePayment;
-use App\Models\Seller;
-use App\Models\Order;
-use App\Utility\PayfastUtility;
-use Auth;
-use Session;
-use Carbon\Carbon;
+use App\Http\Resources\V2\Seller\SellerPackageResource;
 
 class SellerPackageController extends Controller
 {
@@ -49,7 +43,7 @@ class SellerPackageController extends Controller
         $seller_package = SellerPackage::findOrFail($request->package_id);
 
         if (
-           auth()->user()->shop->seller_package != null &&
+            auth()->user()->shop->seller_package != null &&
             $seller_package->product_upload_limit < auth()->user()->shop->seller_package->product_upload_limit
         ) {
             return $this->failed(translate('You have more uploaded products than this package limit. You need to remove excessive products to downgrade.'));

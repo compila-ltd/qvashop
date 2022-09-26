@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Seller;
-use App\Models\User;
 use App\Models\Shop;
-use App\Models\Product;
+use App\Models\User;
 use App\Models\Order;
+use App\Models\Seller;
+use App\Models\Product;
 use App\Models\OrderDetail;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cache;
 use App\Notifications\EmailVerificationNotification;
-use Cache;
 
 class SellerController extends Controller
 {

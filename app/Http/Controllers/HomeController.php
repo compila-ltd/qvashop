@@ -19,6 +19,7 @@ use App\Models\AffiliateConfig;
 use App\Models\CustomerPackage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
@@ -167,9 +168,14 @@ class HomeController extends Controller
         return back();
     }
 
+    // Flash Deals
     public function flash_deal_details($slug)
     {
-        $flash_deal = FlashDeal::where('slug', $slug)->first();
+        // Cache this for 5 minutes
+        $flash_deal = Cache::remember('flash_deal_details_' . $slug, 300, function () use ($slug) {
+            return FlashDeal::where('slug', $slug)->first();
+        });
+
         if ($flash_deal != null)
             return view('frontend.flash_deal_details', compact('flash_deal'));
         else {
@@ -469,7 +475,7 @@ class HomeController extends Controller
         $policy = Cache::remember('seller_policy_page', 10080, function () {
             return Page::where('slug', 'seller_policy_page')->first();
         });
-        
+
         return view("frontend.policies.sellerpolicy", compact('page'));
     }
 
@@ -517,31 +523,35 @@ class HomeController extends Controller
         return view("frontend.policies.privacypolicy", compact('page'));
     }
 
+    // Pick up Points
     public function get_pick_up_points(Request $request)
     {
-        $pick_up_points = PickupPoint::all();
+        // Cache this for a week
+        $pick_up_points = Cache::remember('pick_up_points', 10080, function () {
+            return PickUpPoint::all();
+        });
+
         return view('frontend.partials.pick_up_points', compact('pick_up_points'));
     }
 
+    // Category Items
+    // TODO: Cleanup nested foreachs
     public function get_category_items(Request $request)
     {
-        $category = Category::findOrFail($request->id);
+        // Cache for 5 minutes
+        $category = Cache::remember('category_items_' . $request->id, 300, function () use ($request) {
+            return Category::findOrFail($request->id);
+        });
+
         return view('frontend.partials.category_elements', compact('category'));
     }
 
+    // premium Package index
     public function premium_package_index()
     {
         $customer_packages = CustomerPackage::all();
         return view('frontend.user.customer_packages_lists', compact('customer_packages'));
     }
-
-    // public function new_page()
-    // {
-    //     $user = User::where('user_type', 'admin')->first();
-    //     auth()->login($user);
-    //     return redirect()->route('admin.dashboard');
-
-    // }
 
 
     // Ajax call
@@ -573,6 +583,7 @@ class HomeController extends Controller
         return back();
     }
 
+    // Email verification
     public function send_email_change_verification_mail($request, $email)
     {
         $response['status'] = 0;
@@ -605,6 +616,7 @@ class HomeController extends Controller
         return $response;
     }
 
+    // Email change Callback
     public function email_change_callback(Request $request)
     {
         if ($request->has('new_email_verificiation_code') && $request->has('email')) {
@@ -631,6 +643,7 @@ class HomeController extends Controller
         return redirect()->route('dashboard');
     }
 
+    // Reset Password
     public function reset_password_with_code(Request $request)
     {
 
@@ -658,37 +671,46 @@ class HomeController extends Controller
         }
     }
 
-
+    // All Flash Deals
     public function all_flash_deals()
     {
         $today = strtotime(date('Y-m-d H:i:s'));
 
-        $data['all_flash_deals'] = FlashDeal::where('status', 1)
-            ->where('start_date', "<=", $today)
-            ->where('end_date', ">", $today)
-            ->orderBy('created_at', 'desc')
-            ->get();
+        // Cache all flash deals
+        $flash_deals = Cache::remember('all_flash_deals', 10080, function () use ($today) {
+            return FlashDeal::where('status', 1)
+                ->where('start_date', "<=", $today)
+                ->where('end_date', ">", $today)
+                ->orderBy('created_at', 'desc')
+                ->get();
+        });
+
+        // return as arrey data
+        $data['all_flash_deals'] = $flash_deals;
 
         return view("frontend.flash_deal.all_flash_deal_list", $data);
     }
 
+    // Sellers
     public function all_seller(Request $request)
     {
-        $shops = Shop::whereIn('user_id', verified_sellers_id())
-            ->paginate(15);
+        $shops = Shop::whereIn('user_id', verified_sellers_id())->paginate(15);
 
         return view('frontend.shop_listing', compact('shops'));
     }
 
+    // Coupons
     public function all_coupons(Request $request)
     {
         $coupons = Coupon::where('start_date', '<=', strtotime(date('d-m-Y')))->where('end_date', '>=', strtotime(date('d-m-Y')))->paginate(15);
         return view('frontend.coupons', compact('coupons'));
     }
 
+    // Inhouse Products
     public function inhouse_products(Request $request)
     {
         $products = filter_products(Product::where('added_by', 'admin'))->with('taxes')->paginate(12)->appends(request()->query());
+
         return view('frontend.inhouse_products', compact('products'));
     }
 }
