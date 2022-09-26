@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Category;
-use App\Models\Brand;
 use App\Models\User;
-use App\Models\ProductsImport;
+use App\Models\Brand;
+use App\Models\Category;
+use Illuminate\Http\Request;
 use App\Models\ProductsExport;
-use PDF;
-use Excel;
-use Auth;
+use App\Models\ProductsImport;
+use Illuminate\Support\Facades\Auth;
 
 class ProductBulkUploadController extends Controller
 {
