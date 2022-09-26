@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row gutters-10 position-relative">
             <div class="col-lg-3 position-static d-none d-lg-block">
-                @include('frontend.partials.category_menu')
+                <x-frontend.partials.category-menu />
             </div>
 
             @php
