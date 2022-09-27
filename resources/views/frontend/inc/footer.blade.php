@@ -36,9 +36,9 @@
                 <div class="mt-4">
                     <a href="{{ route('home') }}" class="d-block">
                         @if(get_setting('footer_logo') != null)
-                            <img class="lazyload" src="{{ asset('assets/img/placeholder-rect.jpg') }}" data-src="{{ uploaded_asset(get_setting('footer_logo')) }}" alt="{{ env('APP_NAME') }}" height="44">
+                        <img class="lazyload" src="{{ asset('assets/img/placeholder-rect.jpg') }}" data-src="{{ uploaded_asset(get_setting('footer_logo')) }}" alt="{{ env('APP_NAME') }}" height="44">
                         @else
-                            <img class="lazyload" src="{{ asset('assets/img/placeholder-rect.jpg') }}" data-src="{{ asset('assets/img/logo.png') }}" alt="{{ env('APP_NAME') }}" height="44">
+                        <img class="lazyload" src="{{ asset('assets/img/placeholder-rect.jpg') }}" data-src="{{ asset('assets/img/logo.png') }}" alt="{{ env('APP_NAME') }}" height="44">
                         @endif
                     </a>
                     <div class="my-3">
@@ -57,14 +57,14 @@
                     </div>
                     <div class="w-300px mw-100 mx-auto mx-md-0">
                         @if(get_setting('play_store_link') != null)
-                            <a href="{{ get_setting('play_store_link') }}" target="_blank" class="d-inline-block mr-3 ml-0">
-                                <img src="{{ asset('assets/img/play.png') }}" class="mx-100 h-40px">
-                            </a>
+                        <a href="{{ get_setting('play_store_link') }}" target="_blank" class="d-inline-block mr-3 ml-0">
+                            <img src="{{ asset('assets/img/play.png') }}" class="mx-100 h-40px">
+                        </a>
                         @endif
                         @if(get_setting('app_store_link') != null)
-                            <a href="{{ get_setting('app_store_link') }}" target="_blank" class="d-inline-block">
-                                <img src="{{ asset('assets/img/app.png') }}" class="mx-100 h-40px">
-                            </a>
+                        <a href="{{ get_setting('app_store_link') }}" target="_blank" class="d-inline-block">
+                            <img src="{{ asset('assets/img/app.png') }}" class="mx-100 h-40px">
+                        </a>
                         @endif
                     </div>
                 </div>
@@ -76,17 +76,17 @@
                     </h4>
                     <ul class="list-unstyled">
                         <li class="mb-2">
-                           <span class="d-block opacity-30">{{ translate('Address') }}:</span>
-                           <span class="d-block opacity-70">{{ get_setting('contact_address',null,App::getLocale()) }}</span>
+                            <span class="d-block opacity-30">{{ translate('Address') }}:</span>
+                            <span class="d-block opacity-70">{{ get_setting('contact_address',null,App::getLocale()) }}</span>
                         </li>
                         <li class="mb-2">
-                           <span class="d-block opacity-30">{{translate('Phone')}}:</span>
-                           <span class="d-block opacity-70">{{ get_setting('contact_phone') }}</span>
+                            <span class="d-block opacity-30">{{translate('Phone')}}:</span>
+                            <span class="d-block opacity-70">{{ get_setting('contact_phone') }}</span>
                         </li>
                         <li class="mb-2">
-                           <span class="d-block opacity-30">{{translate('Email')}}:</span>
-                           <span class="d-block opacity-70">
-                               <a href="mailto:{{ get_setting('contact_email') }}" class="text-reset">{{ get_setting('contact_email')  }}</a>
+                            <span class="d-block opacity-30">{{translate('Email')}}:</span>
+                            <span class="d-block opacity-70">
+                                <a href="mailto:{{ get_setting('contact_email') }}" class="text-reset">{{ get_setting('contact_email')  }}</a>
                             </span>
                         </li>
                     </ul>
@@ -98,14 +98,14 @@
                         {{ get_setting('widget_one',null,App::getLocale()) }}
                     </h4>
                     <ul class="list-unstyled">
-                        @if ( get_setting('widget_one_labels',null,App::getLocale()) !=  null )
-                            @foreach (json_decode( get_setting('widget_one_labels',null,App::getLocale()), true) as $key => $value)
-                            <li class="mb-2">
-                                <a href="{{ json_decode( get_setting('widget_one_links'), true)[$key] }}" class="opacity-50 hov-opacity-100 text-reset">
-                                    {{ $value }}
-                                </a>
-                            </li>
-                            @endforeach
+                        @if (get_setting('widget_one_labels',null,App::getLocale()) != null)
+                        @foreach (json_decode( get_setting('widget_one_labels',null,App::getLocale()), true) as $key => $value)
+                        <li class="mb-2">
+                            <a href="{{ json_decode( get_setting('widget_one_links'), true)[$key] }}" class="opacity-50 hov-opacity-100 text-reset">
+                                {{ $value }}
+                            </a>
+                        </li>
+                        @endforeach
                         @endif
                     </ul>
                 </div>
@@ -118,17 +118,17 @@
                     </h4>
                     <ul class="list-unstyled">
                         @if (Auth::check())
-                            <li class="mb-2">
-                                <a class="opacity-50 hov-opacity-100 text-reset" href="{{ route('logout') }}">
-                                    {{ translate('Logout') }}
-                                </a>
-                            </li>
+                        <li class="mb-2">
+                            <a class="opacity-50 hov-opacity-100 text-reset" href="{{ route('logout') }}">
+                                {{ translate('Logout') }}
+                            </a>
+                        </li>
                         @else
-                            <li class="mb-2">
-                                <a class="opacity-50 hov-opacity-100 text-reset" href="{{ route('user.login') }}">
-                                    {{ translate('Login') }}
-                                </a>
-                            </li>
+                        <li class="mb-2">
+                            <a class="opacity-50 hov-opacity-100 text-reset" href="{{ route('user.login') }}">
+                                {{ translate('Login') }}
+                            </a>
+                        </li>
                         @endif
                         <li class="mb-2">
                             <a class="opacity-50 hov-opacity-100 text-reset" href="{{ route('purchase_history.index') }}">
@@ -146,21 +146,21 @@
                             </a>
                         </li>
                         @if (addon_is_activated('affiliate_system'))
-                            <li class="mb-2">
-                                <a class="opacity-50 hov-opacity-100 text-light" href="{{ route('affiliate.apply') }}">{{ translate('Be an affiliate partner')}}</a>
-                            </li>
+                        <li class="mb-2">
+                            <a class="opacity-50 hov-opacity-100 text-light" href="{{ route('affiliate.apply') }}">{{ translate('Be an affiliate partner')}}</a>
+                        </li>
                         @endif
                     </ul>
                 </div>
                 @if (get_setting('vendor_system_activation') == 1)
-                    <div class="text-center text-md-left mt-4">
-                        <h4 class="fs-13 text-uppercase fw-600 border-bottom border-gray-900 pb-2 mb-4">
-                            {{ translate('Be a Seller') }}
-                        </h4>
-                        <a href="{{ route('shops.create') }}" class="btn btn-primary btn-sm shadow-md">
-                            {{ translate('Apply Now') }}
-                        </a>
-                    </div>
+                <div class="text-center text-md-left mt-4">
+                    <h4 class="fs-13 text-uppercase fw-600 border-bottom border-gray-900 pb-2 mb-4">
+                        {{ translate('Be a Seller') }}
+                    </h4>
+                    <a href="{{ route('shops.create') }}" class="btn btn-primary btn-sm shadow-md">
+                        {{ translate('Apply Now') }}
+                    </a>
+                </div>
                 @endif
             </div>
         </div>
@@ -177,31 +177,36 @@
                 </div>
             </div>
             <div class="col-lg-4">
-                @if ( get_setting('show_social_links') )
+                @if (get_setting('show_social_links'))
                 <ul class="list-inline my-3 my-md-0 social colored text-center">
-                    @if ( get_setting('facebook_link') !=  null )
+                    @if (get_setting('facebook_link') != null)
                     <li class="list-inline-item">
                         <a href="{{ get_setting('facebook_link') }}" target="_blank" class="facebook"><i class="lab la-facebook-f"></i></a>
                     </li>
                     @endif
-                    @if ( get_setting('twitter_link') !=  null )
+                    @if (get_setting('twitter_link') != null)
                     <li class="list-inline-item">
                         <a href="{{ get_setting('twitter_link') }}" target="_blank" class="twitter"><i class="lab la-twitter"></i></a>
                     </li>
                     @endif
-                    @if ( get_setting('instagram_link') !=  null )
+                    @if (get_setting('instagram_link') != null)
                     <li class="list-inline-item">
                         <a href="{{ get_setting('instagram_link') }}" target="_blank" class="instagram"><i class="lab la-instagram"></i></a>
                     </li>
                     @endif
-                    @if ( get_setting('youtube_link') !=  null )
+                    @if (get_setting('youtube_link') != null)
                     <li class="list-inline-item">
                         <a href="{{ get_setting('youtube_link') }}" target="_blank" class="youtube"><i class="lab la-youtube"></i></a>
                     </li>
                     @endif
-                    @if ( get_setting('linkedin_link') !=  null )
+                    @if (get_setting('linkedin_link') != null)
                     <li class="list-inline-item">
                         <a href="{{ get_setting('linkedin_link') }}" target="_blank" class="linkedin"><i class="lab la-linkedin-in"></i></a>
+                    </li>
+                    @endif
+                    @if (get_setting('telegram_link') != null)
+                    <li class="list-inline-item">
+                        <a href="{{ get_setting('telegram_link') }}" target="_blank" class="telegram"><i class="lab la-telegram"></i></a>
                     </li>
                     @endif
                 </ul>
@@ -210,12 +215,12 @@
             <div class="col-lg-4">
                 <div class="text-center text-md-right">
                     <ul class="list-inline mb-0">
-                        @if ( get_setting('payment_method_images') !=  null )
-                            @foreach (explode(',', get_setting('payment_method_images')) as $key => $value)
-                                <li class="list-inline-item">
-                                    <img src="{{ uploaded_asset($value) }}" height="30" class="mw-100 h-auto" style="max-height: 30px">
-                                </li>
-                            @endforeach
+                        @if ( get_setting('payment_method_images') != null )
+                        @foreach (explode(',', get_setting('payment_method_images')) as $key => $value)
+                        <li class="list-inline-item">
+                            <img src="{{ uploaded_asset($value) }}" height="30" class="mw-100 h-auto" style="max-height: 30px">
+                        </li>
+                        @endforeach
                         @endif
                     </ul>
                 </div>
@@ -240,15 +245,15 @@
             </a>
         </div>
         @php
-            if(auth()->user() != null) {
-                $user_id = Auth::user()->id;
-                $cart = \App\Models\Cart::where('user_id', $user_id)->get();
-            } else {
-                $temp_user_id = Session()->get('temp_user_id');
-                if($temp_user_id) {
-                    $cart = \App\Models\Cart::where('temp_user_id', $temp_user_id)->get();
-                }
-            }
+        if(auth()->user() != null) {
+        $user_id = Auth::user()->id;
+        $cart = \App\Models\Cart::where('user_id', $user_id)->get();
+        } else {
+        $temp_user_id = Session()->get('temp_user_id');
+        if($temp_user_id) {
+        $cart = \App\Models\Cart::where('temp_user_id', $temp_user_id)->get();
+        }
+        }
         @endphp
         <div class="col-auto">
             <a href="{{ route('cart') }}" class="text-reset d-block text-center pb-2 pt-3">
@@ -258,7 +263,7 @@
                 <span class="d-block mt-1 fs-10 fw-600 opacity-60 {{ areActiveRoutes(['cart'],'opacity-100 fw-600')}}">
                     {{ translate('Cart') }}
                     @php
-                        $count = (isset($cart) && count($cart)) ? count($cart) : 0;
+                    $count = (isset($cart) && count($cart)) ? count($cart) : 0;
                     @endphp
                     (<span class="cart-count">{{$count}}</span>)
                 </span>
@@ -269,53 +274,53 @@
                 <span class="d-inline-block position-relative px-2">
                     <i class="las la-bell fs-20 opacity-60 {{ areActiveRoutes(['all-notifications'],'opacity-100 text-primary')}}"></i>
                     @if(Auth::check() && count(Auth::user()->unreadNotifications) > 0)
-                        <span class="badge badge-sm badge-dot badge-circle badge-primary position-absolute absolute-top-right" style="right: 7px;top: -2px;"></span>
+                    <span class="badge badge-sm badge-dot badge-circle badge-primary position-absolute absolute-top-right" style="right: 7px;top: -2px;"></span>
                     @endif
                 </span>
                 <span class="d-block fs-10 fw-600 opacity-60 {{ areActiveRoutes(['all-notifications'],'opacity-100 fw-600')}}">{{ translate('Notifications') }}</span>
             </a>
         </div>
         <div class="col">
-        @if (Auth::check())
+            @if (Auth::check())
             @if(isAdmin())
-                <a href="{{ route('admin.dashboard') }}" class="text-reset d-block text-center pb-2 pt-3">
-                    <span class="d-block mx-auto">
-                        @if(Auth::user()->photo != null)
-                            <img src="{{ custom_asset(Auth::user()->avatar_original)}}" class="rounded-circle size-20px">
-                        @else
-                            <img src="{{ asset('assets/img/avatar-place.png') }}" class="rounded-circle size-20px">
-                        @endif
-                    </span>
-                    <span class="d-block fs-10 fw-600 opacity-60">{{ translate('Account') }}</span>
-                </a>
+            <a href="{{ route('admin.dashboard') }}" class="text-reset d-block text-center pb-2 pt-3">
+                <span class="d-block mx-auto">
+                    @if(Auth::user()->photo != null)
+                    <img src="{{ custom_asset(Auth::user()->avatar_original)}}" class="rounded-circle size-20px">
+                    @else
+                    <img src="{{ asset('assets/img/avatar-place.png') }}" class="rounded-circle size-20px">
+                    @endif
+                </span>
+                <span class="d-block fs-10 fw-600 opacity-60">{{ translate('Account') }}</span>
+            </a>
             @else
-                <a href="javascript:void(0)" class="text-reset d-block text-center pb-2 pt-3 mobile-side-nav-thumb" data-toggle="class-toggle" data-backdrop="static" data-target=".aiz-mobile-side-nav">
-                    <span class="d-block mx-auto">
-                        @if(Auth::user()->photo != null)
-                            <img src="{{ custom_asset(Auth::user()->avatar_original)}}" class="rounded-circle size-20px">
-                        @else
-                            <img src="{{ asset('assets/img/avatar-place.png') }}" class="rounded-circle size-20px">
-                        @endif
-                    </span>
-                    <span class="d-block fs-10 fw-600 opacity-60">{{ translate('Account') }}</span>
-                </a>
+            <a href="javascript:void(0)" class="text-reset d-block text-center pb-2 pt-3 mobile-side-nav-thumb" data-toggle="class-toggle" data-backdrop="static" data-target=".aiz-mobile-side-nav">
+                <span class="d-block mx-auto">
+                    @if(Auth::user()->photo != null)
+                    <img src="{{ custom_asset(Auth::user()->avatar_original)}}" class="rounded-circle size-20px">
+                    @else
+                    <img src="{{ asset('assets/img/avatar-place.png') }}" class="rounded-circle size-20px">
+                    @endif
+                </span>
+                <span class="d-block fs-10 fw-600 opacity-60">{{ translate('Account') }}</span>
+            </a>
             @endif
-        @else
+            @else
             <a href="{{ route('user.login') }}" class="text-reset d-block text-center pb-2 pt-3">
                 <span class="d-block mx-auto">
                     <img src="{{ asset('assets/img/avatar-place.png') }}" class="rounded-circle size-20px">
                 </span>
                 <span class="d-block fs-10 fw-600 opacity-60">{{ translate('Account') }}</span>
             </a>
-        @endif
+            @endif
         </div>
     </div>
 </div>
 @if (Auth::check() && !isAdmin())
-    <div class="aiz-mobile-side-nav collapse-sidebar-wrap sidebar-xl d-xl-none z-1035">
-        <div class="overlay dark c-pointer overlay-fixed" data-toggle="class-toggle" data-backdrop="static" data-target=".aiz-mobile-side-nav" data-same=".mobile-side-nav-thumb"></div>
-        <div class="collapse-sidebar bg-white">
-            @include('frontend.inc.user_side_nav')
-        </div>
+<div class="aiz-mobile-side-nav collapse-sidebar-wrap sidebar-xl d-xl-none z-1035">
+    <div class="overlay dark c-pointer overlay-fixed" data-toggle="class-toggle" data-backdrop="static" data-target=".aiz-mobile-side-nav" data-same=".mobile-side-nav-thumb"></div>
+    <div class="collapse-sidebar bg-white">
+        @include('frontend.inc.user_side_nav')
     </div>
+</div>
 @endif

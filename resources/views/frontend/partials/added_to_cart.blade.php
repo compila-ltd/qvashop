@@ -7,7 +7,7 @@
         <img src="{{ asset('assets/img/placeholder.jpg') }}" data-src="{{ uploaded_asset($product->thumbnail_img) }}" class="mr-3 lazyload size-100px img-fit rounded" alt="Product Image">
         <div class="media-body pt-3 text-left">
             <h6 class="fw-600">
-                {{  $product->getTranslation('name')  }}
+                {{ $product->getTranslation('name')  }}
             </h6>
             <div class="row mt-3">
                 <div class="col-sm-2 opacity-60">
@@ -30,25 +30,19 @@
             </h3>
         </div>
         <div class="p-3">
-            <div class="aiz-carousel gutters-5 half-outside-arrow" data-items="2" data-xl-items="3" data-lg-items="4"  data-md-items="3" data-sm-items="2" data-xs-items="2" data-arrows='true' data-infinite='true'>
+            <div class="aiz-carousel gutters-5 half-outside-arrow" data-items="2" data-xl-items="3" data-lg-items="4" data-md-items="3" data-sm-items="2" data-xs-items="2" data-arrows='true' data-infinite='true'>
                 @foreach (filter_products(\App\Models\Product::where('category_id', $product->category_id)->where('id', '!=', $product->id))->limit(10)->get() as $key => $related_product)
                 <div class="carousel-box">
                     <div class="aiz-card-box border border-light rounded hov-shadow-md my-2 has-transition">
                         <div class="">
                             <a href="{{ route('product', $related_product->slug) }}" class="d-block">
-                                <img
-                                    class="img-fit lazyload mx-auto h-140px h-md-210px"
-                                    src="{{ asset('assets/img/placeholder.jpg') }}"
-                                    data-src="{{ uploaded_asset($related_product->thumbnail_img) }}"
-                                    alt="{{ $related_product->getTranslation('name') }}"
-                                    onerror="this.onerror=null;this.src='{{ asset('assets/img/placeholder.jpg') }}';"
-                                >
+                                <img class="img-fit lazyload mx-auto h-140px h-md-210px" src="{{ asset('assets/img/placeholder.jpg') }}" data-src="{{ uploaded_asset($related_product->thumbnail_img) }}" alt="{{ $related_product->getTranslation('name') }}">
                             </a>
                         </div>
                         <div class="p-md-3 p-2 text-left">
                             <div class="fs-15">
                                 @if(home_base_price($related_product) != home_discounted_base_price($related_product))
-                                    <del class="fw-600 opacity-50 mr-1">{{ home_base_price($related_product) }}</del>
+                                <del class="fw-600 opacity-50 mr-1">{{ home_base_price($related_product) }}</del>
                                 @endif
                                 <span class="fw-700 text-primary">{{ home_discounted_base_price($related_product) }}</span>
                             </div>
@@ -59,10 +53,10 @@
                                 <a href="{{ route('product', $related_product->slug) }}" class="d-block text-reset">{{ $related_product->getTranslation('name') }}</a>
                             </h3>
                             @if (addon_is_activated('club_point'))
-                                <div class="rounded px-2 mt-2 bg-soft-primary border-soft-primary border">
-                                    {{ translate('Club Point') }}:
-                                    <span class="fw-700 float-right">{{ $related_product->earn_point }}</span>
-                                </div>
+                            <div class="rounded px-2 mt-2 bg-soft-primary border-soft-primary border">
+                                {{ translate('Club Point') }}:
+                                <span class="fw-700 float-right">{{ $related_product->earn_point }}</span>
+                            </div>
                             @endif
                         </div>
                     </div>

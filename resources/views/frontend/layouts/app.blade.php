@@ -129,9 +129,7 @@
 
         <!-- Header -->
         @include('frontend.inc.nav')
-
         @yield('content')
-
         @include('frontend.inc.footer')
 
     </div>
@@ -192,7 +190,6 @@
                     <span aria-hidden="true" class="la-2x">&times;</span>
                 </button>
                 <div id="addToCart-modal-body">
-
                 </div>
             </div>
         </div>
@@ -232,7 +229,7 @@
             t.src = v;
             s = b.getElementsByTagName(e)[0];
             s.parentNode.insertBefore(t, s)
-        }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+        }(window, document, 'script', "https://connect.facebook.net/{{ getFullLocale(App::getLocale()) }}/fbevents.js");
         fbq('init', "1099529614262652");
         fbq('track', 'PageView');
     </script>
@@ -254,7 +251,7 @@
             if (d.getElementById(id)) return;
             js = d.createElement(s);
             js.id = id;
-            js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+            js.src = "https://connect.facebook.net/{{ getFullLocale(App::getLocale()) }}/sdk/xfbml.customerchat.js";
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
     </script>

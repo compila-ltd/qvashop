@@ -743,6 +743,18 @@ if (!function_exists('renderStarRating')) {
     }
 }
 
+if (!function_exists('getFullLocale')) {
+    function getFullLocale($locale)
+    {
+        $locales = [
+            'en' => 'en_US',
+            'es' => 'es_ES'
+        ];
+
+        return $locales[$locale];
+    }
+}
+
 function translate($key, $lang = null, $addslashes = false)
 {
     if ($lang == null) {
@@ -1167,9 +1179,11 @@ if (!function_exists('isUnique')) {
     }
 }
 
+// Get a setting value from business_settings table
 if (!function_exists('get_setting')) {
     function get_setting($key, $default = null, $lang = false)
     {
+        // Cache this setting for 24 hours
         $settings = Cache::remember('business_settings', 86400, function () {
             return BusinessSetting::all();
         });
