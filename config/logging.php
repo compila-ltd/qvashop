@@ -36,7 +36,8 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['daily', 'slack'],
+            'channels' => ['sentry', 'slack'],
+            'ignore_exceptions' => false,
         ],
 
         'single' => [
@@ -57,7 +58,7 @@ return [
             'url' => env('LOG_SLACK_WEBHOOK_URL'),
             'username' => 'Laravel Log',
             'emoji' => ':boom:',
-            'level' => 'critical',
+            'level' => env('LOG_LEVEL', 'info'),
         ],
 
         'papertrail' => [
@@ -86,6 +87,12 @@ return [
         'errorlog' => [
             'driver' => 'errorlog',
             'level' => 'debug',
+        ],
+
+        'sentry' => [
+            'driver' => 'sentry',
+            'level'  => 'debug',
+            'bubble' => true,
         ],
     ],
 

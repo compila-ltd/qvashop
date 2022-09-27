@@ -43,12 +43,12 @@ class AizUploadController extends Controller
 
         $all_uploads = $all_uploads->paginate(60)->appends(request()->query());
 
-
         return (auth()->user()->user_type == 'seller')
             ? view('seller.uploads.index', compact('all_uploads', 'search', 'sort_by'))
             : view('backend.uploaded_files.index', compact('all_uploads', 'search', 'sort_by'));
     }
 
+    // Create a n upload File
     public function create()
     {
         return (auth()->user()->user_type == 'seller')
@@ -62,6 +62,7 @@ class AizUploadController extends Controller
         return view('uploader.aiz-uploader');
     }
 
+    // Allowed Uploads
     public function upload(Request $request)
     {
         $type = array(
@@ -172,6 +173,7 @@ class AizUploadController extends Controller
         }
     }
 
+    // get uploaded File
     public function get_uploaded_files(Request $request)
     {
         $uploads = Upload::where('user_id', Auth::user()->id);
@@ -200,6 +202,7 @@ class AizUploadController extends Controller
         return $uploads->paginate(60)->appends(request()->query());
     }
 
+    // Destroy File
     public function destroy(Request $request, $id)
     {
         $upload = Upload::findOrFail($id);
@@ -226,6 +229,7 @@ class AizUploadController extends Controller
         return back();
     }
 
+    // Preview Files
     public function get_preview_files(Request $request)
     {
         $ids = explode(',', $request->ids);
