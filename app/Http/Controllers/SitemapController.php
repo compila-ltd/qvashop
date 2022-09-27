@@ -4,15 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
-use Illuminate\Http\Request;
 
 class SitemapController extends Controller
 {
     // generate an updated Sitema in basepath/public/sitemap.xml
     public function generate()
     {
-        echo "generation of sitemap.xml started";
-
         // get Static Pages
         // get Categories
         $categories = Category::orderBy('order_level', 'desc')->get();
@@ -26,6 +23,8 @@ class SitemapController extends Controller
 
         // generate sitemap.xml
 
-        return view('frontend.sitemap', compact('categories', 'products'));
+        return response(view('frontend.sitemap', compact('categories', 'products')), 200, [
+            'Content-Type' => 'application/xml'
+        ]);
     }
 }

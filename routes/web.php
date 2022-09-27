@@ -49,7 +49,7 @@ Route::get('/refresh-csrf', function () {
 });
 
 // Sitemap generator
-Route::get('/sitemap-generator', [SitemapController::class, 'generate'])->name('sitemap-generator');
+Route::get('/sitemap.xml', [SitemapController::class, 'generate'])->name('sitemap-generator');
 
 // AIZ Uploader
 Route::controller(AizUploadController::class)->group(function () {
