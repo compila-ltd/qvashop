@@ -36,8 +36,7 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single', 'sentry', env('LOG_SLACK_ENABLED') ? 'slack' : null],
-            // 'channels' => ['single', 'sentry'],
+            'channels' => ['sentry', env('LOG_SLACK_ENABLED', true) ? 'slack' : 'single'],
             'ignore_exceptions' => false,
         ],
 
