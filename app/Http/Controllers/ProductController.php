@@ -116,6 +116,7 @@ class ProductController extends Controller
         return view('backend.product.products.index', compact('products', 'type', 'col_name', 'query', 'seller_id', 'sort_search'));
     }
 
+    // All Products
     public function all_products(Request $request)
     {
         $col_name = null;
@@ -167,6 +168,7 @@ class ProductController extends Controller
         return view('backend.product.products.create', compact('categories'));
     }
 
+    // Add more choices to a product
     public function add_more_choice_option(Request $request)
     {
         $all_attribute_values = AttributeValue::with('attribute')->where('attribute_id', $request->attribute_id)->get();

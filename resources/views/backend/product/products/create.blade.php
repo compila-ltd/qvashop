@@ -167,7 +167,7 @@
                             <div class="col-md-8">
                                 <select class="form-control aiz-selectpicker" data-live-search="true" data-selected-text-format="count" name="colors[]" id="colors" multiple disabled>
                                     @foreach (\App\Models\Color::orderBy('name', 'asc')->get() as $key => $color)
-                                    <option  value="{{ $color->code }}" data-content="<span><span class='size-15px d-inline-block mr-2 rounded border' style='background:{{ $color->code }}'></span><span>{{ $color->name }}</span></span>"></option>
+                                    <option value="{{ $color->code }}" data-content="<span><span class='size-15px d-inline-block mr-2 rounded border' style='background:{{ $color->code }}'></span><span>{{ $color->name }}</span></span>"></option>
                                     @endforeach
                                 </select>
                             </div>
@@ -214,11 +214,11 @@
                         </div>
 
                         <div class="form-group row">
-	                        <label class="col-sm-3 control-label" for="start_date">{{translate('Discount Date Range')}}</label>
-	                        <div class="col-sm-9">
-	                          <input type="text" class="form-control aiz-date-range" name="date_range" placeholder="{{translate('Select Date')}}" data-time-picker="true" data-format="DD-MM-Y HH:mm:ss" data-separator=" to " autocomplete="off">
-	                        </div>
-	                    </div>
+                            <label class="col-sm-3 control-label" for="start_date">{{translate('Discount Date Range')}}</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control aiz-date-range" name="date_range" placeholder="{{translate('Select Date')}}" data-time-picker="true" data-format="DD-MM-Y HH:mm:ss" data-separator=" to " autocomplete="off">
+                            </div>
+                        </div>
 
                         <div class="form-group row">
                             <label class="col-md-3 col-from-label">{{translate('Discount')}} <span class="text-danger">*</span></label>
@@ -234,14 +234,14 @@
                         </div>
 
                         @if(addon_is_activated('club_point'))
-                            <div class="form-group row">
-                                <label class="col-md-3 col-from-label">
-                                    {{translate('Set Point')}}
-                                </label>
-                                <div class="col-md-6">
-                                    <input type="number" lang="en" min="0" value="0" step="1" placeholder="{{ translate('1') }}" name="earn_point" class="form-control">
-                                </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-from-label">
+                                {{translate('Set Point')}}
+                            </label>
+                            <div class="col-md-6">
+                                <input type="number" lang="en" min="0" value="0" step="1" placeholder="{{ translate('1') }}" name="earn_point" class="form-control">
                             </div>
+                        </div>
                         @endif
 
                         <div id="show-hide-div">
@@ -298,18 +298,9 @@
                     </div>
                 </div>
 
-<!--                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0 h6">{{translate('Product Shipping Cost')}}</h5>
-                    </div>
-                    <div class="card-body">
-
-                    </div>
-                </div>-->
-
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="mb-0 h6">{{translate('PDF Specification')}}</h5>
+                        <h5 class="mb-0 h6">{{ translate('PDF Specification') }}</h5>
                     </div>
                     <div class="card-body">
                         <div class="form-group row">
@@ -486,22 +477,22 @@
                     </div>
                     <div class="card-body">
                         @if (get_setting('cash_payment') == '1')
-                            <div class="form-group row">
-                                <label class="col-md-6 col-from-label">{{translate('Status')}}</label>
-                                <div class="col-md-6">
-                                    <label class="aiz-switch aiz-switch-success mb-0">
-                                        <input type="checkbox" name="cash_on_delivery" value="1" checked="">
-                                        <span></span>
-                                    </label>
-                                </div>
+                        <div class="form-group row">
+                            <label class="col-md-6 col-from-label">{{translate('Status')}}</label>
+                            <div class="col-md-6">
+                                <label class="aiz-switch aiz-switch-success mb-0">
+                                    <input type="checkbox" name="cash_on_delivery" value="1" checked="">
+                                    <span></span>
+                                </label>
                             </div>
+                        </div>
                         @else
-                            <p>
-                                {{ translate('Cash On Delivery option is disabled. Activate this feature from here') }}
-                                <a href="{{route('activation.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['shipping_configuration.index','shipping_configuration.edit','shipping_configuration.update'])}}">
-                                    <span class="aiz-side-nav-text">{{translate('Cash Payment Activation')}}</span>
-                                </a>
-                            </p>
+                        <p>
+                            {{ translate('Cash On Delivery option is disabled. Activate this feature from here') }}
+                            <a href="{{route('activation.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['shipping_configuration.index','shipping_configuration.edit','shipping_configuration.update'])}}">
+                                <span class="aiz-side-nav-text">{{translate('Cash Payment Activation')}}</span>
+                            </a>
+                        </p>
                         @endif
                     </div>
                 </div>
@@ -552,9 +543,9 @@
                             <select class="form-control aiz-selectpicker" name="flash_deal_id" id="flash_deal">
                                 <option value="">Choose Flash Title</option>
                                 @foreach(\App\Models\FlashDeal::where("status", 1)->get() as $flash_deal)
-                                    <option value="{{ $flash_deal->id}}">
-                                        {{ $flash_deal->title }}
-                                    </option>
+                                <option value="{{ $flash_deal->id}}">
+                                    {{ $flash_deal->title }}
+                                </option>
                                 @endforeach
                             </select>
                         </div>
@@ -643,80 +634,54 @@
 @section('script')
 
 <script type="text/javascript">
-    $('form').bind('submit', function (e) {
-		if ( $(".action-btn").attr('attempted') == 'true' ) {
-			//stop submitting the form because we have already clicked submit.
-			e.preventDefault();
-		}
-		else {
-			$(".action-btn").attr("attempted", 'true');
-		}
-        // Disable the submit button while evaluating if the form should be submitted
-        // $("button[type='submit']").prop('disabled', true);
-        
-        // var valid = true;
-
-        // if (!valid) {
-            // e.preventDefault();
-            
-            ////Reactivate the button if the form was not submitted
-            // $("button[type='submit']").button.prop('disabled', false);
-        // }
+    $('form').bind('submit', function(e) {
+        if ($(".action-btn").attr('attempted') == 'true') {
+            //stop submitting the form because we have already clicked submit.
+            e.preventDefault();
+        } else {
+            $(".action-btn").attr("attempted", 'true');
+        }
     });
-    
-    $("[name=shipping_type]").on("change", function (){
+
+    $("[name=shipping_type]").on("change", function() {
         $(".flat_rate_shipping_div").hide();
 
-        if($(this).val() == 'flat_rate'){
+        if ($(this).val() == 'flat_rate') {
             $(".flat_rate_shipping_div").show();
         }
 
     });
 
-    function add_more_customer_choice_option(i, name){
+    function add_more_customer_choice_option(i, name) {
         $.ajax({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
-            type:"POST",
-            url:'{{ route('products.add-more-choice-option') }}',
-            data:{
-               attribute_id: i
+            type: "POST",
+            url: "{{ route('products.add-more-choice-option') }}",
+            data: {
+                attribute_id: i
             },
             success: function(data) {
                 var obj = JSON.parse(data);
-                $('#customer_choice_options').append('\
-                <div class="form-group row">\
-                    <div class="col-md-3">\
-                        <input type="hidden" name="choice_no[]" value="'+i+'">\
-                        <input type="text" class="form-control" name="choice[]" value="'+name+'" placeholder="{{ translate('Choice Title') }}" readonly>\
-                    </div>\
-                    <div class="col-md-8">\
-                        <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_'+ i +'[]" multiple>\
-                            '+obj+'\
-                        </select>\
-                    </div>\
-                </div>');
+                $('#customer_choice_options').append('<div class="form-group row"><div class="col-md-3"><input type="hidden" name="choice_no[]" value="' + i + '"><input type="text" class="form-control" name="choice[]" value="' + name + '" placeholder="Choice Title" readonly></div><div class="col-md-8"><select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' + i + '[]" multiple>' + obj + '</select></div></div>');
                 AIZ.plugins.bootstrapSelect('refresh');
-           }
-       });
-
-
+            }
+        });
     }
 
     $('input[name="colors_active"]').on('change', function() {
-        if(!$('input[name="colors_active"]').is(':checked')) {
+        if (!$('input[name="colors_active"]').is(':checked')) {
             $('#colors').prop('disabled', true);
             AIZ.plugins.bootstrapSelect('refresh');
-        }
-        else {
+        } else {
             $('#colors').prop('disabled', false);
             AIZ.plugins.bootstrapSelect('refresh');
         }
         update_sku();
     });
 
-    $(document).on("change", ".attribute_choice",function() {
+    $(document).on("change", ".attribute_choice", function() {
         update_sku();
     });
 
@@ -732,43 +697,41 @@
         update_sku();
     });
 
-    function delete_row(em){
+    function delete_row(em) {
         $(em).closest('.form-group row').remove();
         update_sku();
     }
 
-    function delete_variant(em){
+    function delete_variant(em) {
         $(em).closest('.variant').remove();
     }
 
-    function update_sku(){
+    function update_sku() {
         $.ajax({
-           type:"POST",
-           url:'{{ route('products.sku_combination') }}',
-           data:$('#choice_form').serialize(),
-           success: function(data) {
+            type: "POST",
+            url: "{{ route('products.sku_combination') }}",
+            data: $('#choice_form').serialize(),
+            success: function(data) {
                 $('#sku_combination').html(data);
                 AIZ.uploader.previewGenerate();
                 AIZ.plugins.fooTable();
                 if (data.length > 1) {
-                   $('#show-hide-div').hide();
-                }
-                else {
+                    $('#show-hide-div').hide();
+                } else {
                     $('#show-hide-div').show();
                 }
-           }
-       });
+            }
+        });
     }
 
     $('#choice_attributes').on('change', function() {
         $('#customer_choice_options').html(null);
-        $.each($("#choice_attributes option:selected"), function(){
+        $.each($("#choice_attributes option:selected"), function() {
             add_more_customer_choice_option($(this).val(), $(this).text());
         });
 
         update_sku();
     });
-
 </script>
 
 @endsection
