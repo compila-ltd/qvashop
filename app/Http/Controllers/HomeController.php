@@ -59,6 +59,7 @@ class HomeController extends Controller
         return view('frontend.user_login');
     }
 
+    // Registration
     public function registration(Request $request)
     {
         if (Auth::check()) {
@@ -75,8 +76,8 @@ class HomeController extends Controller
                 Cookie::queue('referral_code', $request->referral_code, $cookie_minute);
                 $referred_by_user = User::where('referral_code', $request->referral_code)->first();
 
-                $affiliateController = new AffiliateController;
-                $affiliateController->processAffiliateStats($referred_by_user->id, 1, 0, 0, 0);
+                //$affiliateController = new AffiliateController;
+                //$affiliateController->processAffiliateStats($referred_by_user->id, 1, 0, 0, 0);
             } catch (\Exception $e) {
             }
         }
@@ -147,6 +148,7 @@ class HomeController extends Controller
         }
     }
 
+    // Update User
     public function userProfileUpdate(Request $request)
     {
         $user = Auth::user();
@@ -224,7 +226,7 @@ class HomeController extends Controller
     public function load_best_sellers_section()
     {
         $best_selers = Cache::remember('best_selers', 86400, function () {
-            return \App\Models\Shop::where('verification_status', 1)->orderBy('num_of_sale', 'desc')->take(20)->get();
+            return Shop::where('verification_status', 1)->orderBy('num_of_sale', 'desc')->take(20)->get();
         });
 
         return view('frontend.partials.best_sellers_section', compact('best_selers'));
@@ -553,7 +555,7 @@ class HomeController extends Controller
         $customer_packages = Cache::remember('premium_packages', 1440, function () {
             return CustomerPackage::all();
         });
-        
+
         return view('frontend.user.customer_packages_lists', compact('customer_packages'));
     }
 

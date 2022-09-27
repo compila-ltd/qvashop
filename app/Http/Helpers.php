@@ -1318,7 +1318,7 @@ if (!function_exists('checkout_done')) {
 
             try {
                 NotificationUtility::sendOrderPlacedNotification($order);
-                calculateCommissionAffilationClubPoint($order);
+                //TODO calculateCommissionAffilationClubPoint($order);
             } catch (\Exception $e) {
             }
         }

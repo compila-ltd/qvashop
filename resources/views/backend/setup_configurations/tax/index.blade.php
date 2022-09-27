@@ -36,16 +36,16 @@
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $tax->name }}</td>
-                    
+
                     <td>
                         <label class="aiz-switch aiz-switch-success mb-0">
-                            <input onchange="update_tax_status(this)" value="{{ $tax->id }}" type="checkbox" <?php if ($tax->tax_status == 1) echo "checked"; ?> >
+                            <input onchange="update_tax_status(this)" value="{{ $tax->id }}" type="checkbox" <?php if ($tax->tax_status == 1) echo "checked"; ?>>
                             <span class="slider round"></span>
                         </label>
-                        
+
                     </td>
                     <td class="text-right">
-                        <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('tax.edit', $tax->id )}}" title="{{ translate('Edit') }}">
+                        <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('tax.edit', $tax->id) }}" title="{{ translate('Edit') }}">
                             <i class="las la-edit"></i>
                         </a>
                         <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('tax.destroy', $tax->id)}}" title="{{ translate('Delete') }}">
@@ -56,76 +56,78 @@
                 @endforeach
             </tbody>
         </table>
-        
+
     </div>
 </div>
 
 @endsection
 
 @section('modal')
-    <!-- Tax Add Modal -->
-    <div id="add-tax" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-zoom" role="document">
-            <div class="modal-content">
-                <div class="modal-header bord-btm">
-                    <h4 class="modal-title h6">{{translate('Add New Tax')}}</h4>
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-                </div>
-                
-                <form class="form-horizontal"  action="{{ route('tax.store') }}" method="POST">
-                    @csrf
-                    <div class="modal-body">
-                        
-                        <div class="form-group">
-                            <div class=" row">
-                                <label class="col-sm-3 control-label" for="name">
-                                    {{translate('Tax Name')}}
-                                </label>
-                                <div class="col-sm-9">
-                                    <input type="text" placeholder="{{translate('Name')}}" id="name" name="name" class="form-control" required>
-                                </div>
+<!-- Tax Add Modal -->
+<div id="add-tax" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-zoom" role="document">
+        <div class="modal-content">
+            <div class="modal-header bord-btm">
+                <h4 class="modal-title h6">{{translate('Add New Tax')}}</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+
+            <form class="form-horizontal" action="{{ route('tax.store') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class=" row">
+                            <label class="col-sm-3 control-label" for="name">
+                                {{translate('Tax Name')}}
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="text" placeholder="{{translate('Name')}}" id="name" name="name" class="form-control" required>
                             </div>
                         </div>
-                        
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-styled btn-base-3" data-dismiss="modal">
-                            {{translate('Close')}}
-                        </button>
-                        <button type="submit" class="btn btn-primary btn-styled btn-base-1">
-                            {{translate('Save')}}
-                        </button>
-                    </div>
-                </form>
-                
-            </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-styled btn-base-3" data-dismiss="modal">
+                        {{translate('Close')}}
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-styled btn-base-1">
+                        {{translate('Save')}}
+                    </button>
+                </div>
+            </form>
+
         </div>
     </div>
-    
-    @include('modals.delete_modal')
+</div>
+
+@include('modals.delete_modal')
 @endsection
 
 @section('script')
-    <script type="text/javascript">
-        function sort_pickup_points(el){
-            $('#sort_pickup_points').submit();
+<script type="text/javascript">
+    function sort_pickup_points(el) {
+        $('#sort_pickup_points').submit();
+    }
+
+    function update_tax_status(el) {
+        if (el.checked) {
+            var status = 1;
+        } else {
+            var status = 0;
         }
-        
-        function update_tax_status(el){
-            if(el.checked){
-                var status = 1;
+        $.post("{{ route('taxes.tax-status') }}", {
+            _token: '{{ csrf_token() }}',
+            id: el.value,
+            status: status
+        }, function(data) {
+            if (data == 1) {
+                AIZ.plugins.notify('success', "{{ translate('Tax status updated successfully') }}");
+            } else {
+                AIZ.plugins.notify('danger', "{{ translate('Something went wrong') }}");
             }
-            else{
-                var status = 0;
-            }
-            $.post('{{ route('taxes.tax-status') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
-                if(data == 1){
-                    AIZ.plugins.notify('success', '{{ translate('Tax status updated successfully') }}');
-                }
-                else{
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
-                }
-            });
-        }
-    </script>
+        });
+    }
+</script>
 @endsection

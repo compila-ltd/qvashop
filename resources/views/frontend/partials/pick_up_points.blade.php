@@ -1,5 +1,5 @@
 <div class="card-header bg-white py-3">
-    <h5 class="heading-6 mb-0">{{translate('Select Nearest Pick-up Point')}}</h5>
+    <h5 class="heading-6 mb-0">{{ translate('Select Nearest Pick-up Point') }}</h5>
 </div>
 @php
     $admin_products = array();
@@ -17,7 +17,6 @@
             $seller_products[\App\Models\Product::find($cartItem['id'])->user_id] = $product_ids;
         }
     }
-    // dd($seller_products);
 @endphp
 @if (!empty($admin_products))
     @foreach ($pick_up_points as $key => $pick_up_point)

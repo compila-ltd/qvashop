@@ -36,7 +36,8 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['sentry', 'slack'],
+            'channels' => ['single', 'sentry', env('LOG_SLACK_ENABLED') ? 'slack' : null],
+            // 'channels' => ['single', 'sentry'],
             'ignore_exceptions' => false,
         ],
 
@@ -56,7 +57,7 @@ return [
         'slack' => [
             'driver' => 'slack',
             'url' => env('LOG_SLACK_WEBHOOK_URL'),
-            'username' => 'Laravel Log',
+            'username' => 'QvaShop',
             'emoji' => ':boom:',
             'level' => env('LOG_LEVEL', 'info'),
         ],

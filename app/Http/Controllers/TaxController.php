@@ -7,9 +7,11 @@ use App\Models\Tax;
 
 class TaxController extends Controller
 {
-    public function __construct() {
+
+    public function __construct()
+    {
         // Staff Permission Check
-        $this->middleware(['permission:vat_&_tax_setup'])->only('index','create','edit','destroy');
+        $this->middleware(['permission:vat_&_tax_setup'])->only('index', 'create', 'edit', 'destroy');
     }
 
     /**
@@ -24,16 +26,6 @@ class TaxController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -43,29 +35,14 @@ class TaxController extends Controller
     {
         $tax = new Tax;
         $tax->name = $request->name;
-//        $pickup_point->address = $request->address;
-        
-        if ($tax->save()) {
 
+        if ($tax->save()) {
             flash(translate('Tax has been inserted successfully'))->success();
             return redirect()->route('tax.index');
-
-        }
-        else{
+        } else {
             flash(translate('Something went wrong'))->error();
             return back();
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
@@ -91,28 +68,29 @@ class TaxController extends Controller
     {
         $tax = Tax::findOrFail($id);
         $tax->name = $request->name;
-//        $language->code = $request->code;
-        if($tax->save()){
+        //        $language->code = $request->code;
+        if ($tax->save()) {
             flash(translate('Tax has been updated successfully'))->success();
             return redirect()->route('tax.index');
-        }
-        else{
+        } else {
             flash(translate('Something went wrong'))->error();
             return back();
         }
     }
-    
-    public function change_tax_status(Request $request) {
+
+    // Chage Tax Status
+    public function change_tax_status(Request $request)
+    {
         $tax = Tax::findOrFail($request->id);
-        if($tax->tax_status == 1) {
+        if ($tax->tax_status == 1) {
             $tax->tax_status = 0;
         } else {
             $tax->tax_status = 1;
         }
-        
-        if($tax->save()) {
+
+        if ($tax->save()) {
             return 1;
-        } 
+        }
         return 0;
     }
 
@@ -123,12 +101,11 @@ class TaxController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {   
-        if(Tax::destroy($id)){
+    {
+        if (Tax::destroy($id)) {
             flash(translate('Tax has been deleted successfully'))->success();
             return redirect()->route('tax.index');
-        }
-        else{
+        } else {
             flash(translate('Something went wrong'))->error();
             return back();
         }
