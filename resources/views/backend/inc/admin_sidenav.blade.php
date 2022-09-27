@@ -101,20 +101,6 @@
                             </a>
                         </li>
                         @endcan
-                        @can('product_bulk_import')
-                        <li class="aiz-side-nav-item">
-                            <a href="{{ route('product_bulk_upload.index') }}" class="aiz-side-nav-link">
-                                <span class="aiz-side-nav-text">{{ translate('Bulk Import') }}</span>
-                            </a>
-                        </li>
-                        @endcan
-                        @can('product_bulk_export')
-                        <li class="aiz-side-nav-item">
-                            <a href="{{route('product_bulk_export.index') }}" class="aiz-side-nav-link">
-                                <span class="aiz-side-nav-text">{{ translate('Bulk Export') }}</span>
-                            </a>
-                        </li>
-                        @endcan
                         @can('view_product_categories')
                         <li class="aiz-side-nav-item">
                             <a href="{{route('categories.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['categories.index', 'categories.create', 'categories.edit']) }}">

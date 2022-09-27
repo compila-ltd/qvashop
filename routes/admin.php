@@ -97,10 +97,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     });
 
     Route::controller(ProductBulkUploadController::class)->group(function () {
-
-        //Product Export
-        Route::get('/product-bulk-export', 'export')->name('product_bulk_export.index');
-
         //Product Bulk Upload
         Route::get('/product-bulk-upload/index', 'index')->name('product_bulk_upload.index');
         Route::post('/bulk-product-upload', 'bulk_upload')->name('bulk_product_upload');
