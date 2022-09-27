@@ -38,24 +38,4 @@ class Handler extends ExceptionHandler
             }
         });
     }
-
-    // public function render($request, Throwable $e)
-    // {
-    //     if($this->isHttpException($e))
-    //     {
-    //         if ($request->is('customer-products/admin')) {
-    //             return redirect()->guest('new-page');
-    //         }
-    //         switch ($e->getStatusCode()) {
-    //             // not found
-    //             case 404:
-    //                 return parent::render($request, $e);
-    //             break;
-    //         }
-    //     }
-    //     else
-    //     {
-    //             return parent::render($request, $e);
-    //     }
-    // }
 }

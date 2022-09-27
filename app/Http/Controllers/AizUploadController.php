@@ -13,7 +13,6 @@ class AizUploadController extends Controller
 {
     public function index(Request $request)
     {
-
         $all_uploads = (auth()->user()->user_type == 'seller') ? Upload::where('user_id', auth()->user()->id) : Upload::query();
         $search = null;
         $sort_by = null;
@@ -57,11 +56,12 @@ class AizUploadController extends Controller
             : view('backend.uploaded_files.create');
     }
 
-
+    // Show Uploader Modal
     public function show_uploader(Request $request)
     {
         return view('uploader.aiz-uploader');
     }
+
     public function upload(Request $request)
     {
         $type = array(

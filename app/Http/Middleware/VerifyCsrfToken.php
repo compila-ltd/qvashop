@@ -20,9 +20,7 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         '/config_content',
-        '/payfast*',
         '/qvapay*',
-        '/mock_payments',
-        '/lnmo*'
+        '/aiz-uploader*'
     ];
 }

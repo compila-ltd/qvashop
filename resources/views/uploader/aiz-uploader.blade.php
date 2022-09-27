@@ -1,4 +1,4 @@
-<div class="modal fade" id="aizUploaderModal" data-backdrop="static" role="dialog" aria-hidden="true" >
+<div class="modal fade" id="aizUploaderModal" data-backdrop="static" role="dialog" aria-hidden="true">
 	<div class="modal-dialog modal-adaptive" role="document">
 		<div class="modal-content h-100">
 			<div class="modal-header pb-0 bg-light">
@@ -37,7 +37,7 @@
 									<div class="custom-control custom-radio">
 										<input type="checkbox" class="custom-control-input" name="aiz-show-selected" id="aiz-show-selected" name="stylishRadio">
 										<label class="custom-control-label" for="aiz-show-selected">
-										{{ translate('Selected Only') }}
+											{{ translate('Selected Only') }}
 										</label>
 									</div>
 								</div>
