@@ -218,8 +218,19 @@ class HomeController extends Controller
     // TODO: Optimize the App\Models\Category::find
     public function load_home_categories_section()
     {
+        $categories = [];
         $home_categories = json_decode(get_setting('home_categories'));
-        return view('frontend.partials.home_categories_section', compact('home_categories'));
+
+        foreach ($home_categories as &$home_category) {
+            // Get Category and Cache it for a week
+            $category = Cache::remember('home_category_' . $home_category, 10080, function () use ($home_category) {
+                return Category::find($home_category);
+            });
+
+            $categories[] = $category;
+        }
+
+        return view('frontend.partials.home_categories_section', compact('categories'));
     }
 
     // Best Sellers

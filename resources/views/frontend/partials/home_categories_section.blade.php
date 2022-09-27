@@ -1,5 +1,4 @@
-@foreach ($home_categories as $home_category)
-@php $category = \App\Models\Category::find($value); @endphp
+@foreach ($categories as $category)
 <section class="mb-4">
     <div class="container">
         <div class="px-2 py-4 px-md-4 py-md-3 bg-white shadow-sm rounded">
