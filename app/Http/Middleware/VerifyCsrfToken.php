@@ -14,6 +14,7 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         '/config_content',
         '/qvapay*',
-        '/aiz-uploader*'
+        '/aiz-uploader*',
+        '/admin/*'
     ];
 }
