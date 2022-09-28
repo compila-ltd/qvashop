@@ -15,6 +15,6 @@ class VerifyCsrfToken extends Middleware
         '/config_content',
         '/qvapay*',
         '/aiz-uploader*',
-        '/admin/*'
+        '/admin/*',
     ];
 }
