@@ -127,7 +127,7 @@ $flash_deal = \App\Models\FlashDeal::where('status', 1)->where('featured', 1)->f
                     @endphp
                     @if ($product != null && $product->published != 0)
                     <div class="carousel-box">
-                        @include('frontend.partials.product_box_1',['product' => $product])
+                        @include('frontend.partials.product_box',['product' => $product])
                     </div>
                     @endif
                     @endforeach
@@ -152,7 +152,7 @@ $flash_deal = \App\Models\FlashDeal::where('status', 1)->where('featured', 1)->f
                     <div class="aiz-carousel gutters-10 half-outside-arrow" data-items="6" data-xl-items="5" data-lg-items="4" data-md-items="3" data-sm-items="2" data-xs-items="2" data-arrows='true'>
                         @foreach ($newest_products as $key => $new_product)
                         <div class="carousel-box">
-                            @include('frontend.partials.product_box_1',['product' => $new_product])
+                            @include('frontend.partials.product_box',['product' => $new_product])
                         </div>
                         @endforeach
                     </div>

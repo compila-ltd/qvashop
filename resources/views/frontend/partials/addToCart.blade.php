@@ -112,7 +112,7 @@
                 @php
                 $qty = 0;
                 foreach ($product->stocks as $key => $stock) {
-                    $qty += $stock->qty;
+                $qty += $stock->qty;
                 }
                 @endphp
 

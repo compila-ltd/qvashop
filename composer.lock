@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "89581ce36bb2ebd53c2319ca91a342a7",
+    "content-hash": "2cb4df7013bed45ef8fd6acc8b7d1fba",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -5156,6 +5156,69 @@
                 }
             ],
             "time": "2021-02-11T11:37:01+00:00"
+        },
+        {
+            "name": "silber/page-cache",
+            "version": "v1.0.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JosephSilber/page-cache.git",
+                "reference": "81aee607606deb932af13c48c3638ea71faf4fd1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JosephSilber/page-cache/zipball/81aee607606deb932af13c48c3638ea71faf4fd1",
+                "reference": "81aee607606deb932af13c48c3638ea71faf4fd1",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "5.0 - 5.8|^6.0|^7.0|^8.0|^9.0",
+                "illuminate/filesystem": "5.0 - 5.8|^6.0|^7.0|^8.0|^9.0",
+                "php": ">=5.5.9",
+                "symfony/http-foundation": "2.6 - 4|^5.0|^6.0"
+            },
+            "require-dev": {
+                "illuminate/container": "5.0 - 5.8|^6.0|^7.0|^8.0|^9.0",
+                "mockery/mockery": "^0.9.5",
+                "phpunit/phpunit": "^4.8|^9.5",
+                "symfony/var-dumper": "^4.4|^5.0|^6.0"
+            },
+            "suggest": {
+                "illuminate/console": "Allows clearing the cache via artisan"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Silber\\PageCache\\LaravelServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Silber\\PageCache\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Joseph Silber",
+                    "email": "contact@josephsilber.com"
+                }
+            ],
+            "description": "Caches responses as static files on disk for lightning fast page loads.",
+            "keywords": [
+                "cache",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/JosephSilber/page-cache/issues",
+                "source": "https://github.com/JosephSilber/page-cache/tree/v1.0.8"
+            },
+            "time": "2022-02-08T14:24:36+00:00"
         },
         {
             "name": "simplesoftwareio/simple-qrcode",
