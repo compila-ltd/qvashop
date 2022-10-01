@@ -30,9 +30,9 @@
 		</div>
 		<div class="card-body px-0">
 			<div class="form-group row">
-				<label class="col-sm-2 col-from-label" for="name">{{translate('Title')}} <span class="text-danger">*</span> <i class="las la-language text-danger" title="{{translate('Translatable')}}"></i></label>
+				<label class="col-sm-2 col-from-label" for="name">{{ translate('Title')}} <span class="text-danger">*</span> <i class="las la-language text-danger" title="{{ translate('Translatable')}}"></i></label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" placeholder="{{translate('Title')}}" name="title" value="{{ $page->getTranslation('title',$lang) }}" required>
+					<input type="text" class="form-control" placeholder="{{ translate('Title')}}" name="title" value="{{ $page->getTranslation('title',$lang) }}" required>
 				</div>
 			</div>
 
@@ -55,7 +55,7 @@
 			<div class="form-group row">
 				<label class="col-sm-2 col-from-label" for="name">{{ translate('Add Content') }} <span class="text-danger">*</span></label>
 				<div class="col-sm-10">
-					<textarea class="aiz-text-editor form-control" placeholder="{{translate('Content..')}}" data-buttons='[["font", ["bold", "underline", "italic", "clear"]],["para", ["ul", "ol", "paragraph"]],["style", ["style"]],["color", ["color"]],["table", ["table"]],["insert", ["link", "picture", "video"]],["view", ["fullscreen", "codeview", "undo", "redo"]]]' data-min-height="300" name="content" required>{!! $page->getTranslation('content',$lang) !!}</textarea>
+					<textarea class="aiz-text-editor form-control" placeholder="{{ translate('Content..')}}" data-buttons='[["font", ["bold", "underline", "italic", "clear"]],["para", ["ul", "ol", "paragraph"]],["style", ["style"]],["color", ["color"]],["table", ["table"]],["insert", ["link", "picture", "video"]],["view", ["fullscreen", "codeview", "undo", "redo"]]]' data-min-height="300" name="content" required>{!! $page->getTranslation('content',$lang) !!}</textarea>
 				</div>
 			</div>
 		</div>
@@ -68,21 +68,21 @@
 			<div class="form-group row">
 				<label class="col-sm-2 col-from-label" for="name">{{ translate('Meta Title') }}</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" placeholder="{{translate('Title')}}" name="meta_title" value="{{ $page->meta_title }}">
+					<input type="text" class="form-control" placeholder="{{ translate('Title')}}" name="meta_title" value="{{ $page->meta_title }}">
 				</div>
 			</div>
 
 			<div class="form-group row">
-				<label class="col-sm-2 col-from-label" for="name">{{translate('Meta Description')}}</label>
+				<label class="col-sm-2 col-from-label" for="name">{{ translate('Meta Description')}}</label>
 				<div class="col-sm-10">
-					<textarea class="resize-off form-control" placeholder="{{translate('Description')}}" name="meta_description">{!! $page->meta_description !!}</textarea>
+					<textarea class="resize-off form-control" placeholder="{{ translate('Description')}}" name="meta_description">{!! $page->meta_description !!}</textarea>
 				</div>
 			</div>
 
 			<div class="form-group row">
 				<label class="col-sm-2 col-from-label" for="name">{{ translate('Keywords') }}</label>
 				<div class="col-sm-10">
-					<textarea class="resize-off form-control" placeholder="{{translate('Keyword, Keyword')}}" name="keywords">{!! $page->keywords !!}</textarea>
+					<textarea class="resize-off form-control" placeholder="{{ translate('Keyword, Keyword')}}" name="keywords">{!! $page->keywords !!}</textarea>
 					<small class="text-muted">{{ translate('Separate with coma') }}</small>
 				</div>
 			</div>

@@ -5,12 +5,12 @@
 <div class="aiz-titlebar text-left mt-2 mb-3">
     <div class="row align-items-center">
         <div class="col-md-6">
-            <h1 class="h3">{{translate('All Categories')}}</h1>
+            <h1 class="h3">{{ translate('All Categories')}}</h1>
         </div>
         @can('add_product_category')
             <div class="col-md-6 text-md-right">
                 <a href="{{ route('categories.create') }}" class="btn btn-primary">
-                    <span>{{translate('Add New category')}}</span>
+                    <span>{{ translate('Add New category')}}</span>
                 </a>
             </div>
         @endcan
@@ -32,15 +32,15 @@
             <thead>
                 <tr>
                     <th data-breakpoints="lg">#</th>
-                    <th>{{translate('Name')}}</th>
+                    <th>{{ translate('Name')}}</th>
                     <th data-breakpoints="lg">{{ translate('Parent Category') }}</th>
                     <th data-breakpoints="lg">{{ translate('Order Level') }}</th>
                     <th data-breakpoints="lg">{{ translate('Level') }}</th>
-                    <th data-breakpoints="lg">{{translate('Banner')}}</th>
-                    <th data-breakpoints="lg">{{translate('Icon')}}</th>
-                    <th data-breakpoints="lg">{{translate('Featured')}}</th>
-                    <th data-breakpoints="lg">{{translate('Commission')}}</th>
-                    <th width="10%" class="text-right">{{translate('Options')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Banner')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Icon')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Featured')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Commission')}}</th>
+                    <th width="10%" class="text-right">{{ translate('Options')}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -62,7 +62,7 @@
                         <td>{{ $category->level }}</td>
                         <td>
                             @if($category->banner != null)
-                                <img src="{{ uploaded_asset($category->banner) }}" alt="{{translate('Banner')}}" class="h-50px">
+                                <img src="{{ uploaded_asset($category->banner) }}" alt="{{ translate('Banner')}}" class="h-50px">
                             @else
                                 —
                             @endif
@@ -70,7 +70,7 @@
                         <td>
                             @if($category->icon != null)
                                 <span class="avatar avatar-square avatar-xs">
-                                    <img src="{{ uploaded_asset($category->icon) }}" alt="{{translate('icon')}}">
+                                    <img src="{{ uploaded_asset($category->icon) }}" alt="{{ translate('icon')}}">
                                 </span>
                             @else
                                 —

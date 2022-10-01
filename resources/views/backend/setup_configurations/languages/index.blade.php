@@ -26,7 +26,7 @@
                             </select>
                         </div>
                         <div class="col-lg-3">
-                            <button type="submit" class="btn btn-info">{{translate('Save')}}</button>
+                            <button type="submit" class="btn btn-info">{{ translate('Save')}}</button>
                         </div>
                     </div>
                 </form>
@@ -54,7 +54,7 @@
                             </div>
                         </div>
                         <div class="col-lg-3">
-                            <button type="submit" class="btn btn-info">{{translate('Import')}}</button>
+                            <button type="submit" class="btn btn-info">{{ translate('Import')}}</button>
                         </div>
                     </div>
                 </form>
@@ -67,7 +67,7 @@
 	<div class="align-items-center">
 		<div class="text-md-right">
 			<a href="{{ route('languages.create') }}" class="btn btn-circle btn-info">
-				<span>{{translate('Add New Language')}}</span>
+				<span>{{ translate('Add New Language')}}</span>
 			</a>
 		</div>
 	</div>
@@ -75,19 +75,19 @@
 
 <div class="card">
     <div class="card-header">
-        <h5 class="mb-0 h6">{{translate('Language')}}</h5>
+        <h5 class="mb-0 h6">{{ translate('Language')}}</h5>
     </div>
     <div class="card-body">
         <table class="table aiz-table mb-0">
             <thead>
                 <tr>
                     <th data-breakpoints="lg">#</th>
-                    <th>{{translate('Name')}}</th>
-                    <th data-breakpoints="lg">{{translate('Code')}}</th>
-                    <th data-breakpoints="lg">{{translate('Flutter App Lang Code')}}</th>
-                    <th data-breakpoints="lg">{{translate('RTL')}}</th>
-                    <th>{{translate('Status')}}</th>
-                    <th class="text-right" width="15%">{{translate('Options')}}</th>
+                    <th>{{ translate('Name')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Code')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Flutter App Lang Code')}}</th>
+                    <th data-breakpoints="lg">{{ translate('RTL')}}</th>
+                    <th>{{ translate('Status')}}</th>
+                    <th class="text-right" width="15%">{{ translate('Options')}}</th>
                 </tr>
             </thead>
             <tbody>

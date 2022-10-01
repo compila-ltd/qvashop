@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h5 class="modal-title h6">{{translate('Review')}}</h5>
+    <h5 class="modal-title h6">{{ translate('Review')}}</h5>
     <button type="button" class="close" data-dismiss="modal">
     </button>
 </div>
@@ -45,8 +45,8 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="submit" class="btn btn-sm btn-primary">{{translate('Submit review')}}</button>
-            <button type="button" class="btn btn-sm btn-light" data-dismiss="modal">{{translate('Cancel')}}</button>
+            <button type="submit" class="btn btn-sm btn-primary">{{ translate('Submit review')}}</button>
+            <button type="button" class="btn btn-sm btn-light" data-dismiss="modal">{{ translate('Cancel')}}</button>
         </div>
     </form>
 @else

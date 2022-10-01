@@ -48,7 +48,7 @@
                                 @if(env('MAIL_USERNAME') != null && env('MAIL_PASSWORD') != null)
                                 <div class="col-sm-6">
                                     <div class="text-right">
-                                        <a href="{{ route('password.request') }}" class="text-reset fs-14">{{translate('Forgot password ?')}}</a>
+                                        <a href="{{ route('password.request') }}" class="text-reset fs-14">{{ translate('Forgot password ?')}}</a>
                                     </div>
                                 </div>
                                 @endif

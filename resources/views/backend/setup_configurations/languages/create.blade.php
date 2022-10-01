@@ -5,7 +5,7 @@
     <div class="col-lg-6 mx-auto">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">{{translate('Language Information')}}</h5>
+                <h5 class="mb-0 h6">{{ translate('Language Information')}}</h5>
             </div>
             <div class="card-body">
                 <form class="form-horizontal" action="{{ route('languages.store') }}" method="POST" enctype="multipart/form-data">
@@ -45,7 +45,7 @@
                         </div>
                     </div>
                     <div class="form-group mb-0 text-right">
-                        <button type="submit" class="btn btn-sm btn-primary">{{translate('Save')}}</button>
+                        <button type="submit" class="btn btn-sm btn-primary">{{ translate('Save')}}</button>
                     </div>
                 </form>
             </div>

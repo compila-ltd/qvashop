@@ -64,9 +64,9 @@
                     <td class="text-right">
                         @if ($wallet->offline_payment)
                         @if ($wallet->approval)
-                        <span class="badge badge-inline badge-success">{{translate('Approved')}}</span>
+                        <span class="badge badge-inline badge-success">{{ translate('Approved')}}</span>
                         @else
-                        <span class="badge badge-inline badge-info">{{translate('Pending')}}</span>
+                        <span class="badge badge-inline badge-info">{{ translate('Pending')}}</span>
                         @endif
                         @else
                         N/A
@@ -119,7 +119,7 @@
                         </div>
                     </div>
                     <div class="form-group text-right">
-                        <button type="submit" class="btn btn-sm btn-primary transition-3d-hover mr-1">{{translate('Confirm')}}</button>
+                        <button type="submit" class="btn btn-sm btn-primary transition-3d-hover mr-1">{{ translate('Confirm')}}</button>
                     </div>
                 </div>
             </form>

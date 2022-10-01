@@ -3,16 +3,16 @@
     <thead>
       <tr>
         <td width="50%">
-            <span>{{translate('Product')}}</span>
+            <span>{{ translate('Product')}}</span>
         </td>
         <td data-breakpoints="lg" width="20%">
-            <span>{{translate('Base Price')}}</span>
+            <span>{{ translate('Base Price')}}</span>
         </td>
         <td data-breakpoints="lg" width="20%">
-            <span>{{translate('Discount')}}</span>
+            <span>{{ translate('Discount')}}</span>
         </td>
         <td data-breakpoints="lg" width="10%">
-            <span>{{translate('Discount Type')}}</span>
+            <span>{{ translate('Discount Type')}}</span>
         </td>
       </tr>
     </thead>

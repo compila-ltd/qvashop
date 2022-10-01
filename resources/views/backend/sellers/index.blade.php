@@ -5,7 +5,7 @@
 <div class="aiz-titlebar text-left mt-2 mb-3">
     <div class="row align-items-center">
         <div class="col-md-6">
-            <h1 class="h3">{{translate('All Sellers')}}</h1>
+            <h1 class="h3">{{ translate('All Sellers')}}</h1>
         </div>
     </div>
 </div>
@@ -20,19 +20,19 @@
             @can('delete_seller')
                 <div class="dropdown mb-2 mb-md-0">
                     <button class="btn border dropdown-toggle" type="button" data-toggle="dropdown">
-                        {{translate('Bulk Action')}}
+                        {{ translate('Bulk Action')}}
                     </button>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="#" onclick="bulk_delete()">{{translate('Delete selection')}}</a>
+                        <a class="dropdown-item" href="#" onclick="bulk_delete()">{{ translate('Delete selection')}}</a>
                     </div>
                 </div>
             @endcan
             
             <div class="col-md-3 ml-auto">
                 <select class="form-control aiz-selectpicker" name="approved_status" id="approved_status" onchange="sort_sellers()">
-                    <option value="">{{translate('Filter by Approval')}}</option>
-                    <option value="1"  @isset($approved) @if($approved == 'paid') selected @endif @endisset>{{translate('Approved')}}</option>
-                    <option value="0"  @isset($approved) @if($approved == 'unpaid') selected @endif @endisset>{{translate('Non-Approved')}}</option>
+                    <option value="">{{ translate('Filter by Approval')}}</option>
+                    <option value="1"  @isset($approved) @if($approved == 'paid') selected @endif @endisset>{{ translate('Approved')}}</option>
+                    <option value="0"  @isset($approved) @if($approved == 'unpaid') selected @endif @endisset>{{ translate('Non-Approved')}}</option>
                 </select>
             </div>
             <div class="col-md-3">
@@ -61,14 +61,14 @@
                             #
                         @endif
                     </th>
-                    <th>{{translate('Name')}}</th>
-                    <th data-breakpoints="lg">{{translate('Phone')}}</th>
-                    <th data-breakpoints="lg">{{translate('Email Address')}}</th>
-                    <th data-breakpoints="lg">{{translate('Verification Info')}}</th>
-                    <th data-breakpoints="lg">{{translate('Approval')}}</th>
+                    <th>{{ translate('Name')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Phone')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Email Address')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Verification Info')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Approval')}}</th>
                     <th data-breakpoints="lg">{{ translate('Num. of Products') }}</th>
                     <th data-breakpoints="lg">{{ translate('Due to seller') }}</th>
-                    <th width="10%">{{translate('Options')}}</th>
+                    <th width="10%">{{ translate('Options')}}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -94,7 +94,7 @@
                         <td>
                             @if ($shop->verification_info != null)
                                 <a href="{{ route('sellers.show_verification_request', $shop->id) }}">
-                                    <span class="badge badge-inline badge-info">{{translate('Show')}}</span>
+                                    <span class="badge badge-inline badge-info">{{ translate('Show')}}</span>
                                 </a>
                             @endif
                         </td>
@@ -125,45 +125,45 @@
                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-xs">
                                     @can('view_seller_profile')
                                         <a href="#" onclick="show_seller_profile('{{$shop->id}}');"  class="dropdown-item">
-                                            {{translate('Profile')}}
+                                            {{ translate('Profile')}}
                                         </a>
                                     @endcan
                                     @can('login_as_seller')
                                         <a href="{{route('sellers.login', encrypt($shop->id))}}" class="dropdown-item">
-                                            {{translate('Log in as this Seller')}}
+                                            {{ translate('Log in as this Seller')}}
                                         </a>
                                     @endcan
                                     @can('pay_to_seller')
                                         <a href="#" onclick="show_seller_payment_modal('{{$shop->id}}');" class="dropdown-item">
-                                            {{translate('Go to Payment')}}
+                                            {{ translate('Go to Payment')}}
                                         </a>
                                     @endcan
                                     @can('seller_payment_history')
                                         <a href="{{route('sellers.payment_history', encrypt($shop->user_id))}}" class="dropdown-item">
-                                            {{translate('Payment History')}}
+                                            {{ translate('Payment History')}}
                                         </a>
                                     @endcan
                                     @can('edit_seller')
                                         <a href="{{route('sellers.edit', encrypt($shop->id))}}" class="dropdown-item">
-                                            {{translate('Edit')}}
+                                            {{ translate('Edit')}}
                                         </a>
                                     @endcan
                                     @can('ban_seller')
                                         @if($shop->user->banned != 1)
                                             <a href="#" onclick="confirm_ban('{{route('sellers.ban', $shop->id)}}');" class="dropdown-item">
-                                            {{translate('Ban this seller')}}
+                                            {{ translate('Ban this seller')}}
                                             <i class="fa fa-ban text-danger" aria-hidden="true"></i>
                                             </a>
                                         @else
                                             <a href="#" onclick="confirm_unban('{{route('sellers.ban', $shop->id)}}');" class="dropdown-item">
-                                            {{translate('Unban this seller')}}
+                                            {{ translate('Unban this seller')}}
                                             <i class="fa fa-check text-success" aria-hidden="true"></i>
                                             </a>
                                         @endif
                                     @endcan
                                     @can('delete_seller')
                                         <a href="#" class="dropdown-item confirm-delete" data-href="{{route('sellers.destroy', $shop->id)}}" class="">
-                                            {{translate('Delete')}}
+                                            {{ translate('Delete')}}
                                         </a>
                                     @endcan
                                 </div>
@@ -209,16 +209,16 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title h6">{{translate('Confirmation')}}</h5>
+					<h5 class="modal-title h6">{{ translate('Confirmation')}}</h5>
 					<button type="button" class="close" data-dismiss="modal">
 					</button>
 				</div>
 				<div class="modal-body">
-                    <p>{{translate('Do you really want to ban this seller?')}}</p>
+                    <p>{{ translate('Do you really want to ban this seller?')}}</p>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-light" data-dismiss="modal">{{translate('Cancel')}}</button>
-					<a class="btn btn-primary" id="confirmation">{{translate('Proceed!')}}</a>
+					<button type="button" class="btn btn-light" data-dismiss="modal">{{ translate('Cancel')}}</button>
+					<a class="btn btn-primary" id="confirmation">{{ translate('Proceed!')}}</a>
 				</div>
 			</div>
 		</div>
@@ -229,16 +229,16 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title h6">{{translate('Confirmation')}}</h5>
+						<h5 class="modal-title h6">{{ translate('Confirmation')}}</h5>
 						<button type="button" class="close" data-dismiss="modal">
 						</button>
 					</div>
 					<div class="modal-body">
-							<p>{{translate('Do you really want to unban this seller?')}}</p>
+							<p>{{ translate('Do you really want to unban this seller?')}}</p>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-light" data-dismiss="modal">{{translate('Cancel')}}</button>
-						<a class="btn btn-primary" id="confirmationunban">{{translate('Proceed!')}}</a>
+						<button type="button" class="btn btn-light" data-dismiss="modal">{{ translate('Cancel')}}</button>
+						<a class="btn btn-primary" id="confirmationunban">{{ translate('Proceed!')}}</a>
 					</div>
 				</div>
 			</div>

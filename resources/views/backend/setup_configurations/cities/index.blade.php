@@ -4,7 +4,7 @@
     <div class="aiz-titlebar text-left mt-2 mb-3">
     	<div class="row align-items-center">
     		<div class="col-md-12">
-    			<h1 class="h3">{{translate('All cities')}}</h1>
+    			<h1 class="h3">{{ translate('All cities')}}</h1>
     		</div>
     	</div>
     </div>
@@ -39,11 +39,11 @@
                         <thead>
                             <tr>
                                 <th data-breakpoints="lg">#</th>
-                                <th>{{translate('Name')}}</th>
-                                <th>{{translate('State')}}</th>
-                                <th>{{translate('Area Wise Shipping Cost')}}</th>
-                                <th>{{translate('Show/Hide')}}</th>
-                                <th data-breakpoints="lg" class="text-right">{{translate('Options')}}</th>
+                                <th>{{ translate('Name')}}</th>
+                                <th>{{ translate('State')}}</th>
+                                <th>{{ translate('Area Wise Shipping Cost')}}</th>
+                                <th>{{ translate('Show/Hide')}}</th>
+                                <th data-breakpoints="lg" class="text-right">{{ translate('Options')}}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -86,12 +86,12 @@
     				<form action="{{ route('cities.store') }}" method="POST">
     					@csrf
     					<div class="form-group mb-3">
-    						<label for="name">{{translate('Name')}}</label>
-    						<input type="text" placeholder="{{translate('Name')}}" name="name" class="form-control" required>
+    						<label for="name">{{ translate('Name')}}</label>
+    						<input type="text" placeholder="{{ translate('Name')}}" name="name" class="form-control" required>
     					</div>
 
                         <div class="form-group">
-                            <label for="country">{{translate('State')}}</label>
+                            <label for="country">{{ translate('State')}}</label>
                             <select class="select2 form-control aiz-selectpicker" name="state_id" data-toggle="select2" data-placeholder="Choose ..." data-live-search="true">
                                 @foreach ($states as $state)
                                     <option value="{{ $state->id }}">{{ $state->name }}</option>
@@ -100,11 +100,11 @@
                         </div>
 
                         <div class="form-group mb-3">
-    						<label for="name">{{translate('Cost')}}</label>
-    						<input type="number" min="0" step="0.01" placeholder="{{translate('Cost')}}" name="cost" class="form-control" required>
+    						<label for="name">{{ translate('Cost')}}</label>
+    						<input type="number" min="0" step="0.01" placeholder="{{ translate('Cost')}}" name="cost" class="form-control" required>
     					</div>
     					<div class="form-group mb-3 text-right">
-    						<button type="submit" class="btn btn-primary">{{translate('Save')}}</button>
+    						<button type="submit" class="btn btn-primary">{{ translate('Save')}}</button>
     					</div>
     				</form>
     			</div>

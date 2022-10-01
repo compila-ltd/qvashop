@@ -4,19 +4,19 @@
 
 <div class="card">
     <div class="card-header">
-        <h5 class="mb-0 h6">{{translate('Classified Products')}}</h5>
+        <h5 class="mb-0 h6">{{ translate('Classified Products')}}</h5>
     </div>
     <div class="card-body">
         <table class="table aiz-table mb-0">
             <thead>
                 <tr>
                     <th data-breakpoints="lg">#</th>
-                    <th>{{translate('Name')}}</th>
-                    <th data-breakpoints="lg">{{translate('Image')}}</th>
-                    <th data-breakpoints="lg">{{translate('Uploaded By')}}</th>
-                    <th data-breakpoints="lg">{{translate('Customer Status')}}</th>
-                    <th data-breakpoints="lg">{{translate('Published')}}</th>
-                    <th class="text-right" width="10%">{{translate('Options')}}</th>
+                    <th>{{ translate('Name')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Image')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Uploaded By')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Customer Status')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Published')}}</th>
+                    <th class="text-right" width="10%">{{ translate('Options')}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,7 +24,7 @@
                     <tr>
                         <td>{{ ($key+1) + ($products->currentPage() - 1)*$products->perPage() }}</td>
                         <td><a href="{{ route('customer.product', $product->slug) }}" class="text-reset text-truncate-2" target="_blank">{{$product->getTranslation('name')}}</a></td>
-                        <td><img src="{{ uploaded_asset($product->thumbnail_img) }}" alt="{{translate('Product Image')}}" class="h-50px"></td>
+                        <td><img src="{{ uploaded_asset($product->thumbnail_img) }}" alt="{{ translate('Product Image')}}" class="h-50px"></td>
                         <td>{{$product->added_by}}</td>
                         <td>
                             @if ($product->status == 1)

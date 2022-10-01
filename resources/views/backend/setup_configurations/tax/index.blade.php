@@ -5,11 +5,11 @@
 <div class="aiz-titlebar text-left mt-2 mb-3">
     <div class="row align-items-center">
         <div class="col-md-6">
-            <h1 class="h3">{{translate('All Taxes')}}</h1>
+            <h1 class="h3">{{ translate('All Taxes')}}</h1>
         </div>
         <div class="col-md-6 text-md-right">
             <a href="#" data-target="#add-tax" data-toggle="modal" class="btn btn-circle btn-info">
-                <span>{{translate('Add New Tax')}}</span>
+                <span>{{ translate('Add New Tax')}}</span>
             </a>
         </div>
     </div>
@@ -26,9 +26,9 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>{{translate('Tax Type')}}</th>
-                    <th>{{translate('Status')}}</th>
-                    <th class="text-right">{{translate('Options')}}</th>
+                    <th>{{ translate('Tax Type')}}</th>
+                    <th>{{ translate('Status')}}</th>
+                    <th class="text-right">{{ translate('Options')}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -68,7 +68,7 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-zoom" role="document">
         <div class="modal-content">
             <div class="modal-header bord-btm">
-                <h4 class="modal-title h6">{{translate('Add New Tax')}}</h4>
+                <h4 class="modal-title h6">{{ translate('Add New Tax')}}</h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
 
@@ -79,10 +79,10 @@
                     <div class="form-group">
                         <div class=" row">
                             <label class="col-sm-3 control-label" for="name">
-                                {{translate('Tax Name')}}
+                                {{ translate('Tax Name')}}
                             </label>
                             <div class="col-sm-9">
-                                <input type="text" placeholder="{{translate('Name')}}" id="name" name="name" class="form-control" required>
+                                <input type="text" placeholder="{{ translate('Name')}}" id="name" name="name" class="form-control" required>
                             </div>
                         </div>
                     </div>
@@ -90,10 +90,10 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-styled btn-base-3" data-dismiss="modal">
-                        {{translate('Close')}}
+                        {{ translate('Close')}}
                     </button>
                     <button type="submit" class="btn btn-primary btn-styled btn-base-1">
-                        {{translate('Save')}}
+                        {{ translate('Save')}}
                     </button>
                 </div>
             </form>

@@ -453,7 +453,7 @@
 				<form action="{{ route('business_settings.update') }}" method="POST" enctype="multipart/form-data">
 					@csrf
 					<div class="form-group row">
-						<label class="col-md-2 col-from-label">{{translate('Top Categories (Max 10)')}}</label>
+						<label class="col-md-2 col-from-label">{{ translate('Top Categories (Max 10)')}}</label>
 						<div class="col-md-10">
 							<input type="hidden" name="types[]" value="top10_categories">
 							<select name="top10_categories[]" class="form-control aiz-selectpicker" multiple data-max-options="10" data-live-search="true" data-selected="{{ get_setting('top10_categories') }}">
@@ -467,7 +467,7 @@
 						</div>
 					</div>
 					<div class="form-group row">
-						<label class="col-md-2 col-from-label">{{translate('Top Brands (Max 10)')}}</label>
+						<label class="col-md-2 col-from-label">{{ translate('Top Brands (Max 10)')}}</label>
 						<div class="col-md-10">
 							<input type="hidden" name="types[]" value="top10_brands">
 							<select name="top10_brands[]" class="form-control aiz-selectpicker" multiple data-max-options="10" data-live-search="true" data-selected="{{ get_setting('top10_brands') }}">

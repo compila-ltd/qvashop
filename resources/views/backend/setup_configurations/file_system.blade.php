@@ -67,7 +67,7 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-lg-12 text-right">
-                            <button class="btn btn-primary" type="submit">{{translate('Save')}}</button>
+                            <button class="btn btn-primary" type="submit">{{ translate('Save')}}</button>
                         </div>
                     </div>
                 </form>
@@ -77,7 +77,7 @@
     <div class="col-xxl-6">
         <div class="card">
             <div class="card-header">
-                <h3 class="fs-18 mb-0 text-center">{{translate('S3 File System Activation')}}</h3>
+                <h3 class="fs-18 mb-0 text-center">{{ translate('S3 File System Activation')}}</h3>
             </div>
             <div class="card-body">
                 <label class="aiz-switch mb-0">
@@ -93,7 +93,7 @@
     <div class="col-xxl-6">
         <div class="card">
             <div class="card-header">
-                <h3 class="fs-18 mb-0 text-center">{{translate('Cache & Session Driver')}}</h3>
+                <h3 class="fs-18 mb-0 text-center">{{ translate('Cache & Session Driver')}}</h3>
             </div>
             <div class="card-body">
                 <form class="form-horizontal" action="{{ route('payment_method.update') }}" method="POST">
@@ -101,7 +101,7 @@
                     <div class="form-group row">
                         <input type="hidden" name="types[]" value="CACHE_DRIVER">
                         <div class="col-lg-4">
-                            <label class="control-label">{{translate('CACHE_DRIVER')}}</label>
+                            <label class="control-label">{{ translate('CACHE_DRIVER')}}</label>
                         </div>
                         <div class="col-lg-8">
                             <select class="form-control aiz-selectpicker mb-2 mb-md-0" name="CACHE_DRIVER">
@@ -113,7 +113,7 @@
                     <div class="form-group row">
                         <input type="hidden" name="types[]" value="SESSION_DRIVER">
                         <div class="col-lg-4">
-                            <label class="control-label">{{translate('SESSION_DRIVER')}}</label>
+                            <label class="control-label">{{ translate('SESSION_DRIVER')}}</label>
                         </div>
                         <div class="col-lg-8">
                             <select class="form-control aiz-selectpicker mb-2 mb-md-0" name="SESSION_DRIVER">
@@ -124,7 +124,7 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-lg-12 text-right">
-                            <button class="btn btn-primary" type="submit">{{translate('Save')}}</button>
+                            <button class="btn btn-primary" type="submit">{{ translate('Save')}}</button>
                         </div>
                     </div>
                 </form>
@@ -134,7 +134,7 @@
     <div class="col-xxl-6">
         <div class="card">
             <div class="card-header">
-                <h3 class="fs-18 mb-0 text-center">{{translate('Redis Configuration (If you use redis as any of the drivers)')}}</h3>
+                <h3 class="fs-18 mb-0 text-center">{{ translate('Redis Configuration (If you use redis as any of the drivers)')}}</h3>
             </div>
             <div class="card-body">
                 <form class="form-horizontal" action="{{ route('payment_method.update') }}" method="POST">
@@ -142,7 +142,7 @@
                     <div class="form-group row">
                         <input type="hidden" name="types[]" value="REDIS_HOST">
                         <div class="col-lg-4">
-                            <label class="control-label">{{translate('REDIS_HOST')}}</label>
+                            <label class="control-label">{{ translate('REDIS_HOST')}}</label>
                         </div>
                         <div class="col-lg-8">
                             <input type="text" class="form-control" name="REDIS_HOST" value="{{  env('REDIS_HOST') }}" placeholder="{{ translate('REDIS_HOST') }}" required>
@@ -151,7 +151,7 @@
                     <div class="form-group row">
                         <input type="hidden" name="types[]" value="REDIS_PASSWORD">
                         <div class="col-lg-4">
-                            <label class="control-label">{{translate('REDIS_PASSWORD')}}</label>
+                            <label class="control-label">{{ translate('REDIS_PASSWORD')}}</label>
                         </div>
                         <div class="col-lg-8">
                             <input type="text" class="form-control" name="REDIS_PASSWORD" value="{{  env('REDIS_PASSWORD') }}" placeholder="{{ translate('REDIS_PASSWORD') }}">
@@ -160,7 +160,7 @@
                     <div class="form-group row">
                         <input type="hidden" name="types[]" value="REDIS_PORT">
                         <div class="col-lg-4">
-                            <label class="control-label">{{translate('REDIS_PORT')}}</label>
+                            <label class="control-label">{{ translate('REDIS_PORT')}}</label>
                         </div>
                         <div class="col-lg-8">
                             <input type="text" class="form-control" name="REDIS_PORT" value="{{  env('REDIS_PORT') }}" placeholder="{{ translate('REDIS_PORT') }}" required>
@@ -168,7 +168,7 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-lg-12 text-right">
-                            <button class="btn btn-primary" type="submit">{{translate('Save')}}</button>
+                            <button class="btn btn-primary" type="submit">{{ translate('Save')}}</button>
                         </div>
                     </div>
                 </form>

@@ -6,7 +6,7 @@
     <div class="col-md-8 mx-auto">
         <div class="card">
     		<div class="card-header">
-    			<h1 class="h6">{{translate('User Search Report')}}</h1>
+    			<h1 class="h6">{{ translate('User Search Report')}}</h1>
     		</div>
             <div class="card-body">
                 <table class="table table-bordered aiz-table mb-0">

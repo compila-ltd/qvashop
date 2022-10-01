@@ -4,12 +4,12 @@
 <div class="aiz-titlebar text-left mt-2 mb-3">
     <div class="row align-items-center">
         <div class="col-md-6">
-            <h1 class="h3">{{translate('All Blog Categories')}}</h1>
+            <h1 class="h3">{{ translate('All Blog Categories')}}</h1>
         </div>
         @can('add_blog_category')
             <div class="col-md-6 text-md-right">
                 <a href="{{ url('admin/blog-category/create') }}" class="btn btn-primary">
-                    <span>{{translate('Add New category')}}</span>
+                    <span>{{ translate('Add New category')}}</span>
                 </a>
             </div>
         @endcan
@@ -31,8 +31,8 @@
             <thead>
                 <tr>
                     <th width="5%">#</th>
-                    <th>{{translate('Name')}}</th>
-                    <th width="10%" class="text-right">{{translate('Options')}}</th>
+                    <th>{{ translate('Name')}}</th>
+                    <th width="10%" class="text-right">{{ translate('Options')}}</th>
                 </tr>
             </thead>
             <tbody>

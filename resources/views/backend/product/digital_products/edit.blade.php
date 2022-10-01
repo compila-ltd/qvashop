@@ -215,10 +215,10 @@
                                 <div class="col-md-2">
                                     <select class="form-control aiz-selectpicker" name="tax_type[]" required>
                                         <option value="amount" @if($tax_type == 'amount') selected @endif>
-                                            {{translate('Flat')}}
+                                            {{ translate('Flat')}}
                                         </option>
                                         <option value="percent" @if($tax_type == 'percent') selected @endif>
-                                            {{translate('Percent')}}
+                                            {{ translate('Percent')}}
                                         </option>
                                     </select>
                                 </div>

@@ -5,11 +5,11 @@
 <div class="aiz-titlebar text-left mt-2 mb-3">
 	<div class="row align-items-center">
 		<div class="col-md-6">
-			<h1 class="h3">{{translate('All Pick-up Points')}}</h1>
+			<h1 class="h3">{{ translate('All Pick-up Points')}}</h1>
 		</div>
 		<div class="col-md-6 text-md-right">
 			<a href="{{ route('pick_up_points.create') }}" class="btn btn-circle btn-info">
-				<span>{{translate('Add New Pick-up Point')}}</span>
+				<span>{{ translate('Add New Pick-up Point')}}</span>
 			</a>
 		</div>
 	</div>
@@ -33,12 +33,12 @@
             <thead>
                 <tr>
                     <th data-breakpoints="lg" width="10%">#</th>
-                    <th>{{translate('Name')}}</th>
-                    <th data-breakpoints="lg">{{translate('Manager')}}</th>
-                    <th data-breakpoints="lg">{{translate('Location')}}</th>
-                    <th data-breakpoints="lg">{{translate('Pickup Station Contact')}}</th>
-                    <th>{{translate('Status')}}</th>
-                    <th width="10%" class="text-right">{{translate('Options')}}</th>
+                    <th>{{ translate('Name')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Manager')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Location')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Pickup Station Contact')}}</th>
+                    <th>{{ translate('Status')}}</th>
+                    <th width="10%" class="text-right">{{ translate('Options')}}</th>
                 </tr>
             </thead>
             <tbody>

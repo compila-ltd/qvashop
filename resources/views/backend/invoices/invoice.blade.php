@@ -138,7 +138,7 @@
                                         @php
                                             $product_stock = json_decode($orderDetail->product->stocks->first(), true);
                                         @endphp
-                                        {{translate('SKU')}}: {{ $product_stock['sku'] }}
+                                        {{ translate('SKU')}}: {{ $product_stock['sku'] }}
                                     </small>
                                 </td>
 								<td>

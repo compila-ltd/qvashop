@@ -16,16 +16,16 @@
   <hr>
 
   <!-- Profile Details -->
-  <h6 class="mb-4">{{translate('About')}} {{ $shop->user->name }}</h6>
+  <h6 class="mb-4">{{ translate('About')}} {{ $shop->user->name }}</h6>
   <p><i class="demo-pli-map-marker-2 icon-lg icon-fw mr-1"></i>{{ $shop->address }}</p>
   <p><a href="{{ route('shop.visit', $shop->slug) }}" class="btn-link"><i class="demo-pli-internet icon-lg icon-fw mr-1"></i>{{ $shop->name }}</a></p>
   <p><i class="demo-pli-old-telephone icon-lg icon-fw mr-1"></i>{{ $shop->user->phone }}</p>
 
-  <h6 class="mb-4">{{translate('Payout Info')}}</h6>
-  <p>{{translate('Bank Name')}} : {{ $shop->bank_name }}</p>
-  <p>{{translate('Bank Acc Name')}} : {{ $shop->bank_acc_name }}</p>
-  <p>{{translate('Bank Acc Number')}} : {{ $shop->bank_acc_no }}</p>
-  <p>{{translate('Bank Routing Number')}} : {{ $shop->bank_routing_no }}</p>
+  <h6 class="mb-4">{{ translate('Payout Info')}}</h6>
+  <p>{{ translate('Bank Name')}} : {{ $shop->bank_name }}</p>
+  <p>{{ translate('Bank Acc Name')}} : {{ $shop->bank_acc_name }}</p>
+  <p>{{ translate('Bank Acc Number')}} : {{ $shop->bank_acc_no }}</p>
+  <p>{{ translate('Bank Routing Number')}} : {{ $shop->bank_routing_no }}</p>
 
   <br>
 

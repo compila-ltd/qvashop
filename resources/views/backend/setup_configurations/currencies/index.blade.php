@@ -7,14 +7,14 @@
     <div class="col-lg-6">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">{{translate('System Default Currency')}}</h5>
+                <h5 class="mb-0 h6">{{ translate('System Default Currency')}}</h5>
             </div>
             <div class="card-body">
                 <form class="form-horizontal" action="{{ route('business_settings.update') }}" method="POST">
                     @csrf
                     <div class="form-group row">
                         <div class="col-lg-3">
-                            <label class="control-label">{{translate('System Default Currency')}}</label>
+                            <label class="control-label">{{ translate('System Default Currency')}}</label>
                         </div>
                         <div class="col-lg-6">
                             <select class="form-control aiz-selectpicker" name="system_default_currency" data-live-search="true">
@@ -27,7 +27,7 @@
                         </div>
                         <input type="hidden" name="types[]" value="system_default_currency">
                         <div class="col-lg-3">
-                            <button class="btn btn-sm btn-primary" type="submit">{{translate('Save')}}</button>
+                            <button class="btn btn-sm btn-primary" type="submit">{{ translate('Save')}}</button>
                         </div>
                     </div>
                 </form>
@@ -38,7 +38,7 @@
     <div class="col-lg-6">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">{{translate('Set Currency Formats')}}</h5>
+                <h5 class="mb-0 h6">{{ translate('Set Currency Formats')}}</h5>
             </div>
             <div class="card-body">
                 <form class="form-horizontal" action="{{ route('business_settings.update') }}" method="POST">
@@ -46,7 +46,7 @@
                     <div class="form-group row">
                         <input type="hidden" name="types[]" value="symbol_format">
                         <div class="col-lg-3">
-                            <label class="control-label">{{translate('Symbol Format')}}</label>
+                            <label class="control-label">{{ translate('Symbol Format')}}</label>
                         </div>
                         <div class="col-lg-6">
                             <select class="form-control aiz-selectpicker" name="symbol_format">
@@ -60,7 +60,7 @@
                     <div class="form-group row">
                         <input type="hidden" name="types[]" value="decimal_separator">
                         <div class="col-lg-3">
-                            <label class="control-label">{{translate('Decimal Separator')}}</label>
+                            <label class="control-label">{{ translate('Decimal Separator')}}</label>
                         </div>
                         <div class="col-lg-6">
                             <select class="form-control aiz-selectpicker" name="decimal_separator">
@@ -72,7 +72,7 @@
                     <div class="form-group row">
                         <input type="hidden" name="types[]" value="no_of_decimals">
                         <div class="col-lg-3">
-                            <label class="control-label">{{translate('No of decimals')}}</label>
+                            <label class="control-label">{{ translate('No of decimals')}}</label>
                         </div>
                         <div class="col-lg-6">
                             <select class="form-control aiz-selectpicker" name="no_of_decimals">
@@ -84,7 +84,7 @@
                         </div>
                     </div>
                     <div class="form-group mb-0 text-right">
-                        <button type="submit" class="btn btn-sm btn-primary">{{translate('Save')}}</button>
+                        <button type="submit" class="btn btn-sm btn-primary">{{ translate('Save')}}</button>
                     </div>
                 </form>
             </div>
@@ -95,11 +95,11 @@
 <div class="aiz-titlebar text-left mt-2 mb-3">
 	<div class="row align-items-center">
 		<div class="col-md-6">
-			<h1 class="h3">{{translate('All Currencies')}}</h1>
+			<h1 class="h3">{{ translate('All Currencies')}}</h1>
 		</div>
 		<div class="col-md-6 text-md-right">
 			<a onclick="currency_modal()" href="#" class="btn btn-circle btn-primary">
-				<span>{{translate('Add New Currency')}}</span>
+				<span>{{ translate('Add New Currency')}}</span>
 			</a>
 		</div>
 	</div>
@@ -123,12 +123,12 @@
             <thead>
                 <tr>
                     <th data-breakpoints="lg">#</th>
-                    <th>{{translate('Currency name')}}</th>
-                    <th data-breakpoints="lg">{{translate('Currency symbol')}}</th>
-                    <th data-breakpoints="lg">{{translate('Currency code')}}</th>
-                    <th>{{translate('Exchange rate')}}(1 USD = ?)</th>
-                    <th data-breakpoints="lg">{{translate('Status')}}</th>
-                    <th class="text-right">{{translate('Options')}}</th>
+                    <th>{{ translate('Currency name')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Currency symbol')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Currency code')}}</th>
+                    <th>{{ translate('Exchange rate')}}(1 USD = ?)</th>
+                    <th data-breakpoints="lg">{{ translate('Status')}}</th>
+                    <th class="text-right">{{ translate('Options')}}</th>
                 </tr>
             </thead>
             <tbody>

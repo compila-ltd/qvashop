@@ -229,9 +229,9 @@ $flash_deal = \App\Models\FlashDeal::where('status', 1)->where('featured', 1)->f
                                 </a>
                                 <div class="absolute-top-left pt-2 pl-2">
                                     @if($classified_product->conditon == 'new')
-                                    <span class="badge badge-inline badge-success">{{translate('new')}}</span>
+                                    <span class="badge badge-inline badge-success">{{ translate('new')}}</span>
                                     @elseif($classified_product->conditon == 'used')
-                                    <span class="badge badge-inline badge-danger">{{translate('Used')}}</span>
+                                    <span class="badge badge-inline badge-danger">{{ translate('Used')}}</span>
                                     @endif
                                 </div>
                             </div>

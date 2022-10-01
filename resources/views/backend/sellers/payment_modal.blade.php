@@ -2,7 +2,7 @@
     @csrf
     <input type="hidden" name="shop_id" value="{{ $shop->id }}">
     <div class="modal-header">
-    	<h5 class="modal-title h6">{{translate('Pay to seller')}}</h5>
+    	<h5 class="modal-title h6">{{ translate('Pay to seller')}}</h5>
     	<button type="button" class="close" data-dismiss="modal">
     	</button>
     </div>
@@ -41,41 +41,41 @@
 
       @if ($shop->admin_to_pay > 0)
           <div class="form-group row">
-              <label class="col-md-3 col-from-label" for="amount">{{translate('Amount')}}</label>
+              <label class="col-md-3 col-from-label" for="amount">{{ translate('Amount')}}</label>
               <div class="col-md-9">
                   <input type="number" lang="en" min="0" step="0.01" name="amount" id="amount" value="{{ $shop->admin_to_pay }}" class="form-control" required>
               </div>
           </div>
 
           <div class="form-group row">
-              <label class="col-md-3 col-from-label" for="payment_option">{{translate('Payment Method')}}</label>
+              <label class="col-md-3 col-from-label" for="payment_option">{{ translate('Payment Method')}}</label>
               <div class="col-md-9">
                   <select name="payment_option" id="payment_option" class="form-control aiz-selectpicker" required>
-                      <option value="">{{translate('Select Payment Method')}}</option>
+                      <option value="">{{ translate('Select Payment Method')}}</option>
                       @if($shop->cash_on_delivery_status == 1)
-                          <option value="cash">{{translate('Cash')}}</option>
+                          <option value="cash">{{ translate('Cash')}}</option>
                       @endif
                       @if($shop->bank_payment_status == 1)
-                          <option value="bank_payment">{{translate('Bank Payment')}}</option>
+                          <option value="bank_payment">{{ translate('Bank Payment')}}</option>
                       @endif
                   </select>
               </div>
           </div>
           <div class="form-group row" id="txn_div">
-              <label class="col-md-3 col-from-label" for="txn_code">{{translate('Txn Code')}}</label>
+              <label class="col-md-3 col-from-label" for="txn_code">{{ translate('Txn Code')}}</label>
               <div class="col-md-9">
                   <input type="text" name="txn_code" id="txn_code" class="form-control">
               </div>
           </div>
       @else
           <div class="form-group row">
-              <label class="col-md-3 col-from-label" for="amount">{{translate('Amount')}}</label>
+              <label class="col-md-3 col-from-label" for="amount">{{ translate('Amount')}}</label>
               <div class="col-md-9">
                   <input type="number" lang="en" min="0" step="0.01" name="amount" id="amount" value="{{ abs($shop->admin_to_pay) }}" class="form-control" required>
               </div>
           </div>
           <div class="form-group row" id="txn_div">
-              <label class="col-md-3 col-from-label" for="txn_code">{{translate('Txn Code')}}</label>
+              <label class="col-md-3 col-from-label" for="txn_code">{{ translate('Txn Code')}}</label>
               <div class="col-md-9">
                   <input type="text" name="txn_code" id="txn_code" class="form-control">
               </div>
@@ -84,11 +84,11 @@
     </div>
     <div class="modal-footer">
       @if ($shop->admin_to_pay > 0)
-          <button type="submit" class="btn btn-primary">{{translate('Pay')}}</button>
+          <button type="submit" class="btn btn-primary">{{ translate('Pay')}}</button>
       @else
-          <button type="submit" class="btn btn-primary">{{translate('Clear due')}}</button>
+          <button type="submit" class="btn btn-primary">{{ translate('Clear due')}}</button>
       @endif
-      <button type="button" class="btn btn-light" data-dismiss="modal">{{translate('Cancel')}}</button>
+      <button type="button" class="btn btn-light" data-dismiss="modal">{{ translate('Cancel')}}</button>
     </div>
 </form>
 

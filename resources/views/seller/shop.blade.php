@@ -78,7 +78,7 @@
                     </div>
                 </div>
                 <div class="form-group mb-0 text-right">
-                    <button type="submit" class="btn btn-sm btn-primary">{{translate('Save')}}</button>
+                    <button type="submit" class="btn btn-sm btn-primary">{{ translate('Save')}}</button>
                 </div>
             </form>
         </div>
@@ -96,7 +96,7 @@
 
                     @if (get_setting('google_map') == 1)
                         <div class="row mb-3">
-                            <input id="searchInput" class="controls" type="text" placeholder="{{translate('Enter a location')}}">
+                            <input id="searchInput" class="controls" type="text" placeholder="{{ translate('Enter a location')}}">
                             <div id="map"></div>
                             <ul id="geoData">
                                 <li style="display: none;">{{ translate('Full Address') }}: <span id="location"></span></li>
@@ -142,7 +142,7 @@
                     @endif
 
                     <div class="form-group mb-0 text-right">
-                        <button type="submit" class="btn btn-sm btn-primary">{{translate('Save')}}</button>
+                        <button type="submit" class="btn btn-sm btn-primary">{{ translate('Save')}}</button>
                     </div>
                 </form>
             </div>
@@ -176,7 +176,7 @@
                 </div>
 
                 <div class="form-group mb-0 text-right">
-                    <button type="submit" class="btn btn-sm btn-primary">{{translate('Save')}}</button>
+                    <button type="submit" class="btn btn-sm btn-primary">{{ translate('Save')}}</button>
                 </div>
             </form>
         </div>
@@ -229,7 +229,7 @@
                     </div>
                 </div>
                 <div class="form-group mb-0 text-right">
-                    <button type="submit" class="btn btn-sm btn-primary">{{translate('Save')}}</button>
+                    <button type="submit" class="btn btn-sm btn-primary">{{ translate('Save')}}</button>
                 </div>
             </form>
         </div>

@@ -5,7 +5,7 @@
     <div class="col-lg-8 mx-auto">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">{{translate('Coupon Information Adding')}}</h5>
+                <h5 class="mb-0 h6">{{ translate('Coupon Information Adding')}}</h5>
             </div>
             <div class="card-body">
               <form class="form-horizontal" action="{{ route('coupon.store') }}" method="POST" enctype="multipart/form-data">
@@ -20,12 +20,12 @@
                     </div>
                 @endif
                 <div class="form-group row">
-                    <label class="col-lg-3 col-from-label" for="name">{{translate('Coupon Type')}}</label>
+                    <label class="col-lg-3 col-from-label" for="name">{{ translate('Coupon Type')}}</label>
                     <div class="col-lg-9">
                         <select name="type" id="coupon_type" class="form-control aiz-selectpicker" onchange="coupon_form()" required>
-                            <option value="">{{translate('Select One') }}</option>
-                            <option value="product_base" @if (old('type') == 'product_base') selected @endif>{{translate('For Products')}}</option>
-                            <option value="cart_base" @if (old('type') == 'cart_base') selected @endif>{{translate('For Total Orders')}}</option>
+                            <option value="">{{ translate('Select One') }}</option>
+                            <option value="product_base" @if (old('type') == 'product_base') selected @endif>{{ translate('For Products')}}</option>
+                            <option value="cart_base" @if (old('type') == 'cart_base') selected @endif>{{ translate('For Total Orders')}}</option>
                         </select>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
 
                 </div>
                 <div class="form-group mb-0 text-right">
-                    <button type="submit" class="btn btn-primary">{{translate('Save')}}</button>
+                    <button type="submit" class="btn btn-primary">{{ translate('Save')}}</button>
                 </div>
               </form>
             </div>

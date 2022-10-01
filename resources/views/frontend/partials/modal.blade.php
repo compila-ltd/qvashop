@@ -1,8 +1,9 @@
 <script>
-    function confirm_modal(delete_url)
-    {
-        jQuery('#confirm-delete').modal('show', {backdrop: 'static'});
-        document.getElementById('delete_link').setAttribute('href' , delete_url);
+    function confirm_modal(delete_url) {
+        jQuery('#confirm-delete').modal('show', {
+            backdrop: 'static'
+        });
+        document.getElementById('delete_link').setAttribute('href', delete_url);
     }
 </script>
 

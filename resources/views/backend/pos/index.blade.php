@@ -45,7 +45,7 @@
                         <div class="d-flex border-bottom pb-3">
                             <div class="flex-grow-1">
                                 <select name="user_id" class="form-control aiz-selectpicker pos-customer" data-live-search="true" onchange="getShippingAddress()">
-                                    <option value="">{{translate('Walk In Customer')}}</option>
+                                    <option value="">{{ translate('Walk In Customer')}}</option>
                                     @foreach ($customers as $key => $customer)
                                     <option value="{{ $customer->id }}" data-contact="{{ $customer->email }}">
                                         {{ $customer->name }}
@@ -118,23 +118,23 @@
                             </div>
                             <div>
                                 <div class="d-flex justify-content-between fw-600 mb-2 opacity-70">
-                                    <span>{{translate('Sub Total')}}</span>
+                                    <span>{{ translate('Sub Total')}}</span>
                                     <span>{{ single_price($subtotal) }}</span>
                                 </div>
                                 <div class="d-flex justify-content-between fw-600 mb-2 opacity-70">
-                                    <span>{{translate('Tax')}}</span>
+                                    <span>{{ translate('Tax')}}</span>
                                     <span>{{ single_price($tax) }}</span>
                                 </div>
                                 <div class="d-flex justify-content-between fw-600 mb-2 opacity-70">
-                                    <span>{{translate('Shipping')}}</span>
+                                    <span>{{ translate('Shipping')}}</span>
                                     <span>{{ single_price(Session::get('pos.shipping', 0)) }}</span>
                                 </div>
                                 <div class="d-flex justify-content-between fw-600 mb-2 opacity-70">
-                                    <span>{{translate('Discount')}}</span>
+                                    <span>{{ translate('Discount')}}</span>
                                     <span>{{ single_price(Session::get('pos.discount', 0)) }}</span>
                                 </div>
                                 <div class="d-flex justify-content-between fw-600 fs-18 border-top pt-2">
-                                    <span>{{translate('Total')}}</span>
+                                    <span>{{ translate('Total')}}</span>
                                     <span>{{ single_price($subtotal+$tax+Session::get('pos.shipping', 0) - Session::get('pos.discount', 0)) }}</span>
                                 </div>
                             </div>
@@ -146,7 +146,7 @@
                         <div class="d-flex">
                             <div class="dropdown mr-3 ml-0 dropup">
                                 <button class="btn btn-outline-dark btn-styled dropdown-toggle" type="button" data-toggle="dropdown">
-                                    {{translate('Shipping')}}
+                                    {{ translate('Shipping')}}
                                 </button>
                                 <div class="dropdown-menu p-3 dropdown-menu-lg">
                                     <div class="input-group">
@@ -159,7 +159,7 @@
                             </div>
                             <div class="dropdown dropup">
                                 <button class="btn btn-outline-dark btn-styled dropdown-toggle" type="button" data-toggle="dropdown">
-                                    {{translate('Discount')}}
+                                    {{ translate('Discount')}}
                                 </button>
                                 <div class="dropdown-menu p-3 dropdown-menu-lg">
                                     <div class="input-group">
@@ -189,7 +189,7 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-zoom" role="document">
         <div class="modal-content">
             <div class="modal-header bord-btm">
-                <h4 class="modal-title h6">{{translate('Shipping Address')}}</h4>
+                <h4 class="modal-title h6">{{ translate('Shipping Address')}}</h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
             <form id="shipping_form">
@@ -199,8 +199,8 @@
                 </div>
             </form>
             <div class="modal-footer">
-                <button type="button" class="btn btn-styled btn-base-3" data-dismiss="modal" id="close-button">{{translate('Close')}}</button>
-                <button type="button" class="btn btn-primary btn-styled btn-base-1" id="confirm-address" data-dismiss="modal">{{translate('Confirm')}}</button>
+                <button type="button" class="btn btn-styled btn-base-3" data-dismiss="modal" id="close-button">{{ translate('Close')}}</button>
+                <button type="button" class="btn btn-primary btn-styled btn-base-1" id="confirm-address" data-dismiss="modal">{{ translate('Confirm')}}</button>
             </div>
         </div>
     </div>
@@ -211,7 +211,7 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-zoom" role="document">
         <div class="modal-content">
             <div class="modal-header bord-btm">
-                <h4 class="modal-title h6">{{translate('Shipping Address')}}</h4>
+                <h4 class="modal-title h6">{{ translate('Shipping Address')}}</h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
             <form class="form-horizontal" action="{{ route('addresses.store') }}" method="POST" enctype="multipart/form-data">
@@ -220,15 +220,15 @@
                     <input type="hidden" name="customer_id" id="set_customer_id" value="">
                     <div class="form-group">
                         <div class=" row">
-                            <label class="col-sm-2 control-label" for="address">{{translate('Address')}}</label>
+                            <label class="col-sm-2 control-label" for="address">{{ translate('Address')}}</label>
                             <div class="col-sm-10">
-                                <textarea placeholder="{{translate('Address')}}" id="address" name="address" class="form-control" required></textarea>
+                                <textarea placeholder="{{ translate('Address')}}" id="address" name="address" class="form-control" required></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class=" row">
-                            <label class="col-sm-2 control-label">{{translate('Country')}}</label>
+                            <label class="col-sm-2 control-label">{{ translate('Country')}}</label>
                             <div class="col-sm-10">
                                 <select class="form-control aiz-selectpicker" data-live-search="true" data-placeholder="{{ translate('Select your country') }}" name="country_id" required>
                                     <option value="">{{ translate('Select your country') }}</option>
@@ -265,24 +265,24 @@
                     </div>
                     <div class="form-group">
                         <div class=" row">
-                            <label class="col-sm-2 control-label" for="postal_code">{{translate('Postal code')}}</label>
+                            <label class="col-sm-2 control-label" for="postal_code">{{ translate('Postal code')}}</label>
                             <div class="col-sm-10">
-                                <input type="number" min="0" placeholder="{{translate('Postal code')}}" id="postal_code" name="postal_code" class="form-control" required>
+                                <input type="number" min="0" placeholder="{{ translate('Postal code')}}" id="postal_code" name="postal_code" class="form-control" required>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class=" row">
-                            <label class="col-sm-2 control-label" for="phone">{{translate('Phone')}}</label>
+                            <label class="col-sm-2 control-label" for="phone">{{ translate('Phone')}}</label>
                             <div class="col-sm-10">
-                                <input type="number" min="0" placeholder="{{translate('Phone')}}" id="phone" name="phone" class="form-control" required>
+                                <input type="number" min="0" placeholder="{{ translate('Phone')}}" id="phone" name="phone" class="form-control" required>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-styled btn-base-3" data-dismiss="modal">{{translate('Close')}}</button>
-                    <button type="submit" class="btn btn-primary btn-styled btn-base-1">{{translate('Save')}}</button>
+                    <button type="button" class="btn btn-styled btn-base-3" data-dismiss="modal">{{ translate('Close')}}</button>
+                    <button type="submit" class="btn btn-primary btn-styled btn-base-1">{{ translate('Save')}}</button>
                 </div>
             </form>
         </div>
@@ -293,7 +293,7 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-zoom modal-xl">
         <div class="modal-content" id="variants">
             <div class="modal-header bord-btm">
-                <h4 class="modal-title h6">{{translate('Order Summary')}}</h4>
+                <h4 class="modal-title h6">{{ translate('Order Summary')}}</h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
             </div>
             <div class="modal-body" id="order-confirmation">
@@ -302,10 +302,10 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-base-3" data-dismiss="modal">{{translate('Close')}}</button>
-                <button type="button" onclick="oflinePayment()" class="btn btn-base-1 btn-warning">{{translate('Offline Payment')}}</button>
-                <button type="button" onclick="submitOrder('cash_on_delivery')" class="btn btn-base-1 btn-info">{{translate('Confirm with COD')}}</button>
-                <button type="button" onclick="submitOrder('cash')" class="btn btn-base-1 btn-success">{{translate('Confirm with Cash')}}</button>
+                <button type="button" class="btn btn-secondary btn-base-3" data-dismiss="modal">{{ translate('Close')}}</button>
+                <button type="button" onclick="oflinePayment()" class="btn btn-base-1 btn-warning">{{ translate('Offline Payment')}}</button>
+                <button type="button" onclick="submitOrder('cash_on_delivery')" class="btn btn-base-1 btn-info">{{ translate('Confirm with COD')}}</button>
+                <button type="button" onclick="submitOrder('cash')" class="btn btn-base-1 btn-success">{{ translate('Confirm with Cash')}}</button>
             </div>
         </div>
     </div>
@@ -316,30 +316,30 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-zoom" role="document">
         <div class="modal-content">
             <div class="modal-header bord-btm">
-                <h4 class="modal-title h6">{{translate('Offline Payment Info')}}</h4>
+                <h4 class="modal-title h6">{{ translate('Offline Payment Info')}}</h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
                     <div class=" row">
-                        <label class="col-sm-3 control-label" for="offline_payment_method">{{translate('Payment Method')}}</label>
+                        <label class="col-sm-3 control-label" for="offline_payment_method">{{ translate('Payment Method')}}</label>
                         <div class="col-sm-9">
-                            <input placeholder="{{translate('Name')}}" id="offline_payment_method" name="offline_payment_method" class="form-control" required>
+                            <input placeholder="{{ translate('Name')}}" id="offline_payment_method" name="offline_payment_method" class="form-control" required>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class=" row">
-                        <label class="col-sm-3 control-label" for="offline_payment_amount">{{translate('Amount')}}</label>
+                        <label class="col-sm-3 control-label" for="offline_payment_amount">{{ translate('Amount')}}</label>
                         <div class="col-sm-9">
-                            <input placeholder="{{translate('Amount')}}" id="offline_payment_amount" name="offline_payment_amount" class="form-control" required>
+                            <input placeholder="{{ translate('Amount')}}" id="offline_payment_amount" name="offline_payment_amount" class="form-control" required>
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <label class="col-sm-3 control-label" for="trx_id">{{translate('Transaction ID')}}</label>
+                    <label class="col-sm-3 control-label" for="trx_id">{{ translate('Transaction ID')}}</label>
                     <div class="col-md-9">
                         <input type="text" class="form-control mb-3" id="trx_id" name="trx_id" placeholder="{{ translate('Transaction ID') }}" required>
                     </div>
@@ -361,8 +361,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-base-3" data-dismiss="modal">{{translate('Close')}}</button>
-                <button type="button" onclick="submitOrder('offline_payment')" class="btn btn-styled btn-base-1 btn-success">{{translate('Confirm')}}</button>
+                <button type="button" class="btn btn-secondary btn-base-3" data-dismiss="modal">{{ translate('Close')}}</button>
+                <button type="button" onclick="submitOrder('offline_payment')" class="btn btn-styled btn-base-1 btn-success">{{ translate('Confirm')}}</button>
             </div>
         </div>
     </div>

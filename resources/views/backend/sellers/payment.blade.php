@@ -11,8 +11,8 @@
             <thead>
                 <tr>
                     <th data-breakpoints="lg">#</th>
-                    <th>{{translate('Date')}}</th>
-                    <th>{{translate('Amount')}}</th>
+                    <th>{{ translate('Date')}}</th>
+                    <th>{{ translate('Amount')}}</th>
                     <th data-breakpoints="lg">{{ translate('Payment Details') }}</th>
                 </tr>
             </thead>

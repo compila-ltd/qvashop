@@ -56,31 +56,31 @@
 				<div class="card-body">
 					@if(Session::has('pos.shipping_info') && Session::get('pos.shipping_info')['name'] != null)
 						<div class="d-flex justify-content-between  mb-2">
-							<span class="">{{translate('Name')}}:</span>
+							<span class="">{{ translate('Name')}}:</span>
 							<span class="fw-600">{{ Session::get('pos.shipping_info')['name'] }}</span>
 						</div>
 						<div class="d-flex justify-content-between  mb-2">
-							<span class="">{{translate('Email')}}:</span>
+							<span class="">{{ translate('Email')}}:</span>
 							<span class="fw-600">{{ Session::get('pos.shipping_info')['email'] }}</span>
 						</div>
 						<div class="d-flex justify-content-between  mb-2">
-							<span class="">{{translate('Phone')}}:</span>
+							<span class="">{{ translate('Phone')}}:</span>
 							<span class="fw-600">{{ Session::get('pos.shipping_info')['phone'] }}</span>
 						</div>
 						<div class="d-flex justify-content-between  mb-2">
-							<span class="">{{translate('Address')}}:</span>
+							<span class="">{{ translate('Address')}}:</span>
 							<span class="fw-600">{{ Session::get('pos.shipping_info')['address'] }}</span>
 						</div>
 						<div class="d-flex justify-content-between  mb-2">
-							<span class="">{{translate('Country')}}:</span>
+							<span class="">{{ translate('Country')}}:</span>
 							<span class="fw-600">{{ Session::get('pos.shipping_info')['country'] }}</span>
 						</div>
 						<div class="d-flex justify-content-between  mb-2">
-							<span class="">{{translate('City')}}:</span>
+							<span class="">{{ translate('City')}}:</span>
 							<span class="fw-600">{{ Session::get('pos.shipping_info')['city'] }}</span>
 						</div>
 						<div class="d-flex justify-content-between  mb-2">
-							<span class="">{{translate('Postal Code')}}:</span>
+							<span class="">{{ translate('Postal Code')}}:</span>
 							<span class="fw-600">{{ Session::get('pos.shipping_info')['postal_code'] }}</span>
 						</div>
 					@else
@@ -92,23 +92,23 @@
 			</div>
 
 			<div class="d-flex justify-content-between fw-600 mb-2 opacity-70">
-		        <span>{{translate('Total')}}</span>
+		        <span>{{ translate('Total')}}</span>
 		        <span>{{ single_price($subtotal) }}</span>
 		    </div>
 		    <div class="d-flex justify-content-between fw-600 mb-2 opacity-70">
-		        <span>{{translate('Tax')}}</span>
+		        <span>{{ translate('Tax')}}</span>
 		        <span>{{ single_price($tax) }}</span>
 		    </div>
 		    <div class="d-flex justify-content-between fw-600 mb-2 opacity-70">
-		        <span>{{translate('Shipping')}}</span>
+		        <span>{{ translate('Shipping')}}</span>
 		        <span>{{ single_price(Session::get('pos.shipping', 0)) }}</span>
 		    </div>
 		    <div class="d-flex justify-content-between fw-600 mb-2 opacity-70">
-		        <span>{{translate('Discount')}}</span>
+		        <span>{{ translate('Discount')}}</span>
 		        <span>{{ single_price(Session::get('pos.discount', 0)) }}</span>
 		    </div>
 		    <div class="d-flex justify-content-between fw-600 fs-18 border-top pt-2">
-		        <span>{{translate('Total')}}</span>
+		        <span>{{ translate('Total')}}</span>
 		        <span>{{ single_price($subtotal+$tax+Session::get('pos.shipping', 0) - Session::get('pos.discount', 0)) }}</span>
 		    </div>
 		</div>

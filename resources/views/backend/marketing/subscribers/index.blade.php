@@ -4,16 +4,16 @@
 
 <div class="card">
     <div class="card-header">
-        <h5 class="mb-0 h6">{{translate('All Subscribers')}}</h5>
+        <h5 class="mb-0 h6">{{ translate('All Subscribers')}}</h5>
     </div>
     <div class="card-body">
         <table class="table aiz-table mb-0">
             <thead>
                 <tr>
                     <th data-breakpoints="lg">#</th>
-                    <th>{{translate('Email')}}</th>
-                    <th data-breakpoints="lg">{{translate('Date')}}</th>
-                    <th data-breakpoints="lg" class="text-right">{{translate('Options')}}</th>
+                    <th>{{ translate('Email')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Date')}}</th>
+                    <th data-breakpoints="lg" class="text-right">{{ translate('Options')}}</th>
                 </tr>
             </thead>
             <tbody>

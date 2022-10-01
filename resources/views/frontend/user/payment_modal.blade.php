@@ -33,7 +33,7 @@
             <div class="card mb-3 p-3">
                 <div class="row mt-3">
                     <div class="col-md-3">
-                        <label>{{translate('Amount')}} <span class="text-danger">*</span></label>
+                        <label>{{ translate('Amount')}} <span class="text-danger">*</span></label>
                     </div>
                     <div class="col-md-9">
                         <input type="number" lang="en" class="form-control mb-3" min="0" step="0.01" name="amount" placeholder="{{ translate('Amount') }}" required>
@@ -42,7 +42,7 @@
 
                 <div class="row">
                     <div class="col-md-3">
-                        <label>{{translate('Name')}} <span class="text-danger">*</span></label>
+                        <label>{{ translate('Name')}} <span class="text-danger">*</span></label>
                     </div>
                     <div class="col-md-9">
                         <input type="text" class="form-control mb-3" name="name" placeholder="{{ translate('Name') }}" required>
@@ -51,7 +51,7 @@
 
                 <div class="row">
                     <div class="col-md-3">
-                        <label>{{translate('Transaction ID')}} <span class="text-danger">*</span></label>
+                        <label>{{ translate('Transaction ID')}} <span class="text-danger">*</span></label>
                     </div>
                     <div class="col-md-9">
                         <input type="text" class="form-control mb-3" name="trx_id" placeholder="{{ translate('Transaction ID') }}" required>
@@ -74,7 +74,7 @@
             </div>
         </div>
         <div class="form-group text-right">
-            <button type="submit" class="btn btn-sm btn-primary transition-3d-hover mr-1">{{translate('Confirm')}}</button>
+            <button type="submit" class="btn btn-sm btn-primary transition-3d-hover mr-1">{{ translate('Confirm')}}</button>
         </div>
     </div>
 </form>

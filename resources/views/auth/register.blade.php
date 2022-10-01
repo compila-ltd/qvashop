@@ -45,14 +45,14 @@
                             </div>
                             <div class="checkbox pad-btm text-left">
                                 <input id="demo-form-checkbox" class="magic-checkbox" type="checkbox" required>
-                                <label for="demo-form-checkbox">{{translate('I agree with the Terms and Conditions')}}</label>
+                                <label for="demo-form-checkbox">{{ translate('I agree with the Terms and Conditions')}}</label>
                             </div>
                             <button type="submit" class="btn btn-primary btn-lg btn-block">
                                 {{ translate('Register') }}
                             </button>
                         </form>
                         <div class="mt-3">
-                            {{translate('Already have an account')}} ? <a href="{{route('login')}}" class="btn-link mar-rgt text-bold">{{translate('Sign In')}}</a>
+                            {{ translate('Already have an account')}} ? <a href="{{route('login')}}" class="btn-link mar-rgt text-bold">{{ translate('Sign In')}}</a>
                         </div>
                     </div>
                 </div>

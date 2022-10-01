@@ -110,7 +110,7 @@
                     <p class="text-muted mb-4">{{ translate('Product Upload Remaining') }}: {{ Auth::user()->remaining_uploads }} {{ translate('Times')}}</p>
                     <h5 class="fw-600 mb-3 text-primary">{{ translate('Current Package') }}: {{ $customer_package->getTranslation('name') }}</h5>
                 @else
-                    <h5 class="fw-600 mb-3 text-primary">{{translate('Package Not Found')}}</h5>
+                    <h5 class="fw-600 mb-3 text-primary">{{ translate('Package Not Found')}}</h5>
                 @endif
                     <a href="{{ route('customer_packages_list_show') }}" class="btn btn-success d-inline-block">{{ translate('Upgrade Package') }}</a>
             </div>

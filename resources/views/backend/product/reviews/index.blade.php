@@ -4,7 +4,7 @@
 
 <div class="aiz-titlebar text-left mt-2 mb-3">
 	<div class="align-items-center">
-			<h1 class="h3">{{translate('Product Reviews')}}</h1>
+			<h1 class="h3">{{ translate('Product Reviews')}}</h1>
 	</div>
 </div>
 
@@ -12,16 +12,16 @@
     <div class="card-header">
         <div class="row flex-grow-1">
             <div class="col">
-                <h5 class="mb-0 h6">{{translate('Product Reviews')}}</h5>
+                <h5 class="mb-0 h6">{{ translate('Product Reviews')}}</h5>
                 
             </div>
             <div class="col-md-6 col-xl-4 ml-auto mr-0">
                 <form class="" id="sort_by_rating" action="{{ route('reviews.index') }}" method="GET">
                     <div class="" style="min-width: 200px;">
                         <select class="form-control aiz-selectpicker" name="rating" id="rating" onchange="filter_by_rating()">
-                            <option value="">{{translate('Filter by Rating')}}</option>
-                            <option value="rating,desc">{{translate('Rating (High > Low)')}}</option>
-                            <option value="rating,asc">{{translate('Rating (Low > High)')}}</option>
+                            <option value="">{{ translate('Filter by Rating')}}</option>
+                            <option value="rating,desc">{{ translate('Rating (High > Low)')}}</option>
+                            <option value="rating,asc">{{ translate('Rating (Low > High)')}}</option>
                         </select>
                     </div>
                 </form>
@@ -33,12 +33,12 @@
             <thead>
                 <tr>
                     <th data-breakpoints="lg">#</th>
-                    <th>{{translate('Product')}}</th>
-                    <th data-breakpoints="lg">{{translate('Product Owner')}}</th>
-                    <th data-breakpoints="lg">{{translate('Customer')}}</th>
-                    <th>{{translate('Rating')}}</th>
-                    <th data-breakpoints="lg">{{translate('Comment')}}</th>
-                    <th data-breakpoints="lg">{{translate('Published')}}</th>
+                    <th>{{ translate('Product')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Product Owner')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Customer')}}</th>
+                    <th>{{ translate('Rating')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Comment')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Published')}}</th>
                 </tr>
             </thead>
             <tbody>

@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="aiz-titlebar text-left mt-2 mb-3">
-    <h5 class="mb-0 h6">{{translate('Flash Deal Information')}}</h5>
+    <h5 class="mb-0 h6">{{ translate('Flash Deal Information')}}</h5>
 </div>
 
 <div class="row">
@@ -26,29 +26,29 @@
                   <input type="hidden" name="lang" value="{{ $lang }}">
 
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label" for="name">{{translate('Title')}} <i class="las la-language text-danger" title="{{translate('Translatable')}}"></i></label>
+                        <label class="col-sm-3 col-from-label" for="name">{{ translate('Title')}} <i class="las la-language text-danger" title="{{ translate('Translatable')}}"></i></label>
                         <div class="col-sm-9">
-                            <input type="text" placeholder="{{translate('Title')}}" id="name" name="title" value="{{ $flash_deal->getTranslation('title', $lang) }}" class="form-control" required>
+                            <input type="text" placeholder="{{ translate('Title')}}" id="name" name="title" value="{{ $flash_deal->getTranslation('title', $lang) }}" class="form-control" required>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label" for="background_color">{{translate('Background Color')}}<small>(Hexa-code)</small></label>
+                        <label class="col-sm-3 col-from-label" for="background_color">{{ translate('Background Color')}}<small>(Hexa-code)</small></label>
                         <div class="col-sm-9">
-                            <input type="text" placeholder="{{translate('#0000ff')}}" id="background_color" name="background_color" value="{{ $flash_deal->background_color }}" class="form-control" required>
+                            <input type="text" placeholder="{{ translate('#0000ff')}}" id="background_color" name="background_color" value="{{ $flash_deal->background_color }}" class="form-control" required>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-lg-3 col-from-label" for="text_color">{{translate('Text Color')}}</label>
+                        <label class="col-lg-3 col-from-label" for="text_color">{{ translate('Text Color')}}</label>
                         <div class="col-lg-9">
                             <select name="text_color" id="text_color" class="form-control demo-select2" required>
                                 <option value="">Select One</option>
-                                <option value="white" @if ($flash_deal->text_color == 'white') selected @endif>{{translate('White')}}</option>
-                                <option value="dark" @if ($flash_deal->text_color == 'dark') selected @endif>{{translate('Dark')}}</option>
+                                <option value="white" @if ($flash_deal->text_color == 'white') selected @endif>{{ translate('White')}}</option>
+                                <option value="dark" @if ($flash_deal->text_color == 'dark') selected @endif>{{ translate('Dark')}}</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label" for="signinSrEmail">{{translate('Banner')}} <small>(1920x500)</small></label>
+                        <label class="col-md-3 col-form-label" for="signinSrEmail">{{ translate('Banner')}} <small>(1920x500)</small></label>
                         <div class="col-md-9">
                             <div class="input-group" data-toggle="aizuploader" data-type="image">
                                 <div class="input-group-prepend">
@@ -68,14 +68,14 @@
                     @endphp
 
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label" for="start_date">{{translate('Date')}}</label>
+                        <label class="col-sm-3 col-from-label" for="start_date">{{ translate('Date')}}</label>
                         <div class="col-sm-9">
                           <input type="text" class="form-control aiz-date-range" value="{{ $start_date.' to '.$end_date }}" name="date_range" placeholder="Select Date" data-time-picker="true" data-format="DD-MM-Y HH:mm:ss" data-separator=" to " autocomplete="off" required>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label" for="products">{{translate('Products')}}</label>
+                        <label class="col-sm-3 col-from-label" for="products">{{ translate('Products')}}</label>
                         <div class="col-sm-9">
                             <select name="products[]" id="products" class="form-control aiz-selectpicker" multiple required data-placeholder="{{ translate('Choose Products') }}" data-live-search="true" data-selected-text-format="count">
                                 @foreach(\App\Models\Product::all() as $product)
@@ -98,7 +98,7 @@
                     </div>
 
                     <div class="form-group mb-0 text-right">
-                        <button type="submit" class="btn btn-primary">{{translate('Save')}}</button>
+                        <button type="submit" class="btn btn-primary">{{ translate('Save')}}</button>
                     </div>
                   </form>
               </div>

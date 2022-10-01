@@ -4,7 +4,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h5 class="mb-0 h6">{{translate('Conversations')}}</h5>
+        <h5 class="mb-0 h6">{{ translate('Conversations')}}</h5>
     </div>
     <div class="card-body">
         <table class="table aiz-table mb-0" cellspacing="0" width="100%">
@@ -12,10 +12,10 @@
                 <tr>
                     <th data-breakpoints="lg">#</th>
                     <th data-breakpoints="lg">{{ translate('Date') }}</th>
-                    <th data-breakpoints="lg">{{translate('Title')}}</th>
-                    <th>{{translate('Sender')}}</th>
-                    <th>{{translate('Receiver')}}</th>
-                    <th width="10%">{{translate('Options')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Title')}}</th>
+                    <th>{{ translate('Sender')}}</th>
+                    <th>{{ translate('Receiver')}}</th>
+                    <th width="10%">{{ translate('Options')}}</th>
                 </tr>
             </thead>
             <tbody>

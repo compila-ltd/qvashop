@@ -56,7 +56,7 @@
                 </div>
             </div>
             <div class="form-group text-right">
-                <button type="submit" class="btn btn-sm btn-primary transition-3d-hover mr-1">{{translate('Confirm')}}</button>
+                <button type="submit" class="btn btn-sm btn-primary transition-3d-hover mr-1">{{ translate('Confirm')}}</button>
             </div>
         </div>
     </div>

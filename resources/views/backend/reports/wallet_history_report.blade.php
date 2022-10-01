@@ -4,7 +4,7 @@
 
 <div class="aiz-titlebar text-left mt-2 mb-3">
     <div class=" align-items-center">
-        <h1 class="h3">{{translate('Wallet Transaction Report')}}</h1>
+        <h1 class="h3">{{ translate('Wallet Transaction Report')}}</h1>
     </div>
 </div>
 
@@ -68,9 +68,9 @@
                                 <td class="text-right">
                                     @if ($wallet->offline_payment)
                                         @if ($wallet->approval)
-                                            <span class="badge badge-inline badge-success">{{translate('Approved')}}</span>
+                                            <span class="badge badge-inline badge-success">{{ translate('Approved')}}</span>
                                         @else
-                                            <span class="badge badge-inline badge-info">{{translate('Pending')}}</span>
+                                            <span class="badge badge-inline badge-info">{{ translate('Pending')}}</span>
                                         @endif
                                     @else
                                         N/A

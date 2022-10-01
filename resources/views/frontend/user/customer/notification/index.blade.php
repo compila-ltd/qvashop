@@ -6,7 +6,7 @@
     <form class="" id="sort_customers" action="" method="GET">
         <div class="card-header row gutters-5">
             <div class="col">
-                <h5 class="mb-0 h6">{{translate('Notifications')}}</h5>
+                <h5 class="mb-0 h6">{{ translate('Notifications')}}</h5>
             </div>
         </div>
         <div class="card-body">
@@ -17,11 +17,11 @@
                             <div class="media text-inherit">
                                 <div class="media-body">
                                     <p class="mb-1 text-truncate-2">
-                                        {{translate('Your Order: ')}}
+                                        {{ translate('Your Order: ')}}
                                         <a href="{{route('purchase_history.details', encrypt($notification->data['order_id']))}}">
                                             {{$notification->data['order_code']}}
                                         </a>
-                                        {{translate(' has been '. ucfirst(str_replace('_', ' ', $notification->data['status'])))}}
+                                        {{ translate(' has been '. ucfirst(str_replace('_', ' ', $notification->data['status'])))}}
                                     </p>
                                     <small class="text-muted">
                                         {{ date("F j Y, g:i a", strtotime($notification->created_at)) }}

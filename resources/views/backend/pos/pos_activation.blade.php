@@ -2,12 +2,12 @@
 
 @section('content')
 
-<h4 class="text-center text-muted">{{translate('POS Activation for Seller')}}</h4>
+<h4 class="text-center text-muted">{{ translate('POS Activation for Seller')}}</h4>
 <div class="row">
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">{{translate('POS Activation for Seller')}}</h5>
+                <h5 class="mb-0 h6">{{ translate('POS Activation for Seller')}}</h5>
             </div>
             <div class="card-body text-center">
                 <label class="aiz-switch aiz-switch-success mb-0">

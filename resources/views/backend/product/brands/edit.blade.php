@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="aiz-titlebar text-left mt-2 mb-3">
-    <h5 class="mb-0 h6">{{translate('Brand Information')}}</h5>
+    <h5 class="mb-0 h6">{{ translate('Brand Information')}}</h5>
 </div>
 
 <div class="col-lg-8 mx-auto">
@@ -24,13 +24,13 @@
                 <input type="hidden" name="lang" value="{{ $lang }}">
                 @csrf
                 <div class="form-group row">
-                    <label class="col-sm-3 col-from-label" for="name">{{translate('Name')}} <i class="las la-language text-danger" title="{{translate('Translatable')}}"></i></label>
+                    <label class="col-sm-3 col-from-label" for="name">{{ translate('Name')}} <i class="las la-language text-danger" title="{{ translate('Translatable')}}"></i></label>
                     <div class="col-sm-9">
-                        <input type="text" placeholder="{{translate('Name')}}" id="name" name="name" value="{{ $brand->getTranslation('name', $lang) }}" class="form-control" required>
+                        <input type="text" placeholder="{{ translate('Name')}}" id="name" name="name" value="{{ $brand->getTranslation('name', $lang) }}" class="form-control" required>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-3 col-form-label" for="signinSrEmail">{{translate('Logo')}} <small>({{ translate('120x80') }})</small></label>
+                    <label class="col-md-3 col-form-label" for="signinSrEmail">{{ translate('Logo')}} <small>({{ translate('120x80') }})</small></label>
                     <div class="col-md-9">
                         <div class="input-group" data-toggle="aizuploader" data-type="image">
                             <div class="input-group-prepend">
@@ -44,25 +44,25 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-3 col-from-label">{{translate('Meta Title')}}</label>
+                    <label class="col-sm-3 col-from-label">{{ translate('Meta Title')}}</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" name="meta_title" value="{{ $brand->meta_title }}" placeholder="{{translate('Meta Title')}}">
+                        <input type="text" class="form-control" name="meta_title" value="{{ $brand->meta_title }}" placeholder="{{ translate('Meta Title')}}">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-3 col-from-label">{{translate('Meta Description')}}</label>
+                    <label class="col-sm-3 col-from-label">{{ translate('Meta Description')}}</label>
                     <div class="col-sm-9">
                         <textarea name="meta_description" rows="8" class="form-control">{{ $brand->meta_description }}</textarea>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-3 col-from-label" for="name">{{translate('Slug')}}</label>
+                    <label class="col-sm-3 col-from-label" for="name">{{ translate('Slug')}}</label>
                     <div class="col-sm-9">
-                        <input type="text" placeholder="{{translate('Slug')}}" id="slug" name="slug" value="{{ $brand->slug }}" class="form-control">
+                        <input type="text" placeholder="{{ translate('Slug')}}" id="slug" name="slug" value="{{ $brand->slug }}" class="form-control">
                     </div>
                 </div>
                 <div class="form-group mb-0 text-right">
-                    <button type="submit" class="btn btn-primary">{{translate('Save')}}</button>
+                    <button type="submit" class="btn btn-primary">{{ translate('Save')}}</button>
                 </div>
             </form>
         </div>

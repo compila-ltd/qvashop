@@ -15,13 +15,13 @@
 		</div>
 		<div class="card-body">
 			<div class="form-group row">
-				<label class="col-sm-2 col-from-label" for="name">{{translate('Title')}} <span class="text-danger">*</span></label>
+				<label class="col-sm-2 col-from-label" for="name">{{ translate('Title')}} <span class="text-danger">*</span></label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" placeholder="{{translate('Title')}}" name="title" required>
+					<input type="text" class="form-control" placeholder="{{ translate('Title')}}" name="title" required>
 				</div>
 			</div>
 			<div class="form-group row">
-				<label class="col-sm-2 col-from-label" for="name">{{translate('Link')}} <span class="text-danger">*</span></label>
+				<label class="col-sm-2 col-from-label" for="name">{{ translate('Link')}} <span class="text-danger">*</span></label>
 				<div class="col-sm-10">
 					<div class="input-group d-block d-md-flex">
 						<div class="input-group-prepend "><span class="input-group-text flex-grow-1">{{ route('home') }}/</span></div>
@@ -31,7 +31,7 @@
 				</div>
 			</div>
 			<div class="form-group row">
-				<label class="col-sm-2 col-from-label" for="name">{{translate('Add Content')}} <span class="text-danger">*</span></label>
+				<label class="col-sm-2 col-from-label" for="name">{{ translate('Add Content')}} <span class="text-danger">*</span></label>
 				<div class="col-sm-10">
 					<textarea
 						class="aiz-text-editor form-control"
@@ -51,29 +51,29 @@
 		<div class="card-body">
 
 			<div class="form-group row">
-					<label class="col-sm-2 col-from-label" for="name">{{translate('Meta Title')}}</label>
+					<label class="col-sm-2 col-from-label" for="name">{{ translate('Meta Title')}}</label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" placeholder="{{translate('Title')}}" name="meta_title">
+						<input type="text" class="form-control" placeholder="{{ translate('Title')}}" name="meta_title">
 					</div>
 			</div>
 
 			<div class="form-group row">
-				<label class="col-sm-2 col-from-label" for="name">{{translate('Meta Description')}}</label>
+				<label class="col-sm-2 col-from-label" for="name">{{ translate('Meta Description')}}</label>
 				<div class="col-sm-10">
-					<textarea class="resize-off form-control" placeholder="{{translate('Description')}}" name="meta_description"></textarea>
+					<textarea class="resize-off form-control" placeholder="{{ translate('Description')}}" name="meta_description"></textarea>
 				</div>
 			</div>
 
 			<div class="form-group row">
-					<label class="col-sm-2 col-from-label" for="name">{{translate('Keywords')}}</label>
+					<label class="col-sm-2 col-from-label" for="name">{{ translate('Keywords')}}</label>
 					<div class="col-sm-10">
-						<textarea class="resize-off form-control" placeholder="{{translate('Keyword, Keyword')}}" name="keywords"></textarea>
+						<textarea class="resize-off form-control" placeholder="{{ translate('Keyword, Keyword')}}" name="keywords"></textarea>
 						<small class="text-muted">{{ translate('Separate with coma') }}</small>
 					</div>
 			</div>
 
 			<div class="form-group row">
-					<label class="col-sm-2 col-from-label" for="name">{{translate('Meta Image')}}</label>
+					<label class="col-sm-2 col-from-label" for="name">{{ translate('Meta Image')}}</label>
 					<div class="col-sm-10">
 						<div class="input-group " data-toggle="aizuploader" data-type="image">
 								<div class="input-group-prepend">

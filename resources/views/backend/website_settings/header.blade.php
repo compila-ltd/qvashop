@@ -33,7 +33,7 @@
 						</div>
 	                </div>
                     <div class="form-group row">
-						<label class="col-md-3 col-from-label">{{translate('Show Language Switcher?')}}</label>
+						<label class="col-md-3 col-from-label">{{ translate('Show Language Switcher?')}}</label>
 						<div class="col-md-8">
 							<label class="aiz-switch aiz-switch-success mb-0">
 								<input type="hidden" name="types[]" value="show_language_switcher">
@@ -43,7 +43,7 @@
 						</div>
 					</div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-from-label">{{translate('Show Currency Switcher?')}}</label>
+                        <label class="col-md-3 col-from-label">{{ translate('Show Currency Switcher?')}}</label>
 						<div class="col-md-8">
 							<label class="aiz-switch aiz-switch-success mb-0">
 								<input type="hidden" name="types[]" value="show_currency_switcher">
@@ -53,7 +53,7 @@
 						</div>
 					</div>
 	                <div class="form-group row">
-						<label class="col-md-3 col-from-label">{{translate('Enable stikcy header?')}}</label>
+						<label class="col-md-3 col-from-label">{{ translate('Enable stikcy header?')}}</label>
 						<div class="col-md-8">
 							<label class="aiz-switch aiz-switch-success mb-0">
 								<input type="hidden" name="types[]" value="header_stikcy">
@@ -78,7 +78,7 @@
 							</div>
 		                </div>
 		                <div class="form-group row">
-							<label class="col-md-3 col-from-label">{{translate('Topbar Banner Link')}}</label>
+							<label class="col-md-3 col-from-label">{{ translate('Topbar Banner Link')}}</label>
 							<div class="col-md-8">
 								<div class="form-group">
 									<input type="hidden" name="types[]" value="topbar_banner_link">
@@ -89,7 +89,7 @@
 					</div>
                     <div class="border-top pt-3">
                         <div class="form-group row">
-							<label class="col-md-3 col-from-label">{{translate('Help line number')}}</label>
+							<label class="col-md-3 col-from-label">{{ translate('Help line number')}}</label>
 							<div class="col-md-8">
 								<div class="form-group">
 									<input type="hidden" name="types[]" value="helpline_number">
@@ -99,7 +99,7 @@
 						</div>
                     </div>
 					<div class="border-top pt-3">
-						<label class="">{{translate('Header Nav Menu')}}</label>
+						<label class="">{{ translate('Header Nav Menu')}}</label>
 						<div class="header-nav-menu">
 							<input type="hidden" name="types[]" value="header_menu_labels">
 							<input type="hidden" name="types[]" value="header_menu_links">
@@ -108,7 +108,7 @@
 									<div class="row gutters-5">
 										<div class="col-4">
 											<div class="form-group">
-												<input type="text" class="form-control" placeholder="{{translate('Label')}}" name="header_menu_labels[]" value="{{ $value }}">
+												<input type="text" class="form-control" placeholder="{{ translate('Label')}}" name="header_menu_labels[]" value="{{ $value }}">
 											</div>
 										</div>
 										<div class="col">
@@ -132,7 +132,7 @@
 							data-content='<div class="row gutters-5">
 								<div class="col-4">
 									<div class="form-group">
-										<input type="text" class="form-control" placeholder="{{translate('Label')}}" name="header_menu_labels[]">
+										<input type="text" class="form-control" placeholder="{{ translate('Label')}}" name="header_menu_labels[]">
 									</div>
 								</div>
 								<div class="col">

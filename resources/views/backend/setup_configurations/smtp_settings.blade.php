@@ -5,14 +5,14 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">{{translate('SMTP Settings')}}</h5>
+                <h5 class="mb-0 h6">{{ translate('SMTP Settings')}}</h5>
             </div>
             <div class="card-body">
                 <form class="form-horizontal" action="{{ route('env_key_update.update') }}" method="POST">
                     @csrf
                     <div class="form-group row">
                         <input type="hidden" name="types[]" value="MAIL_DRIVER">
-                        <label class="col-md-3 col-form-label">{{translate('Type')}}</label>
+                        <label class="col-md-3 col-form-label">{{ translate('Type')}}</label>
                         <div class="col-md-9">
                             <select class="form-control aiz-selectpicker mb-2 mb-md-0" name="MAIL_DRIVER" onchange="checkMailDriver()">
                                 <option value="sendmail" @if (env('MAIL_DRIVER')=="sendmail" ) selected @endif>{{ translate('Sendmail') }}</option>
@@ -25,7 +25,7 @@
                         <div class="form-group row">
                             <input type="hidden" name="types[]" value="MAIL_HOST">
                             <div class="col-md-3">
-                                <label class="col-from-label">{{translate('MAIL HOST')}}</label>
+                                <label class="col-from-label">{{ translate('MAIL HOST')}}</label>
                             </div>
                             <div class="col-md-9">
                                 <input type="text" class="form-control" name="MAIL_HOST" value="{{  env('MAIL_HOST') }}" placeholder="{{ translate('MAIL HOST') }}">
@@ -34,7 +34,7 @@
                         <div class="form-group row">
                             <input type="hidden" name="types[]" value="MAIL_PORT">
                             <div class="col-md-3">
-                                <label class="col-from-label">{{translate('MAIL PORT')}}</label>
+                                <label class="col-from-label">{{ translate('MAIL PORT')}}</label>
                             </div>
                             <div class="col-md-9">
                                 <input type="text" class="form-control" name="MAIL_PORT" value="{{  env('MAIL_PORT') }}" placeholder="{{ translate('MAIL PORT') }}">
@@ -43,7 +43,7 @@
                         <div class="form-group row">
                             <input type="hidden" name="types[]" value="MAIL_USERNAME">
                             <div class="col-md-3">
-                                <label class="col-from-label">{{translate('MAIL USERNAME')}}</label>
+                                <label class="col-from-label">{{ translate('MAIL USERNAME')}}</label>
                             </div>
                             <div class="col-md-9">
                                 <input type="text" class="form-control" name="MAIL_USERNAME" value="{{  env('MAIL_USERNAME') }}" placeholder="{{ translate('MAIL USERNAME') }}">
@@ -52,7 +52,7 @@
                         <div class="form-group row">
                             <input type="hidden" name="types[]" value="MAIL_PASSWORD">
                             <div class="col-md-3">
-                                <label class="col-from-label">{{translate('MAIL PASSWORD')}}</label>
+                                <label class="col-from-label">{{ translate('MAIL PASSWORD')}}</label>
                             </div>
                             <div class="col-md-9">
                                 <input type="text" class="form-control" name="MAIL_PASSWORD" value="{{  env('MAIL_PASSWORD') }}" placeholder="{{ translate('MAIL PASSWORD') }}">
@@ -61,7 +61,7 @@
                         <div class="form-group row">
                             <input type="hidden" name="types[]" value="MAIL_ENCRYPTION">
                             <div class="col-md-3">
-                                <label class="col-from-label">{{translate('MAIL ENCRYPTION')}}</label>
+                                <label class="col-from-label">{{ translate('MAIL ENCRYPTION')}}</label>
                             </div>
                             <div class="col-md-9">
                                 <input type="text" class="form-control" name="MAIL_ENCRYPTION" value="{{  env('MAIL_ENCRYPTION') }}" placeholder="{{ translate('MAIL ENCRYPTION') }}">
@@ -70,7 +70,7 @@
                         <div class="form-group row">
                             <input type="hidden" name="types[]" value="MAIL_FROM_ADDRESS">
                             <div class="col-md-3">
-                                <label class="col-from-label">{{translate('MAIL FROM ADDRESS')}}</label>
+                                <label class="col-from-label">{{ translate('MAIL FROM ADDRESS')}}</label>
                             </div>
                             <div class="col-md-9">
                                 <input type="email" class="form-control" name="MAIL_FROM_ADDRESS" value="{{  env('MAIL_FROM_ADDRESS') }}" placeholder="{{ translate('MAIL FROM ADDRESS') }}">
@@ -79,7 +79,7 @@
                         <div class="form-group row">
                             <input type="hidden" name="types[]" value="MAIL_FROM_NAME">
                             <div class="col-md-3">
-                                <label class="col-from-label">{{translate('MAIL FROM NAME')}}</label>
+                                <label class="col-from-label">{{ translate('MAIL FROM NAME')}}</label>
                             </div>
                             <div class="col-md-9">
                                 <input type="text" class="form-control" name="MAIL_FROM_NAME" value="{{  env('MAIL_FROM_NAME') }}" placeholder="{{ translate('MAIL FROM NAME') }}">
@@ -90,7 +90,7 @@
                         <div class="form-group row">
                             <input type="hidden" name="types[]" value="MAILGUN_DOMAIN">
                             <div class="col-md-3">
-                                <label class="col-from-label">{{translate('MAILGUN DOMAIN')}}</label>
+                                <label class="col-from-label">{{ translate('MAILGUN DOMAIN')}}</label>
                             </div>
                             <div class="col-md-9">
                                 <input type="text" class="form-control" name="MAILGUN_DOMAIN" value="{{  env('MAILGUN_DOMAIN') }}" placeholder="{{ translate('MAILGUN DOMAIN') }}">
@@ -99,7 +99,7 @@
                         <div class="form-group row">
                             <input type="hidden" name="types[]" value="MAILGUN_SECRET">
                             <div class="col-md-3">
-                                <label class="col-from-label">{{translate('MAILGUN SECRET')}}</label>
+                                <label class="col-from-label">{{ translate('MAILGUN SECRET')}}</label>
                             </div>
                             <div class="col-md-9">
                                 <input type="text" class="form-control" name="MAILGUN_SECRET" value="{{  env('MAILGUN_SECRET') }}" placeholder="{{ translate('MAILGUN SECRET') }}">
@@ -107,7 +107,7 @@
                         </div>
                     </div>
                     <div class="form-group mb-0 text-right">
-                        <button type="submit" class="btn btn-primary">{{translate('Save Configuration')}}</button>
+                        <button type="submit" class="btn btn-primary">{{ translate('Save Configuration')}}</button>
                     </div>
                 </form>
             </div>
@@ -116,7 +116,7 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">{{translate('Test SMTP configuration')}}</h5>
+                <h5 class="mb-0 h6">{{ translate('Test SMTP configuration')}}</h5>
             </div>
             <div class="card-body">
                 <form action="{{ route('test.smtp') }}" method="post">
@@ -134,7 +134,7 @@
         </div>
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">{{translate('Instruction')}}</h5>
+                <h5 class="mb-0 h6">{{ translate('Instruction')}}</h5>
             </div>
             <div class="card-body">
                 <p class="text-danger">{{ translate('Please be carefull when you are configuring SMTP. For incorrect configuration you will get error at the time of order place, new registration, sending newsletter.') }}</p>

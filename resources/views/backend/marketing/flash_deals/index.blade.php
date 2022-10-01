@@ -5,12 +5,12 @@
 <div class="aiz-titlebar text-left mt-2 mb-3">
 	<div class="row align-items-center">
 		<div class="col-md-6">
-			<h1 class="h3">{{translate('All Flash Deals')}}</h1>
+			<h1 class="h3">{{ translate('All Flash Deals')}}</h1>
 		</div>
         @can('add_flash_deal')
             <div class="col-md-6 text-md-right">
                 <a href="{{ route('flash_deals.create') }}" class="btn btn-circle btn-info">
-                    <span>{{translate('Create New Flash Deal')}}</span>
+                    <span>{{ translate('Create New Flash Deal')}}</span>
                 </a>
             </div>
         @endcan
@@ -19,7 +19,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h5 class="mb-0 h6">{{translate('Flash Deals')}}</h5>
+        <h5 class="mb-0 h6">{{ translate('Flash Deals')}}</h5>
         <div class="pull-right clearfix">
             <form class="" id="sort_flash_deals" action="" method="GET">
                 <div class="box-inline pad-rgt pull-left">
@@ -35,14 +35,14 @@
             <thead>
                 <tr>
                     <th data-breakpoints="lg">#</th>
-                    <th>{{translate('Title')}}</th>
+                    <th>{{ translate('Title')}}</th>
                     <th data-breakpoints="lg">{{ translate('Banner') }}</th>
                     <th data-breakpoints="lg">{{ translate('Start Date') }}</th>
                     <th data-breakpoints="lg">{{ translate('End Date') }}</th>
                     <th data-breakpoints="lg">{{ translate('Status') }}</th>
                     <th data-breakpoints="lg">{{ translate('Featured') }}</th>
                     <th data-breakpoints="lg">{{ translate('Page Link') }}</th>
-                    <th class="text-right">{{translate('Options')}}</th>
+                    <th class="text-right">{{ translate('Options')}}</th>
                 </tr>
             </thead>
             <tbody>

@@ -4,7 +4,7 @@
     <div class="aiz-titlebar text-left mt-2 mb-3">
     	<div class="row align-items-center">
     		<div class="col-md-12">
-    			<h1 class="h3">{{translate('All States')}}</h1>
+    			<h1 class="h3">{{ translate('All States')}}</h1>
     		</div>
     	</div>
     </div>
@@ -39,10 +39,10 @@
                         <thead>
                             <tr>
                                 <th width="10%">#</th>
-                                <th>{{translate('Name')}}</th>
-                                <th>{{translate('Country')}}</th>
-                                <th>{{translate('Show/Hide')}}</th>
-                                <th class="text-right">{{translate('Action')}}</th>
+                                <th>{{ translate('Name')}}</th>
+                                <th>{{ translate('Country')}}</th>
+                                <th>{{ translate('Show/Hide')}}</th>
+                                <th class="text-right">{{ translate('Action')}}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -81,12 +81,12 @@
     				<form action="{{ route('states.store') }}" method="POST">
     					@csrf
     					<div class="form-group mb-3">
-    						<label for="name">{{translate('Name')}}</label>
-    						<input type="text" placeholder="{{translate('Name')}}" name="name" class="form-control" required>
+    						<label for="name">{{ translate('Name')}}</label>
+    						<input type="text" placeholder="{{ translate('Name')}}" name="name" class="form-control" required>
     					</div>
 
                         <div class="form-group">
-                            <label for="country">{{translate('Country')}}</label>
+                            <label for="country">{{ translate('Country')}}</label>
                             <select class="select2 form-control aiz-selectpicker" name="country_id" data-toggle="select2" data-placeholder="Choose ..." data-live-search="true">
                                 @foreach (\App\Models\Country::where('status', 1)->get() as $country)
                                     <option value="{{ $country->id }}">
@@ -96,7 +96,7 @@
                             </select>
                         </div>
     					<div class="form-group mb-3 text-right">
-    						<button type="submit" class="btn btn-primary">{{translate('Save')}}</button>
+    						<button type="submit" class="btn btn-primary">{{ translate('Save')}}</button>
     					</div>
     				</form>
     			</div>

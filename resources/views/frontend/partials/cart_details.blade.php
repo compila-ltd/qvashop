@@ -77,7 +77,7 @@
                     </div>
 
                     <div class="px-3 py-2 mb-4 border-top d-flex justify-content-between">
-                        <span class="opacity-60 fs-15">{{translate('Subtotal')}}</span>
+                        <span class="opacity-60 fs-15">{{ translate('Subtotal')}}</span>
                         <span class="fw-600 fs-17">{{ single_price($total) }}</span>
                     </div>
                     <div class="row align-items-center">
@@ -106,7 +106,7 @@
                 <div class="shadow-sm bg-white p-4 rounded">
                     <div class="text-center p-3">
                         <i class="las la-frown la-3x opacity-60 mb-3"></i>
-                        <h3 class="h4 fw-700">{{translate('Your Cart is empty')}}</h3>
+                        <h3 class="h4 fw-700">{{ translate('Your Cart is empty')}}</h3>
                     </div>
                 </div>
             </div>

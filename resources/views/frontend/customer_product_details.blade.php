@@ -215,9 +215,9 @@
                                     </a>
                                     <div class="absolute-top-left pt-2 pl-2">
                                         @if($product->conditon == 'new')
-                                           <span class="badge badge-inline badge-success">{{translate('new')}}</span>
+                                           <span class="badge badge-inline badge-success">{{ translate('new')}}</span>
                                        @elseif($product->conditon == 'used')
-                                           <span class="badge badge-inline badge-danger">{{translate('Used')}}</span>
+                                           <span class="badge badge-inline badge-danger">{{ translate('Used')}}</span>
                                        @endif
                                     </div>
                                 </div>

@@ -3,7 +3,7 @@
 @section('content')
 <div class="aiz-titlebar text-left mt-2 mb-3">
 	<div class=" align-items-center">
-       <h1 class="h3">{{translate('Seller Based Selling Report')}}</h1>
+       <h1 class="h3">{{ translate('Seller Based Selling Report')}}</h1>
 	</div>
 </div>
 
@@ -13,7 +13,7 @@
             <div class="card-body">
                 <form action="{{ route('seller_sale_report.index') }}" method="GET">
                     <div class="form-group row offset-lg-2">
-                        <label class="col-md-3 col-form-label">{{translate('Sort by verificarion status')}} :</label>
+                        <label class="col-md-3 col-form-label">{{ translate('Sort by verificarion status')}} :</label>
                         <div class="col-md-5">
                             <select class="from-control aiz-selectpicker" name="verification_status" required>
                                <option value="1" @if($sort_by == '1') selected @endif>{{ translate('Approved') }}</option>

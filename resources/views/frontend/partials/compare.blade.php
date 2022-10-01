@@ -6,6 +6,6 @@
         @else
             <span class="badge badge-primary badge-inline badge-pill">0</span>
         @endif
-        <span class="nav-box-text d-none d-xl-block opacity-70">{{translate('Compare')}}</span>
+        <span class="nav-box-text d-none d-xl-block opacity-70">{{ translate('Compare')}}</span>
     </span>
 </a>

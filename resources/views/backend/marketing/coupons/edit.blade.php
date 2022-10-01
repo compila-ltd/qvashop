@@ -5,7 +5,7 @@
     <div class="col-lg-8 mx-auto">
         <div class="card">
             <div class="card-header">
-                <h3 class="mb-0 h6">{{translate('Coupon Information Update')}}</h3>
+                <h3 class="mb-0 h6">{{ translate('Coupon Information Update')}}</h3>
             </div>
             <form action="{{ route('coupon.update', $coupon->id) }}" method="POST">
                 <input name="_method" type="hidden" value="PATCH">
@@ -22,13 +22,13 @@
                         </div>
                     @endif
                     <div class="form-group row">
-                        <label class="col-lg-3 col-from-label" for="name">{{translate('Coupon Type')}}</label>
+                        <label class="col-lg-3 col-from-label" for="name">{{ translate('Coupon Type')}}</label>
                         <div class="col-lg-9">
                             <select name="type" id="coupon_type" class="form-control aiz-selectpicker" onchange="coupon_form()" required>
                                 @if ($coupon->type == "product_base"))
-                                    <option value="product_base" selected>{{translate('For Products')}}</option>
+                                    <option value="product_base" selected>{{ translate('For Products')}}</option>
                                 @elseif ($coupon->type == "cart_base")
-                                    <option value="cart_base">{{translate('For Total Orders')}}</option>
+                                    <option value="cart_base">{{ translate('For Total Orders')}}</option>
                                 @endif
                             </select>
                         </div>
@@ -38,7 +38,7 @@
 
                     </div>
                     <div class="form-group mb-0 text-right">
-                        <button type="submit" class="btn btn-primary">{{translate('Save')}}</button>
+                        <button type="submit" class="btn btn-primary">{{ translate('Save')}}</button>
                     </div>
                 </div>
             </form>

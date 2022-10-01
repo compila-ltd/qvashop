@@ -4,7 +4,7 @@
 
 <div class="aiz-titlebar text-left mt-2 mb-3">
 	<div class=" align-items-center">
-       <h1 class="h3">{{translate('Inhouse Product sale report')}}</h1>
+       <h1 class="h3">{{ translate('Inhouse Product sale report')}}</h1>
 	</div>
 </div>
 
@@ -14,7 +14,7 @@
             <div class="card-body">
                 <form action="{{ route('in_house_sale_report.index') }}" method="GET">
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">{{translate('Sort by Category')}} :</label>
+                        <label class="col-md-3 col-form-label">{{ translate('Sort by Category')}} :</label>
                         <div class="col-md-5">
                             <select id="demo-ease" class="aiz-selectpicker" name="category_id" required>
                                 @foreach (\App\Models\Category::all() as $key => $category)

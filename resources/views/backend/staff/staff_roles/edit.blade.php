@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="aiz-titlebar text-left mt-2 mb-3">
-    <h5 class="mb-0 h6">{{translate('Role Information')}}</h5>
+    <h5 class="mb-0 h6">{{ translate('Role Information')}}</h5>
 </div>
 
 
@@ -24,10 +24,10 @@
                 <input type="hidden" name="lang" value="{{ $lang }}">
             	   @csrf
                 <div class="form-group row">
-                    <label class="col-md-3 col-from-label" for="name">{{translate('Name')}} <i class="las la-language text-danger" title="{{translate('Translatable')}}"></i></label>
+                    <label class="col-md-3 col-from-label" for="name">{{ translate('Name')}} <i class="las la-language text-danger" title="{{ translate('Translatable')}}"></i></label>
                     <div class="col-md-9">
                         @php $roleForTranslation = \App\Models\Role::where('id',$role->id)->first(); @endphp
-                        <input type="text" placeholder="{{translate('Name')}}" id="name" name="name" class="form-control" value="{{ $roleForTranslation->getTranslation('name', $lang) }}" required>
+                        <input type="text" placeholder="{{ translate('Name')}}" id="name" name="name" class="form-control" value="{{ $roleForTranslation->getTranslation('name', $lang) }}" required>
                     </div>
                 </div>
                 <div class="card-header">
@@ -77,7 +77,7 @@
                 <br>
                 @endforeach
                 <div class="form-group mb-3 mt-3 text-right">
-                    <button type="submit" class="btn btn-primary">{{translate('Update')}}</button>
+                    <button type="submit" class="btn btn-primary">{{ translate('Update')}}</button>
                 </div>
             </div>
         </form>

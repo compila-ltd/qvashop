@@ -6,8 +6,8 @@
   <div class="card-header">
       <h5 class="mb-0 h6">{{ translate('Seller Verification') }}</h5>
       <div class="pull-right clearfix">
-        <a href="{{ route('sellers.reject', $shop->id) }}" class="btn btn-circle btn-danger d-innline-block">{{translate('Reject')}}</a></li>
-        <a href="{{ route('sellers.approve', $shop->id) }}" class="btn btn-circle btn-success d-innline-block">{{translate('Accept')}}</a>
+        <a href="{{ route('sellers.reject', $shop->id) }}" class="btn btn-circle btn-danger d-innline-block">{{ translate('Reject')}}</a></li>
+        <a href="{{ route('sellers.approve', $shop->id) }}" class="btn btn-circle btn-success d-innline-block">{{ translate('Accept')}}</a>
       </div>
   </div>
   <div class="card-body row">
@@ -18,26 +18,26 @@
               <span class="ml-2">{{ $shop->user->name }}</span>
           </p>
           <p class="text-muted">
-              <strong>{{translate('Email')}}</strong>
+              <strong>{{ translate('Email')}}</strong>
               <span class="ml-2">{{ $shop->user->email }}</span>
           </p>
           <p class="text-muted">
-              <strong>{{translate('Address')}}</strong>
+              <strong>{{ translate('Address')}}</strong>
               <span class="ml-2">{{ $shop->user->address }}</span>
           </p>
           <p class="text-muted">
-              <strong>{{translate('Phone')}}</strong>
+              <strong>{{ translate('Phone')}}</strong>
               <span class="ml-2">{{ $shop->user->phone }}</span>
           </p>
           <br>
 
           <h6 class="mb-4">{{ translate('Shop Info') }}</h6>
           <p class="text-muted">
-              <strong>{{translate('Shop Name')}}</strong>
+              <strong>{{ translate('Shop Name')}}</strong>
               <span class="ml-2">{{ $shop->user->shop->name }}</span>
           </p>
           <p class="text-muted">
-              <strong>{{translate('Address')}}</strong>
+              <strong>{{ translate('Address')}}</strong>
               <span class="ml-2">{{ $shop->address }}</span>
           </p>
       </div>
@@ -56,7 +56,7 @@
                               </td>
                           @elseif ($info->type == 'file')
                               <td>
-                                  <a href="{{ my_asset($info->value) }}" target="_blank" class="btn-info">{{translate('Click here')}}</a>
+                                  <a href="{{ my_asset($info->value) }}" target="_blank" class="btn-info">{{ translate('Click here')}}</a>
                               </td>
                           @endif
                       </tr>
@@ -64,8 +64,8 @@
               </tbody>
           </table>
           <div class="text-center">
-              <a href="{{ route('sellers.reject', $shop->id) }}" class="btn btn-sm btn-danger d-innline-block">{{translate('Reject')}}</a></li>
-              <a href="{{ route('sellers.approve', $shop->id) }}" class="btn btn-sm btn-success d-innline-block">{{translate('Accept')}}</a>
+              <a href="{{ route('sellers.reject', $shop->id) }}" class="btn btn-sm btn-danger d-innline-block">{{ translate('Reject')}}</a></li>
+              <a href="{{ route('sellers.approve', $shop->id) }}" class="btn btn-sm btn-success d-innline-block">{{ translate('Accept')}}</a>
           </div>
       </div>
   </div>

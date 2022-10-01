@@ -232,7 +232,7 @@
                                                 @php
                                                     $product_stock = json_decode($orderDetail->product->stocks->first(), true);
                                                 @endphp
-                                                {{translate('SKU')}}: {{ $product_stock['sku'] }}
+                                                {{ translate('SKU')}}: {{ $product_stock['sku'] }}
                                             </small>
                                         @elseif ($orderDetail->product != null && $orderDetail->product->auction_product == 1)
                                             <strong>

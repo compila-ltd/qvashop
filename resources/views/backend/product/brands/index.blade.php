@@ -4,7 +4,7 @@
 
 <div class="aiz-titlebar text-left mt-2 mb-3">
 	<div class="align-items-center">
-		<h1 class="h3">{{translate('All Brands')}}</h1>
+		<h1 class="h3">{{ translate('All Brands')}}</h1>
 	</div>
 </div>
 
@@ -28,9 +28,9 @@
 		            <thead>
 		                <tr>
 		                    <th>#</th>
-		                    <th>{{translate('Name')}}</th>
-		                    <th>{{translate('Logo')}}</th>
-		                    <th class="text-right">{{translate('Options')}}</th>
+		                    <th>{{ translate('Name')}}</th>
+		                    <th>{{ translate('Logo')}}</th>
+		                    <th class="text-right">{{ translate('Options')}}</th>
 		                </tr>
 		            </thead>
 		            <tbody>
@@ -39,7 +39,7 @@
 		                        <td>{{ ($key+1) + ($brands->currentPage() - 1)*$brands->perPage() }}</td>
 		                        <td>{{ $brand->getTranslation('name') }}</td>
 								<td>
-		                            <img src="{{ uploaded_asset($brand->logo) }}" alt="{{translate('Brand')}}" class="h-50px">
+		                            <img src="{{ uploaded_asset($brand->logo) }}" alt="{{ translate('Brand')}}" class="h-50px">
 		                        </td>
 		                        <td class="text-right">
 									@can('edit_brand')
@@ -73,11 +73,11 @@
 					<form action="{{ route('brands.store') }}" method="POST">
 						@csrf
 						<div class="form-group mb-3">
-							<label for="name">{{translate('Name')}}</label>
-							<input type="text" placeholder="{{translate('Name')}}" name="name" class="form-control" required>
+							<label for="name">{{ translate('Name')}}</label>
+							<input type="text" placeholder="{{ translate('Name')}}" name="name" class="form-control" required>
 						</div>
 						<div class="form-group mb-3">
-							<label for="name">{{translate('Logo')}} <small>({{ translate('120x80') }})</small></label>
+							<label for="name">{{ translate('Logo')}} <small>({{ translate('120x80') }})</small></label>
 							<div class="input-group" data-toggle="aizuploader" data-type="image">
 								<div class="input-group-prepend">
 										<div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}</div>
@@ -89,15 +89,15 @@
 							</div>
 						</div>
 						<div class="form-group mb-3">
-							<label for="name">{{translate('Meta Title')}}</label>
-							<input type="text" class="form-control" name="meta_title" placeholder="{{translate('Meta Title')}}">
+							<label for="name">{{ translate('Meta Title')}}</label>
+							<input type="text" class="form-control" name="meta_title" placeholder="{{ translate('Meta Title')}}">
 						</div>
 						<div class="form-group mb-3">
-							<label for="name">{{translate('Meta Description')}}</label>
+							<label for="name">{{ translate('Meta Description')}}</label>
 							<textarea name="meta_description" rows="5" class="form-control"></textarea>
 						</div>
 						<div class="form-group mb-3 text-right">
-							<button type="submit" class="btn btn-primary">{{translate('Save')}}</button>
+							<button type="submit" class="btn btn-primary">{{ translate('Save')}}</button>
 						</div>
 					</form>
 				</div>

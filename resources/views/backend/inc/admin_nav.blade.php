@@ -65,7 +65,7 @@
                                         <div class="media-body">
                                             @if($notification->type == 'App\Notifications\OrderNotification')
                                             <p class="mb-1 text-truncate-2">
-                                                {{translate('Order code: ')}} {{$notification->data['order_code']}} {{ translate('has been '. ucfirst(str_replace('_', ' ', $notification->data['status'])))}}
+                                                {{ translate('Order code: ')}} {{$notification->data['order_code']}} {{ translate('has been '. ucfirst(str_replace('_', ' ', $notification->data['status'])))}}
                                             </p>
                                             <small class="text-muted">
                                                 {{ date("F j Y, g:i a", strtotime($notification->created_at)) }}
@@ -85,7 +85,7 @@
                         </div>
                         <div class="text-center border-top">
                             <a href="{{ route('admin.all-notification') }}" class="text-reset d-block py-2">
-                                {{translate('View All Notifications')}}
+                                {{ translate('View All Notifications')}}
                             </a>
                         </div>
                     </div>
@@ -138,12 +138,12 @@
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated dropdown-menu-md">
                         <a href="{{ route('profile.index') }}" class="dropdown-item">
                             <i class="las la-user-circle"></i>
-                            <span>{{translate('Profile')}}</span>
+                            <span>{{ translate('Profile')}}</span>
                         </a>
 
                         <a href="{{ route('logout')}}" class="dropdown-item">
                             <i class="las la-sign-out-alt"></i>
-                            <span>{{translate('Logout')}}</span>
+                            <span>{{ translate('Logout')}}</span>
                         </a>
                     </div>
                 </div>

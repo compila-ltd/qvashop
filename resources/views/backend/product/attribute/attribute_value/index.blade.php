@@ -4,7 +4,7 @@
 
 <div class="aiz-titlebar text-left mt-2 mb-3">
 	<div class="align-items-center">
-		<h1 class="h3">{{translate('Attribute Detail')}}</h1>
+		<h1 class="h3">{{ translate('Attribute Detail')}}</h1>
 	</div>
 </div>
 
@@ -65,16 +65,16 @@
                     <form action="{{ route('store-attribute-value') }}" method="POST">
                         @csrf
                         <div class="form-group mb-3">
-                            <label for="name">{{translate('Attribute Name')}}</label>
+                            <label for="name">{{ translate('Attribute Name')}}</label>
                             <input type="hidden" name="attribute_id" value="{{ $attribute->id }}">
                             <input type="text" placeholder="{{ translate('Name')}}" name="name" value="{{ $attribute->name }}"class="form-control" readonly>
                         </div>
                         <div class="form-group mb-3">
-                            <label for="name">{{translate('Attribute Value')}}</label>
+                            <label for="name">{{ translate('Attribute Value')}}</label>
                             <input type="text" placeholder="{{ translate('Name')}}" id="value" name="value" class="form-control" required>
                         </div>
                         <div class="form-group mb-3 text-right">
-                            <button type="submit" class="btn btn-primary">{{translate('Save')}}</button>
+                            <button type="submit" class="btn btn-primary">{{ translate('Save')}}</button>
                         </div>
                     </form>
                 </div>

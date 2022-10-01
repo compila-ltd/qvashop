@@ -5,12 +5,12 @@
 <div class="aiz-titlebar text-left mt-2 mb-3">
     <div class="row align-items-center">
         <div class="col-auto">
-            <h1 class="h3">{{translate('All products')}}</h1>
+            <h1 class="h3">{{ translate('All products')}}</h1>
         </div>
         @if($type != 'Seller' && auth()->user()->can('add_new_product'))
         <div class="col text-right">
             <a href="{{ route('products.create') }}" class="btn btn-circle btn-info">
-                <span>{{translate('Add New Product')}}</span>
+                <span>{{ translate('Add New Product')}}</span>
             </a>
         </div>
         @endif
@@ -27,10 +27,10 @@
 
             <div class="dropdown mb-2 mb-md-0">
                 <button class="btn border dropdown-toggle" type="button" data-toggle="dropdown">
-                    {{translate('Bulk Action')}}
+                    {{ translate('Bulk Action')}}
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="#" onclick="bulk_delete()"> {{translate('Delete selection')}}</a>
+                    <a class="dropdown-item" href="#" onclick="bulk_delete()"> {{ translate('Delete selection')}}</a>
                 </div>
             </div>
 
@@ -59,12 +59,12 @@
             <div class="col-md-2 ml-auto">
                 <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0" name="type" id="type" onchange="sort_products()">
                     <option value="">{{ translate('Sort By') }}</option>
-                    <option value="rating,desc" @isset($col_name , $query) @if($col_name=='rating' && $query=='desc' ) selected @endif @endisset>{{translate('Rating (High > Low)')}}</option>
-                    <option value="rating,asc" @isset($col_name , $query) @if($col_name=='rating' && $query=='asc' ) selected @endif @endisset>{{translate('Rating (Low > High)')}}</option>
-                    <option value="num_of_sale,desc" @isset($col_name , $query) @if($col_name=='num_of_sale' && $query=='desc' ) selected @endif @endisset>{{translate('Num of Sale (High > Low)')}}</option>
-                    <option value="num_of_sale,asc" @isset($col_name , $query) @if($col_name=='num_of_sale' && $query=='asc' ) selected @endif @endisset>{{translate('Num of Sale (Low > High)')}}</option>
-                    <option value="unit_price,desc" @isset($col_name , $query) @if($col_name=='unit_price' && $query=='desc' ) selected @endif @endisset>{{translate('Base Price (High > Low)')}}</option>
-                    <option value="unit_price,asc" @isset($col_name , $query) @if($col_name=='unit_price' && $query=='asc' ) selected @endif @endisset>{{translate('Base Price (Low > High)')}}</option>
+                    <option value="rating,desc" @isset($col_name , $query) @if($col_name=='rating' && $query=='desc' ) selected @endif @endisset>{{ translate('Rating (High > Low)')}}</option>
+                    <option value="rating,asc" @isset($col_name , $query) @if($col_name=='rating' && $query=='asc' ) selected @endif @endisset>{{ translate('Rating (Low > High)')}}</option>
+                    <option value="num_of_sale,desc" @isset($col_name , $query) @if($col_name=='num_of_sale' && $query=='desc' ) selected @endif @endisset>{{ translate('Num of Sale (High > Low)')}}</option>
+                    <option value="num_of_sale,asc" @isset($col_name , $query) @if($col_name=='num_of_sale' && $query=='asc' ) selected @endif @endisset>{{ translate('Num of Sale (Low > High)')}}</option>
+                    <option value="unit_price,desc" @isset($col_name , $query) @if($col_name=='unit_price' && $query=='desc' ) selected @endif @endisset>{{ translate('Base Price (High > Low)')}}</option>
+                    <option value="unit_price,asc" @isset($col_name , $query) @if($col_name=='unit_price' && $query=='asc' ) selected @endif @endisset>{{ translate('Base Price (Low > High)')}}</option>
                 </select>
             </div>
             <div class="col-md-2">
@@ -92,19 +92,19 @@
                         @else
                         <th data-breakpoints="lg">#</th>
                         @endif
-                        <th>{{translate('Name')}}</th>
+                        <th>{{ translate('Name')}}</th>
                         @if($type == 'Seller' || $type == 'All')
-                        <th data-breakpoints="lg">{{translate('Added By')}}</th>
+                        <th data-breakpoints="lg">{{ translate('Added By')}}</th>
                         @endif
-                        <th data-breakpoints="sm">{{translate('Info')}}</th>
-                        <th data-breakpoints="md">{{translate('Total Stock')}}</th>
-                        <th data-breakpoints="lg">{{translate('Todays Deal')}}</th>
-                        <th data-breakpoints="lg">{{translate('Published')}}</th>
+                        <th data-breakpoints="sm">{{ translate('Info')}}</th>
+                        <th data-breakpoints="md">{{ translate('Total Stock')}}</th>
+                        <th data-breakpoints="lg">{{ translate('Todays Deal')}}</th>
+                        <th data-breakpoints="lg">{{ translate('Published')}}</th>
                         @if(get_setting('product_approve_by_admin') == 1 && $type == 'Seller')
-                        <th data-breakpoints="lg">{{translate('Approved')}}</th>
+                        <th data-breakpoints="lg">{{ translate('Approved')}}</th>
                         @endif
-                        <th data-breakpoints="lg">{{translate('Featured')}}</th>
-                        <th data-breakpoints="sm" class="text-right">{{translate('Options')}}</th>
+                        <th data-breakpoints="lg">{{ translate('Featured')}}</th>
+                        <th data-breakpoints="sm" class="text-right">{{ translate('Options')}}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -136,9 +136,9 @@
                         <td>{{ optional($product->user)->name }}</td>
                         @endif
                         <td>
-                            <strong>{{translate('Num of Sale')}}:</strong> {{ $product->num_of_sale }} {{translate('times')}} </br>
-                            <strong>{{translate('Base Price')}}:</strong> {{ single_price($product->unit_price) }} </br>
-                            <strong>{{translate('Rating')}}:</strong> {{ $product->rating }} </br>
+                            <strong>{{ translate('Num of Sale')}}:</strong> {{ $product->num_of_sale }} {{ translate('times')}} </br>
+                            <strong>{{ translate('Base Price')}}:</strong> {{ single_price($product->unit_price) }} </br>
+                            <strong>{{ translate('Rating')}}:</strong> {{ $product->rating }} </br>
                         </td>
                         <td>
                             @php

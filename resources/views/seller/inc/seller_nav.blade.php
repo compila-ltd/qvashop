@@ -56,7 +56,7 @@
                                                 @if($notification->type == 'App\Notifications\OrderNotification')
                                                     <p class="mb-1 text-truncate-2">
                                                         <a href="{{ route('seller.orders.show', encrypt($notification->data['order_id'])) }}">
-                                                            {{translate('Order code: ')}} {{$notification->data['order_code']}} {{ translate('has been '. ucfirst(str_replace('_', ' ', $notification->data['status'])))}}
+                                                            {{ translate('Order code: ')}} {{$notification->data['order_code']}} {{ translate('has been '. ucfirst(str_replace('_', ' ', $notification->data['status'])))}}
                                                         </a>
                                                     </p>
                                                     <small class="text-muted">
@@ -77,7 +77,7 @@
                         </div>
                         <div class="text-center border-top">
                             <a href="{{ route('seller.all-notification') }}" class="text-reset d-block py-2">
-                                {{translate('View All Notifications')}}
+                                {{ translate('View All Notifications')}}
                             </a>
                         </div>
                     </div>
@@ -133,12 +133,12 @@
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated dropdown-menu-md">
                         <a href="{{ route('seller.profile.index') }}" class="dropdown-item">
                             <i class="las la-user-circle"></i>
-                            <span>{{translate('Profile')}}</span>
+                            <span>{{ translate('Profile')}}</span>
                         </a>
 
                         <a href="{{ route('logout')}}" class="dropdown-item">
                             <i class="las la-sign-out-alt"></i>
-                            <span>{{translate('Logout')}}</span>
+                            <span>{{ translate('Logout')}}</span>
                         </a>
                     </div>
                 </div>

@@ -4,7 +4,7 @@
 @if(auth()->user()->can('smtp_settings') && env('MAIL_USERNAME') == null && env('MAIL_PASSWORD') == null)
     <div class="">
         <div class="alert alert-danger d-flex align-items-center">
-            {{translate('Please Configure SMTP Setting to work all email sending functionality')}},
+            {{ translate('Please Configure SMTP Setting to work all email sending functionality')}},
             <a class="alert-link ml-2" href="{{ route('smtp_settings.index') }}">{{ translate('Configure Now') }}</a>
         </div>
     </div>
@@ -173,9 +173,9 @@
         type: 'doughnut',
         data: {
             labels: [
-                "{{translate('Total published products')}}",
-                "{{translate('Total sellers products')}}",
-                "{{translate('Total admin products')}}"
+                "{{ translate('Total published products')}}",
+                "{{ translate('Total sellers products')}}",
+                "{{ translate('Total admin products')}}"
             ],
             datasets: [
                 {
@@ -219,9 +219,9 @@
         type: 'doughnut',
         data: {
             labels: [
-                "{{translate('Total sellers')}}",
-                "{{translate('Total approved sellers')}}",
-                "{{translate('Total pending sellers')}}"
+                "{{ translate('Total sellers')}}",
+                "{{ translate('Total approved sellers')}}",
+                "{{ translate('Total pending sellers')}}"
             ],
             datasets: [
                 {

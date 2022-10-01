@@ -25,7 +25,7 @@
                         <ul class="list-group list-group-raw fs-20 mb-5">
                             <li class="list-group-item py-2">
                                 <i class="las la-check text-success mr-2"></i>
-                                {{ $customer_package->product_upload }} {{translate('Product Upload')}}
+                                {{ $customer_package->product_upload }} {{ translate('Product Upload')}}
                             </li>
                         </ul>
 
@@ -85,7 +85,7 @@
                     </div>
                 </div>
                 <div class="form-group text-right">
-                    <button type="button" class="btn btn-sm btn-primary transition-3d-hover mr-1" id="select_type_cancel" data-dismiss="modal">{{translate('Cancel')}}</button>
+                    <button type="button" class="btn btn-sm btn-primary transition-3d-hover mr-1" id="select_type_cancel" data-dismiss="modal">{{ translate('Cancel')}}</button>
                 </div>
             </div>
         </div>
@@ -121,8 +121,8 @@
                     </div>
 
                     <div class="form-group text-right">
-                        <button type="button" class="btn btn-sm btn-secondary transition-3d-hover mr-1" data-dismiss="modal">{{translate('cancel')}}</button>
-                        <button type="submit" class="btn btn-sm btn-primary transition-3d-hover mr-1">{{translate('Confirm')}}</button>
+                        <button type="button" class="btn btn-sm btn-secondary transition-3d-hover mr-1" data-dismiss="modal">{{ translate('cancel')}}</button>
+                        <button type="submit" class="btn btn-sm btn-primary transition-3d-hover mr-1">{{ translate('Confirm')}}</button>
                     </div>
                 </div>
             </form>

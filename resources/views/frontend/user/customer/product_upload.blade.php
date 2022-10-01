@@ -14,17 +14,17 @@
         <input type="hidden" name="status" value="available">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">{{translate('General')}}</h5>
+                <h5 class="mb-0 h6">{{ translate('General')}}</h5>
             </div>
             <div class="card-body">
                 <div class="form-group row">
-                    <label class="col-md-2 col-from-label">{{translate('Product Name')}} <span class="text-danger">*</span></label>
+                    <label class="col-md-2 col-from-label">{{ translate('Product Name')}} <span class="text-danger">*</span></label>
                     <div class="col-md-10">
                         <input type="text" class="form-control" name="name" placeholder="{{ translate('Product Name')}}" required>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-2 col-from-label">{{translate('Product Category')}} <span class="text-danger">*</span></label>
+                    <label class="col-md-2 col-from-label">{{ translate('Product Category')}} <span class="text-danger">*</span></label>
                     <div class="col-md-10">
                         <select class="form-control aiz-selectpicker" data-placeholder="{{ translate('Select a Category')}}" id="categories" name="category_id" data-live-search="true" required>
                             @foreach ($categories as $category)
@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-2 col-from-label">{{translate('Product Brand')}} <span class="text-danger">*</span></label>
+                    <label class="col-md-2 col-from-label">{{ translate('Product Brand')}} <span class="text-danger">*</span></label>
                     <div class="col-md-10">
                         <select class="form-control aiz-selectpicker" data-placeholder="{{ translate('Select a brand')}}" data-live-search="true"  id="brands" name="brand_id">
                             <option value=""></option>
@@ -48,13 +48,13 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-2 col-from-label">{{translate('Product Unit')}} <span class="text-danger">*</span></label>
+                    <label class="col-md-2 col-from-label">{{ translate('Product Unit')}} <span class="text-danger">*</span></label>
                     <div class="col-md-10">
                         <input type="text" class="form-control" name="unit" placeholder="{{ translate('Product unit')}}" required>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-2 col-from-label">{{translate('Condition')}} <span class="text-danger">*</span></label>
+                    <label class="col-md-2 col-from-label">{{ translate('Condition')}} <span class="text-danger">*</span></label>
                     <div class="col-md-10">
                         <select class="form-control selectpicker" data-placeholder="{{ translate('Select a condition')}}" id="conditon" name="conditon" required>
                             <option value="new">{{ translate('New')}}</option>
@@ -63,7 +63,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-2 col-from-label">{{translate('Location')}} <span class="text-danger">*</span></label>
+                    <label class="col-md-2 col-from-label">{{ translate('Location')}} <span class="text-danger">*</span></label>
                     <div class="col-md-10">
                         <input type="text" class="form-control" name="location" placeholder="{{ translate('Location')}}" required>
                     </div>
@@ -78,11 +78,11 @@
         </div>
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">{{translate('Images')}}</h5>
+                <h5 class="mb-0 h6">{{ translate('Images')}}</h5>
             </div>
             <div class="card-body">
                 <div class="form-group row">
-                    <label class="col-md-2 col-from-label">{{translate('Gallery Images')}} <span class="text-danger">*</span></label>
+                    <label class="col-md-2 col-from-label">{{ translate('Gallery Images')}} <span class="text-danger">*</span></label>
                     <div class="col-md-10">
                         <div class="input-group" data-toggle="aizuploader" data-type="image" data-multiple="true">
                             <div class="input-group-prepend">
@@ -96,7 +96,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-2 col-from-label">{{translate('Thumbnail Image')}} <span class="text-danger">*</span></label>
+                    <label class="col-md-2 col-from-label">{{ translate('Thumbnail Image')}} <span class="text-danger">*</span></label>
                     <div class="col-md-10">
                         <div class="input-group" data-toggle="aizuploader" data-type="image">
                             <div class="input-group-prepend">
@@ -113,11 +113,11 @@
         </div>
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">{{translate('Videos')}}</h5>
+                <h5 class="mb-0 h6">{{ translate('Videos')}}</h5>
             </div>
             <div class="card-body">
                 <div class="form-group row">
-                    <label class="col-md-2 col-from-label">{{translate('Video From')}}</label>
+                    <label class="col-md-2 col-from-label">{{ translate('Video From')}}</label>
                     <div class="col-md-10">
                         <select class="form-control aiz-selectpicker" data-minimum-results-for-search="Infinity" name="video_provider">
                             <option value="youtube">{{ translate('Youtube')}}</option>
@@ -127,7 +127,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-2 col-from-label">{{translate('Video URL')}}</label>
+                    <label class="col-md-2 col-from-label">{{ translate('Video URL')}}</label>
                     <div class="col-md-10">
                         <input type="text" class="form-control" name="video_link" placeholder="{{ translate('Video link')}}">
                     </div>
@@ -136,17 +136,17 @@
         </div>
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">{{translate('Meta Tags')}}</h5>
+                <h5 class="mb-0 h6">{{ translate('Meta Tags')}}</h5>
             </div>
             <div class="card-body">
                 <div class="form-group row">
-                    <label class="col-md-2 col-from-label">{{translate('Meta Title')}}</label>
+                    <label class="col-md-2 col-from-label">{{ translate('Meta Title')}}</label>
                     <div class="col-md-10">
                         <input type="text" name="meta_title" class="form-control" placeholder="{{ translate('Meta Title')}}">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-2 col-from-label">{{translate('Description')}}</label>
+                    <label class="col-md-2 col-from-label">{{ translate('Description')}}</label>
                     <div class="col-md-10">
                         <textarea name="meta_description" rows="8" class="form-control"></textarea>
                     </div>
@@ -169,7 +169,7 @@
         </div>
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">{{translate('Price')}}</h5>
+                <h5 class="mb-0 h6">{{ translate('Price')}}</h5>
             </div>
             <div class="card-body">
                 <div class="form-group row">
@@ -182,7 +182,7 @@
         </div>
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">{{translate('Description')}} <span class="text-danger">*</span></h5>
+                <h5 class="mb-0 h6">{{ translate('Description')}} <span class="text-danger">*</span></h5>
             </div>
             <div class="card-body">
                 <div class="form-group row">
@@ -197,7 +197,7 @@
         </div>
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">{{translate('PDF Specification')}}</h5>
+                <h5 class="mb-0 h6">{{ translate('PDF Specification')}}</h5>
             </div>
             <div class="card-body">
                 <div class="form-group row">

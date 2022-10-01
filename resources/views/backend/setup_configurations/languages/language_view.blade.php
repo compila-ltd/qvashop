@@ -23,8 +23,8 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th width="45%">{{translate('Key')}}</th>
-                            <th width="45%">{{translate('Value')}}</th>
+                            <th width="45%">{{ translate('Key')}}</th>
+                            <th width="45%">{{ translate('Value')}}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,7 +47,7 @@
 
                 <div class="form-group mb-0 text-right">
                     <button type="button" class="btn btn-primary" onclick="copyTranslation()">{{ translate('Copy Translations') }}</button>
-                    <button type="submit" class="btn btn-primary">{{translate('Save')}}</button>
+                    <button type="submit" class="btn btn-primary">{{ translate('Save')}}</button>
                 </div>
             </div>
         </form>

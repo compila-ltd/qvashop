@@ -5,15 +5,15 @@
 <div class="col-lg-12 mx-auto">
     <div class="card">
         <div class="card-header">
-            <h5 class="mb-0 h6">{{translate('Role Information')}}</h5>
+            <h5 class="mb-0 h6">{{ translate('Role Information')}}</h5>
         </div>
         <form action="{{ route('roles.store') }}" method="POST">
             @csrf
             <div class="card-body">
                 <div class="form-group row">
-                    <label class="col-md-3 col-from-label" for="name">{{translate('Name')}}</label>
+                    <label class="col-md-3 col-from-label" for="name">{{ translate('Name')}}</label>
                     <div class="col-md-9">
-                        <input type="text" placeholder="{{translate('Name')}}" id="name" name="name" class="form-control" required>
+                        <input type="text" placeholder="{{ translate('Name')}}" id="name" name="name" class="form-control" required>
                     </div>
                 </div>
                 <div class="card-header">
@@ -61,7 +61,7 @@
                 @endforeach
 
                 <div class="form-group mb-3 mt-3 text-right">
-                    <button type="submit" class="btn btn-primary">{{translate('Save')}}</button>
+                    <button type="submit" class="btn btn-primary">{{ translate('Save')}}</button>
                 </div>
             </div>
         </form>

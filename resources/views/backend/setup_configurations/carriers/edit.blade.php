@@ -29,19 +29,19 @@
                         <input name="_method" type="hidden" value="PATCH">
                         @csrf
                         <div class="form-group row">
-                            <label class="col-md-2 col-from-label">{{translate('Carrier Name')}} <span class="text-danger">*</span></label>
+                            <label class="col-md-2 col-from-label">{{ translate('Carrier Name')}} <span class="text-danger">*</span></label>
                             <div class="col-md-9">
                                 <input type="text" class="form-control" name="carrier_name" value="{{ $carrier->name }}" placeholder="{{ translate('Carrier Name') }}" required>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-2 col-from-label">{{translate('Transit Time')}} <span class="text-danger">*</span></label>
+                            <label class="col-md-2 col-from-label">{{ translate('Transit Time')}} <span class="text-danger">*</span></label>
                             <div class="col-md-9">
                                 <input type="number" class="form-control" name="transit_time" value="{{ $carrier->transit_time }}" placeholder="{{ translate('Transit Name') }}" required>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-2 col-from-label">{{translate('Logo')}} <span class="text-danger">*</span></label>
+                            <label class="col-md-2 col-from-label">{{ translate('Logo')}} <span class="text-danger">*</span></label>
                             <div class="col-md-9">
                                 <div class="input-group" data-toggle="aizuploader" data-type="image">
                                     <div class="input-group-prepend">
@@ -55,7 +55,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-2 col-from-label">{{translate('Free Shipping')}} ? </label>
+                            <label class="col-md-2 col-from-label">{{ translate('Free Shipping')}} ? </label>
                             <div class="col-md-9">
                                 <label class="aiz-switch aiz-switch-success mb-0">
                                     <input type="checkbox" name="shipping_type" onchange="freeShipping(this)" id="shipping_type" @if($carrier->free_shipping == 1) checked @endif>
@@ -65,7 +65,7 @@
                         </div>
                         
                         <div class="form-group row" id="billing_type_section">
-                            <label class="col-md-2 col-from-label">{{translate('Billing Type')}} <span class="text-danger">*</span></label>
+                            <label class="col-md-2 col-from-label">{{ translate('Billing Type')}} <span class="text-danger">*</span></label>
                             <div class="col-md-9">
                                 <select class="form-control aiz-selectpicker" name="billing_type" onchange="update_price_range_form()" data-selected="{{ $carrier->carrier_ranges->first()->billing_type ?? '' }}"  id="billing_type" data-live-search="true">
                                     <option value="weight_based">{{ translate('According to Weight') }}</option>
@@ -191,7 +191,7 @@
                        
 
                         <div class="form-group mb-0 text-right">
-                            <button type="button" class="btn btn-primary" id="carrier-submit-btn">{{translate('Update Carrier Informations')}}</button>
+                            <button type="button" class="btn btn-primary" id="carrier-submit-btn">{{ translate('Update Carrier Informations')}}</button>
                         </div>
                     </form>
 
@@ -228,8 +228,8 @@
         var billing_type = $('#billing_type').val();
         
         $(".carrier_range_form_header_text").html(billing_type === 'weight_based' 
-            ? "{{translate('Weight based carrier price range')}}" 
-            : "{{translate('Price based carrier price range')}}");
+            ? "{{ translate('Weight based carrier price range')}}" 
+            : "{{ translate('Price based carrier price range')}}");
         $(".price_range_text").html(billing_type === 'weight_based' 
             ? "{{ translate('Will be applied when the weight is') }}" 
             : "{{ translate('Will be applied when the price is') }}");

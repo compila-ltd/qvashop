@@ -78,10 +78,10 @@
 		<table class="padding text-left small border-bottom">
 			<thead>
                 <tr class="gry-color" style="background: #eceff4;">
-					<th width="20%">{{translate('Type') }}</th>
-                    <th width="50%">{{translate('Name') }}</th>
-                    <th width="30%">{{translate('ID') }}</th>
-					<th width="30%">{{translate('Email') }}</th>
+					<th width="20%">{{ translate('Type') }}</th>
+                    <th width="50%">{{ translate('Name') }}</th>
+                    <th width="30%">{{ translate('ID') }}</th>
+					<th width="30%">{{ translate('Email') }}</th>
                 </tr>
 			</thead>
 			<tbody class="strong">

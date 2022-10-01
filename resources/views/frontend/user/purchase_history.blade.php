@@ -37,9 +37,9 @@
                                     </td>
                                     <td>
                                         @if ($order->payment_status == 'paid')
-                                            <span class="badge badge-inline badge-success">{{translate('Paid')}}</span>
+                                            <span class="badge badge-inline badge-success">{{ translate('Paid')}}</span>
                                         @else
-                                            <span class="badge badge-inline badge-danger">{{translate('Unpaid')}}</span>
+                                            <span class="badge badge-inline badge-danger">{{ translate('Unpaid')}}</span>
                                         @endif
                                         @if($order->payment_status_viewed == 0)
                                             <span class="ml-2" style="color:green"><strong>*</strong></span>

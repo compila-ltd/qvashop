@@ -11,29 +11,29 @@
 
             <div class="dropdown mb-2 mb-md-0">
                 <button class="btn border dropdown-toggle" type="button" data-toggle="dropdown">
-                    {{translate('Bulk Action')}}
+                    {{ translate('Bulk Action')}}
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="#" onclick="bulk_delete()"> {{translate('Delete selection')}}</a>
+                    <a class="dropdown-item" href="#" onclick="bulk_delete()"> {{ translate('Delete selection')}}</a>
                 </div>
             </div>
 
             <div class="col-lg-2 ml-auto">
                 <select class="form-control aiz-selectpicker" name="delivery_status" id="delivery_status">
-                    <option value="">{{translate('Filter by Delivery Status')}}</option>
-                    <option value="pending" @if ($delivery_status == 'pending') selected @endif>{{translate('Pending')}}</option>
-                    <option value="confirmed" @if ($delivery_status == 'confirmed') selected @endif>{{translate('Confirmed')}}</option>
-                    <option value="picked_up" @if ($delivery_status == 'picked_up') selected @endif>{{translate('Picked Up')}}</option>
-                    <option value="on_the_way" @if ($delivery_status == 'on_the_way') selected @endif>{{translate('On The Way')}}</option>
-                    <option value="delivered" @if ($delivery_status == 'delivered') selected @endif>{{translate('Delivered')}}</option>
-                    <option value="cancelled" @if ($delivery_status == 'cancelled') selected @endif>{{translate('Cancel')}}</option>
+                    <option value="">{{ translate('Filter by Delivery Status')}}</option>
+                    <option value="pending" @if ($delivery_status == 'pending') selected @endif>{{ translate('Pending')}}</option>
+                    <option value="confirmed" @if ($delivery_status == 'confirmed') selected @endif>{{ translate('Confirmed')}}</option>
+                    <option value="picked_up" @if ($delivery_status == 'picked_up') selected @endif>{{ translate('Picked Up')}}</option>
+                    <option value="on_the_way" @if ($delivery_status == 'on_the_way') selected @endif>{{ translate('On The Way')}}</option>
+                    <option value="delivered" @if ($delivery_status == 'delivered') selected @endif>{{ translate('Delivered')}}</option>
+                    <option value="cancelled" @if ($delivery_status == 'cancelled') selected @endif>{{ translate('Cancel')}}</option>
                 </select>
             </div>
             <div class="col-lg-2 ml-auto">
                 <select class="form-control aiz-selectpicker" name="payment_status" id="payment_status">
-                    <option value="">{{translate('Filter by Payment Status')}}</option>
-                    <option value="paid"  @isset($payment_status) @if($payment_status == 'paid') selected @endif @endisset>{{translate('Paid')}}</option>
-                    <option value="unpaid"  @isset($payment_status) @if($payment_status == 'unpaid') selected @endif @endisset>{{translate('Un-Paid')}}</option>
+                    <option value="">{{ translate('Filter by Payment Status')}}</option>
+                    <option value="paid"  @isset($payment_status) @if($payment_status == 'paid') selected @endif @endisset>{{ translate('Paid')}}</option>
+                    <option value="unpaid"  @isset($payment_status) @if($payment_status == 'unpaid') selected @endif @endisset>{{ translate('Un-Paid')}}</option>
                 </select>
               </div>
             <div class="col-lg-2">
@@ -79,7 +79,7 @@
                         @if (addon_is_activated('refund_request'))
                         <th>{{ translate('Refund') }}</th>
                         @endif
-                        <th class="text-right" width="15%">{{translate('options')}}</th>
+                        <th class="text-right" width="15%">{{ translate('options')}}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -96,7 +96,7 @@
                             </div>
                         </td>
                         <td>
-                            {{ $order->code }}@if($order->viewed == 0) <span class="badge badge-inline badge-info">{{translate('New')}}</span>@endif
+                            {{ $order->code }}@if($order->viewed == 0) <span class="badge badge-inline badge-info">{{ translate('New')}}</span>@endif
                         </td>
                         <td>
                             {{ count($order->orderDetails) }}
@@ -126,9 +126,9 @@
                         </td>
                         <td>
                             @if ($order->payment_status == 'paid')
-                            <span class="badge badge-inline badge-success">{{translate('Paid')}}</span>
+                            <span class="badge badge-inline badge-success">{{ translate('Paid')}}</span>
                             @else
-                            <span class="badge badge-inline badge-danger">{{translate('Unpaid')}}</span>
+                            <span class="badge badge-inline badge-danger">{{ translate('Unpaid')}}</span>
                             @endif
                         </td>
                         @if (addon_is_activated('refund_request'))

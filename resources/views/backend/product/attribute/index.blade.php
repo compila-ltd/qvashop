@@ -4,7 +4,7 @@
 
 <div class="aiz-titlebar text-left mt-2 mb-3">
 	<div class="align-items-center">
-		<h1 class="h3">{{translate('All Attributes')}}</h1>
+		<h1 class="h3">{{ translate('All Attributes')}}</h1>
 	</div>
 </div>
 
@@ -68,11 +68,11 @@
 					<form action="{{ route('attributes.store') }}" method="POST">
 						@csrf
 						<div class="form-group mb-3">
-							<label for="name">{{translate('Name')}}</label>
+							<label for="name">{{ translate('Name')}}</label>
 							<input type="text" placeholder="{{ translate('Name')}}" id="name" name="name" class="form-control" required>
 						</div>
 						<div class="form-group mb-3 text-right">
-							<button type="submit" class="btn btn-primary">{{translate('Save')}}</button>
+							<button type="submit" class="btn btn-primary">{{ translate('Save')}}</button>
 						</div>
 					</form>
 				</div>

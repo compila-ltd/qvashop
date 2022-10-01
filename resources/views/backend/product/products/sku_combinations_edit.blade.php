@@ -3,19 +3,19 @@
     <thead>
         <tr>
             <td class="text-center">
-                {{translate('Variant')}}
+                {{ translate('Variant')}}
             </td>
             <td class="text-center">
-                {{translate('Variant Price')}}
+                {{ translate('Variant Price')}}
             </td>
             <td class="text-center" data-breakpoints="lg">
-                {{translate('SKU')}}
+                {{ translate('SKU')}}
             </td>
             <td class="text-center" data-breakpoints="lg">
-                {{translate('Quantity')}}
+                {{ translate('Quantity')}}
             </td>
             <td class="text-center" data-breakpoints="lg">
-                {{translate('Photo')}}
+                {{ translate('Photo')}}
             </td>
         </tr>
     </thead>

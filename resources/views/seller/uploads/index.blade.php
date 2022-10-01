@@ -4,11 +4,11 @@
 <div class="aiz-titlebar text-left mt-2 mb-3">
 	<div class="row align-items-center">
 		<div class="col-md-6">
-			<h1 class="h3">{{translate('All uploaded files')}}</h1>
+			<h1 class="h3">{{ translate('All uploaded files')}}</h1>
 		</div>
 		<div class="col-md-6 text-md-right">
 			<a href="{{ route('seller.uploads.create') }}" class="btn btn-primary">
-				<span>{{translate('Upload New File')}}</span>
+				<span>{{ translate('Upload New File')}}</span>
 			</a>
 		</div>
 	</div>
@@ -18,7 +18,7 @@
     <form id="sort_uploads" action="">
         <div class="card-header row gutters-5">
             <div class="col-md-3">
-                <h5 class="mb-0 h6">{{translate('All files')}}</h5>
+                <h5 class="mb-0 h6">{{ translate('All files')}}</h5>
             </div>
             <div class="col-md-3 ml-auto mr-0">
                 <select class="form-control form-control-xs aiz-selectpicker" name="sort" onchange="sort_uploads()">

@@ -7,7 +7,7 @@
             <div class="col-xxl-5 col-xl-6 col-md-8 mx-auto">
                 <div class="bg-white rounded shadow-sm p-4 text-left">
                     <h1 class="h3 fw-600">{{ translate('Reset Password') }}</h1>
-                    <p class="mb-4 opacity-60">{{translate('Enter your email address and new password and confirm password.')}} </p>
+                    <p class="mb-4 opacity-60">{{ translate('Enter your email address and new password and confirm password.')}} </p>
                     <form method="POST" action="{{ route('password.update') }}">
                         @csrf
 
@@ -22,7 +22,7 @@
                         </div>
 
                         <div class="form-group">
-                            <input id="code" type="text" class="form-control{{ $errors->has('code') ? ' is-invalid' : '' }}" name="code" value="{{ $email ?? old('code') }}" placeholder="{{translate('Code')}}" required autofocus>
+                            <input id="code" type="text" class="form-control{{ $errors->has('code') ? ' is-invalid' : '' }}" name="code" value="{{ $email ?? old('code') }}" placeholder="{{ translate('Code')}}" required autofocus>
 
                             @if ($errors->has('code'))
                                 <span class="invalid-feedback" role="alert">

@@ -21,9 +21,9 @@
                 <thead>
                     <tr>
                         <th width="10%">#</th>
-                        <th>{{translate('Name')}}</th>
-                        <th data-breakpoints="lg">{{translate('Code')}}</th>
-                        <th>{{translate('Show/Hide')}}</th>
+                        <th>{{ translate('Name')}}</th>
+                        <th data-breakpoints="lg">{{ translate('Code')}}</th>
+                        <th>{{ translate('Show/Hide')}}</th>
                     </tr>
                 </thead>
                 <tbody>

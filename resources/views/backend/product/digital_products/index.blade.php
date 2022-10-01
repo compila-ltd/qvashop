@@ -6,7 +6,7 @@
     @can('add_digital_product')
 		<div class="text-md-right">
 			<a href="{{ route('digitalproducts.create') }}" class="btn btn-circle btn-info">
-				<span>{{translate('Add New Digital Product')}}</span>
+				<span>{{ translate('Add New Digital Product')}}</span>
 			</a>
 		</div>
     @endcan
@@ -31,14 +31,14 @@
             <thead>
                 <tr>
                     <th data-breakpoints="lg">#</th>
-                    <th width="30%">{{translate('Name')}}</th>
-                    <th data-breakpoints="lg">{{translate('Added By')}}</th>
-                    <th data-breakpoints="lg">{{translate('Photo')}}</th>
-                    <th data-breakpoints="lg">{{translate('Base Price')}}</th>
-                    <th data-breakpoints="lg">{{translate('Todays Deal')}}</th>
-                    <th data-breakpoints="lg">{{translate('Published')}}</th>
-                    <th data-breakpoints="lg">{{translate('Featured')}}</th>
-                    <th data-breakpoints="lg">{{translate('Options')}}</th>
+                    <th width="30%">{{ translate('Name')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Added By')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Photo')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Base Price')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Todays Deal')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Published')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Featured')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Options')}}</th>
                 </tr>
             </thead>
             <tbody>

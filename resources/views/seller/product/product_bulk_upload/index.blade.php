@@ -66,7 +66,7 @@
                     </div>
                 </div>
                 <div class="form-group mb-0 text-right">
-                    <button type="submit" class="btn btn-primary">{{translate('Upload CSV')}}</button>
+                    <button type="submit" class="btn btn-primary">{{ translate('Upload CSV')}}</button>
                 </div>
             </form>
         </div>

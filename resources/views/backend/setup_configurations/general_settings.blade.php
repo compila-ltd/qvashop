@@ -6,21 +6,21 @@
         <div class="col-lg-8 mx-auto">
             <div class="card">
                 <div class="card-header">
-                    <h1 class="mb-0 h6">{{translate('General Settings')}}</h1>
+                    <h1 class="mb-0 h6">{{ translate('General Settings')}}</h1>
                 </div>
                 <div class="card-body">
                     <form class="form-horizontal" action="{{ route('business_settings.update') }}" method="POST"
                           enctype="multipart/form-data">
                         @csrf
                         <div class="form-group row">
-                            <label class="col-sm-3 col-from-label">{{translate('System Name')}}</label>
+                            <label class="col-sm-3 col-from-label">{{ translate('System Name')}}</label>
                             <div class="col-sm-9">
                                 <input type="hidden" name="types[]" value="site_name">
                                 <input type="text" name="site_name" class="form-control" value="{{ get_setting('site_name') }}">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 col-from-label">{{translate('System Logo - White')}}</label>
+                            <label class="col-sm-3 col-from-label">{{ translate('System Logo - White')}}</label>
                             <div class="col-sm-9">
                                 <div class="input-group" data-toggle="aizuploader" data-type="image">
                                     <div class="input-group-prepend">
@@ -35,7 +35,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 col-from-label">{{translate('System Logo - Black')}}</label>
+                            <label class="col-sm-3 col-from-label">{{ translate('System Logo - Black')}}</label>
                             <div class="col-sm-9">
                                 <div class="input-group" data-toggle="aizuploader" data-type="image">
                                     <div class="input-group-prepend">
@@ -50,7 +50,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 col-from-label">{{translate('System Timezone')}}</label>
+                            <label class="col-sm-3 col-from-label">{{ translate('System Timezone')}}</label>
                             <div class="col-sm-9">
                                 <input type="hidden" name="types[]" value="timezone">
                                 <select name="timezone" class="form-control aiz-selectpicker" data-live-search="true">
@@ -63,7 +63,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 col-from-label">{{translate('Admin login page background')}}</label>
+                            <label class="col-sm-3 col-from-label">{{ translate('Admin login page background')}}</label>
                             <div class="col-sm-9">
                                 <div class="input-group" data-toggle="aizuploader" data-type="image">
                                     <div class="input-group-prepend">

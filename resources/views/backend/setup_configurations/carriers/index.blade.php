@@ -42,7 +42,7 @@
                                         {{ $carriers->firstItem() + $key }}
                                     </td>
                                     <td>
-                                        <img src="{{ uploaded_asset($carrier->logo) }}" alt="{{translate('Carrier')}}" class="h-50px">
+                                        <img src="{{ uploaded_asset($carrier->logo) }}" alt="{{ translate('Carrier')}}" class="h-50px">
                                     </td>
                                     <td>{{ $carrier->name }}</td>
                                     <td>{{ $carrier->transit_time }}</td>

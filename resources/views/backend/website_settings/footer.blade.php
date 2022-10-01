@@ -122,7 +122,7 @@
     											<div class="row gutters-5">
     												<div class="col-4">
     													<div class="form-group">
-    														<input type="text" class="form-control" placeholder="{{translate('Label')}}" name="widget_one_labels[]" value="{{ $value }}">
+    														<input type="text" class="form-control" placeholder="{{ translate('Label')}}" name="widget_one_labels[]" value="{{ $value }}">
     													</div>
     												</div>
     												<div class="col">
@@ -146,7 +146,7 @@
     									data-content='<div class="row gutters-5">
     										<div class="col-4">
     											<div class="form-group">
-    												<input type="text" class="form-control" placeholder="{{translate('Label')}}" name="widget_one_labels[]">
+    												<input type="text" class="form-control" placeholder="{{ translate('Label')}}" name="widget_one_labels[]">
     											</div>
     										</div>
     										<div class="col">
@@ -202,7 +202,7 @@
 					</div>
                   <div class="card-body">
                     <div class="form-group row">
-                      <label class="col-md-2 col-from-label">{{translate('Show Social Links?')}}</label>
+                      <label class="col-md-2 col-from-label">{{ translate('Show Social Links?')}}</label>
                       <div class="col-md-9">
                         <label class="aiz-switch aiz-switch-success mb-0">
                           <input type="hidden" name="types[]" value="show_social_links">

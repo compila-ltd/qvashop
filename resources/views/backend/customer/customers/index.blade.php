@@ -4,7 +4,7 @@
 
 <div class="aiz-titlebar text-left mt-2 mb-3">
     <div class="align-items-center">
-        <h1 class="h3">{{translate('All Customers')}}</h1>
+        <h1 class="h3">{{ translate('All Customers')}}</h1>
     </div>
 </div>
 
@@ -13,15 +13,15 @@
     <form class="" id="sort_customers" action="" method="GET">
         <div class="card-header row gutters-5">
             <div class="col">
-                <h5 class="mb-0 h6">{{translate('Customers')}}</h5>
+                <h5 class="mb-0 h6">{{ translate('Customers')}}</h5>
             </div>
             
             <div class="dropdown mb-2 mb-md-0">
                 <button class="btn border dropdown-toggle" type="button" data-toggle="dropdown">
-                    {{translate('Bulk Action')}}
+                    {{ translate('Bulk Action')}}
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="#" onclick="bulk_delete()">{{translate('Delete selection')}}</a>
+                    <a class="dropdown-item" href="#" onclick="bulk_delete()">{{ translate('Delete selection')}}</a>
                 </div>
             </div>
             
@@ -47,12 +47,12 @@
                                 </div>
                             </div>
                         </th>
-                        <th>{{translate('Name')}}</th>
-                        <th data-breakpoints="lg">{{translate('Email Address')}}</th>
-                        <th data-breakpoints="lg">{{translate('Phone')}}</th>
-                        <th data-breakpoints="lg">{{translate('Package')}}</th>
-                        <th data-breakpoints="lg">{{translate('Wallet Balance')}}</th>
-                        <th class="text-right">{{translate('Options')}}</th>
+                        <th>{{ translate('Name')}}</th>
+                        <th data-breakpoints="lg">{{ translate('Email Address')}}</th>
+                        <th data-breakpoints="lg">{{ translate('Phone')}}</th>
+                        <th data-breakpoints="lg">{{ translate('Package')}}</th>
+                        <th data-breakpoints="lg">{{ translate('Wallet Balance')}}</th>
+                        <th class="text-right">{{ translate('Options')}}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -119,15 +119,15 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title h6">{{translate('Confirmation')}}</h5>
+                <h5 class="modal-title h6">{{ translate('Confirmation')}}</h5>
                 <button type="button" class="close" data-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <p>{{translate('Do you really want to ban this Customer?')}}</p>
+                <p>{{ translate('Do you really want to ban this Customer?')}}</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-dismiss="modal">{{translate('Cancel')}}</button>
-                <a type="button" id="confirmation" class="btn btn-primary">{{translate('Proceed!')}}</a>
+                <button type="button" class="btn btn-light" data-dismiss="modal">{{ translate('Cancel')}}</button>
+                <a type="button" id="confirmation" class="btn btn-primary">{{ translate('Proceed!')}}</a>
             </div>
         </div>
     </div>
@@ -137,15 +137,15 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title h6">{{translate('Confirmation')}}</h5>
+                <h5 class="modal-title h6">{{ translate('Confirmation')}}</h5>
                 <button type="button" class="close" data-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <p>{{translate('Do you really want to unban this Customer?')}}</p>
+                <p>{{ translate('Do you really want to unban this Customer?')}}</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-dismiss="modal">{{translate('Cancel')}}</button>
-                <a type="button" id="confirmationunban" class="btn btn-primary">{{translate('Proceed!')}}</a>
+                <button type="button" class="btn btn-light" data-dismiss="modal">{{ translate('Cancel')}}</button>
+                <a type="button" id="confirmationunban" class="btn btn-primary">{{ translate('Proceed!')}}</a>
             </div>
         </div>
     </div>

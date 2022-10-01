@@ -196,7 +196,7 @@
                 <li class="aiz-side-nav-item">
                     <a href="{{ route('wallet.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['wallet.index'])}}">
                         <i class="las la-dollar-sign aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{translate('My Wallet')}}</span>
+                        <span class="aiz-side-nav-text">{{ translate('My Wallet')}}</span>
                     </a>
                 </li>
                 @endif
@@ -205,7 +205,7 @@
                 <li class="aiz-side-nav-item">
                     <a href="{{ route('earnng_point_for_user') }}" class="aiz-side-nav-link {{ areActiveRoutes(['earnng_point_for_user'])}}">
                         <i class="las la-dollar-sign aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{translate('Earning Points')}}</span>
+                        <span class="aiz-side-nav-text">{{ translate('Earning Points')}}</span>
                     </a>
                 </li>
                 @endif
@@ -247,7 +247,7 @@
                 <li class="aiz-side-nav-item">
                     <a href="{{ route('support_ticket.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['support_ticket.index'])}}">
                         <i class="las la-atom aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{translate('Support Ticket')}}</span>
+                        <span class="aiz-side-nav-text">{{ translate('Support Ticket')}}</span>
                         @if($support_ticket > 0)<span class="badge badge-inline badge-success">{{ $support_ticket }}</span> @endif
                     </a>
                 </li>
@@ -255,7 +255,7 @@
                 <li class="aiz-side-nav-item">
                     <a href="{{ route('profile') }}" class="aiz-side-nav-link {{ areActiveRoutes(['profile'])}}">
                         <i class="las la-user aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{translate('Manage Profile')}}</span>
+                        <span class="aiz-side-nav-text">{{ translate('Manage Profile')}}</span>
                     </a>
                 </li>
             </ul>

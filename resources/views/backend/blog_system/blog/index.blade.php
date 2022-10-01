@@ -5,12 +5,12 @@
 <div class="aiz-titlebar text-left mt-2 mb-3">
     <div class="row align-items-center">
         <div class="col-auto">
-            <h1 class="h3">{{translate('All Posts')}}</h1>
+            <h1 class="h3">{{ translate('All Posts')}}</h1>
         </div>
         @can('add_blog')
         <div class="col text-right">
             <a href="{{ route('blog.create') }}" class="btn btn-circle btn-info">
-                <span>{{translate('Add New Post')}}</span>
+                <span>{{ translate('Add New Post')}}</span>
             </a>
         </div>
         @endcan
@@ -37,11 +37,11 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>{{translate('Title')}}</th>
-                    <th data-breakpoints="lg">{{translate('Category')}}</th>
-                    <th data-breakpoints="lg">{{translate('Short Description')}}</th>
-                    <th data-breakpoints="lg">{{translate('Status')}}</th>
-                    <th class="text-right">{{translate('Options')}}</th>
+                    <th>{{ translate('Title')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Category')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Short Description')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Status')}}</th>
+                    <th class="text-right">{{ translate('Options')}}</th>
                 </tr>
             </thead>
             <tbody>

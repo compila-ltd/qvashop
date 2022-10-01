@@ -63,7 +63,7 @@
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
-                <h3 class="mb-0 h6 text-center">{{translate('Wallet System Activation')}}</h3>
+                <h3 class="mb-0 h6 text-center">{{ translate('Wallet System Activation')}}</h3>
             </div>
             <div class="card-body text-center">
                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -76,7 +76,7 @@
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
-                <h3 class="mb-0 h6 text-center">{{translate('Coupon System Activation')}}</h3>
+                <h3 class="mb-0 h6 text-center">{{ translate('Coupon System Activation')}}</h3>
             </div>
             <div class="card-body text-center">
                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -89,7 +89,7 @@
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
-                <h3 class="mb-0 h6 text-center">{{translate('Pickup Point Activation')}}</h3>
+                <h3 class="mb-0 h6 text-center">{{ translate('Pickup Point Activation')}}</h3>
             </div>
             <div class="card-body text-center">
                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -102,7 +102,7 @@
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
-                <h3 class="mb-0 h6 text-center">{{translate('Conversation Activation')}}</h3>
+                <h3 class="mb-0 h6 text-center">{{ translate('Conversation Activation')}}</h3>
             </div>
             <div class="card-body text-center">
                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -115,7 +115,7 @@
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
-                <h3 class="mb-0 h6 text-center">{{translate('Seller Product Manage By Admin')}}</h3>
+                <h3 class="mb-0 h6 text-center">{{ translate('Seller Product Manage By Admin')}}</h3>
             </div>
             <div class="card-body text-center">
                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -134,7 +134,7 @@
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
-                <h3 class="mb-0 h6 text-center">{{translate('Admin Approval On Seller Product')}}</h3>
+                <h3 class="mb-0 h6 text-center">{{ translate('Admin Approval On Seller Product')}}</h3>
             </div>
             <div class="card-body text-center">
                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -153,7 +153,7 @@
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
-                <h3 class="mb-0 h6 text-center">{{translate('Email Verification')}}</h3>
+                <h3 class="mb-0 h6 text-center">{{ translate('Email Verification')}}</h3>
             </div>
             <div class="card-body text-center">
                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -169,7 +169,7 @@
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
-                <h3 class="mb-0 h6 text-center">{{translate('Product Query Activation')}}</h3>
+                <h3 class="mb-0 h6 text-center">{{ translate('Product Query Activation')}}</h3>
             </div>
             <div class="card-body text-center">
                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -183,7 +183,7 @@
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
-                <h3 class="mb-0 h6 text-center">{{translate('Wholesale Product for Seller')}}</h3>
+                <h3 class="mb-0 h6 text-center">{{ translate('Wholesale Product for Seller')}}</h3>
             </div>
             <div class="card-body text-center">
                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -198,7 +198,7 @@
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
-                <h3 class="mb-0 h6 text-center">{{translate('Auction Product for Seller')}}</h3>
+                <h3 class="mb-0 h6 text-center">{{ translate('Auction Product for Seller')}}</h3>
             </div>
             <div class="card-body text-center">
                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -211,7 +211,7 @@
     @endif
 </div>
 
-<h4 class="text-center text-muted mt-4">{{translate('Payment Related')}}</h4>
+<h4 class="text-center text-muted mt-4">{{ translate('Payment Related')}}</h4>
 
 <div class="row">
 
@@ -239,7 +239,7 @@
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
-                <h3 class="mb-0 h6 text-center">{{translate('Cash Payment Activation')}}</h3>
+                <h3 class="mb-0 h6 text-center">{{ translate('Cash Payment Activation')}}</h3>
             </div>
             <div class="card-body text-center">
                 <div class="clearfix">
@@ -254,12 +254,12 @@
     </div>
 </div>
 
-<h4 class="text-center text-muted mt-4">{{translate('Social Media Login')}}</h4>
+<h4 class="text-center text-muted mt-4">{{ translate('Social Media Login')}}</h4>
 <div class="row">
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
-                <h3 class="mb-0 h6 text-center">{{translate('Facebook login')}}</h3>
+                <h3 class="mb-0 h6 text-center">{{ translate('Facebook login')}}</h3>
             </div>
             <div class="card-body text-center">
                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -275,7 +275,7 @@
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
-                <h3 class="mb-0 h6 text-center">{{translate('Google login')}}</h3>
+                <h3 class="mb-0 h6 text-center">{{ translate('Google login')}}</h3>
             </div>
             <div class="card-body text-center">
                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -291,7 +291,7 @@
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
-                <h3 class="mb-0 h6 text-center">{{translate('Twitter login')}}</h3>
+                <h3 class="mb-0 h6 text-center">{{ translate('Twitter login')}}</h3>
             </div>
             <div class="card-body text-center">
                 <label class="aiz-switch aiz-switch-success mb-0">

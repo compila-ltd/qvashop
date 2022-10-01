@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="aiz-titlebar text-left mt-2 mb-3">
-    <h5 class="mb-0 h6">{{translate('Category Information')}}</h5>
+    <h5 class="mb-0 h6">{{ translate('Category Information')}}</h5>
 </div>
 
 <div class="row">
@@ -25,13 +25,13 @@
     	            <input type="hidden" name="lang" value="{{ $lang }}">
                 	@csrf
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">{{translate('Name')}} <i class="las la-language text-danger" title="{{translate('Translatable')}}"></i></label>
+                        <label class="col-md-3 col-form-label">{{ translate('Name')}} <i class="las la-language text-danger" title="{{ translate('Translatable')}}"></i></label>
                         <div class="col-md-9">
-                            <input type="text" name="name" value="{{ $category->getTranslation('name', $lang) }}" class="form-control" id="name" placeholder="{{translate('Name')}}" required>
+                            <input type="text" name="name" value="{{ $category->getTranslation('name', $lang) }}" class="form-control" id="name" placeholder="{{ translate('Name')}}" required>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">{{translate('Parent Category')}}</label>
+                        <label class="col-md-3 col-form-label">{{ translate('Parent Category')}}</label>
                         <div class="col-md-9">
                             <select class="select2 form-control aiz-selectpicker" name="parent_id" data-toggle="select2" data-placeholder="Choose ..."data-live-search="true" data-selected="{{ $category->parent_id }}">
                                 <option value="0">{{ translate('No Parent') }}</option>
@@ -46,24 +46,24 @@
                     </div>
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label">
-                            {{translate('Ordering Number')}}
+                            {{ translate('Ordering Number')}}
                         </label>
                         <div class="col-md-9">
-                            <input type="number" name="order_level" value="{{ $category->order_level }}" class="form-control" id="order_level" placeholder="{{translate('Order Level')}}">
-                            <small>{{translate('Higher number has high priority')}}</small>
+                            <input type="number" name="order_level" value="{{ $category->order_level }}" class="form-control" id="order_level" placeholder="{{ translate('Order Level')}}">
+                            <small>{{ translate('Higher number has high priority')}}</small>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">{{translate('Type')}}</label>
+                        <label class="col-md-3 col-form-label">{{ translate('Type')}}</label>
                         <div class="col-md-9">
                             <select name="digital" required class="form-control aiz-selectpicker mb-2 mb-md-0">
-                                <option value="0" @if ($category->digital == '0') selected @endif>{{translate('Physical')}}</option>
-                                <option value="1" @if ($category->digital == '1') selected @endif>{{translate('Digital')}}</option>
+                                <option value="0" @if ($category->digital == '0') selected @endif>{{ translate('Physical')}}</option>
+                                <option value="1" @if ($category->digital == '1') selected @endif>{{ translate('Digital')}}</option>
                             </select>
                         </div>
                     </div>
     	            <div class="form-group row">
-                        <label class="col-md-3 col-form-label" for="signinSrEmail">{{translate('Banner')}} <small>({{ translate('200x200') }})</small></label>
+                        <label class="col-md-3 col-form-label" for="signinSrEmail">{{ translate('Banner')}} <small>({{ translate('200x200') }})</small></label>
                         <div class="col-md-9">
                             <div class="input-group" data-toggle="aizuploader" data-type="image">
                                 <div class="input-group-prepend">
@@ -77,7 +77,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label" for="signinSrEmail">{{translate('Icon')}} <small>({{ translate('32x32') }})</small></label>
+                        <label class="col-md-3 col-form-label" for="signinSrEmail">{{ translate('Icon')}} <small>({{ translate('32x32') }})</small></label>
                         <div class="col-md-9">
                             <div class="input-group" data-toggle="aizuploader" data-type="image">
                                 <div class="input-group-prepend">
@@ -91,26 +91,26 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">{{translate('Meta Title')}}</label>
+                        <label class="col-md-3 col-form-label">{{ translate('Meta Title')}}</label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="meta_title" value="{{ $category->meta_title }}" placeholder="{{translate('Meta Title')}}">
+                            <input type="text" class="form-control" name="meta_title" value="{{ $category->meta_title }}" placeholder="{{ translate('Meta Title')}}">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">{{translate('Meta Description')}}</label>
+                        <label class="col-md-3 col-form-label">{{ translate('Meta Description')}}</label>
                         <div class="col-md-9">
                             <textarea name="meta_description" rows="5" class="form-control">{{ $category->meta_description }}</textarea>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">{{translate('Slug')}}</label>
+                        <label class="col-md-3 col-form-label">{{ translate('Slug')}}</label>
                         <div class="col-md-9">
-                            <input type="text" placeholder="{{translate('Slug')}}" id="slug" name="slug" value="{{ $category->slug }}" class="form-control">
+                            <input type="text" placeholder="{{ translate('Slug')}}" id="slug" name="slug" value="{{ $category->slug }}" class="form-control">
                         </div>
                     </div>
                     @if (get_setting('category_wise_commission') == 1)
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label">{{translate('Commission Rate')}}</label>
+                            <label class="col-md-3 col-form-label">{{ translate('Commission Rate')}}</label>
                             <div class="col-md-9 input-group">
                                 <input type="number" lang="en" min="0" step="0.01" id="commision_rate" name="commision_rate" value="{{ $category->commision_rate }}" class="form-control">
                                 <div class="input-group-append">
@@ -120,7 +120,7 @@
                         </div>
                     @endif
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">{{translate('Filtering Attributes')}}</label>
+                        <label class="col-md-3 col-form-label">{{ translate('Filtering Attributes')}}</label>
                         <div class="col-md-9">
                             <select class="select2 form-control aiz-selectpicker" name="filtering_attributes[]" data-toggle="select2" data-placeholder="Choose ..."data-live-search="true" data-selected="{{ $category->attributes->pluck('id') }}" multiple>
                                 @foreach (\App\Models\Attribute::all() as $attribute)
@@ -130,7 +130,7 @@
                         </div>
                     </div>
                     <div class="form-group mb-0 text-right">
-                        <button type="submit" class="btn btn-primary">{{translate('Save')}}</button>
+                        <button type="submit" class="btn btn-primary">{{ translate('Save')}}</button>
                     </div>
                 </form>
             </div>

@@ -57,23 +57,23 @@
 </div>
 <div>
     <div class="d-flex justify-content-between fw-600 mb-2 opacity-70">
-        <span>{{translate('Sub Total')}}</span>
+        <span>{{ translate('Sub Total')}}</span>
         <span>{{ single_price($subtotal) }}</span>
     </div>
     <div class="d-flex justify-content-between fw-600 mb-2 opacity-70">
-        <span>{{translate('Tax')}}</span>
+        <span>{{ translate('Tax')}}</span>
         <span>{{ single_price($tax) }}</span>
     </div>
     <div class="d-flex justify-content-between fw-600 mb-2 opacity-70">
-        <span>{{translate('Shipping')}}</span>
+        <span>{{ translate('Shipping')}}</span>
         <span>{{ single_price(Session::get('pos.shipping', 0)) }}</span>
     </div>
     <div class="d-flex justify-content-between fw-600 mb-2 opacity-70">
-        <span>{{translate('Discount')}}</span>
+        <span>{{ translate('Discount')}}</span>
         <span>{{ single_price(Session::get('pos.discount', 0)) }}</span>
     </div>
     <div class="d-flex justify-content-between fw-600 fs-18 border-top pt-2">
-        <span>{{translate('Total')}}</span>
+        <span>{{ translate('Total')}}</span>
         <span>{{ single_price($subtotal+$tax+Session::get('pos.shipping', 0) - Session::get('pos.discount', 0)) }}</span>
     </div>
 </div>

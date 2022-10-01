@@ -4,7 +4,7 @@
 
 <div class="aiz-titlebar text-left mt-2 mb-3">
     <div class="align-items-center">
-        <h1 class="h3">{{translate('All Notifications')}}</h1>
+        <h1 class="h3">{{ translate('All Notifications')}}</h1>
     </div>
 </div>
 
@@ -15,7 +15,7 @@
             <form class="" id="sort_customers" action="" method="GET">
                 <div class="card-header row gutters-5">
                     <div class="col">
-                        <h5 class="mb-0 h6">{{translate('Notifications')}}</h5>
+                        <h5 class="mb-0 h6">{{ translate('Notifications')}}</h5>
                     </div>
                 </div>
                 <div class="card-body">
@@ -30,7 +30,7 @@
                                                 <a href="{{route('all_orders.show', encrypt($notification->data['order_id']))}}">
                                                     {{$notification->data['order_code']}}
                                                 </a>
-                                                {{translate(' has been '. ucfirst(str_replace('_', ' ', $notification->data['status'])))}}
+                                                {{ translate(' has been '. ucfirst(str_replace('_', ' ', $notification->data['status'])))}}
                                             </p>
                                             <small class="text-muted">
                                                 {{ date("F j Y, g:i a", strtotime($notification->created_at)) }}

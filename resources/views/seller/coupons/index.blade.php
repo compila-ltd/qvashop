@@ -32,11 +32,11 @@
                 <thead>
                     <tr>
                         <th data-breakpoints="lg">#</th>
-                        <th>{{translate('Code')}}</th>
-                        <th data-breakpoints="lg">{{translate('Type')}}</th>
-                        <th data-breakpoints="lg">{{translate('Start Date')}}</th>
-                        <th data-breakpoints="lg">{{translate('End Date')}}</th>
-                        <th width="10%">{{translate('Options')}}</th>
+                        <th>{{ translate('Code')}}</th>
+                        <th data-breakpoints="lg">{{ translate('Type')}}</th>
+                        <th data-breakpoints="lg">{{ translate('Start Date')}}</th>
+                        <th data-breakpoints="lg">{{ translate('End Date')}}</th>
+                        <th width="10%">{{ translate('Options')}}</th>
                     </tr>
                 </thead>
                 <tbody>

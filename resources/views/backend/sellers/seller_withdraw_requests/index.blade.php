@@ -2,20 +2,20 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h5 class="mb-0 h6">{{translate('Seller Withdraw Request')}}</h5>
+            <h5 class="mb-0 h6">{{ translate('Seller Withdraw Request')}}</h5>
         </div>
         <div class="card-body">
             <table class="table aiz-table mb-0">
                 <thead>
                     <tr>
                         <th data-breakpoints="lg">#</th>
-                        <th data-breakpoints="lg">{{translate('Date')}}</th>
-                        <th>{{translate('Seller')}}</th>
-                        <th data-breakpoints="lg">{{translate('Total Amount to Pay')}}</th>
-                        <th>{{translate('Requested Amount')}}</th>
+                        <th data-breakpoints="lg">{{ translate('Date')}}</th>
+                        <th>{{ translate('Seller')}}</th>
+                        <th data-breakpoints="lg">{{ translate('Total Amount to Pay')}}</th>
+                        <th>{{ translate('Requested Amount')}}</th>
                         <th data-breakpoints="lg" width="40%">{{ translate('Message') }}</th>
                         <th data-breakpoints="lg">{{ translate('Status') }}</th>
-                        <th data-breakpoints="lg" width="15%" class="text-right">{{translate('Options')}}</th>
+                        <th data-breakpoints="lg" width="15%" class="text-right">{{ translate('Options')}}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,9 +33,9 @@
                                 </td>
                                 <td>
                                     @if ($seller_withdraw_request->status == 1)
-                                    <span class="badge badge-inline badge-success">{{translate('Paid')}}</span>
+                                    <span class="badge badge-inline badge-success">{{ translate('Paid')}}</span>
                                     @else
-                                    <span class="badge badge-inline badge-info">{{translate('Pending')}}</span>
+                                    <span class="badge badge-inline badge-info">{{ translate('Pending')}}</span>
                                     @endif
                                 </td>
                                 <td class="text-right">

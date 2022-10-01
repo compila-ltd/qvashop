@@ -5,12 +5,12 @@
 <div class="aiz-titlebar text-left mt-2 mb-3">
 	<div class="row align-items-center">
 		<div class="col-md-6">
-			<h1 class="h3">{{translate('All Role')}}</h1>
+			<h1 class="h3">{{ translate('All Role')}}</h1>
 		</div>
         @can('add_staff_role')
             <div class="col-md-6 text-md-right">
                 <a href="{{ route('roles.create') }}" class="btn btn-circle btn-info">
-                    <span>{{translate('Add New Role')}}</span>
+                    <span>{{ translate('Add New Role')}}</span>
                 </a>
             </div>
         @endcan
@@ -20,21 +20,21 @@
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">{{translate('Add New Permission')}}</h5>
+                <h5 class="mb-0 h6">{{ translate('Add New Permission')}}</h5>
             </div>
             <div class="card-body">
                 <form action="{{ route('roles.permission') }}" method="POST">
                     @csrf
                     <div class="form-group mb-3">
-                        <label for="name">{{translate('Name')}}</label>
+                        <label for="name">{{ translate('Name')}}</label>
                         <input type="text" id="name" name="name" placeholder="{{ translate('Permission') }}" class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="name">{{translate('Parent')}}</label>
+                        <label for="name">{{ translate('Parent')}}</label>
                         <input type="text" id="parent" name="parent" placeholder="{{ translate('Parent') }}" class="form-control" required>
                     </div>
                     <div class="form-group mb-3 text-right">
-                        <button type="submit" class="btn btn-primary">{{translate('Save')}}</button>
+                        <button type="submit" class="btn btn-primary">{{ translate('Save')}}</button>
                     </div>
                 </form>
             </div>
@@ -44,15 +44,15 @@
 
 <div class="card">
     <div class="card-header">
-        <h5 class="mb-0 h6">{{translate('Roles')}}</h5>
+        <h5 class="mb-0 h6">{{ translate('Roles')}}</h5>
     </div>
     <div class="card-body">
         <table class="table aiz-table">
             <thead>
                 <tr>
                     <th width="10%">#</th>
-                    <th>{{translate('Name')}}</th>
-                    <th width="10%">{{translate('Options')}}</th>
+                    <th>{{ translate('Name')}}</th>
+                    <th width="10%">{{ translate('Options')}}</th>
                 </tr>
             </thead>
             <tbody>
