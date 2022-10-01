@@ -158,8 +158,6 @@ class ProductController extends Controller
      */
     public function create()
     {
-        // CoreComponentRepository::initializeCache();
-
         $categories = Category::where('parent_id', 0)
             ->where('digital', 0)
             ->with('childrenCategories')
@@ -187,6 +185,50 @@ class ProductController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     * 
+     * $product object:
+     *   #attributes: array:41 [▶
+    "added_by" => "admin"
+    "name" => "asdasdad"
+    "category_id" => "4"
+    "brand_id" => null
+    "unit" => "U"
+    "weight" => "1"
+    "min_qty" => "1"
+    "tags" => ""
+    "photos" => null
+    "thumbnail_img" => null
+    "video_provider" => "youtube"
+    "video_link" => null
+    "unit_price" => "0"
+    "discount" => "0"
+    "discount_type" => "amount"
+    "current_stock" => "0"
+    "external_link" => null
+    "external_link_btn" => null
+    "description" => null
+    "pdf" => null
+    "meta_title" => "asdasdad"
+    "meta_description" => ""
+    "meta_img" => null
+    "shipping_type" => "free"
+    "low_stock_quantity" => "1"
+    "stock_visibility_state" => "quantity"
+    "cash_on_delivery" => "1"
+    "est_shipping_days" => null
+    "user_id" => 9
+    "approved" => 1
+    "discount_start_date" => null
+    "discount_end_date" => null
+    "shipping_cost" => 0
+    "slug" => "asdasdad"
+    "colors" => "[]"
+    "choice_options" => "[]"
+    "attributes" => "[]"
+    "published" => 1
+    "updated_at" => "2022-09-30 00:37:47"
+    "created_at" => "2022-09-30 00:37:47"
+    "id" => 25
      */
     public function store(ProductRequest $request)
     {
@@ -218,12 +260,14 @@ class ProductController extends Controller
             'lang', 'name', 'unit', 'description', 'product_id'
         ]));
 
-        flash(translate('Product has been inserted successfully'))->success();
+        // Send Telegram Notification:
+        // $url = route('product', ['slug' => $product->slug]);
+        // TODO: Telegram Mesasge Facade
 
         Artisan::call('view:clear');
         Artisan::call('cache:clear');
 
-        return redirect()->route('products.admin');
+        return redirect()->route('products.admin')->with('success', translate('Product has been inserted successfully'));
     }
 
     /**

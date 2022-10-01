@@ -2,18 +2,25 @@
 
 namespace App\View\Components\Frontend\Partials;
 
+use App\Models\Product;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\View\Component;
 
 class ProductBox extends Component
 {
+    public $product;
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($product)
     {
-        //
+        // Cache this product for 5 minutes
+        $this->product = Cache::remember('product_' . $product, 300, function() use ($product) {
+            return Product::find($product);
+        });
     }
 
     /**

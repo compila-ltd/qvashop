@@ -10,6 +10,7 @@
         "guzzlehttp/guzzle": "^7.3",
         "intervention/image": "^2.5",
         "laracasts/flash": "^3.0",
+        "laravel-notification-channels/telegram": "^2.1",
         "laravel/framework": "^9.0",
         "laravel/sanctum": "^2.12",
         "laravel/socialite": "^5.5",

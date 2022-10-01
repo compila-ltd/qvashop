@@ -48,4 +48,8 @@ return [
         'redirect'      => env('APP_URL').'/social-login/twitter/callback',
     ],
 
+    'telegram-bot-api' => [
+        'token' => env('TELEGRAM_BOT_TOKEN', '')
+    ],
+
 ];

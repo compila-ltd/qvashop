@@ -4,10 +4,10 @@
     @endif
     <div class="position-relative">
         @php
-        $product_url = route('product', $product->slug);
-        if($product->auction_product == 1) {
-        $product_url = route('auction-product', $product->slug);
-        }
+            $product_url = route('product', $product->slug);
+            if($product->auction_product == 1) {
+                $product_url = route('auction-product', $product->slug);
+            }
         @endphp
         <a href="{{ $product_url }}" class="d-block">
             <img class="img-fit lazyload mx-auto h-140px h-md-210px" src="{{ asset('assets/img/placeholder.jpg') }}" data-src="{{ uploaded_asset($product->thumbnail_img) }}" alt="{{  $product->getTranslation('name')  }}">
