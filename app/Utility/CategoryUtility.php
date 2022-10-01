@@ -6,10 +6,10 @@ use App\Models\Category;
 
 class CategoryUtility
 {
-    /*when with trashed is true id will get even the deleted items*/
+    /* When with trashed is true id will get even the deleted items */
     public static function get_immediate_children($id, $with_trashed = false, $as_array = false)
     {
-        $children = $with_trashed ? Category::where('parent_id', $id)->orderBy('order_level', 'desc')->get() : Category::where('parent_id', $id)->orderBy('order_level', 'desc')->get();
+        $children = $with_trashed ? Category::withTrashed()->where('parent_id', $id)->orderBy('order_level', 'desc')->get() : Category::where('parent_id', $id)->orderBy('order_level', 'desc')->get();
         $children = $as_array && !is_null($children) ? $children->toArray() : $children;
 
         return $children;
@@ -17,11 +17,8 @@ class CategoryUtility
 
     public static function get_immediate_children_ids($id, $with_trashed = false)
     {
-
         $children = CategoryUtility::get_immediate_children($id, $with_trashed, true);
-
         return !empty($children) ? array_column($children, 'id') : array();
-
     }
 
     public static function get_immediate_children_count($id, $with_trashed = false)
@@ -39,7 +36,6 @@ class CategoryUtility
 
                 $container[] = $child;
                 $container = CategoryUtility::flat_children($child['id'], $with_trashed, $container);
-
             }
         }
 
@@ -50,23 +46,19 @@ class CategoryUtility
     public static function children_ids($id, $with_trashed = false)
     {
         $children = CategoryUtility::flat_children($id, $with_trashed = false);
-
         return !empty($children) ? array_column($children, 'id') : array();
     }
 
     public static function move_children_to_parent($id)
     {
         $children_ids = CategoryUtility::get_immediate_children_ids($id, true);
-
         $category = Category::where('id', $id)->first();
-
         CategoryUtility::move_level_up($id);
-
         Category::whereIn('id', $children_ids)->update(['parent_id' => $category->parent_id]);
-
     }
 
-    public static function move_level_up($id){
+    public static function move_level_up($id)
+    {
         if (CategoryUtility::get_immediate_children_ids($id, true) > 0) {
             foreach (CategoryUtility::get_immediate_children_ids($id, true) as $value) {
                 $category = Category::find($value);
@@ -77,7 +69,8 @@ class CategoryUtility
         }
     }
 
-    public static function move_level_down($id){
+    public static function move_level_down($id)
+    {
         if (CategoryUtility::get_immediate_children_ids($id, true) > 0) {
             foreach (CategoryUtility::get_immediate_children_ids($id, true) as $value) {
                 $category = Category::find($value);
@@ -95,6 +88,5 @@ class CategoryUtility
             CategoryUtility::move_children_to_parent($category->id);
             $category->delete();
         }
-
     }
 }
