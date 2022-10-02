@@ -89,10 +89,12 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'index')->name('home');
 
     // AJAX Calls
-    Route::post('/home/section/featured', 'load_featured_section')->name('home.section.featured')->middleware('page-cache');
-    Route::post('/home/section/best_selling', 'load_best_selling_section')->name('home.section.best_selling')->middleware('page-cache');
-    Route::post('/home/section/home_categories', 'load_home_categories_section')->name('home.section.home_categories')->middleware('page-cache');
-    Route::post('/home/section/best_sellers', 'load_best_sellers_section')->name('home.section.best_sellers')->middleware('page-cache');
+    Route::group(['middleware' => ['page-cache']], function () {
+        Route::post('/home/section/featured', 'load_featured_section')->name('home.section.featured');
+        Route::post('/home/section/best_selling', 'load_best_selling_section')->name('home.section.best_selling');
+        Route::post('/home/section/home_categories', 'load_home_categories_section')->name('home.section.home_categories');
+        Route::post('/home/section/best_sellers', 'load_best_sellers_section')->name('home.section.best_sellers');
+    });
 
     //category dropdown menu ajax call
     Route::post('/category/nav-element-list', 'get_category_items')->name('category.elements');
