@@ -84,16 +84,6 @@ class BlogController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -176,7 +166,7 @@ class BlogController extends Controller
     {
         // Cache this Blog entry for 1 hour
         $blog = cache()->remember('blog_' . $slug, 3600, function () use ($slug) {
-            return Blog::where('slug', $slug)->first();
+            return Blog::where('slug', $slug)->firstOrFail();
         });
 
         return view("frontend.blog.details", compact('blog'));
