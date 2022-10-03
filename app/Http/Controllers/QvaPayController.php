@@ -24,12 +24,11 @@ class QvaPayController extends Controller
         $this->app_secret = config('qvapay.secret');
     }
 
-    public function pay()
+    public function pay(Request $request)
     {
-        if (Auth::user()->phone == null) {
-            flash('Please add phone number to your profile')->warning();
-            return redirect()->route('profile');
-        }
+        // if (Auth::user()->phone == null) {
+        //     return redirect()->route('profile')->with('warning', translate('Please add phone number to your profile'));
+        // }
 
         // Get the data from the request
         if (Session::has('payment_type')) {

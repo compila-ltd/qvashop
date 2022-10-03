@@ -70,6 +70,7 @@
                             <div class="row">
                                 <div class="col-xxl-8 col-xl-10 mx-auto">
                                     <div class="row gutters-10">
+                                        
                                         @if (get_setting('qvapay') == 1)
                                         <div class="col-6 col-md-4">
                                             <label class="aiz-megabox d-block mb-3">
@@ -83,20 +84,21 @@
                                             </label>
                                         </div>
                                         @endif
+
                                         @if (get_setting('cash_payment') == 1)
-                                        @php
-                                        $digital = 0;
-                                        $cod_on = 1;
-                                        foreach ($carts as $cartItem) {
-                                        $product = \App\Models\Product::find($cartItem['product_id']);
-                                        if ($product['digital'] == 1) {
-                                        $digital = 1;
-                                        }
-                                        if ($product['cash_on_delivery'] == 0) {
-                                        $cod_on = 0;
-                                        }
-                                        }
-                                        @endphp
+                                            @php
+                                                $digital = 0;
+                                                $cod_on = 1;
+                                                foreach ($carts as $cartItem) {
+                                                    $product = \App\Models\Product::find($cartItem['product_id']);
+                                                    if ($product['digital'] == 1) {
+                                                        $digital = 1;
+                                                    }
+                                                    if ($product['cash_on_delivery'] == 0) {
+                                                        $cod_on = 0;
+                                                    }
+                                                }
+                                            @endphp
                                         @if ($digital != 1 && $cod_on == 1)
                                         <div class="col-6 col-md-4">
                                             <label class="aiz-megabox d-block mb-3">
@@ -269,7 +271,7 @@
         $(el).prop('disabled', true);
         if ($('#agree_checkbox').is(":checked")) {
             if (minimum_order_amount_check && $('#sub_total').val() < minimum_order_amount) {
-                AIZ.plugins.notify('danger', "{{ translate('You order amount is less then the minimum order amount') }}");
+                AIZ.plugins.notify('danger', "{{ translate('You order amount is less than the minimum order amount') }}");
             } else {
                 var offline_payment_active = "{{ addon_is_activated('offline_payment') }}";
                 if (offline_payment_active == 'true' && $('.offline_payment_option').is(":checked") && $('#trx_id').val() == '') {

@@ -60,8 +60,8 @@ class CheckoutController extends Controller
                         $order->manual_payment_data = json_encode($manual_payment_data);
                         $order->save();
                     }
-                    flash(translate('Your order has been placed successfully. Please submit payment information from purchase history'))->success();
-                    return redirect()->route('order_confirmed');
+
+                    return redirect()->route('order_confirmed')->with('success', translate('Your order has been placed successfully. Please submit payment information from purchase history'));
                 }
             }
         } else {
@@ -81,7 +81,7 @@ class CheckoutController extends Controller
             $order->payment_details = $payment;
             $order->save();
 
-            calculateCommissionAffilationClubPoint($order);
+            //calculateCommissionAffilationClubPoint($order);
         }
         Session::put('combined_order_id', $combined_order_id);
         return redirect()->route('order_confirmed');
@@ -100,6 +100,7 @@ class CheckoutController extends Controller
         return back();
     }
 
+    // Store Shipping destination
     public function store_shipping_info(Request $request)
     {
         if ($request->address_id == null) {
@@ -133,6 +134,7 @@ class CheckoutController extends Controller
         return view('frontend.delivery_info', compact('carts', 'carrier_list'));
     }
 
+    // Store Delivery Info
     public function store_delivery_info(Request $request)
     {
         $carts = Cart::where('user_id', Auth::user()->id)->get();
@@ -183,6 +185,7 @@ class CheckoutController extends Controller
         }
     }
 
+    // Apply Coupon Code
     public function apply_coupon_code(Request $request)
     {
         $coupon = Coupon::where('code', $request->code)->first();
@@ -272,16 +275,15 @@ class CheckoutController extends Controller
         return response()->json(array('response_message' => $response_message, 'html' => $returnHTML));
     }
 
+    // Remove Coupon Code
     public function remove_coupon_code(Request $request)
     {
         Cart::where('user_id', Auth::user()->id)
-            ->update(
-                [
-                    'discount' => 0.00,
-                    'coupon_code' => '',
-                    'coupon_applied' => 0
-                ]
-            );
+            ->update([
+                'discount' => 0.00,
+                'coupon_code' => '',
+                'coupon_applied' => 0
+            ]);
 
         $coupon = Coupon::where('code', $request->code)->first();
         $carts = Cart::where('user_id', Auth::user()->id)
@@ -292,6 +294,7 @@ class CheckoutController extends Controller
         return view('frontend.partials.cart_summary', compact('coupon', 'carts', 'shipping_info'));
     }
 
+    // Apply club points
     public function apply_club_point(Request $request)
     {
         if (addon_is_activated('club_point')) {
@@ -308,21 +311,19 @@ class CheckoutController extends Controller
         return back();
     }
 
+    // Remove Club Points
     public function remove_club_point(Request $request)
     {
         $request->session()->forget('club_point');
         return back();
     }
 
+    // Order COnfirmed
     public function order_confirmed()
     {
         $combined_order = CombinedOrder::findOrFail(Session::get('combined_order_id'));
 
-        Cart::where('user_id', $combined_order->user_id)
-            ->delete();
-
-        //Session::forget('club_point');
-        //Session::forget('combined_order_id');
+        Cart::where('user_id', $combined_order->user_id)->delete();
 
         foreach ($combined_order->orders as $order) {
             NotificationUtility::sendOrderPlacedNotification($order);
