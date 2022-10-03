@@ -1,14 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Payments;
 
 use Illuminate\Http\Request;
 use App\Models\CombinedOrder;
 use App\Models\SellerPackage;
 use App\Models\CustomerPackage;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\WalletController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CustomerPackageController;
 use App\Http\Controllers\Api\V2\Seller\SellerPackageController;
 
 class QvaPayController extends Controller

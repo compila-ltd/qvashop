@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\CustomerPackage;
-use App\Models\CustomerPackageTranslation;
+use Illuminate\Support\Facades\Auth;
 use App\Models\CustomerPackagePayment;
-use Auth;
-use Session;
-use App\Models\User;
+use Illuminate\Support\Facades\Session;
+use App\Models\CustomerPackageTranslation;
 
 class CustomerPackageController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         // Staff Permission Check
         $this->middleware(['permission:view_classified_packages'])->only('index');
         $this->middleware(['permission:edit_classified_package'])->only('edit');

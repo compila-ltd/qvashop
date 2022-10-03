@@ -15,7 +15,7 @@ use App\Models\CombinedOrder;
 use App\Utility\NotificationUtility;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use App\Http\Controllers\QvaPayController;
+use App\Http\Controllers\Payments\QvaPayController;
 
 class CheckoutController extends Controller
 {
