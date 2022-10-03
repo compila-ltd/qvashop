@@ -27,6 +27,8 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Auth\Events\PasswordReset;
 use App\Mail\SecondEmailVerifyMailManager;
+use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\URL;
 
 class HomeController extends Controller
 {
@@ -38,10 +40,13 @@ class HomeController extends Controller
     public function index()
     {
         // SEO & Schema
-        $localBusiness = Schema::localBusiness()
+        $onlineStore = Schema::OnlineStore()
             ->name('QvaShop')
+            ->logo(asset('android-chrome-512x512.png'))
+            ->telephone('+17867918868')
+            ->address('1470 W 40th St')
             ->email('contacto@qvashop.com')
-            ->contactPoint(Schema::contactPoint()->areaServed('Worldwide'));
+            ->url(route('home'));
 
         // Featured
         $featured_categories = Cache::rememberForever('featured_categories', function () {
@@ -63,7 +68,7 @@ class HomeController extends Controller
             return FlashDeal::where('status', 1)->where('featured', 1)->first();
         });
 
-        return view('frontend.index', compact('localBusiness', 'featured_categories', 'todays_deal_products', 'newest_products', 'flash_deal'));
+        return view('frontend.index', compact('onlineStore', 'featured_categories', 'todays_deal_products', 'newest_products', 'flash_deal'));
     }
 
     public function login()
@@ -274,7 +279,6 @@ class HomeController extends Controller
     public function product(Request $request, $slug)
     {
         // Cache product by 5 minutes
-        //$detailedProduct = Product::with('reviews', 'brand', 'stocks', 'user', 'user.shop')->where('auction_product', 0)->where('slug', $slug)->where('approved', 1)->first();
         $detailedProduct = Cache::remember('product_' . $slug, 300, function () use ($slug) {
             return Product::with('reviews', 'brand', 'stocks', 'user', 'user.shop')->where('auction_product', 0)->where('slug', $slug)->where('approved', 1)->first();
         });
@@ -288,6 +292,12 @@ class HomeController extends Controller
         }
 
         if ($detailedProduct != null && $detailedProduct->published) {
+
+            // SEO && Schema Data
+            $schemaProduct = Schema::product()
+                ->name($detailedProduct->name)
+                ->itemCondition('NewCondition')
+                ->url(URL::current());
 
             if ($request->has('product_referral_code') && addon_is_activated('affiliate_system')) {
                 $affiliate_validation_time = AffiliateConfig::where('type', 'validation_time')->first();
@@ -304,12 +314,14 @@ class HomeController extends Controller
                 // $affiliateController = new AffiliateController;
                 // $affiliateController->processAffiliateStats($referred_by_user->id, 1, 0, 0, 0);
             }
+
             if ($detailedProduct->digital == 1) {
                 return view('frontend.digital_product_details', compact('detailedProduct', 'product_queries', 'total_query'));
             } else {
-                return view('frontend.product_details', compact('detailedProduct', 'product_queries', 'total_query'));
+                return view('frontend.product_details', compact('schemaProduct', 'detailedProduct', 'product_queries', 'total_query'));
             }
         }
+
         abort(404);
     }
 

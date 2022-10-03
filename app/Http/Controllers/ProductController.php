@@ -170,7 +170,6 @@ class ProductController extends Controller
     public function add_more_choice_option(Request $request)
     {
         $all_attribute_values = AttributeValue::with('attribute')->where('attribute_id', $request->attribute_id)->get();
-
         $html = '';
 
         foreach ($all_attribute_values as $row) {
@@ -185,50 +184,6 @@ class ProductController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     * 
-     * $product object:
-     *   #attributes: array:41 [▶
-    "added_by" => "admin"
-    "name" => "asdasdad"
-    "category_id" => "4"
-    "brand_id" => null
-    "unit" => "U"
-    "weight" => "1"
-    "min_qty" => "1"
-    "tags" => ""
-    "photos" => null
-    "thumbnail_img" => null
-    "video_provider" => "youtube"
-    "video_link" => null
-    "unit_price" => "0"
-    "discount" => "0"
-    "discount_type" => "amount"
-    "current_stock" => "0"
-    "external_link" => null
-    "external_link_btn" => null
-    "description" => null
-    "pdf" => null
-    "meta_title" => "asdasdad"
-    "meta_description" => ""
-    "meta_img" => null
-    "shipping_type" => "free"
-    "low_stock_quantity" => "1"
-    "stock_visibility_state" => "quantity"
-    "cash_on_delivery" => "1"
-    "est_shipping_days" => null
-    "user_id" => 9
-    "approved" => 1
-    "discount_start_date" => null
-    "discount_end_date" => null
-    "shipping_cost" => 0
-    "slug" => "asdasdad"
-    "colors" => "[]"
-    "choice_options" => "[]"
-    "attributes" => "[]"
-    "published" => 1
-    "updated_at" => "2022-09-30 00:37:47"
-    "created_at" => "2022-09-30 00:37:47"
-    "id" => 25
      */
     public function store(ProductRequest $request)
     {
@@ -396,6 +351,7 @@ class ProductController extends Controller
         }
     }
 
+    // Bulk Delete Products
     public function bulk_product_delete(Request $request)
     {
         if ($request->id) {
@@ -436,12 +392,14 @@ class ProductController extends Controller
             return redirect()->route('products.all');
     }
 
+    // Get Products By its Brand
     public function get_products_by_brand(Request $request)
     {
         $products = Product::where('brand_id', $request->brand_id)->get();
         return view('partials.product_select', compact('products'));
     }
 
+    // Update Todays Deal
     public function updateTodaysDeal(Request $request)
     {
         $product = Product::findOrFail($request->id);
@@ -451,6 +409,7 @@ class ProductController extends Controller
         return 1;
     }
 
+    // Update Published
     public function updatePublished(Request $request)
     {
         $product = Product::findOrFail($request->id);
@@ -474,6 +433,7 @@ class ProductController extends Controller
         return 1;
     }
 
+    // Update Product Approval
     public function updateProductApproval(Request $request)
     {
         $product = Product::findOrFail($request->id);
@@ -497,6 +457,7 @@ class ProductController extends Controller
         return 1;
     }
 
+    // Update Featured
     public function updateFeatured(Request $request)
     {
         $product = Product::findOrFail($request->id);
@@ -509,6 +470,7 @@ class ProductController extends Controller
         return 0;
     }
 
+    // SKU Combination
     public function sku_combination(Request $request)
     {
         $options = array();
@@ -539,6 +501,7 @@ class ProductController extends Controller
         return view('backend.product.products.sku_combinations', compact('combinations', 'unit_price', 'colors_active', 'product_name'));
     }
 
+    // SKU Combination Edit
     public function sku_combination_edit(Request $request)
     {
         $product = Product::findOrFail($request->id);

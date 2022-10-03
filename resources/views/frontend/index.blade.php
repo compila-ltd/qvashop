@@ -384,6 +384,6 @@
     </script>
 
     {{-- Schema data --}}
-    {!! $localBusiness->toScript() !!}
+    {!! $onlineStore->toScript() !!}
 
     @endsection

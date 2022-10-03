@@ -103,6 +103,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/flash-deals', 'all_flash_deals')->name('flash-deals');
     Route::get('/flash-deal/{slug}', 'flash_deal_details')->name('flash-deal-details');
 
+    // Show product page
     Route::get('/product/{slug}', 'product')->name('product');
     Route::post('/product/variant_price', 'variant_price')->name('products.variant_price');
     Route::get('/shop/{slug}', 'shop')->name('shop.visit');
