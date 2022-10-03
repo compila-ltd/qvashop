@@ -365,6 +365,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::controller(ConversationController::class)->group(function () {
         Route::get('conversations', 'admin_index')->name('conversations.admin_index');
         Route::get('conversations/{id}/show', 'admin_show')->name('conversations.admin_show');
+
+        // TODO: Added by me
+        Route::get('conversations/destroy/{id}', 'destroy_by_admin')->name('conversations.destroy.admin');
     });
 
     // product Queries show on Admin panel

@@ -1,7 +1,6 @@
 @extends('frontend.layouts.app')
 
 @section('content')
-{{-- Categories , Sliders . Today's deal --}}
 <div class="home-banner-area mb-4 pt-3">
     <div class="container">
         <div class="row gutters-10 position-relative">
@@ -104,9 +103,6 @@
 @endif
 
 {{-- Flash Deal --}}
-@php
-$flash_deal = \App\Models\FlashDeal::where('status', 1)->where('featured', 1)->first();
-@endphp
 @if($flash_deal != null && strtotime(date('Y-m-d H:i:s')) >= $flash_deal->start_date && strtotime(date('Y-m-d H:i:s')) <= $flash_deal->end_date)
     <section class="mb-4">
         <div class="container">
@@ -164,18 +160,15 @@ $flash_deal = \App\Models\FlashDeal::where('status', 1)->where('featured', 1)->f
 
     {{-- Featured Section --}}
     <div id="section_featured">
-
     </div>
 
     {{-- Best Selling  --}}
     <div id="section_best_selling">
-
     </div>
 
     <!-- Auction Product -->
     @if(addon_is_activated('auction'))
     <div id="auction_products">
-
     </div>
     @endif
 
@@ -201,7 +194,6 @@ $flash_deal = \App\Models\FlashDeal::where('status', 1)->where('featured', 1)->f
 
     {{-- Category wise Products --}}
     <div id="section_home_categories">
-
     </div>
 
     {{-- Classified Product --}}
@@ -275,7 +267,6 @@ $flash_deal = \App\Models\FlashDeal::where('status', 1)->where('featured', 1)->f
 
     {{-- Best Seller --}}
     <div id="section_best_sellers">
-
     </div>
 
     {{-- Top 10 categories and Brands --}}
@@ -391,4 +382,8 @@ $flash_deal = \App\Models\FlashDeal::where('status', 1)->where('featured', 1)->f
             });
         });
     </script>
+
+    {{-- Schema data --}}
+    {!! $localBusiness->toScript() !!}
+
     @endsection

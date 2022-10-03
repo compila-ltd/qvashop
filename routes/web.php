@@ -259,7 +259,6 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Product Query
     Route::resource('product-queries', ProductQueryController::class);
-
     Route::resource('messages', MessageController::class);
 
     //Address

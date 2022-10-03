@@ -15,6 +15,7 @@ use App\Models\PickupPoint;
 use Illuminate\Support\Str;
 use App\Models\ProductQuery;
 use Illuminate\Http\Request;
+use Spatie\SchemaOrg\Schema;
 use App\Models\AffiliateConfig;
 use App\Models\CustomerPackage;
 use Illuminate\Support\Facades\Auth;
@@ -36,19 +37,33 @@ class HomeController extends Controller
      */
     public function index()
     {
+        // SEO & Schema
+        $localBusiness = Schema::localBusiness()
+            ->name('QvaShop')
+            ->email('contacto@qvashop.com')
+            ->contactPoint(Schema::contactPoint()->areaServed('Worldwide'));
+
+        // Featured
         $featured_categories = Cache::rememberForever('featured_categories', function () {
             return Category::where('featured', 1)->get();
         });
 
+        // Todays Deal
         $todays_deal_products = Cache::rememberForever('todays_deal_products', function () {
             return filter_products(Product::where('published', 1)->where('todays_deal', '1'))->get();
         });
 
+        // Newest products
         $newest_products = Cache::remember('newest_products', 7200, function () {
             return filter_products(Product::latest())->limit(12)->get();
         });
 
-        return view('frontend.index', compact('featured_categories', 'todays_deal_products', 'newest_products'));
+        // Flash Deals
+        $flash_deal = Cache::remember('flash_deal', 7200, function () {
+            return FlashDeal::where('status', 1)->where('featured', 1)->first();
+        });
+
+        return view('frontend.index', compact('localBusiness', 'featured_categories', 'todays_deal_products', 'newest_products', 'flash_deal'));
     }
 
     public function login()

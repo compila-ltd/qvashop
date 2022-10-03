@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Conversation;
-use App\Models\BusinessSetting;
 use App\Models\Message;
 use App\Models\Product;
-use Auth;
-use Mail;
+use App\Models\Conversation;
+use Illuminate\Http\Request;
+use App\Models\BusinessSetting;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Mail\ConversationMailManager;
 
 class ConversationController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         // Staff Permission Check
         $this->middleware(['permission:view_all_product_queries'])->only('admin_index');
         $this->middleware(['permission:delete_product_queries'])->only('destroy_by_admin');
@@ -29,8 +30,7 @@ class ConversationController extends Controller
         if (BusinessSetting::where('type', 'conversation_system')->first()->value == 1) {
             $conversations = Conversation::where('sender_id', Auth::user()->id)->orWhere('receiver_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(5);
             return view('frontend.user.conversations.index', compact('conversations'));
-        }
-        else {
+        } else {
             flash(translate('Conversation is disabled at this moment'))->warning();
             return back();
         }
@@ -46,21 +46,10 @@ class ConversationController extends Controller
         if (BusinessSetting::where('type', 'conversation_system')->first()->value == 1) {
             $conversations = Conversation::orderBy('created_at', 'desc')->get();
             return view('backend.support.conversations.index', compact('conversations'));
-        }
-        else {
+        } else {
             flash(translate('Conversation is disabled at this moment'))->warning();
             return back();
         }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -78,7 +67,7 @@ class ConversationController extends Controller
         $conversation->receiver_id = Product::findOrFail($request->product_id)->user->id;
         $conversation->title = $request->title;
 
-        if($conversation->save()) {
+        if ($conversation->save()) {
             $message = new Message;
             $message->conversation_id = $conversation->id;
             $message->user_id = Auth::user()->id;
@@ -96,12 +85,12 @@ class ConversationController extends Controller
     public function send_message_to_seller($conversation, $message, $user_type)
     {
         $array['view'] = 'emails.conversation';
-        $array['subject'] = 'Sender:- '.Auth::user()->name;
+        $array['subject'] = 'Sender:- ' . Auth::user()->name;
         $array['from'] = env('MAIL_FROM_ADDRESS');
-        $array['content'] = 'Hi! You recieved a message from '.Auth::user()->name.'.';
+        $array['content'] = 'Hi! You recieved a message from ' . Auth::user()->name . '.';
         $array['sender'] = Auth::user()->name;
 
-        if($user_type == 'admin') {
+        if ($user_type == 'admin') {
             $array['link'] = route('conversations.admin_show', encrypt($conversation->id));
         } else {
             $array['link'] = route('conversations.show', encrypt($conversation->id));
@@ -127,8 +116,7 @@ class ConversationController extends Controller
         $conversation = Conversation::findOrFail(decrypt($id));
         if ($conversation->sender_id == Auth::user()->id) {
             $conversation->sender_viewed = 1;
-        }
-        elseif($conversation->receiver_id == Auth::user()->id) {
+        } elseif ($conversation->receiver_id == Auth::user()->id) {
             $conversation->receiver_viewed = 1;
         }
         $conversation->save();
@@ -145,11 +133,10 @@ class ConversationController extends Controller
     public function refresh(Request $request)
     {
         $conversation = Conversation::findOrFail(decrypt($request->id));
-        if($conversation->sender_id == Auth::user()->id){
+        if ($conversation->sender_id == Auth::user()->id) {
             $conversation->sender_viewed = 1;
             $conversation->save();
-        }
-        else{
+        } else {
             $conversation->receiver_viewed = 1;
             $conversation->save();
         }
@@ -167,35 +154,11 @@ class ConversationController extends Controller
         $conversation = Conversation::findOrFail(decrypt($id));
         if ($conversation->sender_id == Auth::user()->id) {
             $conversation->sender_viewed = 1;
-        }
-        elseif($conversation->receiver_id == Auth::user()->id) {
+        } elseif ($conversation->receiver_id == Auth::user()->id) {
             $conversation->receiver_viewed = 1;
         }
         $conversation->save();
         return view('backend.support.conversations.show', compact('conversation'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
     }
 
     /**
@@ -208,23 +171,27 @@ class ConversationController extends Controller
     {
         $conversation = Conversation::findOrFail(decrypt($id));
         $conversation->messages()->delete();
-        
-        if(Conversation::destroy(decrypt($id))){
+
+        if (Conversation::destroy(decrypt($id))) {
             flash(translate('Conversation has been deleted successfully'))->success();
             return back();
         }
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function destroy_by_admin($id)
     {
         $conversation = Conversation::findOrFail(decrypt($id));
         $conversation->messages()->delete();
 
-        if(Conversation::destroy(decrypt($id))){
+        if (Conversation::destroy(decrypt($id))) {
             flash(translate('Conversation has been deleted successfully'))->success();
             return back();
         }
     }
-    
-    
 }
