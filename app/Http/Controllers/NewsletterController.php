@@ -2,19 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Subscriber;
-use Mail;
 use App\Mail\EmailManager;
+use App\Models\Subscriber;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class NewsletterController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         // Staff Permission Check
         $this->middleware(['permission:send_newsletter'])->only('index');
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request)
     {
         $users = User::all();
@@ -22,12 +28,16 @@ class NewsletterController extends Controller
         return view('backend.marketing.newsletters.index', compact('users', 'subscribers'));
     }
 
+    /*
+    * Send newsletter to users and subscribers
+    */
     public function send(Request $request)
     {
         if (env('MAIL_USERNAME') != null) {
+
             //sends newsletter to selected users
-        	if ($request->has('user_emails')) {
-                foreach ($request->user_emails as $key => $email) {
+            if ($request->has('user_emails')) {
+                foreach ($request->user_emails as $email) {
                     $array['view'] = 'emails.newsletter';
                     $array['subject'] = $request->subject;
                     $array['from'] = env('MAIL_FROM_ADDRESS');
@@ -36,14 +46,13 @@ class NewsletterController extends Controller
                     try {
                         Mail::to($email)->queue(new EmailManager($array));
                     } catch (\Exception $e) {
-                        //dd($e);
                     }
-            	}
+                }
             }
 
             //sends newsletter to subscribers
             if ($request->has('subscriber_emails')) {
-                foreach ($request->subscriber_emails as $key => $email) {
+                foreach ($request->subscriber_emails as $email) {
                     $array['view'] = 'emails.newsletter';
                     $array['subject'] = $request->subject;
                     $array['from'] = env('MAIL_FROM_ADDRESS');
@@ -52,21 +61,23 @@ class NewsletterController extends Controller
                     try {
                         Mail::to($email)->queue(new EmailManager($array));
                     } catch (\Exception $e) {
-                        //dd($e);
                     }
-            	}
+                }
             }
-        }
-        else {
+            
+        } else {
             flash(translate('Please configure SMTP first'))->error();
             return back();
         }
 
-    	flash(translate('Newsletter has been send'))->success();
-    	return redirect()->route('admin.dashboard');
+        return redirect()->route('admin.dashboard')->with('success', translate('Newsletter has been send'));
     }
 
-    public function testEmail(Request $request){
+    /*
+     * Send newsletter to test email
+     */
+    public function testEmail(Request $request)
+    {
         $array['view'] = 'emails.newsletter';
         $array['subject'] = "SMTP Test";
         $array['from'] = env('MAIL_FROM_ADDRESS');
