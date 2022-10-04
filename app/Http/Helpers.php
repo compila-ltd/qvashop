@@ -1123,7 +1123,7 @@ if (!function_exists('my_asset')) {
     {
         if (env('FILESYSTEM_DRIVER') == 's3') {
             //return Storage::disk('s3')->url($path);
-            return config('filesystems.disks.s3.url') . $path;
+            return config('filesystems.disks.s3.url') . "/" . $path;
         } else {
             return app('url')->asset('public/' . $path, $secure);
         }
