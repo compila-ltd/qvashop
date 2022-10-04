@@ -7,7 +7,6 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ShopController;
-use App\Http\Controllers\QvaPayController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\WalletController;
@@ -30,6 +29,7 @@ use App\Http\Controllers\SupportTicketController;
 use App\Http\Controllers\DigitalProductController;
 use App\Http\Controllers\CustomerPackageController;
 use App\Http\Controllers\CustomerProductController;
+use App\Http\Controllers\Payments\QvaPayController;
 use App\Http\Controllers\PurchaseHistoryController;
 use App\Http\Controllers\Auth\VerificationController;
 

@@ -1111,6 +1111,7 @@ if (!function_exists('uploaded_asset')) {
     }
 }
 
+// Assets with S3 or public folder
 if (!function_exists('my_asset')) {
     /**
      * Generate an asset path for the application.
@@ -1129,13 +1130,6 @@ if (!function_exists('my_asset')) {
         }
     }
 }
-
-// if (!function_exists('isHttps')) {
-//     function isHttps()
-//     {
-//         return !empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS']);
-//     }
-// }
 
 if (!function_exists('getBaseURL')) {
     function getBaseURL()

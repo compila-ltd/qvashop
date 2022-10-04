@@ -78,6 +78,7 @@ class QvaPayController extends Controller
             if ($payment_type == 'seller_package_payment') {
                 return (new SellerPackageController)->purchase_payment_done(json_decode($request->opt_c), json_encode($request->all()));
             }
+            
         } else {
             return redirect()->route('home');
         }
