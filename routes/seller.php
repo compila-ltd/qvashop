@@ -2,6 +2,23 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AizUploadController;
+use App\Http\Controllers\Seller\ShopController;
+use App\Http\Controllers\Seller\OrderController;
+use App\Http\Controllers\Seller\CouponController;
+use App\Http\Controllers\Seller\ReviewController;
+use App\Http\Controllers\Seller\AddressController;
+use App\Http\Controllers\Seller\InvoiceController;
+use App\Http\Controllers\Seller\PaymentController;
+use App\Http\Controllers\Seller\ProductController;
+use App\Http\Controllers\Seller\ProfileController;
+use App\Http\Controllers\Seller\DashboardController;
+use App\Http\Controllers\Seller\ConversationController;
+use App\Http\Controllers\Seller\NotificationController;
+use App\Http\Controllers\Seller\ProductQueryController;
+use App\Http\Controllers\Seller\SupportTicketController;
+use App\Http\Controllers\Seller\DigitalProductController;
+use App\Http\Controllers\Seller\CommissionHistoryController;
+use App\Http\Controllers\Seller\ProductBulkUploadController;
 use App\Http\Controllers\Seller\SellerWithdrawRequestController;
 
 //Upload
@@ -17,7 +34,7 @@ Route::group(['prefix' => 'seller', 'middleware' => ['seller', 'verified', 'user
 // Seller Routes
 Route::group(['namespace' => 'App\Http\Controllers\Seller', 'prefix' => 'seller', 'middleware' => ['seller', 'verified', 'user'], 'as' => 'seller.'], function () {
 
-    // dashboard
+    // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Product 
@@ -73,9 +90,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Seller', 'prefix' => 'seller'
     });
 
     // Invoices
-    Route::controller(InvoiceController::class)->group(function () {
-        Route::get('/invoice/{order_id}', 'invoice_download')->name('invoice.download');
-    });
+    Route::get('/invoice/{order_id}', [InvoiceController::class, 'invoice_download'])->name('invoice.download');
 
     //Review
     Route::controller(ReviewController::class)->group(function () {
