@@ -12,8 +12,9 @@ class Shop extends Model
   {
     return $this->belongsTo(User::class);
   }
-  
-  public function seller_package(){
-      return $this->belongsTo(SellerPackage::class);
+
+  public function seller_package()
+  {
+    return $this->belongsTo(SellerPackage::class);
   }
 }

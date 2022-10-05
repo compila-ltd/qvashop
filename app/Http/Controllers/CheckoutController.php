@@ -75,14 +75,17 @@ class CheckoutController extends Controller
     {
         $combined_order = CombinedOrder::findOrFail($combined_order_id);
 
-        foreach ($combined_order->orders as $key => $order) {
+        foreach ($combined_order->orders as $order) {
+            
             $order = Order::findOrFail($order->id);
             $order->payment_status = 'paid';
             $order->payment_details = $payment;
             $order->save();
-
-            //calculateCommissionAffilationClubPoint($order);
+            
+            // pay to the seller, or affiliate, or Club Points
+            calculateCommissionAffilationClubPoint($order);
         }
+        
         Session::put('combined_order_id', $combined_order_id);
         return redirect()->route('order_confirmed');
     }

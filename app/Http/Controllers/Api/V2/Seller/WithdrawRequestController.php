@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Api\V2\Seller;
 
-use App\Http\Resources\V2\Seller\SellerWithdrawResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\SellerWithdrawRequest;
-use Auth;
-use Response;
+use App\Http\Resources\V2\Seller\SellerWithdrawResource;
 
 class WithdrawRequestController extends Controller
 {
@@ -21,7 +20,6 @@ class WithdrawRequestController extends Controller
         return SellerWithdrawResource::collection($seller_withdraw_requests);
     }
 
-
     /**
      * Store a newly created resource in storage.
      *
@@ -30,7 +28,6 @@ class WithdrawRequestController extends Controller
      */
     public function store(Request $request)
     {
-
         if (auth()->user()->shop->admin_to_pay > 5) {
             if ($request->amount >= get_setting('minimum_seller_amount_withdraw') && $request->amount <= Auth::user()->shop->admin_to_pay) {
                 $seller_withdraw_request = new SellerWithdrawRequest;

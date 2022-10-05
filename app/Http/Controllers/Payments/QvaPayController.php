@@ -51,12 +51,9 @@ class QvaPayController extends Controller
     }
 
     // WebHook from QvaPay
-    // /qvapay/payment/pay-success
     public function success(Request $request)
     {
         if ($request->has('remote_id') && $request->has('id') && $request->has('uuid')) {
-
-            //$combined_order = CombinedOrder::findOrFail($request->remote_id);
 
             $input = $request->all();
             $payment_details = json_encode(array('id' => $request['id'], 'method' => 'QvaPay', 'amount' => "", 'currency' => 'USD'));
@@ -68,66 +65,21 @@ class QvaPayController extends Controller
                 return (new CheckoutController)->checkout_done($input['remote_id'], $payment_details);
             }
 
+            /*
             if ($payment_type == 'wallet_payment') {
                 return (new WalletController)->wallet_payment_done(json_decode($request->opt_c), json_encode($request->all()));
             }
-
             if ($payment_type == 'customer_package_payment') {
                 return (new CustomerPackageController)->purchase_payment_done(json_decode($request->opt_c), json_encode($request->all()));
             }
             if ($payment_type == 'seller_package_payment') {
                 return (new SellerPackageController)->purchase_payment_done(json_decode($request->opt_c), json_encode($request->all()));
             }
+            */
             
         } else {
             return redirect()->route('home');
         }
-
-        /*
-        //Fetch payment information by razorpay_payment_id
-        $payment = $api->payment->fetch($input['razorpay_payment_id']);
-
-        if (count($input) && !empty($input['razorpay_payment_id'])) {
-            $payment_detalis = null;
-            try {
-                $response = $api->payment->fetch($input['razorpay_payment_id'])->capture(array('amount' => $payment['amount']));
-                $payment_detalis = json_encode(array('id' => $response['id'], 'method' => $response['method'], 'amount' => $response['amount'], 'currency' => $response['currency']));
-            } catch (\Exception $e) {
-                return  $e->getMessage();
-                Session::put('error', $e->getMessage());
-                return redirect()->back();
-            }
-
-            // Do something here for store payment details in database...
-            if (Session::has('payment_type')) {
-                if (Session::get('payment_type') == 'cart_payment') {
-                    return (new CheckoutController)->checkout_done(Session::get('combined_order_id'), $payment_detalis);
-                } elseif (Session::get('payment_type') == 'wallet_payment') {
-                    return (new WalletController)->wallet_payment_done(Session::get('payment_data'), $payment_detalis);
-                } elseif (Session::get('payment_type') == 'customer_package_payment') {
-                    return (new CustomerPackageController)->purchase_payment_done(Session::get('payment_data'), $payment_detalis);
-                } elseif (Session::get('payment_type') == 'seller_package_payment') {
-                    return (new SellerPackageController)->purchase_payment_done(Session::get('payment_data'), $payment_detalis);
-                }
-            }
-        }
-
-                if (json_decode($json)->status == 'Success') {
-            $payment_type = Session::get('payment_type');
-            if ($payment_type == 'cart_payment') {
-                return (new CheckoutController)->checkout_done(Session::get('combined_order_id'), $json);
-            }
-            if ($payment_type == 'wallet_payment') {
-                return (new WalletController)->wallet_payment_done(Session::get('payment_data'), $json);
-            }
-            if ($payment_type == 'customer_package_payment') {
-                return (new CustomerPackageController)->purchase_payment_done(Session::get('payment_data'), $json);
-            }
-            if ($payment_type == 'seller_package_payment') {
-                return (new SellerPackageController)->purchase_payment_done(Session::get('payment_data'), $json);
-            }
-        }
-        */
     }
 
     /**

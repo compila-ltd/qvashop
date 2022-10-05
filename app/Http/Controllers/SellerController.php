@@ -15,7 +15,8 @@ use App\Notifications\EmailVerificationNotification;
 
 class SellerController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         // Staff Permission Check
         $this->middleware(['permission:view_all_seller'])->only('index');
         $this->middleware(['permission:view_seller_profile'])->only('profile_modal');
@@ -36,9 +37,9 @@ class SellerController extends Controller
         $sort_search = null;
         $approved = null;
         $shops = Shop::whereIn('user_id', function ($query) {
-                       $query->select('id')
-                       ->from(with(new User)->getTable());
-                    })->latest();
+            $query->select('id')
+                ->from(with(new User)->getTable());
+        })->latest();
 
         if ($request->has('search')) {
             $sort_search = $request->search;
@@ -177,6 +178,7 @@ class SellerController extends Controller
         }
     }
 
+    // Delete Seller 
     public function bulk_seller_delete(Request $request)
     {
         if ($request->id) {
@@ -188,25 +190,27 @@ class SellerController extends Controller
         return 1;
     }
 
+    // Show Verification request
     public function show_verification_request($id)
     {
         $shop = Shop::findOrFail($id);
         return view('backend.sellers.verification', compact('shop'));
     }
 
+    // Aprove Seller
     public function approve_seller($id)
     {
         $shop = Shop::findOrFail($id);
         $shop->verification_status = 1;
         if ($shop->save()) {
             Cache::forget('verified_sellers_id');
-            flash(translate('Seller has been approved successfully'))->success();
-            return redirect()->route('sellers.index');
+            return redirect()->route('sellers.index')->with('success', translate('Seller has been approved successfully'));
         }
-        flash(translate('Something went wrong'))->error();
-        return back();
+
+        return back()->with('error', translate('Something went wrong'));
     }
 
+    // rejest Sellet
     public function reject_seller($id)
     {
         $shop = Shop::findOrFail($id);
@@ -221,19 +225,21 @@ class SellerController extends Controller
         return back();
     }
 
-
+    // Payment Modal
     public function payment_modal(Request $request)
     {
         $shop = shop::findOrFail($request->id);
         return view('backend.sellers.payment_modal', compact('shop'));
     }
 
+    // Profile Modal
     public function profile_modal(Request $request)
     {
         $shop = Shop::findOrFail($request->id);
         return view('backend.sellers.profile_modal', compact('shop'));
     }
 
+    // Update Aproved
     public function updateApproved(Request $request)
     {
         $shop = Shop::findOrFail($request->id);
@@ -245,6 +251,7 @@ class SellerController extends Controller
         return 0;
     }
 
+    // Login as Seller
     public function login($id)
     {
         $shop = Shop::findOrFail(decrypt($id));
@@ -254,6 +261,7 @@ class SellerController extends Controller
         return redirect()->route('seller.dashboard');
     }
 
+    // Ban certain User
     public function ban($id)
     {
         $shop = Shop::findOrFail($id);

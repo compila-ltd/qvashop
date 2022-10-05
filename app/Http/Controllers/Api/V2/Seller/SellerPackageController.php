@@ -24,7 +24,6 @@ class SellerPackageController extends Controller
         $data['seller_package_id'] = $request->package_id;
         $data['payment_method'] = $request->payment_option;
 
-
         $seller_package = SellerPackage::findOrFail($request->seller_package_id);
 
         if ($seller_package->amount == 0) {
