@@ -7,13 +7,9 @@ use App\Models\CombinedOrder;
 use App\Models\SellerPackage;
 use App\Models\CustomerPackage;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
-use App\Http\Controllers\WalletController;
 use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\CustomerPackageController;
-use App\Http\Controllers\Api\V2\Seller\SellerPackageController;
 
 class QvaPayController extends Controller
 {
@@ -28,7 +24,7 @@ class QvaPayController extends Controller
         $this->app_secret = config('qvapay.secret');
     }
 
-    public function pay(Request $request)
+    public function pay()
     {
         // if (Auth::user()->phone == null) {
         //     return redirect()->route('profile')->with('warning', translate('Please add phone number to your profile'));

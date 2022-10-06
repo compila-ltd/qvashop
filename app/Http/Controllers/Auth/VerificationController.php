@@ -69,12 +69,16 @@ class VerificationController extends Controller
         if ($request->user()->hasVerifiedEmail()) {
             return redirect($this->redirectPath());
         }
-
         $request->user()->sendEmailVerificationNotification();
-
         return back()->with('resent', true);
     }
 
+    /**
+     * Mark the authenticated user's email address as verified.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function verification_confirmation($code)
     {
         $user = User::where('verification_code', $code)->first();

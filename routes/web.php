@@ -32,6 +32,7 @@ use App\Http\Controllers\CustomerProductController;
 use App\Http\Controllers\Payments\QvaPayController;
 use App\Http\Controllers\PurchaseHistoryController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\Payments\LightningController;
 
 /*
   |--------------------------------------------------------------------------
@@ -47,6 +48,9 @@ use App\Http\Controllers\Auth\VerificationController;
 Route::get('/refresh-csrf', function () {
     return csrf_token();
 });
+
+// Debug LN
+Route::get('/ln', [LightningController::class, 'pay'])->name('ln.create_invoice');
 
 // Sitemap generator
 Route::get('/sitemap.xml', [SitemapController::class, 'generate'])->name('sitemap-generator');
@@ -72,7 +76,7 @@ Route::controller(LoginController::class)->group(function () {
 
 // Email Verification
 Route::controller(VerificationController::class)->group(function () {
-    //TODO Route::get('/email/resend', 'resend')->name('verification.resend');
+    Route::get('/email/resend', 'resend')->name('verification.resend');
     Route::get('/verification-confirmation/{code}', 'verification_confirmation')->name('email.verification.confirmation');
 });
 
