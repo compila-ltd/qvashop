@@ -54,7 +54,7 @@
     <meta name="theme-color" content="#ffffff">
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,600,900i&display=swap" rel="stylesheet">
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="{{ asset('assets/css/vendors.css') }}">
@@ -198,17 +198,16 @@
     @yield('modal')
 
     <!-- SCRIPTS -->
-    <script src="{{ asset('assets/js/vendors.js') }}"></script>
-    <script src="{{ asset('assets/js/aiz-core.js') }}"></script>
+    <script src="{{ asset('assets/js/vendors.js') }}" defer></script>
+    <script src="{{ asset('assets/js/aiz-core.js') }}" defer></script>
 
     <!-- Google tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-242712334-1">
-    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-242712334-1" defer></script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'UA-242712334-1');
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-242712334-1');
     </script>
 
     <!-- Facebook Pixel Code -->
@@ -539,5 +538,4 @@
     @endphp
 
 </body>
-
 </html>
