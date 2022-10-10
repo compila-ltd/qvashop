@@ -198,11 +198,11 @@
     @yield('modal')
 
     <!-- SCRIPTS -->
-    <script src="{{ asset('assets/js/vendors.js') }}" defer></script>
-    <script src="{{ asset('assets/js/aiz-core.js') }}" defer></script>
+    <script src="{{ asset('assets/js/vendors.js') }}"></script>
+    <script src="{{ asset('assets/js/aiz-core.js') }}"></script>
 
     <!-- Google tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-242712334-1" defer></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-242712334-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
