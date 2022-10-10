@@ -23,14 +23,12 @@
 							<div class="row align-items-center gutters-5 gutters-md-10 position-relative">
 								<div class="col-xl-2 col-md-3 col-5">
 									<div class="">
-										<!-- Input -->
 										<select class="form-control form-control-xs aiz-selectpicker" name="aiz-uploader-sort">
 											<option value="newest" selected>{{ translate('Sort by newest') }}</option>
 											<option value="oldest">{{ translate('Sort by oldest') }}</option>
 											<option value="smallest">{{ translate('Sort by smallest') }}</option>
 											<option value="largest">{{ translate('Sort by largest') }}</option>
 										</select>
-										<!-- End Input -->
 									</div>
 								</div>
 								<div class="col-md-3 col-5">
@@ -62,6 +60,7 @@
 						<div id="aiz-upload-files" class="h-100">
 						</div>
 					</div>
+					
 				</div>
 			</div>
 			<div class="modal-footer justify-content-between bg-light">

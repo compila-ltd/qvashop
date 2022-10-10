@@ -1,7 +1,6 @@
 @extends('backend.layouts.app')
 
-@section('content')
-
+@section('
 <div class="aiz-titlebar text-left mt-2 mb-3">
     <h5 class="mb-0 h6">{{ translate('Add New Product')}}</h5>
 </div>
@@ -40,7 +39,7 @@
                             <div class="col-md-8">
                                 <select class="form-control aiz-selectpicker" name="brand_id" id="brand_id" data-live-search="true">
                                     <option value="">{{ translate('Select Brand') }}</option>
-                                    @foreach (\App\Models\Brand::all() as $brand)
+                                    @foreach ($brands as $brand)
                                     <option value="{{ $brand->id }}">{{ $brand->getTranslation('name') }}</option>
                                     @endforeach
                                 </select>
@@ -92,6 +91,7 @@
                             </div>
                         </div>
                         @endif
+
                     </div>
                 </div>
                 <div class="card">
@@ -352,7 +352,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
 
             <div class="col-lg-4">
@@ -628,15 +627,13 @@
         </div>
     </form>
 </div>
-
 @endsection
 
 @section('script')
-
 <script type="text/javascript">
+
     $('form').bind('submit', function(e) {
         if ($(".action-btn").attr('attempted') == 'true') {
-            //stop submitting the form because we have already clicked submit.
             e.preventDefault();
         } else {
             $(".action-btn").attr("attempted", 'true');
@@ -645,11 +642,9 @@
 
     $("[name=shipping_type]").on("change", function() {
         $(".flat_rate_shipping_div").hide();
-
         if ($(this).val() == 'flat_rate') {
             $(".flat_rate_shipping_div").show();
         }
-
     });
 
     function add_more_customer_choice_option(i, name) {
@@ -729,9 +724,7 @@
         $.each($("#choice_attributes option:selected"), function() {
             add_more_customer_choice_option($(this).val(), $(this).text());
         });
-
         update_sku();
     });
 </script>
-
 @endsection

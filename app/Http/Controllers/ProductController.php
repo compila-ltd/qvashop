@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Cart;
+use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\ProductTax;
@@ -158,12 +159,13 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = Category::where('parent_id', 0)
-            ->where('digital', 0)
-            ->with('childrenCategories')
-            ->get();
+        // Categories
+        $categories = Category::where('parent_id', 0)->where('digital', 0)->with('childrenCategories')->get();
 
-        return view('backend.product.products.create', compact('categories'));
+        // Brands
+        $brands = Brand::all();
+
+        return view('backend.product.products.create', compact('categories', 'brands'));
     }
 
     // Add more choices to a product

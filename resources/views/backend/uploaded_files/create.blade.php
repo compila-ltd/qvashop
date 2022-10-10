@@ -20,7 +20,6 @@
     </div>
     <div class="card-body">
     	<div id="aiz-upload-files" class="h-420px" style="min-height: 65vh">
-    		
     	</div>
     </div>
 </div>

@@ -9,7 +9,6 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
 (function ($) {
     // USE STRICT
     "use strict";
-
     AIZ.data = {
         csrf: $('meta[name="csrf-token"]').attr("content"),
         appUrl: $('meta[name="app-url"]').attr("content"),
@@ -220,7 +219,6 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                 params["sort"] = 'newest';
             }
             $.get(url, params, function (data, status) {
-                //console.log(data);
                 if (typeof data == 'string') {
                     data = JSON.parse(data);
                 }
@@ -228,7 +226,6 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                 AIZ.uploader.allowedFileType();
                 AIZ.uploader.addSelectedValue();
                 AIZ.uploader.addHiddenValue();
-                //AIZ.uploader.resetFilter();
                 AIZ.uploader.updateUploaderFiles();
                 if (data.next_page_url != null) {
                     AIZ.uploader.data.next_page_url = data.next_page_url;
@@ -247,33 +244,8 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
         showSelectedFiles: function () {
             $('[name="aiz-show-selected"]').on("change", function () {
                 if ($(this).is(":checked")) {
-                    // for (
-                    //     var i = 0;
-                    //     i < AIZ.uploader.data.allFiles.length;
-                    //     i++
-                    // ) {
-                    //     if (AIZ.uploader.data.allFiles[i].selected) {
-                    //         AIZ.uploader.data.allFiles[
-                    //             i
-                    //         ].aria_hidden = false;
-                    //     } else {
-                    //         AIZ.uploader.data.allFiles[
-                    //             i
-                    //         ].aria_hidden = true;
-                    //     }
-                    // }
-                    AIZ.uploader.data.allFiles =
-                        AIZ.uploader.data.selectedFilesObject;
+                    AIZ.uploader.data.allFiles = AIZ.uploader.data.selectedFilesObject;
                 } else {
-                    // for (
-                    //     var i = 0;
-                    //     i < AIZ.uploader.data.allFiles.length;
-                    //     i++
-                    // ) {
-                    //     AIZ.uploader.data.allFiles[
-                    //         i
-                    //     ].aria_hidden = false;
-                    // }
                     AIZ.uploader.getAllUploads(
                         AIZ.data.appUrl + "/aiz-uploader/get_uploaded_files"
                     );
@@ -289,30 +261,6 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                     value,
                     $('[name="aiz-uploader-sort"]').val()
                 );
-                // if (AIZ.uploader.data.allFiles.length > 0) {
-                //     for (
-                //         var i = 0;
-                //         i < AIZ.uploader.data.allFiles.length;
-                //         i++
-                //     ) {
-                //         if (
-                //             AIZ.uploader.data.allFiles[
-                //                 i
-                //             ].file_original_name
-                //                 .toUpperCase()
-                //                 .indexOf(value) > -1
-                //         ) {
-                //             AIZ.uploader.data.allFiles[
-                //                 i
-                //             ].aria_hidden = false;
-                //         } else {
-                //             AIZ.uploader.data.allFiles[
-                //                 i
-                //             ].aria_hidden = true;
-                //         }
-                //     }
-                // }
-                //AIZ.uploader.updateUploaderFiles();
             });
         },
         sortUploaderFiles: function () {
@@ -323,37 +271,6 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                     $('[name="aiz-uploader-search"]').val(),
                     value
                 );
-
-                // if (value === "oldest") {
-                //     AIZ.uploader.data.allFiles = AIZ.uploader.data.allFiles.sort(
-                //         function(a, b) {
-                //             return (
-                //                 new Date(a.created_at) - new Date(b.created_at)
-                //             );
-                //         }
-                //     );
-                // } else if (value === "smallest") {
-                //     AIZ.uploader.data.allFiles = AIZ.uploader.data.allFiles.sort(
-                //         function(a, b) {
-                //             return a.file_size - b.file_size;
-                //         }
-                //     );
-                // } else if (value === "largest") {
-                //     AIZ.uploader.data.allFiles = AIZ.uploader.data.allFiles.sort(
-                //         function(a, b) {
-                //             return b.file_size - a.file_size;
-                //         }
-                //     );
-                // } else {
-                //     AIZ.uploader.data.allFiles = AIZ.uploader.data.allFiles.sort(
-                //         function(a, b) {
-                //             a = new Date(a.created_at);
-                //             b = new Date(b.created_at);
-                //             return a > b ? -1 : a < b ? 1 : 0;
-                //         }
-                //     );
-                // }
-                //AIZ.uploader.updateUploaderFiles();
             });
         },
         addSelectedValue: function () {
@@ -388,12 +305,9 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
             $(".aiz-uploader-all").html(
                 '<div class="align-items-center d-flex h-100 justify-content-center w-100"><div class="spinner-border" role="status"></div></div>'
             );
-
             var data = AIZ.uploader.data.allFiles;
-
             setTimeout(function () {
                 $(".aiz-uploader-all").html(null);
-
                 if (data.length > 0) {
                     for (var i = 0; i < data.length; i++) {
                         var thumb = "";
@@ -414,24 +328,6 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                             data[i].selected +
                             '">' +
                             '<div class="aiz-file-box">' +
-                            // '<div class="dropdown-file">' +
-                            // '<a class="dropdown-link" data-toggle="dropdown">' +
-                            // '<i class="la la-ellipsis-v"></i>' +
-                            // "</a>" +
-                            // '<div class="dropdown-menu dropdown-menu-right">' +
-                            // '<a href="' +
-                            // AIZ.data.fileBaseUrl +
-                            // data[i].file_name +
-                            // '" target="_blank" download="' +
-                            // data[i].file_original_name +
-                            // "." +
-                            // data[i].extension +
-                            // '" class="dropdown-item"><i class="la la-download mr-2"></i>Download</a>' +
-                            // '<a href="#" class="dropdown-item aiz-uploader-delete" data-id="' +
-                            // data[i].id +
-                            // '"><i class="la la-trash mr-2"></i>Delete</a>' +
-                            // "</div>" +
-                            // "</div>" +
                             '<div class="card card-file aiz-uploader-select" title="' +
                             data[i].file_original_name +
                             "." +
@@ -543,68 +439,6 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
             } else {
                 elem.find(".file-amount").html(AIZ.local.choose_file);
             }
-
-            // if (AIZ.uploader.data.selectedFiles.length > 0) {
-            //     elem.find(".file-amount").html(
-            //         AIZ.uploader.updateFileHtml(AIZ.uploader.data.selectedFiles)
-            //     );
-            //     for (
-            //         var i = 0;
-            //         i < AIZ.uploader.data.selectedFiles.length;
-            //         i++
-            //     ) {
-            //         var index = AIZ.uploader.data.allFiles.findIndex(
-            //             (x) => x.id === AIZ.uploader.data.selectedFiles[i]
-            //         );
-            //         var thumb = "";
-            //         if (AIZ.uploader.data.allFiles[index].type == "image") {
-            //             thumb =
-            //                 '<img src="' +
-            //                 AIZ.data.appUrl +
-            //                 "/public/" +
-            //                 AIZ.uploader.data.allFiles[index].file_name +
-            //                 '" class="img-fit">';
-            //         } else {
-            //             thumb = '<i class="la la-file-text"></i>';
-            //         }
-            //         var html =
-            //             '<div class="d-flex justify-content-between align-items-center mt-2 file-preview-item" data-id="' +
-            //             AIZ.uploader.data.allFiles[index].id +
-            //             '" title="' +
-            //             AIZ.uploader.data.allFiles[index].file_original_name +
-            //             "." +
-            //             AIZ.uploader.data.allFiles[index].extension +
-            //             '">' +
-            //             '<div class="align-items-center align-self-stretch d-flex justify-content-center thumb">' +
-            //             thumb +
-            //             "</div>" +
-            //             '<div class="col body">' +
-            //             '<h6 class="d-flex">' +
-            //             '<span class="text-truncate title">' +
-            //             AIZ.uploader.data.allFiles[index].file_original_name +
-            //             "</span>" +
-            //             '<span class="ext">.' +
-            //             AIZ.uploader.data.allFiles[index].extension +
-            //             "</span>" +
-            //             "</h6>" +
-            //             "<p>" +
-            //             AIZ.extra.bytesToSize(
-            //                 AIZ.uploader.data.allFiles[index].file_size
-            //             ) +
-            //             "</p>" +
-            //             "</div>" +
-            //             '<div class="remove">' +
-            //             '<button class="btn btn-sm btn-link remove-attachment" type="button">' +
-            //             '<i class="la la-close"></i>' +
-            //             "</button>" +
-            //             "</div>" +
-            //             "</div>";
-
-            //         elem.next(".file-preview").append(html);
-            //     }
-            // } else {
-            //     elem.find(".file-amount").html("Choose File");
-            // }
         },
         editorImageGenerate: function (elem) {
             if (AIZ.uploader.data.selectedFiles.length > 0) {
@@ -624,7 +458,6 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                             AIZ.uploader.data.allFiles[index].file_name +
                             '">';
                         elem[0].insertHTML(thumb);
-                        // console.log(elem);
                     }
                 }
             }
@@ -643,8 +476,6 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
             multiple = false,
             callback = null
         ) {
-            // $("body").append('<div class="aiz-uploader-backdrop"></div>');
-
             var elem = $(elem);
             var multiple = multiple;
             var type = type;
@@ -665,7 +496,6 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
             } else {
                 AIZ.uploader.data.multiple = false;
             }
-
             // setTimeout(function() {
             $.post(
                 AIZ.data.appUrl + "/aiz-uploader",
@@ -1161,11 +991,8 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
         countDown: function () {
             if ($(".aiz-count-down").length > 0) {
                 $(".aiz-count-down").each(function () {
-
                     var $this = $(this);
                     var date = $this.data("date");
-                    // console.log(date)
-
                     $this.countdown(date).on("update.countdown", function (event) {
                         var $this = $(this).html(
                             event.strftime(
@@ -1396,7 +1223,6 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
             $.get(AIZ.data.appUrl + '/refresh-csrf').done(function (data) {
                 AIZ.data.csrf = data;
             });
-            // console.log(AIZ.data.csrf);
         },
         mobileNavToggle: function () {
             if (window.matchMedia('(max-width: 1200px)').matches) {
@@ -1584,15 +1410,6 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                 var target = $(this).data("target");
                 var sameTriggers = $(this).data("siblings");
 
-                // var showOverlay = $this.data('overlay');
-                // var overlayMarkup = '<div class="overlay overlay-fixed dark c-pointer" data-toggle="collapse-sidebar" data-target="'+target+'"></div>';
-
-                // showOverlay = !showOverlay ? true : showOverlay;
-
-                // if (showOverlay && $(target).siblings('.overlay').length !== 1) {
-                //     $(target).after(overlayMarkup);
-                // }
-
                 e.preventDefault();
                 if ($(target).hasClass("opened")) {
                     $(target).removeClass("opened");
@@ -1676,7 +1493,6 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                 var target = $(this).data("target");
                 $(this).on("change", function () {
                     var value = $(this).val();
-                    // console.log(value);
                     $(target)
                         .children()
                         .not("." + value)
@@ -1841,7 +1657,6 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
     setInterval(function () {
         AIZ.extra.refreshToken();
     }, 3600000);
-
     // init aiz plugins, extra options
     AIZ.extra.initActiveMenu();
     AIZ.extra.mobileNavToggle();
@@ -1883,9 +1698,5 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
     AIZ.uploader.initForInput();
     AIZ.uploader.removeAttachment();
     AIZ.uploader.previewGenerate();
-
-    // $(document).ajaxComplete(function(){
-    //     AIZ.plugins.bootstrapSelect('refresh');
-    // });
 
 })(jQuery);
