@@ -80,7 +80,9 @@ class LightningController extends Controller
         if (isset($response->json()['msg']) && $response->json()['msg'] == "OK" && isset($response->json()['data'])) {
             $id = $response->json()['data']['id'];
             $address = $response->json()['data']['from']['address'];
-            return ['id' => $id, 'address' => $address];
+            $token = $response->json()['data']['token'];
+
+            return ['id' => $id, 'address' => $address, 'token' => $token];
         }
 
         return [];

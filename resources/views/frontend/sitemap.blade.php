@@ -52,4 +52,20 @@
         <priority>0.7</priority>
     </url>
     @endforeach
+    @foreach($blog_categories as $category)
+    <url>
+        <loc>{{ route('products.category', $category->slug) }}</loc>
+        <lastmod>{{ now()->tz('UTC')->toAtomString() }}</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.5</priority>
+    </url>
+    @endforeach
+    @foreach($blogs as $blog)
+    <url>
+        <loc>{{ route('blog.details', $blog->slug) }}</loc>
+        <lastmod>{{ $blog->updated_at->tz('UTC')->toAtomString() }}</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.6</priority>
+    </url>
+    @endforeach
 </urlset>

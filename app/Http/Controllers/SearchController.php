@@ -36,10 +36,6 @@ class SearchController extends Controller
             $conditions = array_merge($conditions, ['brand_id' => $brand_id]);
         }
 
-        // if ($seller_id != null) {
-        //     $conditions = array_merge($conditions, ['user_id' => Seller::findOrFail($seller_id)->user->id]);
-        // }
-
         $products = Product::where($conditions);
 
         if ($category_id != null) {
@@ -66,9 +62,8 @@ class SearchController extends Controller
             // }
         }
 
-        if ($min_price != null && $max_price != null) {
+        if ($min_price != null && $max_price != null)
             $products->where('unit_price', '>=', $min_price)->where('unit_price', '<=', $max_price);
-        }
 
         if ($query != null) {
             $searchController = new SearchController;
@@ -114,7 +109,7 @@ class SearchController extends Controller
 
         if ($request->has('selected_attribute_values')) {
             $selected_attribute_values = $request->selected_attribute_values;
-            $products->where(function ($query) use($selected_attribute_values) {
+            $products->where(function ($query) use ($selected_attribute_values) {
                 foreach ($selected_attribute_values as $key => $value) {
                     $str = '"' . $value . '"';
 
@@ -128,11 +123,13 @@ class SearchController extends Controller
         return view('frontend.product_listing', compact('products', 'query', 'category_id', 'brand_id', 'sort_by', 'seller_id', 'min_price', 'max_price', 'attributes', 'selected_attribute_values', 'colors', 'selected_color'));
     }
 
+    // Listing Search Panel
     public function listing(Request $request)
     {
         return $this->index($request);
     }
 
+    // Show items by its category
     public function listingByCategory(Request $request, $category_slug)
     {
         $category = Category::where('slug', $category_slug)->first();
@@ -142,6 +139,7 @@ class SearchController extends Controller
         abort(404);
     }
 
+    // Listing By Brand
     public function listingByBrand(Request $request, $brand_slug)
     {
         $brand = Brand::where('slug', $brand_slug)->first();
