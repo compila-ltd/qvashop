@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Payments\LightningController;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Coupon;
@@ -44,10 +45,22 @@ class CheckoutController extends Controller
 
             if ($request->session()->get('combined_order_id') != null) {
 
+                // Pay with QvaPay
                 if ($request->payment_option == 'qvapay') {
                     $qvapay = new QvaPayController;
                     return $qvapay->pay($request);
+
+                    // Pay with Bitocin LN
+                } elseif ($request->payment_option == 'bitcoinln') {
+
+                    $bitcoinln = new LightningController;
+                    $wallet = $bitcoinln->pay($request);
+
+                    // Chage this return for a view()
+                    return view('frontend.payment.bitcoinln', compact('wallet'));
+
                 } else {
+                    
                     $combined_order = CombinedOrder::findOrFail($request->session()->get('combined_order_id'));
                     $manual_payment_data = array(
                         'name'   => $request->payment_option,
@@ -64,10 +77,10 @@ class CheckoutController extends Controller
                     return redirect()->route('order_confirmed')->with('success', translate('Your order has been placed successfully. Please submit payment information from purchase history'));
                 }
             }
-        } else {
-            flash(translate('Select Payment Option.'))->warning();
-            return back();
         }
+
+        // Select at least one payment method
+        return back()->with('warning', translate('Select Payment Option.'));
     }
 
     // Redirects to this method after a successfull checkout
@@ -76,16 +89,16 @@ class CheckoutController extends Controller
         $combined_order = CombinedOrder::findOrFail($combined_order_id);
 
         foreach ($combined_order->orders as $order) {
-            
+
             $order = Order::findOrFail($order->id);
             $order->payment_status = 'paid';
             $order->payment_details = $payment;
             $order->save();
-            
+
             // pay to the seller, or affiliate, or Club Points
             calculateCommissionAffilationClubPoint($order);
         }
-        
+
         Session::put('combined_order_id', $combined_order_id);
         return redirect()->route('order_confirmed');
     }
@@ -181,10 +194,10 @@ class CheckoutController extends Controller
             $total = $subtotal + $tax + $shipping;
 
             return view('frontend.payment_select', compact('carts', 'shipping_info', 'total'));
-        } else {
-            flash(translate('Your Cart was empty'))->warning();
-            return redirect()->route('home');
         }
+
+        // EMpty cart message
+        return redirect()->route('home')->with('warning', translate('Your cart is empty'));
     }
 
     // Apply Coupon Code
@@ -288,8 +301,7 @@ class CheckoutController extends Controller
             ]);
 
         $coupon = Coupon::where('code', $request->code)->first();
-        $carts = Cart::where('user_id', Auth::user()->id)
-            ->get();
+        $carts = Cart::where('user_id', Auth::user()->id)->get();
 
         $shipping_info = Address::where('id', $carts[0]['address_id'])->first();
 
@@ -324,7 +336,6 @@ class CheckoutController extends Controller
     public function order_confirmed()
     {
         $combined_order = CombinedOrder::findOrFail(Session::get('combined_order_id'));
-
         Cart::where('user_id', $combined_order->user_id)->delete();
 
         foreach ($combined_order->orders as $order) {

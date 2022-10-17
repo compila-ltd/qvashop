@@ -90,7 +90,7 @@
                                             <label class="aiz-megabox d-block mb-3">
                                                 <input value="bitcoinln" class="online_payment" type="radio" name="payment_option">
                                                 <span class="d-block aiz-megabox-elem p-3">
-                                                    <img src="{{ asset('assets/img/cards/bitcoinln.png') }}" class="img-fluid mb-2">
+                                                    <img src="{{ asset('assets/img/cards/bitcoinln.jpg') }}" class="img-fluid mb-2">
                                                     <span class="d-block text-center">
                                                         <span class="d-block fw-600 fs-15">{{ translate('Bitcoin ⚡️') }}</span>
                                                     </span>
@@ -310,7 +310,6 @@
 
     $(document).on("click", "#coupon-apply", function() {
         var data = new FormData($('#apply-coupon-form')[0]);
-
         $.ajax({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -330,7 +329,6 @@
 
     $(document).on("click", "#coupon-remove", function() {
         var data = new FormData($('#remove-coupon-form')[0]);
-
         $.ajax({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
