@@ -142,10 +142,9 @@ class CheckoutController extends Controller
     {
         $carts = Cart::where('user_id', Auth::user()->id)->get();
 
-        if ($carts->isEmpty()) {
-            flash(translate('Your cart is empty'))->warning();
-            return redirect()->route('home');
-        }
+        // If Cart is empty just redirect to home page
+        if ($carts->isEmpty())
+            return redirect()->route('home')->with('warning', translate('Your cart is empty'));
 
         $shipping_info = Address::where('id', $carts[0]['address_id'])->first();
         $total = 0;

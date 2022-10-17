@@ -85,6 +85,20 @@
                                         </div>
                                         @endif
 
+                                        @if (get_setting('bitcoinln') == 1)
+                                        <div class="col-6 col-md-4">
+                                            <label class="aiz-megabox d-block mb-3">
+                                                <input value="bitcoinln" class="online_payment" type="radio" name="payment_option">
+                                                <span class="d-block aiz-megabox-elem p-3">
+                                                    <img src="{{ asset('assets/img/cards/bitcoinln.png') }}" class="img-fluid mb-2">
+                                                    <span class="d-block text-center">
+                                                        <span class="d-block fw-600 fs-15">{{ translate('Bitcoin ⚡️') }}</span>
+                                                    </span>
+                                                </span>
+                                            </label>
+                                        </div>
+                                        @endif
+
                                         @if (get_setting('cash_payment') == 1)
                                             @php
                                                 $digital = 0;
