@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class IsSeller
 {
@@ -19,8 +19,7 @@ class IsSeller
         if (Auth::check() && Auth::user()->user_type == 'seller'  && !Auth::user()->banned) {
             return $next($request);
         }
-        else{
-            abort(404);
-        }
+        
+        abort(404);
     }
 }

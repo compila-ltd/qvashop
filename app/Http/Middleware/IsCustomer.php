@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class IsCustomer
 {
@@ -18,8 +18,7 @@ class IsCustomer
     {
         if (Auth::check() && (Auth::user()->user_type == 'customer')) {
             return $next($request);
-        }
-        else{
+        } else {
             session(['link' => url()->current()]);
             return redirect()->route('user.login');
         }

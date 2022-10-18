@@ -58,9 +58,8 @@ class CheckoutController extends Controller
 
                     // Chage this return for a view()
                     return view('frontend.payment.bitcoinln', compact('wallet'));
-
                 } else {
-                    
+
                     $combined_order = CombinedOrder::findOrFail($request->session()->get('combined_order_id'));
                     $manual_payment_data = array(
                         'name'   => $request->payment_option,
@@ -112,23 +111,19 @@ class CheckoutController extends Controller
             $categories = Category::all();
             return view('frontend.shipping_info', compact('categories', 'carts'));
         }
-        flash(translate('Your cart is empty'))->success();
-        return back();
+
+        return back()->with('warning', translate('Your cart is empty'));
     }
 
     // Store Shipping destination
     public function store_shipping_info(Request $request)
     {
-        if ($request->address_id == null) {
-            flash(translate("Please add shipping address"))->warning();
-            return back();
-        }
+        if ($request->address_id == null)
+            return back()->with('warning', translate('Please add shipping address'));
 
         $carts = Cart::where('user_id', Auth::user()->id)->get();
-        if ($carts->isEmpty()) {
-            flash(translate('Your cart is empty'))->warning();
-            return redirect()->route('home');
-        }
+        if ($carts->isEmpty())
+            return redirect()->route('home')->with('warning', translate('Your cart is empty'));
 
         foreach ($carts as $key => $cartItem) {
             $cartItem->address_id = $request->address_id;
@@ -282,8 +277,7 @@ class CheckoutController extends Controller
             $response_message['message'] = translate('Invalid coupon!');
         }
 
-        $carts = Cart::where('user_id', Auth::user()->id)
-            ->get();
+        $carts = Cart::where('user_id', Auth::user()->id)->get();
         $shipping_info = Address::where('id', $carts[0]['address_id'])->first();
 
         $returnHTML = view('frontend.partials.cart_summary', compact('coupon', 'carts', 'shipping_info'))->render();
@@ -312,9 +306,7 @@ class CheckoutController extends Controller
     public function apply_club_point(Request $request)
     {
         if (addon_is_activated('club_point')) {
-
             $point = $request->point;
-
             if (Auth::user()->point_balance >= $point) {
                 $request->session()->put('club_point', $point);
                 flash(translate('Point has been redeemed'))->success();

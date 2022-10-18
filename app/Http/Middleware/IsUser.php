@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class IsUser
 {
@@ -16,14 +16,9 @@ class IsUser
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::check() && 
-                (Auth::user()->user_type == 'customer' || 
-                Auth::user()->user_type == 'seller' || 
-                Auth::user()->user_type == 'delivery_boy') ) {
-            
+        if (Auth::check() && (Auth::user()->user_type == 'customer' || Auth::user()->user_type == 'seller' || Auth::user()->user_type == 'delivery_boy')) {
             return $next($request);
-        }
-        else{
+        } else {
             session(['link' => url()->current()]);
             return redirect()->route('user.login');
         }

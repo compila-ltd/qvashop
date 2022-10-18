@@ -284,6 +284,7 @@ Route::post('/shops/store', [ShopController::class, 'store'])->name('shops.store
 
 // QvaPay WebHook
 Route::get('/qvapay/payment/pay-success/' . config('qvapay.callback_secret'), [QvaPayController::class, 'success'])->name('payment.qvapay');
+Route::get('/bitcoinln/check', [LightningController::class, 'check'])->name('payment.bitcoinln');
 
 //Blog Section
 Route::controller(BlogController::class)->group(function () {

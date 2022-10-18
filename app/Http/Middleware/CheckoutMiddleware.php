@@ -3,8 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Auth;
 use App\Models\BusinessSetting;
+use Illuminate\Support\Facades\Auth;
 
 class CheckoutMiddleware
 {
@@ -18,15 +18,13 @@ class CheckoutMiddleware
     public function handle($request, Closure $next)
     {
         if (BusinessSetting::where('type', 'guest_checkout_active')->first()->value != 1) {
-            if(Auth::check()){
+            if (Auth::check()) {
                 return $next($request);
-            }
-            else {
+            } else {
                 session(['link' => url()->current()]);
                 return redirect()->route('user.login');
             }
-        }
-        else{
+        } else {
             return $next($request);
         }
     }

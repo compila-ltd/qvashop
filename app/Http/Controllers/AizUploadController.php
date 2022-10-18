@@ -173,7 +173,7 @@ class AizUploadController extends Controller
         }
     }
 
-    // get uploaded File
+    // Get uploaded File
     public function get_uploaded_files(Request $request)
     {
         $uploads = Upload::where('user_id', Auth::user()->id);
@@ -244,7 +244,6 @@ class AizUploadController extends Controller
         }
         // dd($new_file_array);
         return $new_file_array;
-        // return $files;
     }
 
     //Download project attachment
@@ -259,6 +258,7 @@ class AizUploadController extends Controller
             return back();
         }
     }
+    
     //Download project attachment
     public function file_info(Request $request)
     {

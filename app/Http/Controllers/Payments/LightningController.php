@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Payments;
 
-use stdClass;
-use Illuminate\Http\Request;
 use App\Models\BitcoinWallet;
 use App\Models\CombinedOrder;
 use App\Models\SellerPackage;
@@ -37,9 +35,13 @@ class LightningController extends Controller
         // Get the data from the request
         if (Session::has('payment_type')) {
             if (Session::get('payment_type') == 'cart_payment') {
+                
+                // Check first if this invoice is paid
+                
                 // Show invoice, not redirect
                 $order = CombinedOrder::findOrFail(Session::get('combined_order_id'));
                 $wallet = $this->create_invoice($order);
+
             } elseif (Session::get('payment_type') == 'wallet_payment') {
                 $amount = round(Session::get('payment_data')['amount']);
             } elseif (Session::get('payment_type') == 'customer_package_payment') {
@@ -54,9 +56,39 @@ class LightningController extends Controller
         return $wallet;
     }
 
-    // WebHook from Provider
-    public function success()
+    /**
+     * WebHook from Provider
+     * 
+     * Run every X time to check if the payment is confirmed 
+     */
+    public function check()
     {
+        // Get the latest 5 minutoes invoices
+        $wallets = BitcoinWallet::where('status', 'pending')->where('created_at', '>=', now()->subMinutes(5))->get();
+
+        foreach ($wallets as $wallet) {
+
+            // Now ask to the provider if the invoice is paid
+            $data = ['id' => $wallet->invoice_id, 'token' => $wallet->token];
+            $totalParams = http_build_query($data);
+            $signature = hash_hmac('sha256', $totalParams, $this->secret);
+
+            $response = Http::withHeaders([
+                'X-API-KEY' => $this->key,
+                'X-API-SIGN' => $signature
+            ])->get($this->base_url . '/getOrder?' . $totalParams);
+
+            // If the invoice is paid, update the wallet
+            if ($response->json()['data']['status'] == 4) {
+
+                $wallet->status = 'paid';
+                $wallet->save();
+
+                // Now we can process the payment
+                // Redirect if paid...
+                $this->process_payment($wallet);
+            }
+        }
     }
 
     /**
@@ -86,7 +118,7 @@ class LightningController extends Controller
             "toCurrency" => "USDTTRC",
             "fromQty" => $response->json()['data']['to']['amount'],
             "toAddress" => $this->usdt_address,
-            "type" => "fixed",
+            "type" => "float",
         ];
 
         // Create the totalParams as query string of body params
@@ -127,12 +159,25 @@ class LightningController extends Controller
             'invoice_id' => $id,
             'invoice' => $invoice,
             'token' => $token,
-            'btc_amount' =>$btc_amount,
+            'btc_amount' => $btc_amount,
             'status' => 'pending',
         ];
 
         $stored_wallet = BitcoinWallet::create($data);
 
         return $stored_wallet;
+    }
+
+    /**
+     * Process the payment, mark as apid and complete it
+     */
+    private function process_payment($wallet)
+    {
+        $payment_type = 'cart_payment';
+        $payment_details = json_encode(array('id' => $wallet->combined_order_id, 'method' => 'BitcoinLN', 'amount' => "", 'currency' => 'USD'));
+
+        // Always process this data
+        if ($payment_type == 'cart_payment')
+            return (new CheckoutController)->checkout_done($wallet->combined_order_id, $payment_details);
     }
 }

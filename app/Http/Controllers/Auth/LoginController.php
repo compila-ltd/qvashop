@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-
 use App\Models\Cart;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -79,6 +78,7 @@ class LoginController extends Controller
             $existingUser = User::where('email', $user->email)->first();
 
             if ($existingUser) {
+
                 //update provider_id
                 $existing_User = $existingUser;
                 $existing_User->provider_id = $user->id;
@@ -86,6 +86,7 @@ class LoginController extends Controller
 
                 //proceed to login
                 auth()->login($existing_User, true);
+
             } else {
                 //create a new user
                 $newUser = new User;
@@ -95,7 +96,7 @@ class LoginController extends Controller
                 $newUser->provider_id = $user->id;
                 $newUser->save();
 
-                //make user a customer
+                // make user a customer
                 // $customer = new Customer;
                 // $customer->user_id = $newUser->id;
                 // $customer->save();
@@ -213,8 +214,7 @@ class LoginController extends Controller
      */
     protected function sendFailedLoginResponse(Request $request)
     {
-        flash(translate('Invalid login credentials'))->error();
-        return back();
+        return back()->with('error', translate('Invalid login credentials'));
     }
 
     /**

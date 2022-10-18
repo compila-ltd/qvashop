@@ -57,9 +57,8 @@ class QvaPayController extends Controller
             $payment_type = 'cart_payment';
 
             // Always process this data
-            if ($payment_type == 'cart_payment') {
+            if ($payment_type == 'cart_payment')
                 return (new CheckoutController)->checkout_done($input['remote_id'], $payment_details);
-            }
 
             /*
             if ($payment_type == 'wallet_payment') {
@@ -72,10 +71,9 @@ class QvaPayController extends Controller
                 return (new SellerPackageController)->purchase_payment_done(json_decode($request->opt_c), json_encode($request->all()));
             }
             */
-            
-        } else {
-            return redirect()->route('home');
         }
+
+        return redirect()->route('home');
     }
 
     /**
@@ -108,10 +106,8 @@ class QvaPayController extends Controller
             // Get the response body
             $response_body = $response->json();
             // Check if the response body is successful
-            if (isset($response_body['signedUrl'])) {
-                // Return the invoice
+            if (isset($response_body['signedUrl']))
                 return $response_body['signedUrl'];
-            }
         }
     }
 }

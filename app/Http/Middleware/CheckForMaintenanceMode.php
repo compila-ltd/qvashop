@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Foundation\Application;
 
 class CheckForMaintenanceMode
@@ -21,7 +21,13 @@ class CheckForMaintenanceMode
      * @var array
      */
     protected $except = [
-        '/admin*','/login','/logout', '/subcategories*', '/subsubcategories*', '/home_categories*', '/aiz-uploader*'
+        '/admin*',
+        '/login',
+        '/logout',
+        '/subcategories*',
+        '/subsubcategories*',
+        '/home_categories*',
+        '/aiz-uploader*'
     ];
 
     /**
@@ -46,11 +52,10 @@ class CheckForMaintenanceMode
      */
     public function handle($request, Closure $next)
     {
-        if ($this->app->isDownForMaintenance()){
-            if((Auth::check() && Auth::user()->user_type == 'admin') || (Auth::check() && Auth::user()->user_type == 'staff') || $this->inExceptArray($request)) {
+        if ($this->app->isDownForMaintenance()) {
+            if ((Auth::check() && Auth::user()->user_type == 'admin') || (Auth::check() && Auth::user()->user_type == 'staff') || $this->inExceptArray($request)) {
                 return $next($request);
-            }
-            else {
+            } else {
                 return abort(503);
             }
         }

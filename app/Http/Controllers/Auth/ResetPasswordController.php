@@ -47,13 +47,10 @@ class ResetPasswordController extends Controller
      */
     protected function sendResetResponse(Request $request, $response)
     {
-        if(auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff')
-        {
-            return redirect()->route('admin.dashboard')
-                            ->with('status', trans($response));
+        if (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff') {
+            return redirect()->route('admin.dashboard')->with('status', trans($response));
         }
 
-        return redirect()->route('home')
-                            ->with('status', trans($response));
+        return redirect()->route('home')->with('status', trans($response));
     }
 }

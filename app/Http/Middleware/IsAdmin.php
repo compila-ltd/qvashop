@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class IsAdmin
 {
@@ -19,8 +19,7 @@ class IsAdmin
         if (Auth::check() && (Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'staff')) {
             return $next($request);
         }
-        else{
-            abort(404);
-        }
+        
+        abort(404);
     }
 }

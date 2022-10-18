@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App;
+use Illuminate\Support\Facades\App;
 
 class AppLanguage
 {
@@ -17,16 +17,13 @@ class AppLanguage
     public function handle($request, Closure $next)
     {
         // Check header request and determine localizaton
-        if($request->hasHeader('App-Language')){
+        if ($request->hasHeader('App-Language')) {
             $locale = $request->header('App-Language');
-        }
-        elseif(env('DEFAULT_LANGUAGE') != null){
+        } elseif (env('DEFAULT_LANGUAGE') != null) {
             $locale = env('DEFAULT_LANGUAGE');
-        }
-        else{
+        } else {
             $locale = 'en';
         }
-    
 
         // set laravel localization
         App::setLocale($locale);

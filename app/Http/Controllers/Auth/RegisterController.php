@@ -115,9 +115,7 @@ class RegisterController extends Controller
         }
 
         $this->validator($request->all())->validate();
-
         $user = $this->create($request->all());
-
         $this->guard()->login($user);
 
         if ($user->email != null) {
@@ -136,8 +134,7 @@ class RegisterController extends Controller
             }
         }
 
-        return $this->registered($request, $user)
-            ?: redirect($this->redirectPath());
+        return $this->registered($request, $user) ?: redirect($this->redirectPath());
     }
 
     protected function registered(Request $request, $user)

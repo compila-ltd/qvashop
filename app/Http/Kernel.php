@@ -21,7 +21,6 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
-
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
@@ -67,14 +66,17 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         'app_language' => AppLanguage::class,
+        
         'admin' => IsAdmin::class,
         'seller' => IsSeller::class,
         'customer' => IsCustomer::class,
         'user' => IsUser::class,
         'unbanned' => IsUnbanned::class,
         'checkout' => CheckoutMiddleware::class,
+
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
