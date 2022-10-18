@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
 <head>
-
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="app-url" content="{{ getBaseURL() }}">
     <meta name="file-base-url" content="{{ getFileBaseURL() }}">
 
-    <title>@yield('meta_title', get_setting('website_name').' | '.get_setting('site_motto'))</title>
+    <title>@yield('meta_title', get_setting('website_name') . ' | ' . get_setting('site_motto'))</title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="index, follow">
-    <meta name="description" content="@yield('meta_description', get_setting('meta_description') )" />
-    <meta name="keywords" content="@yield('meta_keywords', get_setting('meta_keywords') )">
+    <meta name="description" content="@yield('meta_description', get_setting('meta_description'))" />
+    <meta name="keywords" content="@yield('meta_keywords', get_setting('meta_keywords'))">
 
     @yield('meta')
 
@@ -24,11 +22,11 @@
     <meta itemprop="image" content="{{ uploaded_asset(get_setting('meta_image')) }}">
 
     <!-- Twitter Card data -->
-    <meta name="twitter:card" content="product">
-    <meta name="twitter:site" content="@publisher_handle">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@qvashopping">
+    <meta name="twitter:creator" content="@erichgarciacruz">
     <meta name="twitter:title" content="{{ get_setting('meta_title') }}">
     <meta name="twitter:description" content="{{ get_setting('meta_description') }}">
-    <meta name="twitter:creator" content="@author_handle">
     <meta name="twitter:image" content="{{ uploaded_asset(get_setting('meta_image')) }}">
 
     <!-- Open Graph data -->
@@ -54,9 +52,6 @@
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="{{ asset('assets/css/vendors.css') }}">
-    @if(\App\Models\Language::where('code', Session::get('locale', Config::get('app.locale')))->first()->rtl == 1)
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-rtl.min.css') }}">
-    @endif
     <link rel="stylesheet" href="{{ asset('assets/css/aiz-core.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/custom-style.css') }}">
 

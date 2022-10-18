@@ -7,6 +7,7 @@ use App\Models\Shop;
 use App\Models\User;
 use App\Models\Addon;
 use App\Models\Coupon;
+use App\Models\Upload;
 use App\Models\Wallet;
 use App\Models\Address;
 use App\Models\Carrier;
@@ -1105,7 +1106,7 @@ if (!function_exists('app_timezone')) {
 if (!function_exists('uploaded_asset')) {
     function uploaded_asset($id)
     {
-        if (($asset = \App\Models\Upload::find($id)) != null) {
+        if (($asset = Upload::find($id)) != null) {
             return $asset->external_link == null ? my_asset($asset->file_name) : $asset->external_link;
         }
         return asset('assets/img/placeholder.jpg');
