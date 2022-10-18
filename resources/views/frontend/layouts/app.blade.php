@@ -1,9 +1,5 @@
 <!DOCTYPE html>
-@if(\App\Models\Language::where('code', Session::get('locale', Config::get('app.locale')))->first()->rtl == 1)
-<html dir="rtl" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-@else
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-@endif
 
 <head>
 
@@ -97,9 +93,29 @@
         }
 
         :root {
-            --primary: {{ get_setting('base_color', '#e62d04') }};
-            --hov-primary: {{ get_setting('base_hov_color', '#c52907') }};
-            --soft-primary: {{ hex2rgba(get_setting('base_color', '#e62d04'), .15) }};
+            --primary: {
+                    {
+                    get_setting('base_color', '#e62d04')
+                }
+            }
+
+            ;
+
+            --hov-primary: {
+                    {
+                    get_setting('base_hov_color', '#c52907')
+                }
+            }
+
+            ;
+
+            --soft-primary: {
+                    {
+                    hex2rgba(get_setting('base_color', '#e62d04'), .15)
+                }
+            }
+
+            ;
         }
 
         #map {
@@ -205,14 +221,17 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-242712334-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
         gtag('js', new Date());
         gtag('config', 'UA-242712334-1');
     </script>
 
     <!-- Facebook Pixel Code -->
     <script>
-        !function(f, b, e, v, n, t, s) {
+        ! function(f, b, e, v, n, t, s) {
             if (f.fbq) return;
             n = f.fbq = function() {
                 n.callMethod ?
@@ -373,7 +392,7 @@
         }
 
         function addToWishList(id) {
-            @if(Auth::check() && Auth::user()->user_type == 'customer')
+            @if(Auth::check() && Auth::user() - > user_type == 'customer')
             $.post("{{ route('wishlists.store') }}", {
                 _token: AIZ.data.csrf,
                 id: id
@@ -385,7 +404,7 @@
                     AIZ.plugins.notify('warning', "{{ translate('Please login first') }}");
                 }
             });
-            @elseif(Auth::check() && Auth::user()->user_type != 'customer')
+            @elseif(Auth::check() && Auth::user() - > user_type != 'customer')
             AIZ.plugins.notify('warning', "{{ translate('Please Login as a customer to add products to the WishList.') }}");
             @else
             AIZ.plugins.notify('warning', "{{ translate('Please login first') }}");
@@ -468,7 +487,7 @@
         }
 
         function addToCart() {
-            @if(Auth::check() && Auth::user()->user_type != 'customer')
+            @if(Auth::check() && Auth::user() - > user_type != 'customer')
             AIZ.plugins.notify('warning', "{{ translate('Please Login as a customer to add products to the Cart.') }}");
             return false;
             @endif
@@ -497,7 +516,7 @@
         }
 
         function buyNow() {
-            @if(Auth::check() && Auth::user()->user_type != 'customer')
+            @if(Auth::check() && Auth::user() - > user_type != 'customer')
             AIZ.plugins.notify('warning', "{{ translate('Please Login as a customer to add products to the Cart.') }}");
             return false;
             @endif
@@ -538,4 +557,5 @@
     @endphp
 
 </body>
+
 </html>
