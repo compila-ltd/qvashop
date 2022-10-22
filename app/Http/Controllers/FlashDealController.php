@@ -11,7 +11,8 @@ use Illuminate\Support\Str;
 
 class FlashDealController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         // Staff Permission Check
         $this->middleware(['permission:view_all_flash_deals'])->only('index');
         $this->middleware(['permission:add_flash_deal'])->only('create');
@@ -29,11 +30,12 @@ class FlashDealController extends Controller
     {
         $sort_search = null;
         $flash_deals = FlashDeal::orderBy('created_at', 'desc');
-        if ($request->has('search')){
+        if ($request->has('search')) {
             $sort_search = $request->search;
-            $flash_deals = $flash_deals->where('title', 'like', '%'.$sort_search.'%');
+            $flash_deals = $flash_deals->where('title', 'like', '%' . $sort_search . '%');
         }
         $flash_deals = $flash_deals->paginate(15);
+
         return view('backend.marketing.flash_deals.index', compact('flash_deals', 'sort_search'));
     }
 
@@ -61,12 +63,13 @@ class FlashDealController extends Controller
 
         $date_var               = explode(" to ", $request->date_range);
         $flash_deal->start_date = strtotime($date_var[0]);
-        $flash_deal->end_date   = strtotime( $date_var[1]);
+        $flash_deal->end_date   = strtotime($date_var[1]);
 
         $flash_deal->background_color = $request->background_color;
-        $flash_deal->slug = Str::slug($request->title).'-'.Str::random(5);
+        $flash_deal->slug = Str::slug($request->title) . '-' . Str::random(5);
         $flash_deal->banner = $request->banner;
-        if($flash_deal->save()){
+
+        if ($flash_deal->save()) {
             foreach ($request->products as $key => $product) {
                 $flash_deal_product = new FlashDealProduct;
                 $flash_deal_product->flash_deal_id = $flash_deal->id;
@@ -74,10 +77,10 @@ class FlashDealController extends Controller
                 $flash_deal_product->save();
 
                 $root_product = Product::findOrFail($product);
-                $root_product->discount = $request['discount_'.$product];
-                $root_product->discount_type = $request['discount_type_'.$product];
+                $root_product->discount = $request['discount_' . $product];
+                $root_product->discount_type = $request['discount_type_' . $product];
                 $root_product->discount_start_date = strtotime($date_var[0]);
-                $root_product->discount_end_date   = strtotime( $date_var[1]);
+                $root_product->discount_end_date   = strtotime($date_var[1]);
                 $root_product->save();
             }
 
@@ -85,24 +88,10 @@ class FlashDealController extends Controller
             $flash_deal_translation->title = $request->title;
             $flash_deal_translation->save();
 
-            flash(translate('Flash Deal has been inserted successfully'))->success();
-            return redirect()->route('flash_deals.index');
+            return redirect()->route('flash_deals.index')->with('sucess', 'Flash Deal has been inserted successfully');
         }
-        else{
-            flash(translate('Something went wrong'))->error();
-            return back();
-        }
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        return back()->with('anger', translate('Something went wrong'));
     }
 
     /**
@@ -113,9 +102,9 @@ class FlashDealController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $lang           = $request->lang;
+        $lang = $request->lang;
         $flash_deal = FlashDeal::findOrFail($id);
-        return view('backend.marketing.flash_deals.edit', compact('flash_deal','lang'));
+        return view('backend.marketing.flash_deals.edit', compact('flash_deal', 'lang'));
     }
 
     /**
@@ -133,22 +122,22 @@ class FlashDealController extends Controller
 
         $date_var               = explode(" to ", $request->date_range);
         $flash_deal->start_date = strtotime($date_var[0]);
-        $flash_deal->end_date   = strtotime( $date_var[1]);
+        $flash_deal->end_date   = strtotime($date_var[1]);
 
         $flash_deal->background_color = $request->background_color;
 
-        if($request->lang == env("DEFAULT_LANGUAGE")){
-          $flash_deal->title = $request->title;
-          if (($flash_deal->slug == null) || ($flash_deal->title != $request->title)) {
-              $flash_deal->slug = strtolower(str_replace(' ', '-', $request->title) . '-' . Str::random(5));
-          }
+        if ($request->lang == env("DEFAULT_LANGUAGE")) {
+            $flash_deal->title = $request->title;
+            if (($flash_deal->slug == null) || ($flash_deal->title != $request->title)) {
+                $flash_deal->slug = strtolower(str_replace(' ', '-', $request->title) . '-' . Str::random(5));
+            }
         }
 
         $flash_deal->banner = $request->banner;
         foreach ($flash_deal->flash_deal_products as $key => $flash_deal_product) {
             $flash_deal_product->delete();
         }
-        if($flash_deal->save()){
+        if ($flash_deal->save()) {
             foreach ($request->products as $key => $product) {
                 $flash_deal_product = new FlashDealProduct;
                 $flash_deal_product->flash_deal_id = $flash_deal->id;
@@ -156,10 +145,10 @@ class FlashDealController extends Controller
                 $flash_deal_product->save();
 
                 $root_product = Product::findOrFail($product);
-                $root_product->discount = $request['discount_'.$product];
-                $root_product->discount_type = $request['discount_type_'.$product];
+                $root_product->discount = $request['discount_' . $product];
+                $root_product->discount_type = $request['discount_type_' . $product];
                 $root_product->discount_start_date = strtotime($date_var[0]);
-                $root_product->discount_end_date   = strtotime( $date_var[1]);
+                $root_product->discount_end_date   = strtotime($date_var[1]);
                 $root_product->save();
             }
 
@@ -167,13 +156,10 @@ class FlashDealController extends Controller
             $sub_category_translation->title = $request->title;
             $sub_category_translation->save();
 
-            flash(translate('Flash Deal has been updated successfully'))->success();
-            return back();
+            return back()->with('sucess', translate('Flash Deal has been updated successfully'));
         }
-        else{
-            flash(translate('Something went wrong'))->error();
-            return back();
-        }
+
+        return back()->with('danger', translate('Something went wrong'));
     }
 
     /**
@@ -189,15 +175,15 @@ class FlashDealController extends Controller
         $flash_deal->flash_deal_translations()->delete();
 
         FlashDeal::destroy($id);
-        flash(translate('FlashDeal has been deleted successfully'))->success();
-        return redirect()->route('flash_deals.index');
+
+        return redirect()->route('flash_deals.index')->with('sucess', 'Flash Deal has been deleted successfully');
     }
 
     public function update_status(Request $request)
     {
         $flash_deal = FlashDeal::findOrFail($request->id);
         $flash_deal->status = $request->status;
-        if($flash_deal->save()){
+        if ($flash_deal->save()) {
             flash(translate('Flash deal status updated successfully'))->success();
             return 1;
         }
@@ -212,19 +198,21 @@ class FlashDealController extends Controller
         }
         $flash_deal = FlashDeal::findOrFail($request->id);
         $flash_deal->featured = $request->featured;
-        if($flash_deal->save()){
+        if ($flash_deal->save()) {
             flash(translate('Flash deal status updated successfully'))->success();
             return 1;
         }
         return 0;
     }
 
-    public function product_discount(Request $request){
+    public function product_discount(Request $request)
+    {
         $product_ids = $request->product_ids;
         return view('backend.marketing.flash_deals.flash_deal_discount', compact('product_ids'));
     }
 
-    public function product_discount_edit(Request $request){
+    public function product_discount_edit(Request $request)
+    {
         $product_ids = $request->product_ids;
         $flash_deal_id = $request->flash_deal_id;
         return view('backend.marketing.flash_deals.flash_deal_discount_edit', compact('product_ids', 'flash_deal_id'));

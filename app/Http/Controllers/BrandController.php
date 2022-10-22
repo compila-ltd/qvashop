@@ -10,7 +10,8 @@ use Illuminate\Support\Str;
 
 class BrandController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         // Staff Permission Check
         $this->middleware(['permission:view_all_brands'])->only('index');
         $this->middleware(['permission:add_brand'])->only('create');
@@ -24,11 +25,11 @@ class BrandController extends Controller
      */
     public function index(Request $request)
     {
-        $sort_search =null;
+        $sort_search = null;
         $brands = Brand::orderBy('name', 'asc');
-        if ($request->has('search')){
+        if ($request->has('search')) {
             $sort_search = $request->search;
-            $brands = $brands->where('name', 'like', '%'.$sort_search.'%');
+            $brands = $brands->where('name', 'like', '%' . $sort_search . '%');
         }
         $brands = $brands->paginate(15);
         return view('backend.product.brands.index', compact('brands', 'sort_search'));
@@ -55,12 +56,11 @@ class BrandController extends Controller
         $brand->name = $request->name;
         $brand->meta_title = $request->meta_title;
         $brand->meta_description = $request->meta_description;
-        if ($request->slug != null) {
+
+        if ($request->slug != null)
             $brand->slug = str_replace(' ', '-', $request->slug);
-        }
-        else {
-            $brand->slug = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name)).'-'.Str::random(5);
-        }
+        else
+            $brand->slug = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name)) . '-' . Str::random(5);
 
         $brand->logo = $request->logo;
         $brand->save();
@@ -69,20 +69,7 @@ class BrandController extends Controller
         $brand_translation->name = $request->name;
         $brand_translation->save();
 
-        flash(translate('Brand has been inserted successfully'))->success();
-        return redirect()->route('brands.index');
-
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        return redirect()->route('brands.index')->with('success', translate('Brand has been inserted successfully'));
     }
 
     /**
@@ -95,7 +82,8 @@ class BrandController extends Controller
     {
         $lang   = $request->lang;
         $brand  = Brand::findOrFail($id);
-        return view('backend.product.brands.edit', compact('brand','lang'));
+
+        return view('backend.product.brands.edit', compact('brand', 'lang'));
     }
 
     /**
@@ -108,17 +96,17 @@ class BrandController extends Controller
     public function update(Request $request, $id)
     {
         $brand = Brand::findOrFail($id);
-        if($request->lang == env("DEFAULT_LANGUAGE")){
+        if ($request->lang == env("DEFAULT_LANGUAGE")) {
             $brand->name = $request->name;
         }
         $brand->meta_title = $request->meta_title;
         $brand->meta_description = $request->meta_description;
-        if ($request->slug != null) {
+
+        if ($request->slug != null)
             $brand->slug = strtolower($request->slug);
-        }
-        else {
-            $brand->slug = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name)).'-'.Str::random(5);
-        }
+        else
+            $brand->slug = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name)) . '-' . Str::random(5);
+
         $brand->logo = $request->logo;
         $brand->save();
 
@@ -126,9 +114,7 @@ class BrandController extends Controller
         $brand_translation->name = $request->name;
         $brand_translation->save();
 
-        flash(translate('Brand has been updated successfully'))->success();
-        return back();
-
+        return back()->with('success', translate('Brand has been updated successfully'));
     }
 
     /**
@@ -146,8 +132,6 @@ class BrandController extends Controller
         }
         Brand::destroy($id);
 
-        flash(translate('Brand has been deleted successfully'))->success();
-        return redirect()->route('brands.index');
-
+        return redirect()->route('brands.index')->with('success', translate('Brand has been deleted successfully'));
     }
 }

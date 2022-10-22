@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Seller;
 
-use App\Mail\SupportMailManager;
-use Illuminate\Http\Request;
+use App\Models\User;
 use App\Models\Ticket;
 use App\Models\TicketReply;
-use App\Models\User;
-use Auth;
-use Mail;
+use Illuminate\Http\Request;
+use App\Mail\SupportMailManager;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class SupportTicketController extends Controller
 {
@@ -32,25 +32,24 @@ class SupportTicketController extends Controller
     public function store(Request $request)
     {
         $ticket = new Ticket;
-        $ticket->code = max(100000, (Ticket::latest()->first() != null ? Ticket::latest()->first()->code + 1 : 0)).date('s');
+        $ticket->code = max(100000, (Ticket::latest()->first() != null ? Ticket::latest()->first()->code + 1 : 0)) . date('s');
         $ticket->user_id = Auth::user()->id;
         $ticket->subject = $request->subject;
         $ticket->details = $request->details;
         $ticket->files = $request->attachments;
 
-        if($ticket->save()){
+        if ($ticket->save()) {
             $this->send_support_mail_to_admin($ticket);
-            flash(translate('Ticket has been sent successfully'))->success();
-            return redirect()->route('seller.support_ticket.index');
-        }
-        else{
+            return redirect()->route('seller.support_ticket.index')->with('success', translate('Ticket has been sent successfully'));
+        } else {
             flash(translate('Something went wrong'))->error();
         }
     }
 
-    public function send_support_mail_to_admin($ticket){
+    public function send_support_mail_to_admin($ticket)
+    {
         $array['view'] = 'emails.support';
-        $array['subject'] = 'Support ticket Code is:- '.$ticket->code;
+        $array['subject'] = 'Support ticket Code is:- ' . $ticket->code;
         $array['from'] = env('MAIL_FROM_ADDRESS');
         $array['content'] = 'Hi. A ticket has been created. Please check the ticket.';
         $array['link'] = route('support_ticket.admin_show', encrypt($ticket->id));
@@ -60,7 +59,6 @@ class SupportTicketController extends Controller
         try {
             Mail::to(User::where('user_type', 'admin')->first()->email)->queue(new SupportMailManager($array));
         } catch (\Exception $e) {
-            // dd($e->getMessage());
         }
     }
 
@@ -76,7 +74,8 @@ class SupportTicketController extends Controller
         $ticket->client_viewed = 1;
         $ticket->save();
         $ticket_replies = $ticket->ticketreplies;
-        return view('seller.support_ticket.show', compact('ticket','ticket_replies'));
+
+        return view('seller.support_ticket.show', compact('ticket', 'ticket_replies'));
     }
 
     public function ticket_reply_store(Request $request)
@@ -89,14 +88,10 @@ class SupportTicketController extends Controller
         $ticket_reply->ticket->viewed = 0;
         $ticket_reply->ticket->status = 'pending';
         $ticket_reply->ticket->save();
-        if($ticket_reply->save()){
-
-            flash(translate('Reply has been sent successfully'))->success();
-            return back();
-        }
-        else{
+        if ($ticket_reply->save()) {
+            return back()->with('success', translate('Reply has been sent successfully'));
+        } else {
             flash(translate('Something went wrong'))->error();
         }
     }
-
 }

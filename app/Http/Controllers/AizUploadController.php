@@ -207,10 +207,9 @@ class AizUploadController extends Controller
     {
         $upload = Upload::findOrFail($id);
 
-        if (auth()->user()->user_type == 'seller' && $upload->user_id != auth()->user()->id) {
-            flash(translate("You don't have permission for deleting this!"))->error();
-            return back();
-        }
+        if (auth()->user()->user_type == 'seller' && $upload->user_id != auth()->user()->id)
+            return back()->with('error', translate("You don't have permission for deleting this!"));
+
         try {
             if (env('FILESYSTEM_DRIVER') == 's3') {
                 Storage::disk('s3')->delete($upload->file_name);
@@ -221,12 +220,11 @@ class AizUploadController extends Controller
                 unlink(public_path() . '/' . $upload->file_name);
             }
             $upload->delete();
-            flash(translate('File deleted successfully'))->success();
         } catch (\Exception $e) {
             $upload->delete();
-            flash(translate('File deleted successfully'))->success();
         }
-        return back();
+
+        return back()->with('success', translate('File deleted successfully'));
     }
 
     // Preview Files
@@ -250,15 +248,15 @@ class AizUploadController extends Controller
     public function attachment_download($id)
     {
         $project_attachment = Upload::find($id);
+        
         try {
             $file_path = public_path($project_attachment->file_name);
             return Response::download($file_path);
         } catch (\Exception $e) {
-            flash(translate('File does not exist!'))->error();
-            return back();
+            return back()->with('error', translate('File does not exist!'));
         }
     }
-    
+
     //Download project attachment
     public function file_info(Request $request)
     {

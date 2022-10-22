@@ -125,8 +125,7 @@ class BusinessSettingsController extends Controller
 
         Artisan::call('cache:clear');
 
-        flash(translate("Settings updated successfully"))->success();
-        return back();
+        return back()->with('success', translate('Settings updated successfully'));
     }
 
     /**
@@ -152,10 +151,14 @@ class BusinessSettingsController extends Controller
 
         Artisan::call('cache:clear');
 
-        flash(translate("Settings updated successfully"))->success();
-        return back();
+        return back()->with('success', translate('Settings updated successfully'));
     }
 
+    /**
+     * Update the API key's for GOOGLE recaptcha.
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function google_recaptcha_update(Request $request)
     {
         foreach ($request->types as $key => $type) {
@@ -174,10 +177,14 @@ class BusinessSettingsController extends Controller
 
         Artisan::call('cache:clear');
 
-        flash(translate("Settings updated successfully"))->success();
-        return back();
+        return back()->with('success', translate('Settings updated successfully'));
     }
 
+    /**
+     * Update the API key's for GOOGLE map.
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function google_map_update(Request $request)
     {
         foreach ($request->types as $key => $type) {
@@ -196,10 +203,14 @@ class BusinessSettingsController extends Controller
 
         Artisan::call('cache:clear');
 
-        flash(translate("Settings updated successfully"))->success();
-        return back();
+        return back()->with('success', translate('Settings updated successfully'));
     }
 
+    /**
+     * Update the API key's for GOOGLE firebase.
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function google_firebase_update(Request $request)
     {
         foreach ($request->types as $key => $type) {
@@ -218,8 +229,7 @@ class BusinessSettingsController extends Controller
 
         Artisan::call('cache:clear');
 
-        flash(translate("Settings updated successfully"))->success();
-        return back();
+        return back()->with('success', translate('Settings updated successfully'));
     }
 
 
@@ -246,8 +256,7 @@ class BusinessSettingsController extends Controller
 
         Artisan::call('cache:clear');
 
-        flash(translate("Settings updated successfully"))->success();
-        return back();
+        return back()->with('success', translate('Settings updated successfully'));
     }
 
     public function facebook_comment_update(Request $request)
@@ -271,8 +280,7 @@ class BusinessSettingsController extends Controller
 
         Artisan::call('cache:clear');
 
-        flash(translate("Settings updated successfully"))->success();
-        return back();
+        return back()->with('success', translate('Settings updated successfully'));
     }
 
     public function facebook_pixel_update(Request $request)
@@ -293,8 +301,7 @@ class BusinessSettingsController extends Controller
 
         Artisan::call('cache:clear');
 
-        flash(translate("Settings updated successfully"))->success();
-        return back();
+        return back()->with('success', translate('Settings updated successfully'));
     }
 
     /**
@@ -308,8 +315,7 @@ class BusinessSettingsController extends Controller
             $this->overWriteEnvFile($type, $request[$type]);
         }
 
-        flash(translate("Settings updated successfully"))->success();
-        return back();
+        return back()->with('success', translate('Settings updated successfully'));
     }
 
     /**
@@ -335,7 +341,7 @@ class BusinessSettingsController extends Controller
         }
     }
 
-    public function seller_verification_form(Request $request)
+    public function seller_verification_form()
     {
         return view('backend.sellers.seller_verification_form.index');
     }
@@ -363,15 +369,12 @@ class BusinessSettingsController extends Controller
         $business_settings->value = json_encode($form);
         if ($business_settings->save()) {
             Artisan::call('cache:clear');
-
-            flash(translate("Verification form updated successfully"))->success();
-            return back();
+            return back()->with('success', translate('Verification form updated successfully'));
         }
     }
 
     public function update(Request $request)
     {
-
         foreach ($request->types as $key => $type) {
             if ($type == 'site_name') {
                 $this->overWriteEnvFile('APP_NAME', $request[$type]);
@@ -412,8 +415,7 @@ class BusinessSettingsController extends Controller
 
         Artisan::call('cache:clear');
 
-        flash(translate("Settings updated successfully"))->success();
-        return back();
+        return back()->with('success', translate('Settings updated successfully'));
     }
 
     /**
@@ -479,8 +481,7 @@ class BusinessSettingsController extends Controller
 
         Artisan::call('cache:clear');
 
-        flash(translate('Seller Commission updated successfully'))->success();
-        return back();
+        return back()->with('success', translate('Seller Commission updated successfully'));
     }
 
     public function shipping_configuration(Request $request)

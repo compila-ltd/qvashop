@@ -11,12 +11,13 @@ use Illuminate\Http\Request;
 
 class CarrierController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         // Staff Permission Check
-        $this->middleware(['permission:manage_carriers'])->only('index','create','edit','destroy');
+        $this->middleware(['permission:manage_carriers'])->only('index', 'create', 'edit', 'destroy');
     }
 
-     /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -27,7 +28,7 @@ class CarrierController extends Controller
         return view('backend.setup_configurations.carriers.index', compact('carriers'));
     }
 
-     /**
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -35,7 +36,7 @@ class CarrierController extends Controller
     public function create()
     {
         $zones = Zone::get();
-        return view('backend.setup_configurations.carriers.create',compact('zones'));
+        return view('backend.setup_configurations.carriers.create', compact('zones'));
     }
 
     /**
@@ -55,8 +56,8 @@ class CarrierController extends Controller
         $carrier->save();
 
         // if not free shipping, then add the carrier ranges and prices
-        if($free_shipping == 0){
-            for($i=0; $i < count($request->delimiter1); $i++){
+        if ($free_shipping == 0) {
+            for ($i = 0; $i < count($request->delimiter1); $i++) {
 
                 // Add Carrier ranges
                 $carrier_range                  = new CarrierRange;
@@ -67,7 +68,7 @@ class CarrierController extends Controller
                 $carrier_range->save();
 
                 // Add carrier range prices
-                foreach($request->zones as $zone){
+                foreach ($request->zones as $zone) {
                     $carrier_range_price =  new CarrierRangePrice;
                     $carrier_range_price->carrier_id = $carrier->id;
                     $carrier_range_price->carrier_range_id = $carrier_range->id;
@@ -77,6 +78,7 @@ class CarrierController extends Controller
                 }
             }
         }
+
         flash(translate('New carrier has been added successfully'))->success();
         return 1;
     }
@@ -91,10 +93,10 @@ class CarrierController extends Controller
     {
         $carrier = Carrier::findOrFail($id);
         $zones = Zone::get();
-        return view('backend.setup_configurations.carriers.edit',compact('zones','carrier'));
+        return view('backend.setup_configurations.carriers.edit', compact('zones', 'carrier'));
     }
 
-     /**
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -115,8 +117,8 @@ class CarrierController extends Controller
         $carrier->carrier_range_prices()->delete();
 
         // if not free shipping, then add the carrier ranges and prices
-        if($free_shipping == 0){
-            for($i=0; $i < count($request->delimiter1); $i++){
+        if ($free_shipping == 0) {
+            for ($i = 0; $i < count($request->delimiter1); $i++) {
 
                 // Add Carrier ranges
                 $carrier_range                  = new CarrierRange;
@@ -127,7 +129,7 @@ class CarrierController extends Controller
                 $carrier_range->save();
 
                 // Add carrier range prices
-                foreach($request->zones as $zone){
+                foreach ($request->zones as $zone) {
                     $carrier_range_price =  new CarrierRangePrice;
                     $carrier_range_price->carrier_id = $carrier->id;
                     $carrier_range_price->carrier_range_id = $carrier_range->id;
@@ -137,8 +139,8 @@ class CarrierController extends Controller
                 }
             }
         }
-        flash(translate('New carrier has been added successfully'))->success();
-        return back();
+
+        return back()->with('success', translate('Carrier has been updated successfully'));
     }
 
     /**
@@ -150,14 +152,13 @@ class CarrierController extends Controller
     public function destroy($id)
     {
         $carrier = Carrier::findOrFail($id);
-        
+
         $carrier->carrier_ranges()->delete();
         $carrier->carrier_range_prices()->delete();
-        
+
         Carrier::destroy($id);
 
-        flash(translate('Carrier has been deleted successfully'))->success();
-        return redirect()->route('carriers.index');
+        return redirect()->route('carriers.index')->with('success', translate('Carrier has been deleted successfully'));
     }
 
     // Carrier status Update
@@ -165,9 +166,9 @@ class CarrierController extends Controller
     {
         $carrier = Carrier::findOrFail($request->id);
         $carrier->status = $request->status;
-        if($carrier->save()){
+        if ($carrier->save())
             return 1;
-        }
+            
         return 0;
     }
 }

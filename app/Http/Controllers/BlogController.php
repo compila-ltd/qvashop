@@ -71,16 +71,13 @@ class BlogController extends Controller
         $blog->slug = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->slug));
         $blog->short_description = $request->short_description;
         $blog->description = $request->description;
-
         $blog->meta_title = $request->meta_title;
         $blog->meta_img = $request->meta_img;
         $blog->meta_description = $request->meta_description;
         $blog->meta_keywords = $request->meta_keywords;
-
         $blog->save();
 
-        flash(translate('Blog post has been created successfully'))->success();
-        return redirect()->route('blog.index');
+        return redirect()->route('blog.index')->with('success', translate('Blog post has been created successfully'));
     }
 
     /**
@@ -119,16 +116,13 @@ class BlogController extends Controller
         $blog->slug = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->slug));
         $blog->short_description = $request->short_description;
         $blog->description = $request->description;
-
         $blog->meta_title = $request->meta_title;
         $blog->meta_img = $request->meta_img;
         $blog->meta_description = $request->meta_description;
         $blog->meta_keywords = $request->meta_keywords;
-
         $blog->save();
 
-        flash(translate('Blog post has been updated successfully'))->success();
-        return redirect()->route('blog.index');
+        return redirect()->route('blog.index')->with('success', translate('Blog post has been updated successfully'));
     }
 
     // Change Status
@@ -136,8 +130,8 @@ class BlogController extends Controller
     {
         $blog = Blog::find($request->id);
         $blog->status = $request->status;
-
         $blog->save();
+        
         return 1;
     }
 

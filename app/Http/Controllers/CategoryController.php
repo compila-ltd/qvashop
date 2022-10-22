@@ -96,8 +96,7 @@ class CategoryController extends Controller
         $category_translation->name = $request->name;
         $category_translation->save();
 
-        flash(translate('Category has been inserted successfully'))->success();
-        return redirect()->route('categories.index');
+        return redirect()->route('categories.index')->with('success', translate('Category has been inserted successfully'));
     }
 
     /**
@@ -179,8 +178,8 @@ class CategoryController extends Controller
         $category_translation->save();
 
         Cache::forget('featured_categories');
-        flash(translate('Category has been updated successfully'))->success();
-        return back();
+
+        return back()->with('success', translate('Category has been updated successfully'));
     }
 
     /**
@@ -207,8 +206,7 @@ class CategoryController extends Controller
         CategoryUtility::delete_category($id);
         Cache::forget('featured_categories');
 
-        flash(translate('Category has been deleted successfully'))->success();
-        return redirect()->route('categories.index');
+        return redirect()->route('categories.index')->with('success', translate('Category has been deleted successfully'));
     }
 
     public function updateFeatured(Request $request)

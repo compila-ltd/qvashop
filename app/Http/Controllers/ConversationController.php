@@ -31,8 +31,7 @@ class ConversationController extends Controller
             $conversations = Conversation::where('sender_id', Auth::user()->id)->orWhere('receiver_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(5);
             return view('frontend.user.conversations.index', compact('conversations'));
         } else {
-            flash(translate('Conversation is disabled at this moment'))->warning();
-            return back();
+            return back()->with('warning', translate('Conversation is disabled at this moment'));
         }
     }
 
@@ -47,8 +46,7 @@ class ConversationController extends Controller
             $conversations = Conversation::orderBy('created_at', 'desc')->get();
             return view('backend.support.conversations.index', compact('conversations'));
         } else {
-            flash(translate('Conversation is disabled at this moment'))->warning();
-            return back();
+            return back()->with('warning', translate('Conversation is disabled at this moment'));
         }
     }
 
@@ -78,8 +76,7 @@ class ConversationController extends Controller
             }
         }
 
-        flash(translate('Message has been sent to seller'))->success();
-        return back();
+        return back()->with('success', translate('Message has been sent to seller'));
     }
 
     public function send_message_to_seller($conversation, $message, $user_type)
@@ -101,7 +98,6 @@ class ConversationController extends Controller
         try {
             Mail::to($conversation->receiver->email)->queue(new ConversationMailManager($array));
         } catch (\Exception $e) {
-            //dd($e->getMessage());
         }
     }
 
@@ -172,10 +168,8 @@ class ConversationController extends Controller
         $conversation = Conversation::findOrFail(decrypt($id));
         $conversation->messages()->delete();
 
-        if (Conversation::destroy(decrypt($id))) {
-            flash(translate('Conversation has been deleted successfully'))->success();
-            return back();
-        }
+        if (Conversation::destroy(decrypt($id)))
+            return back()->with('success', translate('Conversation has been deleted successfully'));
     }
 
     /**
@@ -189,9 +183,7 @@ class ConversationController extends Controller
         $conversation = Conversation::findOrFail(decrypt($id));
         $conversation->messages()->delete();
 
-        if (Conversation::destroy(decrypt($id))) {
-            flash(translate('Conversation has been deleted successfully'))->success();
-            return back();
-        }
+        if (Conversation::destroy(decrypt($id)))
+            return back()->with('success', translate('Conversation has been deleted successfully'));
     }
 }

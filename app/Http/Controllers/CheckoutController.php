@@ -25,14 +25,16 @@ class CheckoutController extends Controller
     {
         // Minumum order amount check
         if (get_setting('minimum_order_amount_check') == 1) {
+
             $subtotal = 0;
+
             foreach (Cart::where('user_id', Auth::user()->id)->get() as $key => $cartItem) {
                 $product = Product::find($cartItem['product_id']);
                 $subtotal += cart_product_price($cartItem, $product, false, false) * $cartItem['quantity'];
             }
+
             if ($subtotal < get_setting('minimum_order_amount')) {
-                flash(translate('You order amount is less then the minimum order amount'))->warning();
-                return redirect()->route('home');
+                return redirect()->route('home')->with('warning', translate('You order amount is less then the minimum order amount'));
             }
         }
 
@@ -314,6 +316,7 @@ class CheckoutController extends Controller
                 flash(translate('Invalid point!'))->warning();
             }
         }
+        
         return back();
     }
 

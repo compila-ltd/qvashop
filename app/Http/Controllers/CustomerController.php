@@ -90,8 +90,8 @@ class CustomerController extends Controller
         $customer = User::findOrFail($id);
         $customer->customer_products()->delete();
         User::destroy($id);
-        flash(translate('Customer has been deleted successfully'))->success();
-        return redirect()->route('customers.index');
+
+        return redirect()->route('customers.index')->with('success', translate('Customer has been deleted successfully'));
     }
 
     public function bulk_customer_delete(Request $request)

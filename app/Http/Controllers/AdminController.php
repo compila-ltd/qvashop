@@ -47,10 +47,11 @@ class AdminController extends Controller
         return view('backend.dashboard', compact('root_categories', 'cached_graph_data'));
     }
 
-    function clearCache(Request $request)
+
+    // Empty all cachs
+    function clearCache()
     {
         Artisan::call('cache:clear');
-        flash(translate('Cache cleared successfully'))->success();
-        return back();
+        return back()->with('success', translate('Cache cleared successfully'));
     }
 }

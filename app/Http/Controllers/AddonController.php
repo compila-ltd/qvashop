@@ -116,8 +116,8 @@ class AddonController extends Controller
                             DB::unprepared(file_get_contents($sql_path));
                         }
 
-                        flash(translate('Addon installed successfully'))->success();
-                        return redirect()->route('addons.index');
+                        return redirect()->route('addons.index')->with('success', translate('Addon installed successfully'));
+
                     } else {
                         // Create new directories.
                         if (!empty($json['directory'])) {
@@ -153,17 +153,14 @@ class AddonController extends Controller
                         $addon->purchase_code = $request->purchase_code;
                         $addon->save();
 
-                        flash(translate('This addon is updated successfully'))->success();
-                        return redirect()->route('addons.index');
+                        return redirect()->route('addons.index')->with('success', translate('This addon is updated successfully'));
                     }
                 } else {
-                    flash(translate('This version is not capable of installing Addons, Please update.'))->error();
-                    return redirect()->route('addons.index');
+                    return redirect()->route('addons.index')->with('error', translate('This version is not capable of installing Addons, Please update.'));
                 }
             }
         } else {
-            flash(translate('Please enable ZipArchive extension.'))->error();
-            return back();
+            return back()->with('error', translate('Please enable ZipArchive extension.'));
         }
     }
 

@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Upload;
 use App\Models\Product;
-use App\Models\ProductStock;
 use App\Models\Category;
 use App\Models\ProductTax;
+use App\Models\ProductStock;
+use Illuminate\Http\Request;
 use App\Models\ProductTranslation;
-use App\Models\Upload;
 use App\Services\ProductTaxService;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class DigitalProductController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
 
         // Staff Permission Check
         $this->middleware(['permission:show_digital_products'])->only('index');
@@ -117,23 +119,10 @@ class DigitalProductController extends Controller
             $product_translation->description   = $request->description;
             $product_translation->save();
 
-            flash(translate('Digital Product has been inserted successfully'))->success();
-            return redirect()->route('digitalproducts.index');
-        } else {
-            flash(translate('Something went wrong'))->error();
-            return back();
+            return redirect()->route('digitalproducts.index')->with('status', 'Digital Product has been inserted successfully');
         }
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        return back()->with('danger', translate('Something went wrong'));
     }
 
     /**
@@ -223,12 +212,10 @@ class DigitalProductController extends Controller
             $product_translation->description   = $request->description;
             $product_translation->save();
 
-            flash(translate('Digital Product has been updated successfully'))->success();
-            return back();
-        } else {
-            flash(translate('Something went wrong'))->error();
-            return back();
+            return back()->with('success', translate('Digital Product has been updated successfully'));
         }
+
+        return back()->with('danger', translate('Something went wrong'));
     }
 
     /**
@@ -240,14 +227,11 @@ class DigitalProductController extends Controller
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
-
         $product->product_translations()->delete();
         $product->stocks()->delete();
-
         Product::destroy($id);
 
-        flash(translate('Product has been deleted successfully'))->success();
-        return redirect()->route('digitalproducts.index');
+        return redirect()->route('digitalproducts.index')->with('success', translate('Product has been deleted successfully'));
     }
 
 
@@ -266,7 +250,7 @@ class DigitalProductController extends Controller
         if (Auth::user()->user_type == 'admin' || Auth::user()->id == $product->user_id || $downloadable) {
             $upload = Upload::findOrFail($product->file_name);
             if (env('FILESYSTEM_DRIVER') == "s3") {
-                return \Storage::disk('s3')->download($upload->file_name, $upload->file_original_name . "." . $upload->extension);
+                return Storage::disk('s3')->download($upload->file_name, $upload->file_original_name . "." . $upload->extension);
             } else {
                 if (file_exists(base_path('public/' . $upload->file_name))) {
                     return response()->download(base_path('public/' . $upload->file_name));

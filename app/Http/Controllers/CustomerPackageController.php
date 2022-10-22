@@ -61,20 +61,7 @@ class CustomerPackageController extends Controller
         $customer_package_translation->name = $request->name;
         $customer_package_translation->save();
 
-
-        flash(translate('Package has been inserted successfully'))->success();
-        return redirect()->route('customer_packages.index');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        return redirect()->route('customer_packages.index')->with('success', translate('Package has been inserted successfully'));
     }
 
     /**
@@ -106,15 +93,13 @@ class CustomerPackageController extends Controller
         $customer_package->amount = $request->amount;
         $customer_package->product_upload = $request->product_upload;
         $customer_package->logo = $request->logo;
-
         $customer_package->save();
 
         $customer_package_translation = CustomerPackageTranslation::firstOrNew(['lang' => $request->lang, 'customer_package_id' => $customer_package->id]);
         $customer_package_translation->name = $request->name;
         $customer_package_translation->save();
 
-        flash(translate('Package has been updated successfully'))->success();
-        return back();
+        return back()->with('success', translate('Package has been updated successfully'));
     }
 
     /**
@@ -131,8 +116,7 @@ class CustomerPackageController extends Controller
         }
         CustomerPackage::destroy($id);
 
-        flash(translate('Package has been deleted successfully'))->success();
-        return redirect()->route('customer_packages.index');
+        return redirect()->route('customer_packages.index')->with('success', translate('Package has been deleted successfully'));
     }
 
     public function purchase_package(Request $request)
@@ -147,18 +131,17 @@ class CustomerPackageController extends Controller
 
         if ($customer_package->amount == 0) {
             $user = User::findOrFail(Auth::user()->id);
-            if ($user->customer_package_id != $customer_package->id) {
+
+            if ($user->customer_package_id != $customer_package->id)
                 return $this->purchase_payment_done(Session::get('payment_data'), null);
-            } else {
-                flash(translate('You can not purchase this package anymore.'))->warning();
-                return back();
-            }
+
+            return back()->with('warning', translate('You can not purchase this package anymore.'));
         }
 
         $decorator = __NAMESPACE__ . '\\Payment\\' . str_replace(' ', '', ucwords(str_replace('_', ' ', $request->payment_option))) . "Controller";
-        if (class_exists($decorator)) {
+
+        if (class_exists($decorator))
             return (new $decorator)->pay($request);
-        }
     }
 
     public function purchase_payment_done($payment_data, $payment)
@@ -169,8 +152,7 @@ class CustomerPackageController extends Controller
         $user->remaining_uploads += $customer_package->product_upload;
         $user->save();
 
-        flash(translate('Package purchasing successful'))->success();
-        return redirect()->route('dashboard');
+        return redirect()->route('dashboard')->with('success', translate('Package purchasing successful'));
     }
 
     public function purchase_package_offline(Request $request)
@@ -184,7 +166,7 @@ class CustomerPackageController extends Controller
         $customer_package->offline_payment = 1;
         $customer_package->reciept = ($request->photo == null) ? '' : $request->photo;
         $customer_package->save();
-        flash(translate('Offline payment has been done. Please wait for response.'))->success();
-        return redirect()->route('customer_products.index');
+
+        return redirect()->route('customer_products.index')->with('success', translate('Offline payment has been done. Please wait for response.'));
     }
 }

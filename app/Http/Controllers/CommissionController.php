@@ -77,13 +77,11 @@ class CommissionController extends Controller
         Session::forget('payment_data');
         Session::forget('payment_type');
 
-        if ($payment_data['payment_withdraw'] == 'withdraw_request') {
-            flash(translate('Payment completed'))->success();
-            return redirect()->route('withdraw_requests_all');
-        } else {
-            flash(translate('Payment completed'))->success();
-            return redirect()->route('sellers.index');
-        }
+        if ($payment_data['payment_withdraw'] == 'withdraw_request')
+            return redirect()->route('withdraw_requests_all')->with('success', translate('Payment completed'));
+        else
+            return redirect()->route('sellers.index')->with('success', translate('Payment completed'));
+            
     }
 
     // Calculate seller commission after payment
@@ -127,9 +125,8 @@ class CommissionController extends Controller
                     $commission_history->save();
                 }
             }
-
         } else {
-            
+
             foreach ($order->orderDetails as $orderDetail) {
 
                 $orderDetail->payment_status = 'paid';
@@ -147,7 +144,7 @@ class CommissionController extends Controller
 
                 // 
                 if ($orderDetail->product->user->user_type == 'seller') {
-                    
+
                     $seller = $orderDetail->product->user->shop;
                     $admin_commission = ($orderDetail->price * $commission_percentage) / 100;
 
