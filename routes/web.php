@@ -50,7 +50,9 @@ Route::get('/refresh-csrf', function () {
 });
 
 // Debug LN
-Route::get('/ln', [LightningController::class, 'pay'])->name('ln.create_invoice');
+Route::get('/flash', function () {
+    return redirect()->route('home')->with('info', 'Item created successfully!');
+});
 
 // Sitemap generator
 Route::get('/sitemap.xml', [SitemapController::class, 'generate'])->name('sitemap-generator');

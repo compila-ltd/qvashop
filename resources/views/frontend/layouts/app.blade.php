@@ -88,29 +88,9 @@
         }
 
         :root {
-            --primary: {
-                    {
-                    get_setting('base_color', '#e62d04')
-                }
-            }
-
-            ;
-
-            --hov-primary: {
-                    {
-                    get_setting('base_hov_color', '#c52907')
-                }
-            }
-
-            ;
-
-            --soft-primary: {
-                    {
-                    hex2rgba(get_setting('base_color', '#e62d04'), .15)
-                }
-            }
-
-            ;
+            --primary: {{ get_setting('base_color', '#e62d04') }};
+            --hov-primary: {{ get_setting('base_hov_color', '#c52907') }};
+            --soft-primary: {{ hex2rgba(get_setting('base_color', '#e62d04'), .15) }};
         }
 
         #map {
@@ -135,14 +115,10 @@
 </head>
 
 <body>
-    <!-- aiz-main-wrapper -->
     <div class="aiz-main-wrapper d-flex flex-column">
-
-        <!-- Header -->
         @include('frontend.inc.nav')
         @yield('content')
         @include('frontend.inc.footer')
-
     </div>
 
     @if (get_setting('show_cookies_agreement') == 'on')
@@ -216,13 +192,13 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-242712334-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-
         function gtag() {
             dataLayer.push(arguments);
         }
         gtag('js', new Date());
         gtag('config', 'UA-242712334-1');
     </script>
+    <!-- End Google tag -->
 
     <!-- Facebook Pixel Code -->
     <script>
@@ -272,6 +248,8 @@
     <div class="fb-customerchat" attribution=setup_tool page_id="100291932862392"></div>
     <!-- End Facebook Chat Code -->
 
+    @include('frontend.flash')
+    
     <script>
         $(document).ready(function() {
             $('.category-nav-element').each(function(i, el) {
@@ -301,8 +279,7 @@
 
                     });
                 });
-            }
-
+            };
             if ($('#currency-change').length > 0) {
                 $('#currency-change .dropdown-menu a').each(function() {
                     $(this).on('click', function(e) {
@@ -341,7 +318,6 @@
                     search: searchKey
                 }, function(data) {
                     if (data == '0') {
-                        // $('.typed-search-box').addClass('d-none');
                         $('#search-content').html(null);
                         $('.typed-search-box .search-nothing').removeClass('d-none').html('Sorry, nothing found for <strong>"' + searchKey + '"</strong>');
                         $('.search-preloader').addClass('d-none');
@@ -387,7 +363,7 @@
         }
 
         function addToWishList(id) {
-            @if(Auth::check() && Auth::user() - > user_type == 'customer')
+            @if(Auth::check() && Auth::user()->user_type == 'customer')
             $.post("{{ route('wishlists.store') }}", {
                 _token: AIZ.data.csrf,
                 id: id
@@ -399,7 +375,7 @@
                     AIZ.plugins.notify('warning', "{{ translate('Please login first') }}");
                 }
             });
-            @elseif(Auth::check() && Auth::user() - > user_type != 'customer')
+            @elseif(Auth::check() && Auth::user()->user_type != 'customer')
             AIZ.plugins.notify('warning', "{{ translate('Please Login as a customer to add products to the WishList.') }}");
             @else
             AIZ.plugins.notify('warning', "{{ translate('Please login first') }}");
@@ -473,16 +449,14 @@
             $.each(names, function() { // then count them
                 count++;
             });
-
             if ($('#option-choice-form input:radio:checked').length == count) {
                 return true;
             }
-
             return false;
         }
 
         function addToCart() {
-            @if(Auth::check() && Auth::user() - > user_type != 'customer')
+            @if(Auth::check() && Auth::user()->user_type != 'customer')
             AIZ.plugins.notify('warning', "{{ translate('Please Login as a customer to add products to the Cart.') }}");
             return false;
             @endif
@@ -495,7 +469,6 @@
                     url: "{{ route('cart.addToCart') }}",
                     data: $('#option-choice-form').serializeArray(),
                     success: function(data) {
-
                         $('#addToCart-modal-body').html(null);
                         $('.c-preloader').hide();
                         $('#modal-size').removeClass('modal-lg');
@@ -511,7 +484,7 @@
         }
 
         function buyNow() {
-            @if(Auth::check() && Auth::user() - > user_type != 'customer')
+            @if(Auth::check() && Auth::user()->user_type != 'customer')
             AIZ.plugins.notify('warning', "{{ translate('Please Login as a customer to add products to the Cart.') }}");
             return false;
             @endif
@@ -552,5 +525,4 @@
     @endphp
 
 </body>
-
 </html>
