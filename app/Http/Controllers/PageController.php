@@ -37,6 +37,7 @@ class PageController extends Controller
     {
         $page = new Page;
         $page->title = $request->title;
+
         if (Page::where('slug', preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->slug)))->first() == null) {
             $page->slug             = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->slug));
             $page->type             = "custom_page";
@@ -52,12 +53,10 @@ class PageController extends Controller
             $page_translation->content  = $request->content;
             $page_translation->save();
 
-            flash(translate('New page has been created successfully'))->success();
-            return redirect()->route('website.pages');
+            return redirect()->route('website.pages')->with('success', 'New page has been created successfully');
         }
 
-        flash(translate('Slug has been used already'))->warning();
-        return back();
+        return back()->with('warning', translate('Slug has been used already'));
     }
 
     /**
@@ -78,6 +77,7 @@ class PageController extends Controller
                 return view('backend.website_settings.pages.edit', compact('page', 'lang'));
             }
         }
+
         abort(404);
     }
 
@@ -110,12 +110,10 @@ class PageController extends Controller
             $page_translation->content  = $request->content;
             $page_translation->save();
 
-            flash(translate('Page has been updated successfully'))->success();
-            return redirect()->route('website.pages');
+            return redirect()->route('website.pages')->with('success', translate('Page has been updated successfully'));
         }
 
-        flash(translate('Slug has been used already'))->warning();
-        return back();
+        return back()->with('warning', translate('Slug has been used already'));
     }
 
     /**
@@ -129,10 +127,9 @@ class PageController extends Controller
         $page = Page::findOrFail($id);
         $page->page_translations()->delete();
 
-        if (Page::destroy($id)) {
-            flash(translate('Page has been deleted successfully'))->success();
-            return redirect()->back();
-        }
+        if (Page::destroy($id))
+            return redirect()->back()->with('success', translate('Page has been deleted successfully'));
+
         return back();
     }
 
@@ -142,15 +139,17 @@ class PageController extends Controller
         if ($page != null) {
             return view('frontend.custom_page', compact('page'));
         }
+
         abort(404);
     }
-    
+
     public function mobile_custom_page($slug)
     {
         $page = Page::where('slug', $slug)->first();
         if ($page != null) {
             return view('frontend.m_custom_page', compact('page'));
         }
+
         abort(404);
     }
 }

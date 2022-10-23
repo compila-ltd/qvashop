@@ -82,6 +82,7 @@ class VerificationController extends Controller
     public function verification_confirmation($code)
     {
         $user = User::where('verification_code', $code)->first();
+        
         if ($user != null) {
             $user->email_verified_at = Carbon::now();
             $user->save();
@@ -91,9 +92,8 @@ class VerificationController extends Controller
             flash(translate('Sorry, we could not verifiy you. Please try again'))->error();
         }
 
-        if ($user->user_type == 'seller') {
+        if ($user->user_type == 'seller')
             return redirect()->route('seller.dashboard');
-        }
 
         return redirect()->route('dashboard');
     }

@@ -32,7 +32,6 @@ class LoginController extends Controller
      */
     /*protected $redirectTo = '/';*/
 
-
     /**
      * Redirect the user to the Google authentication page.
      *
@@ -63,8 +62,7 @@ class LoginController extends Controller
                 $user = Socialite::driver($provider)->stateless()->user();
             }
         } catch (\Exception $e) {
-            flash("Something Went wrong. Please try again.")->error();
-            return redirect()->route('user.login');
+            return redirect()->route('user.login')->with('danger', 'Something Went wrong. Please try again.');
         }
 
         //check if provider_id exist
@@ -86,7 +84,6 @@ class LoginController extends Controller
 
                 //proceed to login
                 auth()->login($existing_User, true);
-
             } else {
                 //create a new user
                 $newUser = new User;
@@ -237,7 +234,6 @@ class LoginController extends Controller
         }
 
         $this->guard()->logout();
-
         $request->session()->invalidate();
 
         return $this->loggedOut($request) ?: redirect()->route($redirect_route);

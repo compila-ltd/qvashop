@@ -5,13 +5,10 @@ namespace App\Http\Controllers\Auth;
 use Nexmo;
 use App\Models\Cart;
 use App\Models\User;
-use Twilio\Rest\Client;
-use App\Models\Customer;
 use Illuminate\Http\Request;
 use App\Models\BusinessSetting;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -102,16 +99,17 @@ class RegisterController extends Controller
         return $user;
     }
 
+    /**
+     * Register User
+     */
     public function register(Request $request)
     {
         if (filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
             if (User::where('email', $request->email)->first() != null) {
-                flash(translate('Email or Phone already exists.'));
-                return back();
+                return back()->with('warning', translate('Email or Phone already exists.'));
             }
         } elseif (User::where('phone', '+' . $request->country_code . $request->phone)->first() != null) {
-            flash(translate('Phone already exists.'));
-            return back();
+            return back()->with('warning', translate('Email or Phone already exists.'));
         }
 
         $this->validator($request->all())->validate();
@@ -137,6 +135,9 @@ class RegisterController extends Controller
         return $this->registered($request, $user) ?: redirect($this->redirectPath());
     }
 
+    /**
+     * Redirect if already registered
+     */
     protected function registered(Request $request, $user)
     {
         if ($user->email == null) {

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Seller;
 
-use App\Http\Controllers\Controller;
 use App\Models\ProductQuery;
-use Auth;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ProductQueryController extends Controller
 {
@@ -17,6 +17,7 @@ class ProductQueryController extends Controller
         $queries = ProductQuery::where('seller_id', Auth::id())->latest()->paginate(20);
         return view('seller.product_query.index', compact('queries'));
     }
+
     /**
      * Retrieve specific query using query id.
      */
@@ -25,10 +26,10 @@ class ProductQueryController extends Controller
         $query = ProductQuery::find(decrypt($id));
         return view('seller.product_query.show', compact('query'));
     }
+
     /**
      * Store reply against the question from seller panel
      */
-
     public function reply(Request $request, $id)
     {
         $this->validate($request, [
@@ -37,7 +38,7 @@ class ProductQueryController extends Controller
         $query = ProductQuery::find($id);
         $query->reply = $request->reply;
         $query->save();
-        flash(translate('Replied successfully!'))->success();
-        return redirect()->route('seller.product_query.index');
+
+        return redirect()->route('seller.product_query.index')->with('success', translate('Replied successfully!'));
     }
 }

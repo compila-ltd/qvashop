@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers\Seller;
 
-use App\Http\Requests\ProductRequest;
+use Combinations;
+use Carbon\Carbon;
+use App\Models\Cart;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\ProductTax;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\AttributeValue;
-use App\Models\Cart;
-use App\Models\Category;
-use App\Models\Product;
-use App\Models\ProductTax;
-use App\Models\ProductTranslation;
-use Carbon\Carbon;
-use Combinations;
-use Artisan;
-use Auth;
-use Str;
-
 use App\Services\ProductService;
+
+use App\Models\ProductTranslation;
 use App\Services\ProductTaxService;
-use App\Services\ProductFlashDealService;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\ProductRequest;
 use App\Services\ProductStockService;
+use Illuminate\Support\Facades\Artisan;
+use App\Services\ProductFlashDealService;
 
 class ProductController extends Controller
 {
@@ -40,6 +40,9 @@ class ProductController extends Controller
         $this->productStockService = $productStockService;
     }
 
+    /**
+     * Product Index
+     */
     public function index(Request $request)
     {
         $search = null;
@@ -49,9 +52,13 @@ class ProductController extends Controller
             $products = $products->where('name', 'like', '%' . $search . '%');
         }
         $products = $products->paginate(10);
+
         return view('seller.product.products.index', compact('products', 'search'));
     }
 
+    /**
+     * Create a product
+     */
     public function create(Request $request)
     {
         if (addon_is_activated('seller_subscription')) {
@@ -62,65 +69,85 @@ class ProductController extends Controller
                     ->get();
                 return view('seller.product.products.create', compact('categories'));
             } else {
-                flash(translate('Please upgrade your package.'))->warning();
-                return back();
+                return back()->with('warning', translate('Please upgrade your package.'));
             }
         }
+
         $categories = Category::where('parent_id', 0)
             ->where('digital', 0)
             ->with('childrenCategories')
             ->get();
+
         return view('seller.product.products.create', compact('categories'));
     }
 
+    /**
+     * Store a product
+     */
     public function store(ProductRequest $request)
     {
         if (addon_is_activated('seller_subscription')) {
             if (!seller_package_validity_check()) {
-                flash(translate('Please upgrade your package.'))->warning();
-                return redirect()->route('seller.products');
+                return redirect()->route('seller.products')->with('warning', translate('Please upgrade your package.'));
             }
         }
 
         $product = $this->productService->store($request->except([
-            '_token', 'sku', 'choice', 'tax_id', 'tax', 'tax_type', 'flash_deal_id', 'flash_discount', 'flash_discount_type'
+            '_token',
+            'sku',
+            'choice',
+            'tax_id',
+            'tax',
+            'tax_type',
+            'flash_deal_id',
+            'flash_discount',
+            'flash_discount_type'
         ]));
         $request->merge(['product_id' => $product->id]);
-        
+
         //VAT & Tax
-        if($request->tax_id) {
+        if ($request->tax_id) {
             $this->productTaxService->store($request->only([
-                'tax_id', 'tax', 'tax_type', 'product_id'
+                'tax_id',
+                'tax',
+                'tax_type',
+                'product_id'
             ]));
         }
 
         //Product Stock
         $this->productStockService->store($request->only([
-            'colors_active', 'colors', 'choice_no', 'unit_price', 'sku', 'current_stock', 'product_id'
+            'colors_active',
+            'colors',
+            'choice_no',
+            'unit_price',
+            'sku',
+            'current_stock',
+            'product_id'
         ]), $product);
 
         // Product Translations
         $request->merge(['lang' => env('DEFAULT_LANGUAGE')]);
         ProductTranslation::create($request->only([
-            'lang', 'name', 'unit', 'description', 'product_id'
+            'lang',
+            'name',
+            'unit',
+            'description',
+            'product_id'
         ]));
-
-        flash(translate('Product has been inserted successfully'))->success();
 
         Artisan::call('view:clear');
         Artisan::call('cache:clear');
 
-        return redirect()->route('seller.products');
+        return redirect()->route('seller.products')->with('success', translate('Product has been inserted successfully'));
     }
 
     public function edit(Request $request, $id)
     {
         $product = Product::findOrFail($id);
 
-        if (Auth::user()->id != $product->user_id) {
-            flash(translate('This product is not yours.'))->warning();
-            return back();
-        }
+        if (Auth::user()->id != $product->user_id)
+            return back()->with('warning', translate('This product is not yours.'));
 
         $lang = $request->lang;
         $tags = json_decode($product->tags);
@@ -128,23 +155,42 @@ class ProductController extends Controller
             ->where('digital', 0)
             ->with('childrenCategories')
             ->get();
+
         return view('seller.product.products.edit', compact('product', 'categories', 'tags', 'lang'));
     }
 
+    /**
+     * Update a product
+     */
     public function update(ProductRequest $request, Product $product)
     {
         //Product
         $product = $this->productService->update($request->except([
-            '_token', 'sku', 'choice', 'tax_id', 'tax', 'tax_type', 'flash_deal_id', 'flash_discount', 'flash_discount_type'
+            '_token',
+            'sku',
+            'choice',
+            'tax_id',
+            'tax',
+            'tax_type',
+            'flash_deal_id',
+            'flash_discount',
+            'flash_discount_type'
         ]), $product);
 
         //Product Stock
         foreach ($product->stocks as $key => $stock) {
             $stock->delete();
         }
+
         $request->merge(['product_id' => $product->id]);
         $this->productStockService->store($request->only([
-            'colors_active', 'colors', 'choice_no', 'unit_price', 'sku', 'current_stock', 'product_id'
+            'colors_active',
+            'colors',
+            'choice_no',
+            'unit_price',
+            'sku',
+            'current_stock',
+            'product_id'
         ]), $product);
 
         //VAT & Tax
@@ -152,7 +198,10 @@ class ProductController extends Controller
             ProductTax::where('product_id', $product->id)->delete();
             $request->merge(['product_id' => $product->id]);
             $this->productTaxService->store($request->only([
-                'tax_id', 'tax', 'tax_type', 'product_id'
+                'tax_id',
+                'tax',
+                'tax_type',
+                'product_id'
             ]));
         }
 
@@ -160,17 +209,22 @@ class ProductController extends Controller
         ProductTranslation::where('lang', $request->lang)
             ->where('product_id', $request->product_id)
             ->update($request->only([
-            'lang', 'name', 'unit', 'description', 'product_id'
-        ]));
-
-        flash(translate('Product has been updated successfully'))->success();
+                'lang',
+                'name',
+                'unit',
+                'description',
+                'product_id'
+            ]));
 
         Artisan::call('view:clear');
         Artisan::call('cache:clear');
 
-        return back();
+        return back()->with('suceess', translate('Product has been updated successfully'));
     }
 
+    /**
+     * SKU Combinations
+     */
     public function sku_combination(Request $request)
     {
         $options = array();
@@ -232,13 +286,10 @@ class ProductController extends Controller
     public function add_more_choice_option(Request $request)
     {
         $all_attribute_values = AttributeValue::with('attribute')->where('attribute_id', $request->attribute_id)->get();
-
         $html = '';
-
         foreach ($all_attribute_values as $row) {
             $html .= '<option value="' . $row->value . '">' . $row->value . '</option>';
         }
-
         echo json_encode($html);
     }
 
@@ -275,14 +326,12 @@ class ProductController extends Controller
     public function duplicate($id)
     {
         $product = Product::find($id);
-        if (Auth::user()->id != $product->user_id) {
-            flash(translate('This product is not yours.'))->warning();
-            return back();
-        }
+        if (Auth::user()->id != $product->user_id)
+            return back()->with('warning', translate('This product is not yours.'));
+
         if (addon_is_activated('seller_subscription')) {
             if (!seller_package_validity_check()) {
-                flash(translate('Please upgrade your package.'))->warning();
-                return back();
+                return back()->with('warning', translate('Please upgrade your package.'));
             }
         }
 
@@ -297,40 +346,33 @@ class ProductController extends Controller
             //VAT & Tax
             $this->productTaxService->product_duplicate_store($product->taxes, $product_new);
 
-            flash(translate('Product has been duplicated successfully'))->success();
-            return redirect()->route('seller.products');
-        } else {
-            flash(translate('This product is not yours.'))->warning();
-            return back();
+            return redirect()->route('seller.products')->with('success', translate('Product has been duplicated successfully'));
         }
+
+        return back()->with('warning', translate('This product is not yours.'));
     }
 
+    /**
+     * Destroy this product
+     */
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
 
-        if (Auth::user()->id != $product->user_id) {
-            flash(translate('This product is not yours.'))->warning();
-            return back();
-        }
+        if (Auth::user()->id != $product->user_id)
+            return back()->with('warning', translate('This product is not yours.'));
 
         $product->product_translations()->delete();
         $product->stocks()->delete();
         $product->taxes()->delete();
 
-
         if (Product::destroy($id)) {
             Cart::where('product_id', $id)->delete();
-
-            flash(translate('Product has been deleted successfully'))->success();
-
             Artisan::call('view:clear');
             Artisan::call('cache:clear');
-
-            return back();
-        } else {
-            flash(translate('Something went wrong'))->error();
-            return back();
+            return back()->with('success', translate('Product has been deleted successfully'));
         }
+
+        return back()->with('danger', translate('Something went wrong'));
     }
 }

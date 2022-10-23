@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Seller;
 
-use Illuminate\Http\Request;
+use App\Models\Upload;
 use App\Models\Product;
-use App\Models\ProductStock;
 use App\Models\Category;
 use App\Models\ProductTax;
+use App\Models\ProductStock;
+use Illuminate\Http\Request;
 use App\Models\ProductTranslation;
-use App\Models\Upload;
 use App\Services\ProductTaxService;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class DigitalProductController  extends Controller
 {
@@ -32,14 +33,12 @@ class DigitalProductController  extends Controller
      */
     public function create()
     {
-        if(addon_is_activated('seller_subscription')){
-            if(seller_package_validity_check()){
+        if (addon_is_activated('seller_subscription')) {
+            if (seller_package_validity_check()) {
                 $categories = Category::where('digital', 1)->get();
                 return view('seller.product.digitalproducts.create', compact('categories'));
-            }
-            else {
-                flash(translate('Please upgrade your package.'))->warning();
-                return back();
+            } else {
+                return back()->with('warning', translate('Please upgrade your package.'));
             }
         }
         $categories = Category::where('digital', 1)->get();
@@ -54,10 +53,9 @@ class DigitalProductController  extends Controller
      */
     public function store(Request $request)
     {
-        if(addon_is_activated('seller_subscription')){
-            if(!seller_package_validity_check()){
-                flash(translate('Please upgrade your package.'))->warning();
-                return redirect()->route('seller.digitalproducts');
+        if (addon_is_activated('seller_subscription')) {
+            if (!seller_package_validity_check()) {
+                return redirect()->route('seller.digitalproducts')->with('warning', translate('Please upgrade your package.'));
             }
         }
 
@@ -71,7 +69,7 @@ class DigitalProductController  extends Controller
         $product->thumbnail_img     = $request->thumbnail_img;
 
         $tags = array();
-        if($request->tags[0] != null){
+        if ($request->tags[0] != null) {
             foreach (json_decode($request->tags[0]) as $key => $tag) {
                 array_push($tags, $tag->value);
             }
@@ -90,17 +88,21 @@ class DigitalProductController  extends Controller
 
         $product->file_name = $request->file;
 
-        $product->slug = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name)).'-'.rand(10000,99999);
+        $product->slug = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name)) . '-' . rand(10000, 99999);
 
-        if($product->save()){
+        if ($product->save()) {
             $request->merge(['product_id' => $product->id]);
+
             //VAT & Tax
             if ($request->tax_id) {
                 (new ProductTaxService)->store($request->only([
-                    'tax_id', 'tax', 'tax_type', 'product_id'
+                    'tax_id',
+                    'tax',
+                    'tax_type',
+                    'product_id'
                 ]));
             }
-            
+
             $product_stock              = new ProductStock;
             $product_stock->product_id  = $product->id;
             $product_stock->variant     = '';
@@ -115,13 +117,10 @@ class DigitalProductController  extends Controller
             $product_translation->description   = $request->description;
             $product_translation->save();
 
-            flash(translate('Digital Product has been inserted successfully'))->success();
-            return redirect()->route('seller.digitalproducts');
+            return redirect()->route('seller.digitalproducts')->with('success', translate('Digital Product has been inserted successfully'));
         }
-        else{
-            flash(translate('Something went wrong'))->error();
-            return back();
-        }
+
+        return back()->with('danger', translate('Something went wrong'));
     }
 
     /**
@@ -135,6 +134,7 @@ class DigitalProductController  extends Controller
         $categories = Category::where('digital', 1)->get();
         $lang = $request->lang;
         $product = Product::find($id);
+
         return view('seller.product.digitalproducts.edit', compact('categories', 'product', 'lang'));
     }
 
@@ -148,7 +148,8 @@ class DigitalProductController  extends Controller
     public function update(Request $request, $id)
     {
         $product                    = Product::findOrFail($id);
-        if($request->lang == env("DEFAULT_LANGUAGE")){
+
+        if ($request->lang == env("DEFAULT_LANGUAGE")) {
             $product->name          = $request->name;
             $product->description   = $request->description;
         }
@@ -160,7 +161,7 @@ class DigitalProductController  extends Controller
         $product->thumbnail_img     = $request->thumbnail_img;
 
         $tags = array();
-        if($request->tags[0] != null){
+        if ($request->tags[0] != null) {
             foreach (json_decode($request->tags[0]) as $key => $tag) {
                 array_push($tags, $tag->value);
             }
@@ -177,20 +178,17 @@ class DigitalProductController  extends Controller
         $product->meta_img          = $request->meta_img;
         $product->slug              = strtolower($request->slug);
 
-        // if($request->hasFile('file')){
-        //     $product->file_name = $request->file('file')->getClientOriginalName();
-        //     $product->file_path = $request->file('file')->store('uploads/products/digital');
-        // }
-
         $product->file_name = $request->file;
 
         // Delete From Product Stock
         foreach ($product->stocks as $key => $stock) {
             $stock->delete();
         }
-        
-        if($product->save()){
+
+        if ($product->save()) {
+
             $request->merge(['product_id' => $product->id]);
+
             //VAT & Tax
             if ($request->tax_id) {
                 ProductTax::where('product_id', $product->id)->delete();
@@ -206,25 +204,17 @@ class DigitalProductController  extends Controller
             $product_stock->sku         = '';
             $product_stock->qty         = 0;
             $product_stock->save();
-            
+
             // Product Translations
             $product_translation                = ProductTranslation::firstOrNew(['lang' => $request->lang, 'product_id' => $product->id]);
             $product_translation->name          = $request->name;
             $product_translation->description   = $request->description;
             $product_translation->save();
 
-            flash(translate('Digital Product has been updated successfully'))->success();
-            if(Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'staff'){
-                return back();
-            }
-            else{
-                return back();
-            }
+            return back()->with('success', translate('Digital Product has been updated successfully'));
         }
-        else{
-            flash(translate('Something went wrong'))->error();
-            return back();
-        }
+
+        return back()->with('danger', translate('Something went wrong'));
     }
 
     /**
@@ -236,31 +226,29 @@ class DigitalProductController  extends Controller
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
-
         $product->product_translations()->delete();
         $product->stocks()->delete();
-
         Product::destroy($id);
 
-        flash(translate('Product has been deleted successfully'))->success();
-        return redirect()->route('seller.digitalproducts');
+        return redirect()->route('seller.digitalproducts')->with('success', translate('Product has been deleted successfully'));
     }
 
-
-    public function download(Request $request){
+    /**
+     * Download Digital Product
+     */
+    public function download(Request $request)
+    {
         $product = Product::findOrFail(decrypt($request->id));
-        if(Auth::user()->id == $product->user_id){
+        if (Auth::user()->id == $product->user_id) {
             $upload = Upload::findOrFail($product->file_name);
             if (env('FILESYSTEM_DRIVER') == "s3") {
-                return \Storage::disk('s3')->download($upload->file_name, $upload->file_original_name.".".$upload->extension);
-            }
-            else {
-                if (file_exists(base_path('public/'.$upload->file_name))) {
-                    return response()->download(base_path('public/'.$upload->file_name));
+                return Storage::disk('s3')->download($upload->file_name, $upload->file_original_name . "." . $upload->extension);
+            } else {
+                if (file_exists(base_path('public/' . $upload->file_name))) {
+                    return response()->download(base_path('public/' . $upload->file_name));
                 }
             }
-        }
-        else {
+        } else {
             abort(404);
         }
     }

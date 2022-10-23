@@ -69,11 +69,10 @@ class AddressController extends Controller
         $address->latitude      = $request->latitude;
         $address->postal_code   = $request->postal_code;
         $address->phone         = $request->phone;
-
+        
         $address->save();
 
-        flash(translate('Address info updated successfully'))->success();
-        return back();
+        return back()->with('success', translate('Address info updated successfully'));
     }
 
     /**
@@ -89,8 +88,8 @@ class AddressController extends Controller
             $address->delete();
             return back();
         }
-        flash(translate('Default address can not be deleted'))->warning();
-        return back();
+
+        return back()->with('warning', translate('Default address can not be deleted'));
     }
 
     public function getStates(Request $request)

@@ -27,7 +27,6 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Auth\Events\PasswordReset;
 use App\Mail\SecondEmailVerifyMailManager;
-use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\URL;
 
 class HomeController extends Controller
@@ -98,6 +97,7 @@ class HomeController extends Controller
 
                 //$affiliateController = new AffiliateController;
                 //$affiliateController->processAffiliateStats($referred_by_user->id, 1, 0, 0, 0);
+
             } catch (\Exception $e) {
             }
         }
@@ -126,17 +126,8 @@ class HomeController extends Controller
         } else {
             flash(translate('Invalid email or password!'))->warning();
         }
-        return back();
-    }
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //$this->middleware('auth');
+        return back();
     }
 
     /**
@@ -172,6 +163,7 @@ class HomeController extends Controller
     public function userProfileUpdate(Request $request)
     {
         $user = Auth::user();
+
         $user->name = $request->name;
         $user->address = $request->address;
         $user->country = $request->country;
@@ -179,15 +171,13 @@ class HomeController extends Controller
         $user->postal_code = $request->postal_code;
         $user->phone = $request->phone;
 
-        if ($request->new_password != null && ($request->new_password == $request->confirm_password)) {
+        if ($request->new_password != null && ($request->new_password == $request->confirm_password))
             $user->password = Hash::make($request->new_password);
-        }
 
         $user->avatar_original = $request->photo;
         $user->save();
 
-        flash(translate('Your Profile has been updated successfully!'))->success();
-        return back();
+        return back()->with('success', translate('Your Profile has been updated successfully!'));
     }
 
     // Flash Deals
@@ -329,7 +319,6 @@ class HomeController extends Controller
     public function shop($slug)
     {
         // Cache Shop for 5 minutes
-        //$shop = Shop::where('slug', $slug)->first();
         $shop = Cache::remember('shop_' . $slug, 300, function () use ($slug) {
             return Shop::where('slug', $slug)->first();
         });
@@ -363,7 +352,6 @@ class HomeController extends Controller
     public function all_categories(Request $request)
     {
         // Cache All categpries by 30 minutes
-        //$categories = Category::where('level', 0)->orderBy('order_level', 'desc')->get();
         $categories = Cache::remember('all_categories_level_0_ordered', 1800, function () {
             return Category::where('level', 0)->orderBy('order_level', 'desc')->get();
         });
@@ -375,7 +363,6 @@ class HomeController extends Controller
     public function all_brands(Request $request)
     {
         // Cache All Brands by 30 minutes
-        //$categories = Category::all();
         $categories = Cache::remember('all_categories', 1800, function () {
             return Category::all();
         });
@@ -389,6 +376,9 @@ class HomeController extends Controller
         return view('frontend.all_brand', compact('categories', 'brands'));
     }
 
+    /**
+     * Top 10 Settings
+     */
     public function top_10_settings(Request $request)
     {
         foreach (Category::all() as $key => $category) {
@@ -411,8 +401,7 @@ class HomeController extends Controller
             }
         }
 
-        flash(translate('Top 10 categories and brands have been updated successfully'))->success();
-        return redirect()->route('home_settings.index');
+        return redirect()->route('home_settings.index')->with('success', translate('Top 10 categories and brands have been updated successfully'));
     }
 
     public function variant_price(Request $request)
@@ -586,7 +575,7 @@ class HomeController extends Controller
         return view('frontend.partials.category_elements', compact('category'));
     }
 
-    // premium Package index
+    // Premium Package index
     public function premium_package_index()
     {
         // Cache this for a day
@@ -619,12 +608,10 @@ class HomeController extends Controller
         $email = $request->email;
         if (isUnique($email)) {
             $this->send_email_change_verification_mail($request, $email);
-            flash(translate('A verification mail has been sent to the mail you provided us with.'))->success();
-            return back();
+            return back()->with('success', translate('A verification mail has been sent to the mail you provided us with.'));
         }
 
-        flash(translate('Email already exists!'))->warning();
-        return back();
+        return back()->with('warning', translate('Email already exists!'));
     }
 
     // Email verification
@@ -675,27 +662,27 @@ class HomeController extends Controller
 
                 auth()->login($user, true);
 
-                flash(translate('Email Changed successfully'))->success();
-                if ($user->user_type == 'seller') {
-                    return redirect()->route('seller.dashboard');
-                }
-                return redirect()->route('dashboard');
+                // Route definition on user type
+                $route = ($user->user_type == 'seller') ? 'seller.dashboard' : 'dashboard';
+
+                return redirect()->route($route)->with('success', translate('Email Changed successfully'));
             }
         }
 
-        flash(translate('Email was not verified. Please resend your mail!'))->error();
-        return redirect()->route('dashboard');
+        return redirect()->route('dashboard')->with('warning', translate('Email was not verified. Please resend your mail!'));
     }
 
     // Reset Password
     public function reset_password_with_code(Request $request)
     {
-
         if (($user = User::where('email', $request->email)->where('verification_code', $request->code)->first()) != null) {
+            
             if ($request->password == $request->password_confirmation) {
+                
                 $user->password = Hash::make($request->password);
                 $user->email_verified_at = date('Y-m-d h:m:s');
                 $user->save();
+                
                 event(new PasswordReset($user));
                 auth()->login($user, true);
 
@@ -704,14 +691,15 @@ class HomeController extends Controller
                 if (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff') {
                     return redirect()->route('admin.dashboard');
                 }
+
                 return redirect()->route('home');
+
             } else {
-                flash("Password and confirm password didn't match")->warning();
-                return view('auth.passwords.reset');
+                return view('auth.passwords.reset')->with('warning', "Password and confirm password didn't match");
             }
+
         } else {
-            flash("Verification code mismatch")->error();
-            return view('auth.passwords.reset');
+            return view('auth.passwords.reset')->with('danger', "Verification code mismatch");
         }
     }
 
@@ -739,7 +727,6 @@ class HomeController extends Controller
     public function all_seller(Request $request)
     {
         $shops = Shop::whereIn('user_id', verified_sellers_id())->paginate(15);
-
         return view('frontend.shop_listing', compact('shops'));
     }
 
@@ -754,7 +741,6 @@ class HomeController extends Controller
     public function inhouse_products(Request $request)
     {
         $products = filter_products(Product::where('added_by', 'admin'))->with('taxes')->paginate(12)->appends(request()->query());
-
         return view('frontend.inhouse_products', compact('products'));
     }
 }

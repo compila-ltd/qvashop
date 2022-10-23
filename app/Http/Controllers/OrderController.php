@@ -95,16 +95,6 @@ class OrderController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
@@ -114,10 +104,8 @@ class OrderController extends Controller
     {
         $carts = Cart::where('user_id', Auth::user()->id)->get();
 
-        if ($carts->isEmpty()) {
-            flash(translate('Your cart is empty'))->warning();
-            return redirect()->route('home');
-        }
+        if ($carts->isEmpty())
+            return redirect()->route('home')->with('warning', translate('Your cart is empty'));
 
         $address = Address::where('id', $carts[0]['address_id'])->first();
 
@@ -153,22 +141,12 @@ class OrderController extends Controller
         }
 
         foreach ($seller_products as $seller_product) {
+
             $order = new Order;
             $order->combined_order_id = $combined_order->id;
             $order->user_id = Auth::user()->id;
             $order->shipping_address = $combined_order->shipping_address;
-
             $order->additional_info = $request->additional_info;
-
-            //======== Closed By Kiron ==========
-            // $order->shipping_type = $carts[0]['shipping_type'];
-            // if ($carts[0]['shipping_type'] == 'pickup_point') {
-            //     $order->pickup_point_id = $cartItem['pickup_point'];
-            // }
-            // if ($carts[0]['shipping_type'] == 'carrier') {
-            //     $order->carrier_id = $cartItem['carrier_id'];
-            // }
-
             $order->payment_type = $request->payment_option;
             $order->delivery_viewed = '0';
             $order->payment_status_viewed = '0';
@@ -183,6 +161,7 @@ class OrderController extends Controller
 
             //Order Details Storing
             foreach ($seller_product as $cartItem) {
+
                 $product = Product::find($cartItem['product_id']);
 
                 $subtotal += cart_product_price($cartItem, $product, false, false) * $cartItem['quantity'];
@@ -193,9 +172,8 @@ class OrderController extends Controller
 
                 $product_stock = $product->stocks->where('variant', $product_variation)->first();
                 if ($product->digital != 1 && $cartItem['quantity'] > $product_stock->qty) {
-                    flash(translate('The requested quantity is not available for ') . $product->getTranslation('name'))->warning();
                     $order->delete();
-                    return redirect()->route('cart')->send();
+                    return redirect()->route('cart')->send()->with('warning', translate('The requested quantity is not available for ') . $product->getTranslation('name'));
                 } elseif ($product->digital != 1) {
                     $product_stock->qty -= $cartItem['quantity'];
                     $product_stock->save();
@@ -213,7 +191,6 @@ class OrderController extends Controller
                 $order_detail->shipping_cost = $cartItem['shipping_cost'];
 
                 $shipping += $order_detail->shipping_cost;
-                //End of storing shipping cost
 
                 $order_detail->quantity = $cartItem['quantity'];
                 $order_detail->save();
@@ -222,14 +199,14 @@ class OrderController extends Controller
                 $product->save();
 
                 $order->seller_id = $product->user_id;
-                //======== Added By Kiron ==========
+
                 $order->shipping_type = $cartItem['shipping_type'];
-                if ($cartItem['shipping_type'] == 'pickup_point') {
+
+                if ($cartItem['shipping_type'] == 'pickup_point')
                     $order->pickup_point_id = $cartItem['pickup_point'];
-                }
-                if ($cartItem['shipping_type'] == 'carrier') {
+
+                if ($cartItem['shipping_type'] == 'carrier')
                     $order->carrier_id = $cartItem['carrier_id'];
-                }
 
                 if ($product->added_by == 'seller' && $product->user->seller != null) {
                     $seller = $product->user->seller;
@@ -240,7 +217,6 @@ class OrderController extends Controller
                 if (addon_is_activated('affiliate_system')) {
                     if ($order_detail->product_referral_code) {
                         $referred_by_user = User::where('referral_code', $order_detail->product_referral_code)->first();
-
                         $affiliateController = new AffiliateController;
                         $affiliateController->processAffiliateStats($referred_by_user->id, 0, $order_detail->quantity, 0, 0);
                     }
@@ -297,6 +273,7 @@ class OrderController extends Controller
         } else {
             flash(translate('Something went wrong'))->error();
         }
+
         return back();
     }
 
@@ -396,9 +373,10 @@ class OrderController extends Controller
                 }
             }
         }
+        
         if (addon_is_activated('otp_system') && SmsTemplate::where('identifier', 'delivery_status_change')->first()->status == 1) {
             try {
-                SmsUtility::delivery_status_change(json_decode($order->shipping_address)->phone, $order);
+                SendSMSUtility::delivery_status_change(json_decode($order->shipping_address)->phone, $order);
             } catch (\Exception $e) {
             }
         }

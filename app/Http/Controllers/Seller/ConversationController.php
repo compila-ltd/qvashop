@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Seller;
 
-use Illuminate\Http\Request;
-use App\Models\Conversation;
-use App\Models\BusinessSetting;
 use App\Models\Message;
-use App\Models\ProductQuery;
-use Auth;
+use App\Models\Conversation;
+use Illuminate\Http\Request;
+use App\Models\BusinessSetting;
+use Illuminate\Support\Facades\Auth;
 
 class ConversationController extends Controller
 {
@@ -21,10 +20,9 @@ class ConversationController extends Controller
         if (BusinessSetting::where('type', 'conversation_system')->first()->value == 1) {
             $conversations = Conversation::where('sender_id', Auth::user()->id)->orWhere('receiver_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(5);
             return view('seller.conversations.index', compact('conversations'));
-        } else {
-            flash(translate('Conversation is disabled at this moment'))->warning();
-            return back();
         }
+
+        return back()->with('warning', translate('Conversation is disabled at this moment'));
     }
 
     /**
@@ -42,6 +40,7 @@ class ConversationController extends Controller
             $conversation->receiver_viewed = 1;
         }
         $conversation->save();
+
         return view('seller.conversations.show', compact('conversation'));
     }
 
@@ -87,5 +86,4 @@ class ConversationController extends Controller
 
         return back();
     }
-    
 }

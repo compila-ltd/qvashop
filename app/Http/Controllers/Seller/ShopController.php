@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Seller;
 
-use App\Models\BusinessSetting;
-use Illuminate\Http\Request;
 use App\Models\Shop;
-use Auth;
+use Illuminate\Http\Request;
+use App\Models\BusinessSetting;
+use Illuminate\Support\Facades\Auth;
 
 class ShopController extends Controller
 {
@@ -20,6 +20,7 @@ class ShopController extends Controller
         $shop = Shop::find($request->shop_id);
 
         if ($request->has('name') && $request->has('address')) {
+
             if ($request->has('shipping_cost')) {
                 $shop->shipping_cost = $request->shipping_cost;
             }
@@ -53,24 +54,20 @@ class ShopController extends Controller
             $shop->sliders = $request->sliders;
         }
 
-        if ($shop->save()) {
-            flash(translate('Your Shop has been updated successfully!'))->success();
-            return back();
-        }
+        if ($shop->save())
+            return back()->with('success', translate('Your Shop has been updated successfully!'));
 
-        flash(translate('Sorry! Something went wrong.'))->error();
-        return back();
+        return back()->with('danger', translate('Sorry! Something went wrong.'));
     }
 
-    public function verify_form ()
+    public function verify_form()
     {
         if (Auth::user()->shop->verification_info == null) {
             $shop = Auth::user()->shop;
             return view('seller.verify_form', compact('shop'));
-        } else {
-            flash(translate('Sorry! You have sent verification request already.'))->error();
-            return back();
         }
+
+        return back()->with('danger', translate('Sorry! You have sent verification request already.'));
     }
 
     public function verify_form_store(Request $request)
@@ -101,16 +98,9 @@ class ShopController extends Controller
         }
         $shop = Auth::user()->shop;
         $shop->verification_info = json_encode($data);
-        if ($shop->save()) {
-            flash(translate('Your shop verification request has been submitted successfully!'))->success();
-            return redirect()->route('seller.dashboard');
-        }
+        if ($shop->save())
+            return redirect()->route('seller.dashboard')->with('success', translate('Your shop verification request has been submitted successfully!'));
 
-        flash(translate('Sorry! Something went wrong.'))->error();
-        return back();
-    }
-
-    public function show()
-    {
+        return back()->with('danger', translate('Sorry! Something went wrong.'));
     }
 }

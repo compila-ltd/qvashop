@@ -9,7 +9,7 @@ use Twilio\Rest\Client;
 class SendSMSUtility
 {
     public static function sendSMS($to, $from, $text, $template_id)
-    {        
+    {
         if (OtpConfiguration::where('type', 'nexmo')->first()->value == 1) {
             $api_key = env("NEXMO_KEY"); //put ssl provided api_token here
             $api_secret = env("NEXMO_SECRET"); // put ssl provided sid here
@@ -55,9 +55,7 @@ class SendSMSUtility
                     )
                 );
             } catch (\Exception $e) {
-
             }
-
         } elseif (OtpConfiguration::where('type', 'ssl_wireless')->first()->value == 1) {
             $token = env("SSL_SMS_API_TOKEN"); //put ssl provided api_token here
             $sid = env("SSL_SMS_SID"); // put ssl provided sid here
@@ -152,27 +150,25 @@ class SendSMSUtility
 
             MimoUtility::sendMessage($text, $to, $token);
             MimoUtility::logout($token);
-        }
-        elseif (OtpConfiguration::where('type', 'mimsms')->first()->value == 1) {
+        } elseif (OtpConfiguration::where('type', 'mimsms')->first()->value == 1) {
             $url = "https://esms.mimsms.com/smsapi";
-              $data = [
+            $data = [
                 "api_key" => env('MIM_API_KEY'),
                 "type" => "text",
                 "contacts" => $to,
                 "senderid" => env('MIM_SENDER_ID'),
                 "msg" => $text,
-              ];
-              $ch = curl_init();
-              curl_setopt($ch, CURLOPT_URL, $url);
-              curl_setopt($ch, CURLOPT_POST, 1);
-              curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-              curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-              curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-              $response = curl_exec($ch);
-              curl_close($ch);
-              return $response;
-        }
-        elseif (OtpConfiguration::where('type', 'msegat')->first()->value == 1) {
+            ];
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            $response = curl_exec($ch);
+            curl_close($ch);
+            return $response;
+        } elseif (OtpConfiguration::where('type', 'msegat')->first()->value == 1) {
             $url = "https://www.msegat.com/gw/sendsms.php";
             $data = [
                 "apiKey" => env('MSEGAT_API_KEY'),
