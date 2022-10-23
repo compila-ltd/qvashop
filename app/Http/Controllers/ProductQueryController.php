@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\ProductQuery;
-use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductQueryController extends Controller
 {
@@ -46,8 +46,8 @@ class ProductQueryController extends Controller
         $query->product_id = $product->id;
         $query->question = $request->question;
         $query->save();
-        flash(translate('Your query has been submittes successfully'))->success();
-        return redirect()->back();
+
+        return redirect()->back()->with('success', translate('Your query has been submittes successfully'));
     }
 
     /**
@@ -62,7 +62,7 @@ class ProductQueryController extends Controller
         $query = ProductQuery::find($id);
         $query->reply = $request->reply;
         $query->save();
-        flash(translate('Replied successfully!'))->success();
-        return redirect()->route('product_query.index');
+
+        return redirect()->route('product_query.index')->with('success', translate('Replied successfully!'));
     }
 }

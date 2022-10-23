@@ -340,17 +340,12 @@ class ProductController extends Controller
 
         if (Product::destroy($id)) {
             Cart::where('product_id', $id)->delete();
-
-            flash(translate('Product has been deleted successfully'))->success();
-
             Artisan::call('view:clear');
             Artisan::call('cache:clear');
-
-            return back();
-        } else {
-            flash(translate('Something went wrong'))->error();
-            return back();
+            return back()->with('success', translate('Product has been deleted successfully'));
         }
+
+        return back()->with('danger', translate('Something went wrong'));
     }
 
     // Bulk Delete Products
@@ -386,6 +381,7 @@ class ProductController extends Controller
         $this->productTaxService->product_duplicate_store($product->taxes, $product_new);
 
         flash(translate('Product has been duplicated successfully'))->success();
+
         if ($request->type == 'In House')
             return redirect()->route('products.admin');
         elseif ($request->type == 'Seller')
@@ -432,6 +428,7 @@ class ProductController extends Controller
 
         Artisan::call('view:clear');
         Artisan::call('cache:clear');
+
         return 1;
     }
 
@@ -456,6 +453,7 @@ class ProductController extends Controller
 
         Artisan::call('view:clear');
         Artisan::call('cache:clear');
+        
         return 1;
     }
 

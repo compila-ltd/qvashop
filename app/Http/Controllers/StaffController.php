@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Staff;
 use App\Models\Role;
 use App\Models\User;
-use Hash;
+use App\Models\Staff;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class StaffController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         // Staff Permission Check
         $this->middleware(['permission:view_all_staffs'])->only('index');
         $this->middleware(['permission:add_staff'])->only('create');
@@ -36,7 +37,7 @@ class StaffController extends Controller
      */
     public function create()
     {
-        $roles = Role::where('id','!=',1)->orderBy('id', 'desc')->get();
+        $roles = Role::where('id', '!=', 1)->orderBy('id', 'desc')->get();
         return view('backend.staff.staffs.create', compact('roles'));
     }
 
@@ -48,38 +49,25 @@ class StaffController extends Controller
      */
     public function store(Request $request)
     {
-        if(User::where('email', $request->email)->first() == null){
+        if (User::where('email', $request->email)->first() == null) {
             $user = new User;
             $user->name = $request->name;
             $user->email = $request->email;
             $user->phone = $request->mobile;
             $user->user_type = "staff";
             $user->password = Hash::make($request->password);
-            if($user->save()){
+            if ($user->save()) {
                 $staff = new Staff;
                 $staff->user_id = $user->id;
                 $staff->role_id = $request->role_id;
                 $user->assignRole(Role::findOrFail($request->role_id)->name);
-                if($staff->save()){
-                    flash(translate('Staff has been inserted successfully'))->success();
-                    return redirect()->route('staffs.index');
+                if ($staff->save()) {
+                    return redirect()->route('staffs.index')->with('success', 'Staff has been inserted successfully');
                 }
             }
         }
 
-        flash(translate('Email already used'))->error();
-        return back();
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        return back()->with('danger', translate('Email already used'));
     }
 
     /**
@@ -91,7 +79,7 @@ class StaffController extends Controller
     public function edit($id)
     {
         $staff = Staff::findOrFail(decrypt($id));
-        $roles = $roles = Role::where('id','!=',1)->orderBy('id', 'desc')->get();
+        $roles = $roles = Role::where('id', '!=', 1)->orderBy('id', 'desc')->get();
         return view('backend.staff.staffs.edit', compact('staff', 'roles'));
     }
 
@@ -109,12 +97,12 @@ class StaffController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->phone = $request->mobile;
-        if(strlen($request->password) > 0){
+        if (strlen($request->password) > 0) {
             $user->password = Hash::make($request->password);
         }
-        if($user->save()){
+        if ($user->save()) {
             $staff->role_id = $request->role_id;
-            if($staff->save()){
+            if ($staff->save()) {
                 $user->syncRoles(Role::findOrFail($request->role_id)->name);
                 flash(translate('Staff has been updated successfully'))->success();
                 return redirect()->route('staffs.index');
@@ -134,7 +122,7 @@ class StaffController extends Controller
     public function destroy($id)
     {
         User::destroy(Staff::findOrFail($id)->user->id);
-        if(Staff::destroy($id)){
+        if (Staff::destroy($id)) {
             flash(translate('Staff has been deleted successfully'))->success();
             return redirect()->route('staffs.index');
         }
