@@ -8,9 +8,9 @@ use App\Models\Country;
 
 class StateController extends Controller
 {
-    public function __construct() {
-        // Staff Permission Check
-        $this->middleware(['permission:manage_shipping_states'])->only('index','edit');
+    public function __construct()
+    {
+        $this->middleware(['permission:manage_shipping_states'])->only('index', 'edit');
     }
 
     /**
@@ -36,16 +36,6 @@ class StateController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -54,25 +44,11 @@ class StateController extends Controller
     public function store(Request $request)
     {
         $state = new State;
-
-        $state->name        = $request->name;
-        $state->country_id  = $request->country_id;
-
+        $state->name = $request->name;
+        $state->country_id = $request->country_id;
         $state->save();
 
-        flash(translate('State has been inserted successfully'))->success();
-        return back();
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        return back()->with('success', translate('State has been inserted successfully'));
     }
 
     /**
@@ -99,14 +75,11 @@ class StateController extends Controller
     public function update(Request $request, $id)
     {
         $state = State::findOrFail($id);
-
         $state->name        = $request->name;
         $state->country_id  = $request->country_id;
-
         $state->save();
 
-        flash(translate('State has been updated successfully'))->success();
-        return back();
+        return back()->with('success', 'State has been updated successfully');
     }
 
     /**
@@ -118,9 +91,7 @@ class StateController extends Controller
     public function destroy($id)
     {
         State::destroy($id);
-
-        flash(translate('State has been deleted successfully'))->success();
-        return redirect()->route('states.index');
+        return redirect()->route('states.index')->with('success', 'State has been deleted successfully');
     }
 
     public function updateStatus(Request $request)

@@ -104,13 +104,11 @@ class StaffController extends Controller
             $staff->role_id = $request->role_id;
             if ($staff->save()) {
                 $user->syncRoles(Role::findOrFail($request->role_id)->name);
-                flash(translate('Staff has been updated successfully'))->success();
-                return redirect()->route('staffs.index');
+                return redirect()->route('staffs.index')->with('success', 'Staff has been updated successfully');
             }
         }
 
-        flash(translate('Something went wrong'))->error();
-        return back();
+        return back()->with('danger', translate('Something went wrong'));
     }
 
     /**
@@ -122,12 +120,9 @@ class StaffController extends Controller
     public function destroy($id)
     {
         User::destroy(Staff::findOrFail($id)->user->id);
-        if (Staff::destroy($id)) {
-            flash(translate('Staff has been deleted successfully'))->success();
-            return redirect()->route('staffs.index');
-        }
+        if (Staff::destroy($id))
+            return redirect()->route('staffs.index')->with('success', 'Staff has been deleted successfully');
 
-        flash(translate('Something went wrong'))->error();
-        return back();
+        return back()->with('danger', translate('Something went wrong'));
     }
 }

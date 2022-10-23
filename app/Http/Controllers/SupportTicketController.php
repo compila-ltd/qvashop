@@ -130,9 +130,9 @@ class SupportTicketController extends Controller
 
         if ($ticket_reply->save()) {
             return back()->with('success', translate('Reply has been sent successfully'));
-        } else {
-            flash(translate('Something went wrong'))->error();
         }
+
+        flash(translate('Something went wrong'))->error();
     }
 
     /**

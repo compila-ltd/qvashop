@@ -36,7 +36,7 @@ class SliderController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->hasFile('photos')){
+        if ($request->hasFile('photos')) {
             foreach ($request->photos as $key => $photo) {
                 $slider = new Slider;
                 $slider->link = $request->url;
@@ -45,29 +45,8 @@ class SliderController extends Controller
             }
             flash(translate('Slider has been inserted successfully'))->success();
         }
+
         return redirect()->route('home_settings.index');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -82,10 +61,9 @@ class SliderController extends Controller
     {
         $slider = Slider::find($id);
         $slider->published = $request->status;
-        if($slider->save()){
+        if ($slider->save()) {
             return '1';
-        }
-        else {
+        } else {
             return '0';
         }
     }
@@ -99,11 +77,10 @@ class SliderController extends Controller
     public function destroy($id)
     {
         $slider = Slider::findOrFail($id);
-        if(Slider::destroy($id)){
+        if (Slider::destroy($id)) {
             //unlink($slider->photo);
             flash(translate('Slider has been deleted successfully'))->success();
-        }
-        else{
+        } else {
             flash(translate('Something went wrong'))->error();
         }
         return redirect()->route('home_settings.index');

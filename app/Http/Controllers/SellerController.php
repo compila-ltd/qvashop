@@ -76,10 +76,9 @@ class SellerController extends Controller
      */
     public function store(Request $request)
     {
-        if (User::where('email', $request->email)->first() != null) {
-            flash(translate('Email already exists!'))->error();
-            return back();
-        }
+        if (User::where('email', $request->email)->first() != null)
+            return back()->with('danger', translate('Email already exists!'));
+
         $user = new User;
         $user->name = $request->name;
         $user->email = $request->email;
@@ -102,13 +101,11 @@ class SellerController extends Controller
                 $shop->user_id = $user->id;
                 $shop->slug = 'demo-shop-' . $user->id;
                 $shop->save();
-
-                flash(translate('Seller has been inserted successfully'))->success();
-                return redirect()->route('sellers.index');
+                return redirect()->route('sellers.index')->with('success', translate('Seller has been inserted successfully'));
             }
         }
-        flash(translate('Something went wrong'))->error();
-        return back();
+
+        return back()->with('danger', translate('Something went wrong'));
     }
 
     /**
@@ -141,13 +138,11 @@ class SellerController extends Controller
         }
         if ($user->save()) {
             if ($shop->save()) {
-                flash(translate('Seller has been updated successfully'))->success();
-                return redirect()->route('sellers.index');
+                return redirect()->route('sellers.index')->with('success', translate('Seller has been updated successfully'));
             }
         }
 
-        flash(translate('Something went wrong'))->error();
-        return back();
+        return back()->with('danger', translate('Something went wrong'));
     }
 
     /**
@@ -165,17 +160,15 @@ class SellerController extends Controller
         foreach ($orders as $key => $order) {
             OrderDetail::where('order_id', $order->id)->delete();
         }
-        Order::where('user_id', $shop->user_id)->delete();
 
+        Order::where('user_id', $shop->user_id)->delete();
         User::destroy($shop->user->id);
 
         if (Shop::destroy($id)) {
-            flash(translate('Seller has been deleted successfully'))->success();
-            return redirect()->route('sellers.index');
-        } else {
-            flash(translate('Something went wrong'))->error();
-            return back();
+            return redirect()->route('sellers.index')->with('success', translate('Seller has been deleted successfully'));
         }
+
+        return back()->with('dager', translate('Something went wrong'));
     }
 
     // Delete Seller 
@@ -216,13 +209,13 @@ class SellerController extends Controller
         $shop = Shop::findOrFail($id);
         $shop->verification_status = 0;
         $shop->verification_info = null;
+        
         if ($shop->save()) {
             Cache::forget('verified_sellers_id');
-            flash(translate('Seller verification request has been rejected successfully'))->success();
-            return redirect()->route('sellers.index');
+            return redirect()->route('sellers.index')->with('success', translate('Seller verification request has been rejected successfully'));
         }
-        flash(translate('Something went wrong'))->error();
-        return back();
+
+        return back()->with('danger', translate('Something went wrong'));
     }
 
     // Payment Modal

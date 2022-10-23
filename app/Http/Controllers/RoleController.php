@@ -10,8 +10,8 @@ use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
-    public function __construct() {
-        // Staff Permission Check
+    public function __construct()
+    {
         $this->middleware(['permission:view_staff_roles'])->only('index');
         $this->middleware(['permission:add_staff_role'])->only('create');
         $this->middleware(['permission:edit_staff_role'])->only('edit');
@@ -25,11 +25,8 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::where('id','!=',1)->paginate(10);
+        $roles = Role::where('id', '!=', 1)->paginate(10);
         return view('backend.staff.staff_roles.index', compact('roles'));
-
-        // $roles = Role::paginate(10);
-        // return view('backend.staff.staff_roles.index', compact('roles'));
     }
 
     /**
@@ -58,19 +55,7 @@ class RoleController extends Controller
         $role_translation->name = $request->name;
         $role_translation->save();
 
-        flash(translate('New Role has been added successfully'))->success();
-        return redirect()->route('roles.index');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        return redirect()->route('roles.index')->with('success', translate('New Role has been added successfully'));
     }
 
     /**
@@ -83,7 +68,7 @@ class RoleController extends Controller
     {
         $lang = $request->lang;
         $role = Role::findOrFail($id);
-        return view('backend.staff.staff_roles.edit', compact('role','lang'));
+        return view('backend.staff.staff_roles.edit', compact('role', 'lang'));
     }
 
     /**
@@ -105,9 +90,7 @@ class RoleController extends Controller
         $role_translation->name = $request->name;
         $role_translation->save();
 
-        flash(translate('Role has been updated successfully'))->success();
-        return back();
-        // return redirect()->route('roles.index');
+        return back()->with('success', translate('Role has been updated successfully'));
     }
 
     /**
@@ -122,19 +105,13 @@ class RoleController extends Controller
         foreach ($role->role_translations as $key => $role_translation) {
             $role_translation->delete();
         }
-
         Role::destroy($id);
-        flash(translate('Role has been deleted successfully'))->success();
-        return redirect()->route('roles.index');
+        return redirect()->route('roles.index')->with('success', translate('Role has been deleted successfully'));
     }
 
     public function add_permission(Request $request)
     {
-        $permission = Permission::create(['name' => $request->name, 'section'=> $request->parent]);
+        $permission = Permission::create(['name' => $request->name, 'section' => $request->parent]);
         return redirect()->route('roles.index');
-    }
-
-    public function create_admin_permissions(){
-        
     }
 }

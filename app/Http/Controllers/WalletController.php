@@ -1,6 +1,8 @@
 <?php
+
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -8,8 +10,8 @@ use Illuminate\Support\Facades\Session;
 
 class WalletController extends Controller
 {
-    public function __construct() {
-        // Staff Permission Check
+    public function __construct()
+    {
         $this->middleware(['permission:view_all_offline_wallet_recharges'])->only('offline_recharge_request');
     }
 
@@ -38,7 +40,7 @@ class WalletController extends Controller
 
     public function wallet_payment_done($payment_data, $payment_details)
     {
-        $user = Auth::user();
+        $user = User::find(Auth::user()->id);
         $user->balance = $user->balance + $payment_data['amount'];
         $user->save();
 
@@ -52,8 +54,7 @@ class WalletController extends Controller
         Session::forget('payment_data');
         Session::forget('payment_type');
 
-        flash(translate('Payment completed'))->success();
-        return redirect()->route('wallet.index');
+        return redirect()->route('wallet.index')->with('success', translate('Payment completed'));
     }
 
     public function offline_recharge(Request $request)
@@ -67,8 +68,8 @@ class WalletController extends Controller
         $wallet->offline_payment = 1;
         $wallet->reciept = $request->photo;
         $wallet->save();
-        flash(translate('Offline Recharge has been done. Please wait for response.'))->success();
-        return redirect()->route('wallet.index');
+
+        return redirect()->route('wallet.index')->with('success', translate('Offline Recharge has been done. Please wait for response.'));
     }
 
     public function offline_recharge_request()

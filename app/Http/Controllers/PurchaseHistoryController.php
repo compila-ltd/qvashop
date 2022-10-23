@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Order;
-use Auth;
-use DB;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class PurchaseHistoryController extends Controller
 {
@@ -23,14 +23,15 @@ class PurchaseHistoryController extends Controller
     public function digital_index()
     {
         $orders = DB::table('orders')
-                        ->orderBy('code', 'desc')
-                        ->join('order_details', 'orders.id', '=', 'order_details.order_id')
-                        ->join('products', 'order_details.product_id', '=', 'products.id')
-                        ->where('orders.user_id', Auth::user()->id)
-                        ->where('products.digital', '1')
-                        ->where('order_details.payment_status', 'paid')
-                        ->select('order_details.id')
-                        ->paginate(15);
+            ->orderBy('code', 'desc')
+            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+            ->join('products', 'order_details.product_id', '=', 'products.id')
+            ->where('orders.user_id', Auth::user()->id)
+            ->where('products.digital', '1')
+            ->where('order_details.payment_status', 'paid')
+            ->select('order_details.id')
+            ->paginate(15);
+
         return view('frontend.user.digital_purchase_history', compact('orders'));
     }
 
@@ -40,62 +41,8 @@ class PurchaseHistoryController extends Controller
         $order->delivery_viewed = 1;
         $order->payment_status_viewed = 1;
         $order->save();
+        
         return view('frontend.user.order_details_customer', compact('order'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
     }
 
     /**
@@ -107,15 +54,13 @@ class PurchaseHistoryController extends Controller
     public function order_cancel($id)
     {
         $order = Order::where('id', $id)->where('user_id', auth()->user()->id)->first();
-        if($order && ($order->delivery_status == 'pending' && $order->payment_status == 'unpaid')) {
+
+        if ($order && ($order->delivery_status == 'pending' && $order->payment_status == 'unpaid')) {
             $order->delivery_status = 'cancelled';
             $order->save();
-
-            flash(translate('Order has been canceled successfully'))->success();
-        } else {
-            flash(translate('Something went wrong'))->error();
+            return back()->with('sucess', translate('Order has been canceled successfully'));
         }
 
-        return back();
+        return back()->with('danger', translate('Something went wrong'));
     }
 }

@@ -40,13 +40,12 @@ class SellerWithdrawRequestController extends Controller
         $seller_withdraw_request->message = $request->message;
         $seller_withdraw_request->status = '0';
         $seller_withdraw_request->viewed = '0';
+        
         if ($seller_withdraw_request->save()) {
-            flash(translate('Request has been sent successfully'))->success();
-            return redirect()->route('withdraw_requests.index');
-        } else {
-            flash(translate('Something went wrong'))->error();
-            return back();
+            return redirect()->route('withdraw_requests.index')->with('success', translate('Request has been sent successfully'));
         }
+
+        return back()->with('danger', translate('Something went wrong'));
     }
 
     // Payment Modal

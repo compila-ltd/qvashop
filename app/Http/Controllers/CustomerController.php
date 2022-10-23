@@ -33,6 +33,7 @@ class CustomerController extends Controller
             });
         }
         $users = $users->paginate(15);
+
         return view('backend.customer.customers.index', compact('users', 'sort_search'));
     }
 
@@ -55,7 +56,6 @@ class CustomerController extends Controller
         $user = User::create($request->all());
 
         $customer = new Customer;
-
         $customer->user_id = $user->id;
         $customer->save();
 

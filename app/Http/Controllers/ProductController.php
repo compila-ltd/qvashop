@@ -151,7 +151,6 @@ class ProductController extends Controller
         return view('backend.product.products.index', compact('products', 'type', 'col_name', 'query', 'seller_id', 'sort_search'));
     }
 
-
     /**
      * Show the form for creating a new resource.
      *
@@ -246,6 +245,7 @@ class ProductController extends Controller
             ->where('digital', 0)
             ->with('childrenCategories')
             ->get();
+            
         return view('backend.product.products.edit', compact('product', 'categories', 'tags', 'lang'));
     }
 
@@ -316,12 +316,10 @@ class ProductController extends Controller
             $request->only(['name', 'unit', 'description'])
         );
 
-        flash(translate('Product has been updated successfully'))->success();
-
         Artisan::call('view:clear');
         Artisan::call('cache:clear');
 
-        return back();
+        return back()->with('success', translate('Product has been updated successfully'));
     }
 
     /**
@@ -453,7 +451,7 @@ class ProductController extends Controller
 
         Artisan::call('view:clear');
         Artisan::call('cache:clear');
-        
+
         return 1;
     }
 

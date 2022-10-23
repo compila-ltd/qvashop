@@ -636,11 +636,9 @@ class HomeController extends Controller
 
         try {
             Mail::to($email)->queue(new SecondEmailVerifyMailManager($array));
-
             $response['status'] = 1;
             $response['message'] = translate("Your verification mail has been Sent to your email.");
         } catch (\Exception $e) {
-            // return $e->getMessage();
             $response['status'] = 0;
             $response['message'] = $e->getMessage();
         }
@@ -713,7 +711,6 @@ class HomeController extends Controller
                 ->get();
         });
 
-        // return as arrey data
         $data['all_flash_deals'] = $flash_deals;
 
         return view("frontend.flash_deal.all_flash_deal_list", $data);

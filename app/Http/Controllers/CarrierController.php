@@ -93,6 +93,7 @@ class CarrierController extends Controller
     {
         $carrier = Carrier::findOrFail($id);
         $zones = Zone::get();
+
         return view('backend.setup_configurations.carriers.edit', compact('zones', 'carrier'));
     }
 
@@ -152,10 +153,8 @@ class CarrierController extends Controller
     public function destroy($id)
     {
         $carrier = Carrier::findOrFail($id);
-
         $carrier->carrier_ranges()->delete();
         $carrier->carrier_range_prices()->delete();
-
         Carrier::destroy($id);
 
         return redirect()->route('carriers.index')->with('success', translate('Carrier has been deleted successfully'));
@@ -168,7 +167,7 @@ class CarrierController extends Controller
         $carrier->status = $request->status;
         if ($carrier->save())
             return 1;
-            
+
         return 0;
     }
 }

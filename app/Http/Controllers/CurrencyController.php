@@ -9,7 +9,6 @@ class CurrencyController extends Controller
 {
     public function __construct()
     {
-        // Staff Permission Check
         $this->middleware(['permission:currency_setup'])->only('currency', 'create', 'edit');
     }
 
@@ -19,7 +18,7 @@ class CurrencyController extends Controller
         $request->session()->put('currency_code', $request->currency_code);
         $request->session()->put('currency_symbol', $currency->symbol);
         $request->session()->put('currency_exchange_rate', $currency->exchange_rate);
-        
+
         flash(translate('Currency changed to ') . $currency->name)->success();
     }
 

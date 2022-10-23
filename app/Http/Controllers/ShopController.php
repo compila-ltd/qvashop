@@ -37,16 +37,15 @@ class ShopController extends Controller
     {
         if (Auth::check()) {
             if ((Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'customer')) {
-                flash(translate('Admin or Customer can not be a seller'))->error();
-                return back();
+                return back()->with('danger', translate('Admin or Customer can not be a seller'));
             }
+
             if (Auth::user()->user_type == 'seller') {
-                flash(translate('This user already a seller'))->error();
-                return back();
+                return back()->with('danger', translate('This user already a seller'));
             }
-        } else {
-            return view('frontend.seller_form');
         }
+
+        return view('frontend.seller_form');
     }
 
     /**
@@ -60,9 +59,9 @@ class ShopController extends Controller
         $user = null;
         if (!Auth::check()) {
             if (User::where('email', $request->email)->first() != null) {
-                flash(translate('Email already exists!'))->error();
-                return back();
+                return back()->with('danger', translate('Email already exists!'));
             }
+
             if ($request->password == $request->password_confirmation) {
                 $user = new User;
                 $user->name = $request->name;
@@ -71,11 +70,10 @@ class ShopController extends Controller
                 $user->password = Hash::make($request->password);
                 $user->save();
             } else {
-                flash(translate('Sorry! Password did not match.'))->error();
-                return back();
+                return back()->with('danger', translate('Sorry! Password did not match.'));
             }
         } else {
-            $user = Auth::user();
+            $user = User::find(Auth::user()->id);
             if ($user->customer != null) {
                 $user->customer->delete();
             }
@@ -99,16 +97,13 @@ class ShopController extends Controller
                 } else {
                     $user->notify(new EmailVerificationNotification());
                 }
-
-                flash(translate('Your Shop has been created successfully!'))->success();
-                return redirect()->route('shops.index');
+                return redirect()->route('shops.index')->with('success', translate('Your Shop has been created successfully!'));
             } else {
                 $user->user_type == 'customer';
                 $user->save();
             }
         }
 
-        flash(translate('Sorry! Something went wrong.'))->error();
-        return back();
+        return back()->with('danger', translate('Sorry! Something went wrong.'));
     }
 }
