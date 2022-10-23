@@ -19,6 +19,7 @@ class CurrencyController extends Controller
         $request->session()->put('currency_code', $request->currency_code);
         $request->session()->put('currency_symbol', $currency->symbol);
         $request->session()->put('currency_exchange_rate', $currency->exchange_rate);
+        
         flash(translate('Currency changed to ') . $currency->name)->success();
     }
 
@@ -70,7 +71,7 @@ class CurrencyController extends Controller
         $currency->code = $request->code;
         $currency->exchange_rate = $request->exchange_rate;
         $currency->status = '0';
-        
+
         if ($currency->save())
             return redirect()->route('currency.index')->with('success', translate('Currency updated successfully'));
 

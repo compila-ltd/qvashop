@@ -36,13 +36,10 @@ class TaxController extends Controller
         $tax = new Tax;
         $tax->name = $request->name;
 
-        if ($tax->save()) {
-            flash(translate('Tax has been inserted successfully'))->success();
-            return redirect()->route('tax.index');
-        } else {
-            flash(translate('Something went wrong'))->error();
-            return back();
-        }
+        if ($tax->save())
+            return redirect()->route('tax.index')->with('success', translate('Tax has been inserted successfully'));
+
+        return back()->with('danger', translate('Something went wrong'));
     }
 
     /**
@@ -68,14 +65,12 @@ class TaxController extends Controller
     {
         $tax = Tax::findOrFail($id);
         $tax->name = $request->name;
-        //        $language->code = $request->code;
+
         if ($tax->save()) {
-            flash(translate('Tax has been updated successfully'))->success();
-            return redirect()->route('tax.index');
-        } else {
-            flash(translate('Something went wrong'))->error();
-            return back();
+            return redirect()->route('tax.index')->with('success', translate('Tax has been updated successfully'));
         }
+
+        return back()->with('danger', translate('Something went wrong'));
     }
 
     // Chage Tax Status
@@ -102,12 +97,9 @@ class TaxController extends Controller
      */
     public function destroy($id)
     {
-        if (Tax::destroy($id)) {
-            flash(translate('Tax has been deleted successfully'))->success();
-            return redirect()->route('tax.index');
-        } else {
-            flash(translate('Something went wrong'))->error();
-            return back();
-        }
+        if (Tax::destroy($id))
+            return redirect()->route('tax.index')->with('success', translate('Tax has been deleted successfully'));
+
+        return back()->with('danger', translate('Something went wrong'));
     }
 }

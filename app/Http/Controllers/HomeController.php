@@ -162,7 +162,7 @@ class HomeController extends Controller
     // Update User
     public function userProfileUpdate(Request $request)
     {
-        $user = Auth::user();
+        $user = User::find(Auth::user()->id);
 
         $user->name = $request->name;
         $user->address = $request->address;
@@ -190,9 +190,8 @@ class HomeController extends Controller
 
         if ($flash_deal != null)
             return view('frontend.flash_deal_details', compact('flash_deal'));
-        else {
-            abort(404);
-        }
+
+        abort(404);
     }
 
     // Load Featured Products
@@ -216,11 +215,14 @@ class HomeController extends Controller
         return view('frontend.partials.best_selling_section', compact('best_selling_products'));
     }
 
+    /**
+     * Load auction products
+     */
     public function load_auction_products_section()
     {
-        if (!addon_is_activated('auction')) {
+        if (!addon_is_activated('auction'))
             return;
-        }
+
         return view('auction.frontend.auction_products_section');
     }
 
@@ -277,9 +279,8 @@ class HomeController extends Controller
         $total_query = ProductQuery::where('product_id', $detailedProduct->id)->count();
 
         // Pagination using Ajax
-        if (request()->ajax()) {
+        if (request()->ajax())
             return Response::json(View::make('frontend.partials.product_query_pagination', array('product_queries' => $product_queries))->render());
-        }
 
         if ($detailedProduct != null && $detailedProduct->published) {
 
@@ -629,7 +630,7 @@ class HomeController extends Controller
         $array['sender'] = Auth::user()->name;
         $array['details'] = "Email Second";
 
-        $user = Auth::user();
+        $user = User::find(Auth::user()->id);
         $user->new_email_verificiation_code = $verification_code;
         $user->save();
 
@@ -676,31 +677,26 @@ class HomeController extends Controller
     public function reset_password_with_code(Request $request)
     {
         if (($user = User::where('email', $request->email)->where('verification_code', $request->code)->first()) != null) {
-            
+
             if ($request->password == $request->password_confirmation) {
-                
+
                 $user->password = Hash::make($request->password);
                 $user->email_verified_at = date('Y-m-d h:m:s');
                 $user->save();
-                
+
                 event(new PasswordReset($user));
                 auth()->login($user, true);
 
-                flash(translate('Password updated successfully'))->success();
+                if (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff')
+                    return redirect()->route('admin.dashboard')->with('success', translate('Password updated successfully'));
 
-                if (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff') {
-                    return redirect()->route('admin.dashboard');
-                }
-
-                return redirect()->route('home');
-
-            } else {
-                return view('auth.passwords.reset')->with('warning', "Password and confirm password didn't match");
+                return redirect()->route('home')->with('success', translate('Password updated successfully'));
             }
 
-        } else {
-            return view('auth.passwords.reset')->with('danger', "Verification code mismatch");
+            return view('auth.passwords.reset')->with('warning', "Password and confirm password didn't match");
         }
+
+        return view('auth.passwords.reset')->with('danger', "Verification code mismatch");
     }
 
     // All Flash Deals

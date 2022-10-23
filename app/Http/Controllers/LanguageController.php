@@ -38,10 +38,8 @@ class LanguageController extends Controller
 
     public function store(Request $request)
     {
-        if (Language::where('code', $request->code)->first()) {
-            flash(translate('This code is already used for another language'))->error();
-            return back();
-        }
+        if (Language::where('code', $request->code)->first())
+            return back()->with('danger', translate('This code is already used for another language'));
 
         $language = new Language;
         $language->name = $request->name;
@@ -51,8 +49,7 @@ class LanguageController extends Controller
 
         Cache::forget('app.languages');
 
-        flash(translate('Language has been inserted successfully'))->success();
-        return redirect()->route('languages.index');
+        return redirect()->route('languages.index')->with('success', translate('Language has been inserted successfully'));
     }
 
     public function show(Request $request, $id)
@@ -76,19 +73,19 @@ class LanguageController extends Controller
         return view('backend.setup_configurations.languages.edit', compact('language'));
     }
 
+    /**
+     * Update Language
+     */
     public function update(Request $request, $id)
     {
-        if (Language::where('code', $request->code)->where('id', '!=', $id)->first()) {
-            flash(translate('This code is already used for another language'))->error();
-            return back();
-        }
+        if (Language::where('code', $request->code)->where('id', '!=', $id)->first())
+            return back()->with('danger', translate('This code is already used for another language'));
+
         $language = Language::findOrFail($id);
         if (env('DEFAULT_LANGUAGE') == $language->code && env('DEFAULT_LANGUAGE') != $request->code) {
-            flash(translate('Default language code can not be edited'))->error();
-            return back();
+            return back()->with('danger', translate('Default language code can not be edited'));
         } elseif ($language->code == 'en' && $request->code != 'en') {
-            flash(translate('English language code can not be edited'))->error();
-            return back();
+            return back()->with('danger', translate('English language code can not be edited'));
         }
 
         $language->name = $request->name;
@@ -98,8 +95,7 @@ class LanguageController extends Controller
 
         Cache::forget('app.languages');
 
-        flash(translate('Language has been updated successfully'))->success();
-        return redirect()->route('languages.index');
+        return redirect()->route('languages.index')->with('success', translate('Language has been updated successfully'));
     }
 
     public function key_value_store(Request $request)
@@ -119,8 +115,8 @@ class LanguageController extends Controller
             }
         }
         Cache::forget('translations-' . $language->code);
-        flash(translate('Translations updated for ') . $language->name)->success();
-        return back();
+
+        return back()->with('success', translate('Translations updated for ') . $language->name);
     }
 
     public function update_status(Request $request)
@@ -135,6 +131,7 @@ class LanguageController extends Controller
             flash(translate('Status updated successfully'))->success();
             return 1;
         }
+
         return 0;
     }
 
@@ -146,23 +143,26 @@ class LanguageController extends Controller
             flash(translate('RTL status updated successfully'))->success();
             return 1;
         }
+
         return 0;
     }
 
     public function destroy($id)
     {
         $language = Language::findOrFail($id);
+
         if (env('DEFAULT_LANGUAGE') == $language->code) {
             flash(translate('Default language can not be deleted'))->error();
         } elseif ($language->code == 'en') {
             flash(translate('English language can not be deleted'))->error();
         } else {
-            if ($language->code == Session::get('locale')) {
+            if ($language->code == Session::get('locale'))
                 Session::put('locale', env('DEFAULT_LANGUAGE'));
-            }
+
             Language::destroy($id);
             flash(translate('Language has been deleted successfully'))->success();
         }
+
         return redirect()->route('languages.index');
     }
 
@@ -171,7 +171,6 @@ class LanguageController extends Controller
     public function importEnglishFile(Request $request)
     {
         $path = Storage::disk('local')->put('app-translations', $request->lang_file);
-
         $contents = file_get_contents(public_path($path));
 
         try {
@@ -185,8 +184,7 @@ class LanguageController extends Controller
             //throw $th;
         }
 
-        flash(translate('Translation keys has been imported successfully. Go to App Translation for more..'))->success();
-        return back();
+        return back()->with('success', translate('Translation keys has been imported successfully. Go to App Translation for more..'));
     }
 
     public function showAppTranlsationView(Request $request, $id)
@@ -199,6 +197,7 @@ class LanguageController extends Controller
             $lang_keys = $lang_keys->where('lang_key', 'like', '%' . $sort_search . '%');
         }
         $lang_keys = $lang_keys->paginate(50);
+
         return view('backend.setup_configurations.languages.app_translation', compact('language', 'lang_keys', 'sort_search'));
     }
 
@@ -211,8 +210,8 @@ class LanguageController extends Controller
                 ['lang_value' => $value]
             );
         }
-        flash(translate('App Translations updated for ') . $language->name)->success();
-        return back();
+
+        return back()->with('success', translate('App Translations updated for ') . $language->name);
     }
 
     public function exportARBFile($id)
@@ -223,9 +222,8 @@ class LanguageController extends Controller
             $filename = "app_{$language->app_lang_code}.arb";
             $contents = AppTranslation::where('lang', $language->app_lang_code)->pluck('lang_value', 'lang_key')->toJson();
 
-            return response()->streamDownload(function () use ($contents) {
-                echo $contents;
-            }, $filename);
+            return response()->streamDownload(function () use ($contents) { echo $contents; }, $filename);
+            
         } catch (\Exception $e) {
             dd($e);
         }

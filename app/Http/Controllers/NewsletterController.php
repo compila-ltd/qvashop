@@ -25,6 +25,7 @@ class NewsletterController extends Controller
     {
         $users = User::all();
         $subscribers = Subscriber::all();
+
         return view('backend.marketing.newsletters.index', compact('users', 'subscribers'));
     }
 
@@ -64,10 +65,8 @@ class NewsletterController extends Controller
                     }
                 }
             }
-            
         } else {
-            flash(translate('Please configure SMTP first'))->error();
-            return back();
+            return back()->with('danger', translate('Please configure SMTP first'));
         }
 
         return redirect()->route('admin.dashboard')->with('success', translate('Newsletter has been send'));
@@ -89,7 +88,6 @@ class NewsletterController extends Controller
             dd($e);
         }
 
-        flash(translate('An email has been sent.'))->success();
-        return back();
+        return back()->with('success', translate('An email has been sent.'));
     }
 }

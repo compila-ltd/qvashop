@@ -30,16 +30,16 @@ class WalletController extends Controller
         $user = User::find($request->user_id);
 
         if ($user->balance >= $request->amount) {
-            
-            $response =  $order->store($request, true);            
+
+            $response =  $order->store($request, true);
             $decoded_response = $response->original;
             if ($decoded_response['result'] == true) { // only decrease user balance with a success
                 $user->balance -= $request->amount;
-                $user->save();            
+                $user->save();
             }
 
             return $response;
-
+            
         } else {
             return response()->json([
                 'result' => false,
@@ -60,12 +60,10 @@ class WalletController extends Controller
         $wallet->offline_payment = 1;
         $wallet->reciept = $request->photo;
         $wallet->save();
-       // flash(translate('Offline Recharge has been done. Please wait for response.'))->success();
-        //return redirect()->route('wallet.index');
+
         return response()->json([
             'result' => true,
             'message' => translate('Offline Recharge has been done. Please wait for response.')
         ]);
     }
-
 }

@@ -9,9 +9,10 @@ use App\Models\Zone;
 
 class ZoneController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         // Staff Permission Check
-        $this->middleware(['permission:manage_zones'])->only('index','create','edit','destroy');
+        $this->middleware(['permission:manage_zones'])->only('index', 'create', 'edit', 'destroy');
     }
 
     public function index()
@@ -20,13 +21,11 @@ class ZoneController extends Controller
         return view('backend.setup_configurations.zones.index', compact('zones'));
     }
 
-
     public function create()
     {
-        $countries = Country::where('status', 1)->where('zone_id',0)->get();
+        $countries = Country::where('status', 1)->where('zone_id', 0)->get();
         return view('backend.setup_configurations.zones.create', compact('countries'));
     }
-
 
     public function store(ZoneRequest $request)
     {
@@ -36,18 +35,18 @@ class ZoneController extends Controller
             Country::where('id', $val)->update(['zone_id' => $zone->id]);
         }
 
-        flash(translate('Zone has been created successfully'))->success();
-        return redirect()->route('zones.index');
+        return redirect()->route('zones.index')->with('success', translate('Zone has been created successfully'));
     }
 
     public function edit(Zone $zone)
     {
         $countries = Country::where('status', 1)
-                            ->where(function ($query) use ($zone){
-                                $query->where('zone_id', 0)
-                                    ->orWhere('zone_id', $zone->id);
-                            })
-                            ->get();
+            ->where(function ($query) use ($zone) {
+                $query->where('zone_id', 0)
+                    ->orWhere('zone_id', $zone->id);
+            })
+            ->get();
+
         return view('backend.setup_configurations.zones.edit', compact('countries', 'zone'));
     }
 
@@ -61,8 +60,7 @@ class ZoneController extends Controller
             Country::where('id', $val)->update(['zone_id' => $zone->id]);
         }
 
-        flash(translate('Zone has been update successfully'))->success();
-        return back();
+        return back()->with('success', translate('Zone has been update successfully'));
     }
 
     /**
@@ -74,12 +72,9 @@ class ZoneController extends Controller
     public function destroy($id)
     {
         $zone = Zone::findOrFail($id);
-
         Country::where('zone_id', $zone->id)->update(['zone_id' => 0]);
-
         Zone::destroy($id);
 
-        flash(translate('Zone has been deleted successfully'))->success();
-        return redirect()->route('zones.index');
+        return redirect()->route('zones.index')->with('success', translate('Zone has been deleted successfully'));
     }
 }
