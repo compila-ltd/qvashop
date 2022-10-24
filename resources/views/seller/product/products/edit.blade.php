@@ -78,7 +78,7 @@
                     <div class="form-group row">
                         <label class="col-md-3 col-from-label">{{ translate('Weight')}} <small>({{ translate('In Kg') }})</small></label>
                         <div class="col-md-8">
-                            <input type="number" class="form-control" name="weight" value="{{ $product->weight }}" step="0.01" placeholder="0.00">>
+                            <input type="number" class="form-control" name="weight" value="{{ $product->weight }}" step="0.01" placeholder="0.00">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -697,14 +697,11 @@
 
     function show_hide_shipping_div() {
         var shipping_val = $("[name=shipping_type]:checked").val();
-
         $(".flat_rate_shipping_div").hide();
-
         if(shipping_val == 'flat_rate'){
             $(".flat_rate_shipping_div").show();
         }
     }
-
 
     function add_more_customer_choice_option(i, name){
         $.ajax({
@@ -712,7 +709,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             type:"POST",
-            url:'{{ route('seller.products.add-more-choice-option') }}',
+            url: "{{ route('seller.products.add-more-choice-option') }}",
             data:{
                attribute_id: i
             },
@@ -768,8 +765,8 @@
 
     function update_sku(){
         $.ajax({
-           type:"POST",
-           url:'{{ route('seller.products.sku_combination_edit') }}',
+           type: "POST",
+           url: "{{ route('seller.products.sku_combination_edit') }}",
            data:$('#choice_form').serialize(),
            success: function(data){
                $('#sku_combination').html(data);
@@ -786,7 +783,6 @@
     }
 
     AIZ.plugins.tagify();
-
 
     $(document).ready(function(){
         update_sku();
