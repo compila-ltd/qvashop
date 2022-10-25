@@ -106,20 +106,23 @@ return [
 
     'redis' => [
 
-        'client' => 'predis',
+        'client' => env('REDIS_CLIENT', 'predis'),
 
         'default' => [
             'host' => env('REDIS_HOST', '127.0.0.1'),
             'password' => env('REDIS_PASSWORD', null),
             'port' => env('REDIS_PORT', 6379),
             'database' => env('REDIS_DB', 0),
+            //'url' => 'tls://user:password@127.0.0.1:6380?database=1',
         ],
 
         'cache' => [
+            'scheme' => 'tls',
             'host' => env('REDIS_HOST', '127.0.0.1'),
             'password' => env('REDIS_PASSWORD', null),
             'port' => env('REDIS_PORT', 6379),
             'database' => env('REDIS_CACHE_DB', 1),
+            //'url' => 'tls://user:password@127.0.0.1:6380?database=1',
         ],
 
     ],

@@ -413,9 +413,8 @@ class HomeController extends Controller
         $tax = 0;
         $max_limit = 0;
 
-        if ($request->has('color')) {
+        if ($request->has('color'))
             $str = $request['color'];
-        }
 
         if (json_decode($product->choice_options) != null) {
             foreach (json_decode($product->choice_options) as $key => $choice) {
@@ -430,7 +429,6 @@ class HomeController extends Controller
         $product_stock = $product->stocks->where('variant', $str)->first();
 
         $price = $product_stock->price;
-
 
         if ($product->wholesale_product) {
             $wholesalePrice = $product_stock->wholesalePrices->where('min_qty', '<=', $request->quantity)->where('max_qty', '>=', $request->quantity)->first();
