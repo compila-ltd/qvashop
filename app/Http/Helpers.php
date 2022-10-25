@@ -115,6 +115,7 @@ if (!function_exists('get_cached_products')) {
     {
         $products = Product::where('published', 1)->where('approved', '1')->where('auction_product', 0);
         $verified_sellers = verified_sellers_id();
+        
         if (get_setting('vendor_system_activation') == 1) {
             $products = $products->where(function ($p) use ($verified_sellers) {
                 $p->where('added_by', 'admin')->orWhere(function ($q) use ($verified_sellers) {
@@ -1202,8 +1203,6 @@ function hex2rgba($color, $opacity = false)
     if ($color[0] == '#') {
         $color = substr($color, 1);
     }
-
-
 
     //Check if color has 6 or 3 characters and get values
     if (strlen($color) == 6) {
