@@ -17,7 +17,7 @@ use App\Http\Controllers\SmsController;
 use App\Http\Controllers\SmsTemplateController;
 use App\Http\Controllers\OTPVerificationController;
 
-//Verofocation phone
+//Verifocation phone
 Route::controller(OTPVerificationController::class)->group(function () {
     Route::get('/verification', 'verification')->name('verification');
     Route::post('/verification', 'verify_phone')->name('verification.submit');

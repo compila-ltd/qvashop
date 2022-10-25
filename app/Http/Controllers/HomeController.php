@@ -70,6 +70,9 @@ class HomeController extends Controller
         return view('frontend.index', compact('onlineStore', 'featured_categories', 'todays_deal_products', 'newest_products', 'flash_deal'));
     }
 
+    /**
+     * User Login
+     */
     public function login()
     {
         if (Auth::check()) {
@@ -78,7 +81,9 @@ class HomeController extends Controller
         return view('frontend.user_login');
     }
 
-    // Registration
+    /**
+     * User Registration
+     */
     public function registration(Request $request)
     {
         if (Auth::check()) {
@@ -104,6 +109,9 @@ class HomeController extends Controller
         return view('frontend.user_registration');
     }
 
+    /**
+     * Login from Cart
+     */
     public function cart_login(Request $request)
     {
         $user = null;
@@ -159,7 +167,7 @@ class HomeController extends Controller
         }
     }
 
-    // Update User
+    // Update User Profile
     public function userProfileUpdate(Request $request)
     {
         $user = User::find(Auth::user()->id);
@@ -205,7 +213,7 @@ class HomeController extends Controller
         return view('frontend.partials.featured_products_section', compact('featured_products'));
     }
 
-    // Best Selleing products
+    // Best Selling products
     public function load_best_selling_section()
     {
         $best_selling_products = Cache::remember('best_selling_products', 86400, function () {

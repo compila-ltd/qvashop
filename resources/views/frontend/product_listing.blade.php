@@ -256,7 +256,7 @@
                         <div class="row gutters-5 row-cols-xxl-4 row-cols-xl-3 row-cols-lg-4 row-cols-md-3 row-cols-2">
                             @foreach ($products as $key => $product)
                                 <div class="col">
-                                    @include('frontend.partials.product_box',['product' => $product])
+                                    <x-frontend.partials.product-box :product="$product" />
                                 </div>
                             @endforeach
                         </div>

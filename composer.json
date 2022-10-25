@@ -22,7 +22,6 @@
         "niklasravnsborg/laravel-pdf": "^4.0",
         "renatomarinho/laravel-page-speed": "^2.1",
         "sentry/sentry-laravel": "^2.13",
-        "silber/page-cache": "^1.0",
         "simplesoftwareio/simple-qrcode": "^4.2",
         "spatie/db-dumper": "3.3.0",
         "spatie/laravel-permission": "^5.5",

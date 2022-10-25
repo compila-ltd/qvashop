@@ -74,7 +74,7 @@ Route::controller(LoginController::class)->group(function () {
 
 // Email Verification
 Route::controller(VerificationController::class)->group(function () {
-    Route::get('/email/resend', 'resend')->name('verification.resend');
+    Route::get('/email/resend', 'resend')->name('verification.resend.new');
     Route::get('/verification-confirmation/{code}', 'verification_confirmation')->name('email.verification.confirmation');
 });
 
@@ -82,21 +82,20 @@ Route::controller(VerificationController::class)->group(function () {
 Route::controller(HomeController::class)->group(function () {
 
     Route::get('/email_change/callback', 'email_change_callback')->name('email_change.callback');
-    Route::post('/password/reset/email/submit', 'reset_password_with_code')->name('password.update');
+    Route::post('/password/reset/email/submit', 'reset_password_with_code')->name('password.update.new');
     Route::get('/users/login', 'login')->name('user.login');
     Route::get('/users/registration', 'registration')->name('user.registration');
     Route::post('/users/login/cart', 'cart_login')->name('cart.login.submit');
-    // Route::get('/new-page', 'new_page')->name('new_page');
 
     //Home Page
     Route::get('/', 'index')->name('home');
 
     // AJAX Calls
-    Route::group(['middleware' => ['page-cache']], function () {
-        Route::post('/home/section/featured', 'load_featured_section')->name('home.section.featured');
-        Route::post('/home/section/best_selling', 'load_best_selling_section')->name('home.section.best_selling');
-        Route::post('/home/section/home_categories', 'load_home_categories_section')->name('home.section.home_categories');
-        Route::post('/home/section/best_sellers', 'load_best_sellers_section')->name('home.section.best_sellers');
+    Route::group(['prefix' => 'home/section'], function () {
+        Route::post('/featured', 'load_featured_section')->name('home.section.featured');
+        Route::post('/best_selling', 'load_best_selling_section')->name('home.section.best_selling');
+        Route::post('/home_categories', 'load_home_categories_section')->name('home.section.home_categories');
+        Route::post('/best_sellers', 'load_best_sellers_section')->name('home.section.best_sellers');
     });
 
     //category dropdown menu ajax call

@@ -25,7 +25,7 @@
                         @endphp
                         @if (isset($product) && $product->published != 0)
                             <div class="col mb-2">
-                                @include('frontend.partials.product_box',['product' => $product])
+                                <x-frontend.partials.product-box :product="$product" />
                             </div>
                         @endif
                     @endforeach

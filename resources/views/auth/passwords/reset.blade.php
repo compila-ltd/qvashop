@@ -8,7 +8,7 @@
                 <div class="bg-white rounded shadow-sm p-4 text-left">
                     <h1 class="h3 fw-600">{{ translate('Reset Password') }}</h1>
                     <p class="mb-4 opacity-60">{{ translate('Enter your email address and new password and confirm password.')}} </p>
-                    <form method="POST" action="{{ route('password.update') }}">
+                    <form method="POST" action="{{ route('password.update.new') }}">
                         @csrf
 
                         <div class="form-group">
