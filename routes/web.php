@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CartController;
@@ -47,11 +48,6 @@ use App\Http\Controllers\Payments\LightningController;
 
 Route::get('/refresh-csrf', function () {
     return csrf_token();
-});
-
-// Debug LN
-Route::get('/flash', function () {
-    return redirect()->route('home')->with('info', 'Item created successfully!');
 });
 
 // Sitemap generator
