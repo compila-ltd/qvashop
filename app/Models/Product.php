@@ -12,6 +12,16 @@ class Product extends Model
 
     protected $with = ['product_translations', 'taxes'];
 
+    // Add the Product URL attribute
+    public function getProductUrlAttribute()
+    {
+        if ($this->auction_product == 1) {
+            return route('auction-product', $this->slug);
+        } else {
+            return route('product', $this->slug);
+        }
+    }
+
     public function getTranslation($field = '', $lang = false)
     {
         $lang = $lang == false ? App::getLocale() : $lang;

@@ -276,7 +276,7 @@ class CartController extends Controller
         }
     }
 
-    //removes from Cart
+    // Remove from Cart
     public function removeFromCart(Request $request)
     {
         Cart::destroy($request->id);
