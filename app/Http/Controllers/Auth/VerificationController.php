@@ -57,7 +57,6 @@ class VerificationController extends Controller
         }
     }
 
-
     /**
      * Resend the email verification notification.
      *
@@ -82,7 +81,7 @@ class VerificationController extends Controller
     public function verification_confirmation($code)
     {
         $user = User::where('verification_code', $code)->first();
-        
+
         if ($user != null) {
             $user->email_verified_at = Carbon::now();
             $user->save();
