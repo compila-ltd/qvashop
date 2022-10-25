@@ -128,7 +128,7 @@ class CartController extends Controller
                 );
             }
 
-            //discount calculation
+            // Discount calculation
             $discount_applicable = false;
 
             if ($product->discount_start_date == null) {
@@ -160,7 +160,6 @@ class CartController extends Controller
             $data['quantity'] = $request['quantity'];
             $data['price'] = $price;
             $data['tax'] = $tax;
-            //$data['shipping'] = 0;
             $data['shipping_cost'] = 0;
             $data['product_referral_code'] = null;
             $data['cash_on_delivery'] = $product->cash_on_delivery;
@@ -238,6 +237,7 @@ class CartController extends Controller
                 'modal_view' => view('frontend.partials.added_to_cart', compact('product', 'data'))->render(),
                 'nav_cart_view' => view('frontend.partials.cart')->render(),
             );
+            
         } else {
             $price = $product->bids->max('amount');
 
