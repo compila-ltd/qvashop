@@ -31,6 +31,7 @@ class ProductRequest extends FormRequest
             'unit_price'    => 'required|numeric',
             'discount'      => 'required|numeric',
             'current_stock' => 'required|numeric',
+            'weight' => 'required',
         ];
     }
 
@@ -53,6 +54,7 @@ class ProductRequest extends FormRequest
             'discount.numeric'          => 'Discount must be numeric',
             'current_stock.required'    => 'Current stock is required',
             'current_stock.numeric'     => 'Current stock must be numeric',
+            'weight.required'           => 'Product weight is required',
         ];
     }
 }
