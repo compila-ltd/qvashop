@@ -19,7 +19,7 @@
                     @foreach ($slider_images as $key => $value)
                     <div class="carousel-box">
                         <a href="{{ json_decode(get_setting('home_slider_links'), true)[$key] }}">
-                            <img class="d-block mw-100 img-fit rounded shadow-sm overflow-hidden" src="{{ uploaded_asset($slider_images[$key]) }}" alt="{{ env('APP_NAME')}} promo" @if(count($featured_categories)==0) height="457" @else height="315" @endif>
+                            <img class="d-block mw-100 img-fit rounded shadow-sm overflow-hidden" src="{{ uploaded_asset($slider_images[$key]) }}" alt="{{ env('APP_NAME')}} Special Offer" @if(count($featured_categories)==0) height="457" @else height="315" @endif>
                         </a>
                     </div>
                     @endforeach
@@ -27,7 +27,7 @@
                 @endif
                 @if (count($featured_categories) > 0)
                 <ul class="list-unstyled mb-0 row gutters-5">
-                    @foreach ($featured_categories as $key => $category)
+                    @foreach ($featured_categories as $category)
                     <li class="minw-0 col-4 col-md mt-3">
                         <a href="{{ route('products.category', $category->slug) }}" class="d-block rounded bg-white p-2 text-reset shadow-sm">
                             <img src="{{ asset('assets/img/placeholder.jpg') }}" data-src="{{ uploaded_asset($category->banner) }}" alt="{{ $category->getTranslation('name') }}" class="lazyload img-fit" height="78">

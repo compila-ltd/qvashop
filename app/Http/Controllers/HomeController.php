@@ -48,12 +48,12 @@ class HomeController extends Controller
             ->url(route('home'));
 
         // Featured
-        $featured_categories = Cache::rememberForever('featured_categories', function () {
+        $featured_categories = Cache::remember('featured_categories', 7200, function () {
             return Category::where('featured', 1)->get();
         });
 
         // Todays Deal
-        $todays_deal_products = Cache::rememberForever('todays_deal_products', function () {
+        $todays_deal_products = Cache::remember('todays_deal_products', 7200, function () {
             return filter_products(Product::where('published', 1)->where('todays_deal', '1'))->get();
         });
 

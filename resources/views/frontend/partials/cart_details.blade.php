@@ -16,24 +16,19 @@
                         @php
                         $total = 0;
                         @endphp
-
-                        @foreach ($carts as $cartItem)
-                        
+                        @foreach ($carts as $key => $cartItem)
                         @php
                         $product = \App\Models\Product::find($cartItem['product_id']);
-
-                        @if ($product != null)
-                        $product_stock = $product->stocks->where('variant', $cartItem['variation'])->first();
+                        if ($product != null) {
+                            $product_stock = $product->stocks->where('variant', $cartItem['variation'])->first();
+                        } else {
+                            continue;
+                        }
                         $total = $total + ($cartItem['price'] + $cartItem['tax']) * $cartItem['quantity'];
                         $product_name_with_choice = $product->getTranslation('name');
                         if ($cartItem['variation'] != null) {
                         $product_name_with_choice = $product->getTranslation('name').' - '.$cartItem['variation'];
                         }
-                        @else
-                        @php continue; @endphp
-                        @endif
-                        
-                        @endphp
                         <li class="list-group-item px-0 px-lg-3">
                             <div class="row gutters-5">
                                 <div class="col-lg-5 d-flex">
