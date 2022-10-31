@@ -759,12 +759,12 @@ if (!function_exists('getFullLocale')) {
 
 function translate($key, $lang = null, $addslashes = false)
 {
-    if ($lang == null) {
+    if ($lang == null)
         $lang = App::getLocale();
-    }
 
     $lang_key = preg_replace('/[^A-Za-z0-9\_]/', '', str_replace(' ', '_', strtolower($key)));
 
+    // Remember forever the translation strings
     $translations_en = Cache::rememberForever('translations-en', function () {
         return Translation::where('lang', 'en')->pluck('lang_value', 'lang_key')->toArray();
     });

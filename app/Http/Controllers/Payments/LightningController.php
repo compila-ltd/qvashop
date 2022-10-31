@@ -85,7 +85,6 @@ class LightningController extends Controller
                 $wallet->save();
 
                 // Now we can process the payment
-                // Redirect if paid...
                 $this->process_payment($wallet);
             }
         }

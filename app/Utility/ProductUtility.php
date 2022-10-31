@@ -3,7 +3,6 @@
 namespace App\Utility;
 
 use App\Models\Color;
-use Combinations;
 
 class ProductUtility
 {
