@@ -86,19 +86,15 @@
                 @csrf
                 <div class="modal-body gry-bg px-3 pt-3">
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-12">
                             <label>{{ translate('Amount')}} <span class="text-danger">*</span></label>
-                        </div>
-                        <div class="col-md-9">
                             <input type="number" lang="en" class="form-control mb-3" name="amount" min="{{ get_setting('minimum_seller_amount_withdraw') }}" max="{{ Auth::user()->shop->admin_to_pay }}" placeholder="{{ translate('Amount') }}" required>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-3">
-                            <label>{{ translate('Message')}}</label>
-                        </div>
-                        <div class="col-md-9">
-                            <textarea name="message" rows="8" class="form-control mb-3"></textarea>
+                        <div class="col-md-12">
+                            <label>{{ translate('QvaPay User')}}</label>
+                            <input name="message" rows="8" class="form-control mb-3"></input>
                         </div>
                     </div>
                     <div class="form-group text-right">

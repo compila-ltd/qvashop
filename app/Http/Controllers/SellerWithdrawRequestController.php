@@ -9,9 +9,9 @@ use App\Models\SellerWithdrawRequest;
 
 class SellerWithdrawRequestController extends Controller
 {
+    // Staff Permission Check
     public function __construct()
     {
-        // Staff Permission Check
         $this->middleware(['permission:view_seller_payout_requests'])->only('index');
     }
 
@@ -40,7 +40,7 @@ class SellerWithdrawRequestController extends Controller
         $seller_withdraw_request->message = $request->message;
         $seller_withdraw_request->status = '0';
         $seller_withdraw_request->viewed = '0';
-        
+
         if ($seller_withdraw_request->save()) {
             return redirect()->route('withdraw_requests.index')->with('success', translate('Request has been sent successfully'));
         }
@@ -60,10 +60,9 @@ class SellerWithdrawRequestController extends Controller
     public function message_modal(Request $request)
     {
         $seller_withdraw_request = SellerWithdrawRequest::findOrFail($request->id);
-        if (Auth::user()->user_type == 'seller') {
+        if (Auth::user()->user_type == 'seller')
             return view('frontend.partials.withdraw_message_modal', compact('seller_withdraw_request'));
-        } elseif (Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'staff') {
+        elseif (Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'staff')
             return view('backend.sellers.seller_withdraw_requests.withdraw_message_modal', compact('seller_withdraw_request'));
-        }
     }
 }

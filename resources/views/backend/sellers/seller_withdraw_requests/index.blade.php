@@ -70,7 +70,6 @@
 <div class="modal fade" id="payment_modal">
     <div class="modal-dialog">
         <div class="modal-content" id="payment-modal-content">
-
         </div>
     </div>
 </div>
@@ -78,7 +77,6 @@
 <div class="modal fade" id="message_modal">
     <div class="modal-dialog">
         <div class="modal-content" id="message-modal-content">
-
         </div>
     </div>
 </div>

@@ -24,6 +24,7 @@
         "sentry/sentry-laravel": "^2.13",
         "simplesoftwareio/simple-qrcode": "^4.2",
         "spatie/db-dumper": "3.3.0",
+        "spatie/laravel-mailcoach": "^5.0",
         "spatie/laravel-permission": "^5.5",
         "spatie/schema-org": "^3.11",
         "twilio/sdk": "^6.1"
@@ -38,6 +39,12 @@
         "phpunit/phpunit": "^9.0",
         "spatie/laravel-ignition": "^1.0"
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://satis.spatie.be"
+        }
+    ],
     "autoload": {
         "classmap": [
             "database/seeds",
