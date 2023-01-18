@@ -25,7 +25,7 @@ class ShopController extends Controller
     public function index()
     {
         $shop = Auth::user()->shop;
-        
+
         return view('seller.shop', compact('shop'));
     }
 
@@ -37,14 +37,11 @@ class ShopController extends Controller
     public function create()
     {
         if (Auth::check()) {
-
-            if ((Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'customer')) {
+            if ((Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'customer'))
                 return back()->with('danger', translate('Admin or Customer can not be a seller'));
-            }
 
-            if (Auth::user()->user_type == 'seller') {
+            if (Auth::user()->user_type == 'seller')
                 return back()->with('danger', translate('This user already a seller'));
-            }
         }
 
         return view('frontend.seller_form');
@@ -61,9 +58,8 @@ class ShopController extends Controller
         $user = null;
         if (!Auth::check()) {
 
-            if (User::where('email', $request->email)->first() != null) {
+            if (User::where('email', $request->email)->first() != null)
                 return back()->with('danger', translate('Email already exists!'));
-            }
 
             if ($request->password == $request->password_confirmation) {
                 $user = new User;
