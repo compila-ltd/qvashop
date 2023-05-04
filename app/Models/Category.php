@@ -6,9 +6,12 @@ use App\Utility\CategoryUtility;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Model
 {
+    use SoftDeletes;
+
     protected $with = ['category_translations'];
 
     public function getTranslation($field = '', $lang = false)
