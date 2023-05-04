@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Payments\LightningController;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Coupon;
@@ -17,6 +16,7 @@ use App\Utility\NotificationUtility;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Payments\QvaPayController;
+use App\Http\Controllers\Payments\LightningController;
 
 class CheckoutController extends Controller
 {

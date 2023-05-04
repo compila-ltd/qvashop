@@ -13,15 +13,15 @@ use App\Http\Controllers\CheckoutController;
 
 class LightningController extends Controller
 {
-    private $base_url = "https://api.lncpayments.com/api/ln";
     private $app_key;
+    private $base_url;
     private $app_secret;
 
     public function __construct()
     {
-        // Initialize vars
-        $this->app_key = config('lncpaymentes.key');
-        $this->app_secret = config('lncpaymentes.secret', 'yJF3A7Z1CTgcUfWguEskac9UdIHVS2XepnZFX3yH2r1s0gpqRyzI1893hzZq8ZmSGa2ariseoxUCWEoUiIYring2O5yiT7yWGUYi');
+        $this->base_url = config('lightning.base_url');
+        $this->app_key = config('lightning.key');
+        $this->app_secret = config('lightning.secret');
     }
 
     /**
