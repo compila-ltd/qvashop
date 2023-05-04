@@ -80,7 +80,10 @@
     "config": {
         "preferred-install": "dist",
         "sort-packages": true,
-        "optimize-autoloader": true
+        "optimize-autoloader": true,
+        "allow-plugins": {
+            "php-http/discovery": false
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true

@@ -152,16 +152,18 @@
                         @endif
                     </ul>
                 </div>
-                @if (get_setting('vendor_system_activation') == 1)
-                <div class="text-center text-md-left mt-4">
-                    <h4 class="fs-13 text-uppercase fw-600 border-bottom border-gray-900 pb-2 mb-4">
-                        {{ translate('Be a Seller') }}
-                    </h4>
-                    <a href="{{ route('shops.create') }}" class="btn btn-primary btn-sm shadow-md">
-                        {{ translate('Apply Now') }}
-                    </a>
-                </div>
-                @endif
+                {{-- Disable the Apply Button for a seller option
+                    @if (get_setting('vendor_system_activation') == 1)
+                    <div class="text-center text-md-left mt-4">
+                        <h4 class="fs-13 text-uppercase fw-600 border-bottom border-gray-900 pb-2 mb-4">
+                            {{ translate('Be a Seller') }}
+                        </h4>
+                        <a href="{{ route('shops.create') }}" class="btn btn-primary btn-sm shadow-md">
+                            {{ translate('Apply Now') }}
+                        </a>
+                    </div>
+                    @endif    
+                --}}
             </div>
         </div>
     </div>
@@ -316,6 +318,7 @@
         </div>
     </div>
 </div>
+
 @if (Auth::check() && !isAdmin())
 <div class="aiz-mobile-side-nav collapse-sidebar-wrap sidebar-xl d-xl-none z-1035">
     <div class="overlay dark c-pointer overlay-fixed" data-toggle="class-toggle" data-backdrop="static" data-target=".aiz-mobile-side-nav" data-same=".mobile-side-nav-thumb"></div>
