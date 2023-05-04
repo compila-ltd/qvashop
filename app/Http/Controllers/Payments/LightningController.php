@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Payments;
 
-use App\Models\BitcoinWallet;
+use Illuminate\Http\Request;
 use App\Models\CombinedOrder;
 use App\Models\SellerPackage;
 use App\Models\CustomerPackage;
@@ -13,18 +13,15 @@ use App\Http\Controllers\CheckoutController;
 
 class LightningController extends Controller
 {
-    private $base_url;
-    private $key;
-    private $secret;
-    private $usdt_address;
+    private $base_url = "https://api.lncpayments.com/api/ln";
+    private $app_key;
+    private $app_secret;
 
     public function __construct()
     {
         // Initialize vars
-        $this->base_url = config('lightning.base_url');
-        $this->key = config('lightning.key');
-        $this->secret = config('lightning.secret');
-        $this->usdt_address = config('lightning.usdt_address');
+        $this->app_key = config('lncpaymentes.key');
+        $this->app_secret = config('lncpaymentes.secret', 'yJF3A7Z1CTgcUfWguEskac9UdIHVS2XepnZFX3yH2r1s0gpqRyzI1893hzZq8ZmSGa2ariseoxUCWEoUiIYring2O5yiT7yWGUYi');
     }
 
     /**
@@ -35,12 +32,13 @@ class LightningController extends Controller
         // Get the data from the request
         if (Session::has('payment_type')) {
             if (Session::get('payment_type') == 'cart_payment') {
-                
-                // Check first if this invoice is paid
-                
+
                 // Show invoice, not redirect
-                $order = CombinedOrder::findOrFail(Session::get('combined_order_id'));
-                $wallet = $this->create_invoice($order);
+                $combined_order = CombinedOrder::findOrFail(Session::get('combined_order_id'));
+                $wallet = $this->create_invoice($combined_order);
+
+                // Return the view with the wallet data and QR code
+                return $wallet;
 
             } elseif (Session::get('payment_type') == 'wallet_payment') {
                 $amount = round(Session::get('payment_data')['amount']);
@@ -52,131 +50,81 @@ class LightningController extends Controller
                 $amount = round($seller_package->amount);
             }
         }
-
-        return $wallet;
     }
 
     /**
-     * WebHook from Provider
-     * 
-     * Run every X time to check if the payment is confirmed 
+     * Create invoice with the amount from Bitcoin Price * $combined_order->grand_total
      */
-    public function check()
+    public function create_invoice($combined_order)
     {
-        // Get the latest 5 minutoes invoices
-        $wallets = BitcoinWallet::where('status', 'pending')->where('created_at', '>=', now()->subMinutes(5))->get();
+        $amount = floatval($combined_order->grand_total) * 1.015;
+        $amount = $this->amount($amount);
 
-        foreach ($wallets as $wallet) {
+        $params = [
+            'externalReference' => "qvashop_" . $combined_order->id,
+            'amount' => (float) $amount,
+            'description' => "QvaShop transaction: " . $combined_order->id,
+            'expirationSeconds' => 180,
+        ];
 
-            // Now ask to the provider if the invoice is paid
-            $data = ['id' => $wallet->invoice_id, 'token' => $wallet->token];
-            $totalParams = http_build_query($data);
-            $signature = hash_hmac('sha256', $totalParams, $this->secret);
+        $response = Http::withHeaders([
+            'X-Api-Key' => $this->app_secret
+        ])->post($this->base_url . "/invoices", $params);
 
-            $response = Http::withHeaders([
-                'X-API-KEY' => $this->key,
-                'X-API-SIGN' => $signature
-            ])->get($this->base_url . '/getOrder?' . $totalParams);
+        // Get Wallet data
+        $wallet = json_decode((string) $response->getBody());
 
-            // If the invoice is paid, update the wallet
-            if ($response->json()['data']['status'] == 4) {
+        // Check for correcta wallet validation
+        if (isset($wallet->paymentAddress)) {
+            return [
+                'value' => number_format(ceil($amount * 100000000), 0, '.', ''),
+                'wallet' => $wallet->paymentAddress
+            ];
+        }
 
-                $wallet->status = 'paid';
-                $wallet->save();
+        return false;
+    }
 
-                // Now we can process the payment
-                $this->process_payment($wallet);
+    /**
+     * Calculate the amount of Bitcoin by USD value
+     */
+    public function amount($amount)
+    {
+        $url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd";
+        $response = Http::get($url);
+        $price = json_decode((string) $response->getBody());
+        $price = $price->bitcoin->usd;
+        $amount = $amount / $price;
+        return $amount;
+    }
+
+    // WebHook from LNCPayments
+    public function success(Request $request)
+    {
+        if ($request->has('remote_id') && $request->has('id') && $request->has('uuid')) {
+
+            $input = $request->all();
+            $payment_details = json_encode(array('id' => $request['id'], 'method' => 'QvaPay', 'amount' => "", 'currency' => 'USD'));
+
+            $payment_type = 'cart_payment';
+
+            // Always process this data
+            if ($payment_type == 'cart_payment')
+                return (new CheckoutController)->checkout_done($input['remote_id'], $payment_details);
+
+            /*
+            if ($payment_type == 'wallet_payment') {
+                return (new WalletController)->wallet_payment_done(json_decode($request->opt_c), json_encode($request->all()));
             }
-        }
-    }
-
-    /**
-     * Get an invoice from FF
-     */
-    public function create_invoice($combined_order): array
-    {
-        // Calculate the amount with env taxes
-        $amount = round($combined_order->grand_total * (1 + (config('lightning.tax') / 100)));
-
-        // Determine price based on combined_order totals
-        $data = ['fromCurrency' => 'USDTTRC', 'fromQty' => $amount, 'toCurrency' => 'BTCLN', 'type' => 'float'];
-        $totalParams = http_build_query($data);
-        $signature = hash_hmac('sha256', $totalParams, $this->secret);
-
-        // request Price data
-        $response = Http::withHeaders([
-            'X-API-KEY' => $this->key,
-            'X-API-SIGN' => $signature
-        ])->asForm()->post($this->base_url . '/getPrice', $data);
-
-        $btc_amount = $response->json()['data']['to']['amount'];
-
-        // Get an invoice
-        $data = [
-            "fromCurrency" => "BTCLN",
-            "toCurrency" => "USDTTRC",
-            "fromQty" => $response->json()['data']['to']['amount'],
-            "toAddress" => $this->usdt_address,
-            "type" => "float",
-        ];
-
-        // Create the totalParams as query string of body params
-        $totalParams = http_build_query($data);
-
-        // HMAC SHA256 with key and paramenters
-        $signature = hash_hmac('sha256', $totalParams, $this->secret);
-
-        //Getting a new Wallet
-        $response = Http::withHeaders([
-            'X-API-KEY' => $this->key,
-            'X-API-SIGN' => $signature
-        ])->asForm()->post($this->base_url . '/createOrder', $data);
-
-        // Return ID and Wallet
-        if (isset($response->json()['msg']) && $response->json()['msg'] == "OK" && isset($response->json()['data'])) {
-
-            $id = $response->json()['data']['id'];
-            $invoice = $response->json()['data']['from']['address'];
-            $token = $response->json()['data']['token'];
-
-            // Now save to DB
-            $this->save_invoice($combined_order, $id, $invoice, $token, $btc_amount);
-
-            return ['id' => $id, 'invoice' => $invoice, 'token' => $token, 'btc_amount' => $btc_amount];
+            if ($payment_type == 'customer_package_payment') {
+                return (new CustomerPackageController)->purchase_payment_done(json_decode($request->opt_c), json_encode($request->all()));
+            }
+            if ($payment_type == 'seller_package_payment') {
+                return (new SellerPackageController)->purchase_payment_done(json_decode($request->opt_c), json_encode($request->all()));
+            }
+            */
         }
 
-        return [];
-    }
-
-    /**
-     * Save this invoice into DB Model
-     */
-    private function save_invoice($combined_order, $id, $invoice, $token, $btc_amount)
-    {
-        $data = [
-            'combined_order_id' => $combined_order->id,
-            'invoice_id' => $id,
-            'invoice' => $invoice,
-            'token' => $token,
-            'btc_amount' => $btc_amount,
-            'status' => 'pending',
-        ];
-
-        $stored_wallet = BitcoinWallet::create($data);
-
-        return $stored_wallet;
-    }
-
-    /**
-     * Process the payment, mark as apid and complete it
-     */
-    private function process_payment($wallet)
-    {
-        $payment_type = 'cart_payment';
-        $payment_details = json_encode(array('id' => $wallet->combined_order_id, 'method' => 'BitcoinLN', 'amount' => "", 'currency' => 'USD'));
-
-        // Always process this data
-        if ($payment_type == 'cart_payment')
-            return (new CheckoutController)->checkout_done($wallet->combined_order_id, $payment_details);
+        return redirect()->route('home');
     }
 }

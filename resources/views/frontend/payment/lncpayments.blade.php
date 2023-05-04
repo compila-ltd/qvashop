@@ -47,24 +47,17 @@
         <div class="row">
             <div class="col-lg-6 p-2 offset-lg-3">
                 <div class="card rounded border-0 shadow-sm p-5 text-center">
-                    
+
                     <div class="p-1">
-                        @php
-                        $removedXML = '<?xml version="1.0" encoding="UTF-8"?>';
-                        @endphp
-                        {!! str_replace($removedXML, '', QrCode::size(250)->generate($wallet['invoice'])) !!}
+                        <h5>Wallet:</h5>
+                        {{ $wallet['wallet'] }}
                     </div>
-                    
+
                     <div class="mt-3">
                         <h5>Invoice:</h5>
-                        {{ $wallet['invoice'] }}
+                        {{ $wallet['wallet'] }}
                     </div>
-                    
-                    <div class="mt-2">
-                        <h6>Cantidad:</h6>
-                        {{ $wallet['btc_amount'] }}
-                    </div>
-                    
+
                 </div>
             </div>
         </div>

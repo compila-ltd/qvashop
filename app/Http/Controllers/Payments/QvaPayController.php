@@ -26,10 +26,6 @@ class QvaPayController extends Controller
 
     public function pay()
     {
-        // if (Auth::user()->phone == null) {
-        //     return redirect()->route('profile')->with('warning', translate('Please add phone number to your profile'));
-        // }
-
         // Get the data from the request
         if (Session::has('payment_type')) {
             if (Session::get('payment_type') == 'cart_payment') {

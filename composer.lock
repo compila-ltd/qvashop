@@ -58,16 +58,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.261.11",
+            "version": "3.261.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "bba0c975f34325cfb218d68bda6d9e476d309b4c"
+                "reference": "7d17f3187a4d5bebc41ca5d363570ed632b698c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/bba0c975f34325cfb218d68bda6d9e476d309b4c",
-                "reference": "bba0c975f34325cfb218d68bda6d9e476d309b4c",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/7d17f3187a4d5bebc41ca5d363570ed632b698c0",
+                "reference": "7d17f3187a4d5bebc41ca5d363570ed632b698c0",
                 "shasum": ""
             },
             "require": {
@@ -146,9 +146,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.261.11"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.261.15"
             },
-            "time": "2023-03-14T18:26:15+00:00"
+            "time": "2023-03-20T18:19:46+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -4565,16 +4565,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.11.12",
+            "version": "v0.11.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "52cb7c47d403c31c0adc9bf7710fc355f93c20f7"
+                "reference": "722317c9f5627e588788e340f29b923e58f92f54"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/52cb7c47d403c31c0adc9bf7710fc355f93c20f7",
-                "reference": "52cb7c47d403c31c0adc9bf7710fc355f93c20f7",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/722317c9f5627e588788e340f29b923e58f92f54",
+                "reference": "722317c9f5627e588788e340f29b923e58f92f54",
                 "shasum": ""
             },
             "require": {
@@ -4635,9 +4635,9 @@
             ],
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
-                "source": "https://github.com/bobthecow/psysh/tree/v0.11.12"
+                "source": "https://github.com/bobthecow/psysh/tree/v0.11.13"
             },
-            "time": "2023-01-29T21:24:40+00:00"
+            "time": "2023-03-21T14:22:44+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -4985,16 +4985,16 @@
         },
         {
             "name": "sentry/sentry",
-            "version": "3.15.0",
+            "version": "3.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-php.git",
-                "reference": "c6a0e24d2f8da8d8f57cdcc87ca635248c1a91c5"
+                "reference": "5326a8786b8c7c3a51ea0c6d06e6cb6a9dfa6779"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/c6a0e24d2f8da8d8f57cdcc87ca635248c1a91c5",
-                "reference": "c6a0e24d2f8da8d8f57cdcc87ca635248c1a91c5",
+                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/5326a8786b8c7c3a51ea0c6d06e6cb6a9dfa6779",
+                "reference": "5326a8786b8c7c3a51ea0c6d06e6cb6a9dfa6779",
                 "shasum": ""
             },
             "require": {
@@ -5073,7 +5073,7 @@
             ],
             "support": {
                 "issues": "https://github.com/getsentry/sentry-php/issues",
-                "source": "https://github.com/getsentry/sentry-php/tree/3.15.0"
+                "source": "https://github.com/getsentry/sentry-php/tree/3.16.0"
             },
             "funding": [
                 {
@@ -5085,7 +5085,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2023-03-13T11:45:26+00:00"
+            "time": "2023-03-16T10:37:16+00:00"
         },
         {
             "name": "sentry/sentry-laravel",

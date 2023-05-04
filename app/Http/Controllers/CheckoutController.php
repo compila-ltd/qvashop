@@ -52,14 +52,15 @@ class CheckoutController extends Controller
                     $qvapay = new QvaPayController;
                     return $qvapay->pay($request);
 
-                    // Pay with Bitocin LN
+                // Pay with Bitocin LN
                 } elseif ($request->payment_option == 'bitcoinln') {
 
                     $bitcoinln = new LightningController;
                     $wallet = $bitcoinln->pay($request);
 
                     // Chage this return for a view()
-                    return view('frontend.payment.bitcoinln', compact('wallet'));
+                    return view('frontend.payment.lncpayments', compact('wallet'));
+
                 } else {
 
                     $combined_order = CombinedOrder::findOrFail($request->session()->get('combined_order_id'));
