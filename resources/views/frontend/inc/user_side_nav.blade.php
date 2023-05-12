@@ -1,5 +1,6 @@
 <div class="aiz-user-sidenav-wrap position-relative z-1 shadow-sm">
     <div class="aiz-user-sidenav rounded overflow-auto c-scrollbar-light pb-5 pb-xl-0">
+
         <div class="p-4 text-xl-center mb-4 border-bottom bg-primary text-white position-relative">
             <span class="avatar avatar-md mb-3">
                 @if (Auth::user()->avatar_original != null)
@@ -191,15 +192,16 @@
                 </li>
                 @endif
 
-
-                @if (get_setting('wallet_system') == 1)
-                <li class="aiz-side-nav-item">
-                    <a href="{{ route('wallet.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['wallet.index'])}}">
-                        <i class="las la-dollar-sign aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{ translate('My Wallet')}}</span>
-                    </a>
-                </li>
-                @endif
+                {{--
+                    @if (get_setting('wallet_system') == 1)
+                    <li class="aiz-side-nav-item">
+                        <a href="{{ route('wallet.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['wallet.index'])}}">
+                            <i class="las la-dollar-sign aiz-side-nav-icon"></i>
+                            <span class="aiz-side-nav-text">{{ translate('My Wallet')}}</span>
+                        </a>
+                    </li>
+                    @endif
+                --}}
 
                 @if (addon_is_activated('club_point'))
                 <li class="aiz-side-nav-item">
