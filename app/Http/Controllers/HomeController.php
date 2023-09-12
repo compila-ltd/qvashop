@@ -185,7 +185,7 @@ class HomeController extends Controller
         $user->avatar_original = $request->photo;
         $user->save();
 
-        return back()->with('success', translate('Your Profile has been updated successfully!'));
+        return back()->with('success_profile_update', translate('Your Profile has been updated successfully!'));
     }
 
     // Flash Deals
