@@ -56,11 +56,14 @@ class ShopController extends Controller
     public function store(Request $request)
     {
         $user = null;
+        
         if (!Auth::check()) {
-
+            
             if (User::where('email', $request->email)->first() != null)
+            {
                 return back()->with('danger', translate('Email already exists!'));
-
+            }
+                
             if ($request->password == $request->password_confirmation) {
                 $user = new User;
                 $user->name = $request->name;
