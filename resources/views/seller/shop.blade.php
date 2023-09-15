@@ -74,7 +74,7 @@
                 <div class="row">
                     <label class="col-md-2 col-form-label">{{ translate('Meta Description') }}<span class="text-danger text-danger">*</span></label>
                     <div class="col-md-10">
-                        <textarea name="meta_description" rows="3" class="form-control mb-3" required>{{ $shop->meta_description }}</textarea>
+                        <textarea name="meta_description" rows="3" class="form-control mb-3" placeholder="{{ translate('Meta Description')}}" required>{{ $shop->meta_description }}</textarea>
                     </div>
                 </div>
                 <div class="form-group mb-0 text-right">
