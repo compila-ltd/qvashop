@@ -211,7 +211,7 @@ class LoginController extends Controller
      */
     protected function sendFailedLoginResponse(Request $request)
     {
-        return back()->with('error', translate('Invalid login credentials'));
+        return back()->with('danger', translate('Invalid login credentials'));
     }
 
     /**
