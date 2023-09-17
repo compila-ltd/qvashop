@@ -53,7 +53,7 @@ class ForgotPasswordController extends Controller
                 $array['view'] = 'emails.verification';
                 $array['from'] = env('MAIL_FROM_ADDRESS');
                 $array['subject'] = translate('Password Reset');
-                $array['content'] = translate('Verification Code is  ') . $user->verification_code;
+                $array['content'] = translate('Verification Code is') . ": " . $user->verification_code;
 
                 Mail::to($user->email)->queue(new SecondEmailVerifyMailManager($array));
 
