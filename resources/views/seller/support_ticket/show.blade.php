@@ -8,7 +8,7 @@
                <div class="mt-2">
                    <span> {{ $ticket->user->name }} </span>
                    <span class="ml-2"> {{ $ticket->created_at }} </span>
-                   <span class="badge badge-inline badge-secondary ml-2"> {{ ucfirst($ticket->status) }} </span>
+                   <span class="badge badge-inline badge-secondary ml-2"> {{ translate(ucfirst($ticket->status)) }} </span>
                </div>
             </div>
         </div>
