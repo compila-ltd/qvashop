@@ -27,6 +27,55 @@
                 </li>
                 @endcan
 
+                <!-- Support -->
+                @canany(['view_all_support_tickets','view_all_product_queries'])
+                <li class="aiz-side-nav-item">
+                        @can('view_all_support_tickets')
+                        @php
+                        $support_ticket = DB::table('tickets')
+                        ->where('viewed', 0)
+                        ->select('id')
+                        ->count();
+                        @endphp
+                    <a href="#" class="aiz-side-nav-link">
+                        <i class="las la-link aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">{{ translate('Support') }}</span>
+                        @if($support_ticket > 0)<span class="badge badge-info">{{ $support_ticket }}</span>@endif
+                        <span class="aiz-side-nav-arrow"></span>
+                    </a>
+                    <ul class="aiz-side-nav-list level-2">
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('support_ticket.admin_index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['support_ticket.admin_index', 'support_ticket.admin_show']) }}">
+                                <span class="aiz-side-nav-text">{{ translate('Ticket') }}</span>
+                                @if($support_ticket > 0)<span class="badge badge-info">{{ $support_ticket }}</span>@endif
+                            </a>
+                        </li>
+                        @endcan
+
+                        @can('view_all_product_queries')
+                        @php
+                        $conversation = \App\Models\Conversation::where('receiver_id', Auth::user()->id)->where('receiver_viewed', '1')->get();
+                        @endphp
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('conversations.admin_index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['conversations.admin_index', 'conversations.admin_show']) }}">
+                                <span class="aiz-side-nav-text">{{ translate('Product Conversations') }}</span>
+                                @if (count($conversation) > 0)
+                                <span class="badge badge-info">{{ count($conversation) }}</span>
+                                @endif
+                            </a>
+                        </li>
+                        @endcan
+                        @if (get_setting('product_query_activation') == 1)
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('product_query.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['product_query.index','product_query.show']) }}">
+                                <span class="aiz-side-nav-text">{{ translate('Product Queries') }}</span>
+                            </a>
+                        </li>
+                        @endif
+                    </ul>
+                </li>
+                @endcanany
+
                 <!-- POS Addon-->
                 @if (addon_is_activated('pos_system') && (auth()->user()->can('pos_manager') || auth()->user()->can('pos_configuration')))
                 <li class="aiz-side-nav-item">
@@ -612,54 +661,6 @@
                         <li class="aiz-side-nav-item">
                             <a href="{{route('coupon.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['coupon.index','coupon.create','coupon.edit']) }}">
                                 <span class="aiz-side-nav-text">{{ translate('Coupon') }}</span>
-                            </a>
-                        </li>
-                        @endif
-                    </ul>
-                </li>
-                @endcanany
-
-                <!-- Support -->
-                @canany(['view_all_support_tickets','view_all_product_queries'])
-                <li class="aiz-side-nav-item">
-                    <a href="#" class="aiz-side-nav-link">
-                        <i class="las la-link aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{ translate('Support') }}</span>
-                        <span class="aiz-side-nav-arrow"></span>
-                    </a>
-                    <ul class="aiz-side-nav-list level-2">
-                        @can('view_all_support_tickets')
-                        @php
-                        $support_ticket = DB::table('tickets')
-                        ->where('viewed', 0)
-                        ->select('id')
-                        ->count();
-                        @endphp
-                        <li class="aiz-side-nav-item">
-                            <a href="{{ route('support_ticket.admin_index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['support_ticket.admin_index', 'support_ticket.admin_show']) }}">
-                                <span class="aiz-side-nav-text">{{ translate('Ticket') }}</span>
-                                @if($support_ticket > 0)<span class="badge badge-info">{{ $support_ticket }}</span>@endif
-                            </a>
-                        </li>
-                        @endcan
-
-                        @can('view_all_product_queries')
-                        @php
-                        $conversation = \App\Models\Conversation::where('receiver_id', Auth::user()->id)->where('receiver_viewed', '1')->get();
-                        @endphp
-                        <li class="aiz-side-nav-item">
-                            <a href="{{ route('conversations.admin_index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['conversations.admin_index', 'conversations.admin_show']) }}">
-                                <span class="aiz-side-nav-text">{{ translate('Product Conversations') }}</span>
-                                @if (count($conversation) > 0)
-                                <span class="badge badge-info">{{ count($conversation) }}</span>
-                                @endif
-                            </a>
-                        </li>
-                        @endcan
-                        @if (get_setting('product_query_activation') == 1)
-                        <li class="aiz-side-nav-item">
-                            <a href="{{ route('product_query.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['product_query.index','product_query.show']) }}">
-                                <span class="aiz-side-nav-text">{{ translate('Product Queries') }}</span>
                             </a>
                         </li>
                         @endif
