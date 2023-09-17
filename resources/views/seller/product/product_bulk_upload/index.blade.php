@@ -14,13 +14,13 @@
         <div class="card-body">
             <table class="table aiz-table mb-0" style="font-size:14px; background-color: #cce5ff; border-color: #b8daff">
                 <tr>
-                    <td>{{ translate('1. Download the skeleton file and fill it with data.')}}:</td>
+                    <td>{{ translate('1. Download the skeleton file and fill it with data.')}}</td>
                 </tr>
                 <tr >
-                    <td>{{ translate('2. You can download the example file to understand how the data must be filled.')}}:</td>
+                    <td>{{ translate('2. You can download the example file to understand how the data must be filled.')}}</td>
                 </tr>
                 <tr>
-                    <td>{{ translate('3. Once you have downloaded and filled the skeleton file, upload it in the form below and submit.')}}:</td>
+                    <td>{{ translate('3. Once you have downloaded and filled the skeleton file, upload it in the form below and submit.')}}</td>
                 </tr>
                 <tr>
                     <td>{{ translate('4. After uploading products you need to edit them and set products images and choices.')}}</td>
@@ -34,10 +34,10 @@
         <div class="card-body">
             <table class="table aiz-table mb-0" style="font-size:14px;background-color: #cce5ff;border-color: #b8daff">
                 <tr>
-                    <td>{{ translate('1. Category and Brand should be in numerical id.')}}:</td>
+                    <td>{{ translate('1. Category and Brand should be in numerical id.')}}</td>
                 </tr>
                 <tr >
-                    <td>{{ translate('2. You can download the pdf to get Category and Brand id.')}}:</td>
+                    <td>{{ translate('2. You can download the pdf to get Category and Brand id.')}}</td>
                 </tr>
             </table>
             <a href="{{ route('seller.pdf.download_category') }}"><button class="btn btn-primary mt-2">{{ translate('Download Category')}}</button></a>
