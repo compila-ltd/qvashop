@@ -82,6 +82,8 @@
 	<script src="{{ asset('assets/js/vendors.js') }}" ></script>
 	<script src="{{ asset('assets/js/aiz-core.js') }}" ></script>
 
+	@include('frontend.flash')
+
     @yield('script')
 
     <script type="text/javascript">
