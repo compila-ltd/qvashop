@@ -286,17 +286,26 @@
                 <!-- Sale -->
                 @canany(['view_all_orders', 'view_inhouse_orders','view_seller_orders','view_pickup_point_orders'])
                 <li class="aiz-side-nav-item">
+                        @can('view_all_orders')
+                        @php
+                        $orders = DB::table('orders')
+                        ->where('payment_status', 'paid')
+                        ->where('delivery_status', '!=' ,'delivered')
+                        ->select('id')
+                        ->count();
+                        @endphp
                     <a href="#" class="aiz-side-nav-link">
                         <i class="las la-money-bill aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('Sales') }}</span>
+                        @if($orders > 0)<span class="badge badge-info">{{ $orders }}</span>@endif
                         <span class="aiz-side-nav-arrow"></span>
                     </a>
                     <!--Submenu-->
                     <ul class="aiz-side-nav-list level-2">
-                        @can('view_all_orders')
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('all_orders.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['all_orders.index', 'all_orders.show']) }}">
                                 <span class="aiz-side-nav-text">{{ translate('All Orders') }}</span>
+                                @if($orders > 0)<span class="badge badge-info">{{ $orders }}</span>@endif
                             </a>
                         </li>
                         @endcan

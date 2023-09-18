@@ -119,7 +119,16 @@
                             {{ single_price($order->grand_total) }}
                         </td>
                         <td>
-                            {{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}
+                            @if ($order->delivery_status == 'delivered')
+                            <span class="badge badge-inline badge-success">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
+                            @elseif ($order->delivery_status == 'pending')
+                            <span class="badge badge-inline badge-danger">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
+                            @elseif (($order->delivery_status == 'confirmed') || ($order->delivery_status == 'on_the_way'))
+                            <span class="badge badge-inline badge-warning">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
+                            @else
+                            <span class="badge badge-inline badge-light">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
+                            @endif
+                            
                         </td>
                         <td>
                             {{ translate(ucfirst(str_replace('_', ' ', $order->payment_type))) }}
@@ -128,7 +137,7 @@
                             @if ($order->payment_status == 'paid')
                             <span class="badge badge-inline badge-success">{{ translate('Paid')}}</span>
                             @else
-                            <span class="badge badge-inline badge-danger">{{ translate('Unpaid')}}</span>
+                            <span class="badge badge-inline badge-dark">{{ translate('Unpaid')}}</span>
                             @endif
                         </td>
                         @if (addon_is_activated('refund_request'))
