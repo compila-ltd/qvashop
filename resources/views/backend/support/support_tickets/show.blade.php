@@ -14,6 +14,10 @@
                        {{ translate($ticket->status) }} 
                    </span>
                </div>
+               
+            </div>
+            <div class="form-group mb-0 text-right">
+                <button class="btn btn-sm btn-success"><a href="{{ route('support_ticket.solve_ticket', $ticket->id) }}" class="text-white">{{ translate('Close') }}</a></button>
             </div>
         </div>
         
@@ -40,19 +44,9 @@
                         </div>
                     </div>
                     <div class="form-group mb-0 text-right">
-                        <button type="submit" class="btn btn-sm btn-dark" onclick="submit_reply('pending')">
-                            {{ translate('Submit as') }} 
-                            <strong>
-                                <span class="text-capitalize"> 
-                                    {{ translate($ticket->status) }}
-                                </span>
-                            </strong>
+                        <button type="submit" class="btn btn-sm btn-info" onclick="submit_reply('open')">
+                            {{ translate('Send') }} 
                         </button>
-                        <button type="submit" class="btn btn-icon btn-sm btn-dark" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"><i class="las la-angle-down"></i></button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#" onclick="submit_reply('open')">{{ translate('Submit as') }} <strong>{{ translate('Open') }}</strong></a>
-                            <a class="dropdown-item" href="#" onclick="submit_reply('solved')">{{ translate('Submit as') }} <strong>{{ translate('Solved') }}</strong></a>
-                        </div>
                     </div>
                 </form>
             @endcan

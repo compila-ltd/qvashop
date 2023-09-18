@@ -91,6 +91,8 @@
 
 	@yield('script')
 
+	@include('frontend.flash')
+
 	<script type="text/javascript">
 
 		if ($('#lang-change').length > 0) {

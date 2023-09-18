@@ -117,6 +117,18 @@ class SupportTicketController extends Controller
         }
     }
 
+    public function solve_ticket(Request $request)
+    {
+        $ticket = Ticket::find($request->id);
+        $ticket->status = "solved";
+
+        if ($ticket->save()) {
+            return back()->with('success', translate('Ticket has been close successfully'));
+        } else {
+            flash(translate('Something went wrong'))->error();
+        }
+    }
+
     public function seller_store(Request $request)
     {
         $ticket_reply = new TicketReply;
