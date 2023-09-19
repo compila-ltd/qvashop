@@ -54,9 +54,11 @@
                                         <a href="{{route('purchase_history.details', encrypt($order->id))}}" class="btn btn-soft-info btn-icon btn-circle btn-sm" title="{{ translate('Order Details') }}">
                                             <i class="las la-eye"></i>
                                         </a>
-                                        <a class="btn btn-soft-warning btn-icon btn-circle btn-sm" href="{{ route('invoice.download', $order->id) }}" title="{{ translate('Download Invoice') }}">
-                                            <i class="las la-download"></i>
-                                        </a>
+                                        @if ($order->payment_status == 'paid')
+                                            <a class="btn btn-soft-warning btn-icon btn-circle btn-sm" href="{{ route('invoice.download', $order->id) }}" title="{{ translate('Download Invoice') }}">
+                                                <i class="las la-download"></i>
+                                            </a>
+                                        @endif
                                     </td>
                                 </tr>
                             @endif
