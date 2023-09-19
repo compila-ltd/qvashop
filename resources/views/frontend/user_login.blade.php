@@ -15,7 +15,7 @@
 
                         <div class="px-4 py-3 py-lg-4">
                             <div class="">
-                                <form class="form-default" role="form" action="{{ route('login') }}" method="POST">
+                                <form class="form-default form-password" role="form" action="{{ route('login') }}" method="POST">
                                     @csrf
                                     @if (addon_is_activated('otp_system') && env("DEMO_MODE") != "On")
                                     <div class="form-group phone-form-group mb-1">
@@ -47,8 +47,9 @@
                                     </div>
                                     @endif
 
-                                    <div class="form-group">
-                                        <input type="password" class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{ translate('Password')}}" name="password" id="password">
+                                    <div class="form-group password-icon">
+                                        <input type="password" class="form-control input {{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{ translate('Password')}}" name="password" id="password">
+                                        <i class="bi bi-eye-slash" id="togglePassword"></i>
                                     </div>
 
                                     <div class="row mb-2">
@@ -113,6 +114,20 @@
 
 @section('script')
 <script type="text/javascript">
+
+    window.addEventListener("DOMContentLoaded", function () {
+    const togglePassword = document.querySelector("#togglePassword");
+
+    togglePassword.addEventListener("click", function (e) {
+        // toggle the type attribute
+        const type =
+        password.getAttribute("type") === "password" ? "text" : "password";
+        password.setAttribute("type", type);
+        // toggle the eye / eye slash icon
+        this.classList.toggle("bi-eye");
+    });
+    });
+
     var isPhoneShown = true,
         countryData = window.intlTelInputGlobals.getCountryData(),
         input = document.querySelector("#phone-code");
