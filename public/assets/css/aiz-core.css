@@ -4088,6 +4088,10 @@ hr {
     .size-lg-450px {
         height: 450px;
     }
+    .h-lg-466px,
+    .size-lg-466px {
+        height: 466px;
+    }
     .h-lg-500px,
     .size-lg-500px {
         height: 500px;
