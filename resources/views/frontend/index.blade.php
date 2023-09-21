@@ -46,9 +46,9 @@
                         <span class="fw-600 fs-16 mr-2 text-truncate">
                             {{ translate('Todays Deal') }}
                         </span>
-                        <span class="badge badge-primary badge-inline">{{ translate('Hot') }}</span>
+                        <!--<span class="badge badge-primary badge-inline">{{ translate('Hot') }}</span>-->
                     </div>
-                    <div class="c-scrollbar-light overflow-auto h-lg-400px p-2 bg-primary rounded-bottom">
+                    <div class="hot_section c-scrollbar-light overflow-auto h-lg-400px p-2 rounded-bottom">
                         <div class="gutters-5 lg-no-gutters row row-cols-2 row-cols-lg-1">
                             @foreach ($todays_deal_products as $key => $product)
                             @if ($product != null)
@@ -101,6 +101,10 @@
     </div>
 </div>
 @endif
+
+{{-- Best Selling  --}}
+<div id="section_best_selling">
+</div>
 
 {{-- Flash Deal --}}
 @if($flash_deal != null && strtotime(date('Y-m-d H:i:s')) >= $flash_deal->start_date && strtotime(date('Y-m-d H:i:s')) <= $flash_deal->end_date)
@@ -160,10 +164,6 @@
 
     {{-- Featured Section --}}
     <div id="section_featured">
-    </div>
-
-    {{-- Best Selling  --}}
-    <div id="section_best_selling">
     </div>
 
     <!-- Auction Product -->
