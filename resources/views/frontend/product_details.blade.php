@@ -305,7 +305,7 @@
 
                             <div class="row no-gutters pb-3 d-none" id="chosen_price_div">
                                 <div class="col-sm-2">
-                                    <div class="my-2">{{ translate('Total Price') }}:</div>
+                                    <div class="my-2 primary-title">{{ translate('Total Price') }}:</div>
                                 </div>
                                 <div class="col-sm-10">
                                     <div class="product-price">

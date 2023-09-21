@@ -19,7 +19,7 @@
                     @foreach ($slider_images as $key => $value)
                     <div class="carousel-box">
                         <a href="{{ json_decode(get_setting('home_slider_links'), true)[$key] }}">
-                            <img class="d-block mw-100 img-fit rounded shadow-sm overflow-hidden" src="{{ uploaded_asset($slider_images[$key]) }}" alt="{{ env('APP_NAME')}} Special Offer" @if(count($featured_categories)==0) height="457" @else height="315" @endif>
+                            <img class="d-block mw-100 img-fit rounded shadow-sm overflow-hidden" src="{{ uploaded_asset($slider_images[$key]) }}" alt="{{ env('APP_NAME')}} Special Offer" height="382">
                         </a>
                     </div>
                     @endforeach
@@ -48,7 +48,7 @@
                         </span>
                         <!--<span class="badge badge-primary badge-inline">{{ translate('Hot') }}</span>-->
                     </div>
-                    <div class="hot_section c-scrollbar-light overflow-auto h-lg-400px p-2 rounded-bottom">
+                    <div class="hot_section c-scrollbar-light overflow-auto h-lg-466px p-2 rounded-bottom">
                         <div class="gutters-5 lg-no-gutters row row-cols-2 row-cols-lg-1">
                             @foreach ($todays_deal_products as $key => $product)
                             @if ($product != null)

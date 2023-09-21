@@ -51,11 +51,11 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,600,900i&display=swap" rel="stylesheet">
 
     <!-- CSS Files -->
-    <link rel="stylesheet" href="{{ asset('assets/css/vendors.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/aiz-core.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/custom-style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/vendors.css?v=202309211553') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/aiz-core.css?v=202309211553') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/custom-style.css?v=202309211553') }}">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css?v=202309211553">
 
     <script>
         var AIZ = AIZ || {};
