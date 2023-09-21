@@ -430,7 +430,7 @@
                             <span class="ml-2"><i class="fa fa-times-circle" style="color:red"></i></span>
                             @endif
                         </a>
-                        <div class="location">{{ $detailedProduct->user->shop->address }}</div>
+                        <!--<div class="location">{{ $detailedProduct->user->shop->address }}</div>-->
                         <div class="text-center border rounded p-2 mt-3">
                             <div class="rating">
                                 @if ($total > 0)
