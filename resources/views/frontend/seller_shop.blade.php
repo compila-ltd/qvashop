@@ -51,7 +51,7 @@
                             <div class="rating rating-sm mb-1">
                                 {{ renderStarRating($shop->rating) }}
                             </div>
-                            <div class="location opacity-60">{{ $shop->address }}</div>
+                            <!--<div class="location opacity-60">{{ $shop->address }}</div>-->
                         </div>
                     </div>
                 </div>
@@ -61,14 +61,16 @@
                 <div class="col-lg-6 order-2 order-lg-0">
                     <ul class="list-inline mb-0 text-center text-lg-left">
                         <li class="list-inline-item ">
-                            <a class="text-reset d-inline-block fw-600 fs-15 p-3 @if(!isset($type)) border-bottom border-primary border-width-2 @endif" href="{{ route('shop.visit', $shop->slug) }}">{{ translate('Store Home')}}</a>
+                            <p class="text-reset d-inline-block fw-600 fs-15 p-3 @if(!isset($type)) border-bottom border-primary border-width-2 @endif">{{ translate('Store Home')}}</p>
                         </li>
+                        <!--
                         <li class="list-inline-item ">
                             <a class="text-reset d-inline-block fw-600 fs-15 p-3 @if(isset($type) && $type == 'top-selling') border-bottom border-primary border-width-2 @endif" href="{{ route('shop.visit.type', ['slug'=>$shop->slug, 'type'=>'top-selling']) }}">{{ translate('Top Selling')}}</a>
                         </li>
                         <li class="list-inline-item ">
                             <a class="text-reset d-inline-block fw-600 fs-15 p-3 @if(isset($type) && $type == 'all-products') border-bottom border-primary border-width-2 @endif" href="{{ route('shop.visit.type', ['slug'=>$shop->slug, 'type'=>'all-products']) }}">{{ translate('All Products')}}</a>
                         </li>
+                        -->
                     </ul>
                 </div>
                 <div class="col-lg-6 order-1 order-lg-0">
@@ -128,26 +130,32 @@
                 </div>
             </div>
         </section>
-        <section class="mb-4">
-            <div class="container">
-                <div class="text-center mb-4">
-                    <h3 class="h3 fw-600 border-bottom">
-                        <span class="border-bottom border-primary border-width-2 pb-3 d-inline-block">{{ translate('Featured Products')}}</span>
-                    </h3>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="aiz-carousel gutters-10" data-items="6" data-xl-items="5" data-lg-items="4"  data-md-items="3" data-sm-items="2" data-xs-items="2" data-autoplay='true' data-infinute="true" data-dots="true">
-                            @foreach ($shop->user->products->where('published', 1)->where('approved', 1)->where('seller_featured', 1) as $key => $product)
-                                <div class="carousel-box">
-                                    <x-frontend.partials.product-box :product="$product" />
-                                </div>
-                            @endforeach
+        @php 
+            $products_featured = \App\Models\Product::where('user_id', $shop->user->id)->where('published', 1)->where('approved', 1)->where('seller_featured', 1)->paginate(24);
+        @endphp
+        @if(!$products_featured->isEmpty())
+            <section class="mb-4">
+                <div class="container">
+                    <div class="text-center mb-4">
+                        <h3 class="h3 fw-600 border-bottom">
+                            <span class="border-bottom border-primary border-width-2 pb-3 d-inline-block">{{ translate('Featured Products')}}</span>
+                        </h3>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="aiz-carousel gutters-10" data-items="6" data-xl-items="5" data-lg-items="4"  data-md-items="3" data-sm-items="2" data-xs-items="2" data-autoplay='true' data-infinute="true" data-dots="true">
+                                @foreach ($products_featured as $key => $product)
+                                    <div class="carousel-box">
+                                        <x-frontend.partials.product-box :product="$product" />
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        @endif
+      
     @endif
 
     <section class="mb-4">
@@ -156,7 +164,7 @@
                 <h3 class="h3 fw-600 border-bottom">
                     <span class="border-bottom border-primary border-width-2 pb-3 d-inline-block">
                         @if (!isset($type))
-                            {{ translate('New Arrival Products')}}
+                            {{ translate('All Products')}}
                         @elseif ($type == 'top-selling')
                             {{ translate('Top Selling')}}
                         @elseif ($type == 'all-products')
@@ -168,7 +176,7 @@
             <div class="row gutters-5 row-cols-xxl-5 row-cols-lg-4 row-cols-md-3 row-cols-2">
                 @php
                     if (!isset($type)){
-                        $products = \App\Models\Product::where('user_id', $shop->user->id)->where('published', 1)->where('approved', 1)->orderBy('created_at', 'desc')->paginate(24);
+                        $products = \App\Models\Product::where('user_id', $shop->user->id)->where('published', 1)->where('approved', 1)->paginate(24);
                     }
                     elseif ($type == 'top-selling'){
                         $products = \App\Models\Product::where('user_id', $shop->user->id)->where('published', 1)->where('approved', 1)->orderBy('num_of_sale', 'desc')->paginate(24);
