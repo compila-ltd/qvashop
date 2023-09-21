@@ -14,7 +14,7 @@
                             </div>
                             <div class="px-4 py-3 py-lg-4">
                                 <div class="">
-                                    <form id="reg-form" class="form-default" role="form" action="{{ route('register') }}" method="POST">
+                                    <form id="reg-form" class="form-default form-password" role="form" action="{{ route('register') }}" method="POST">
                                         @csrf
                                         <div class="form-group">
                                             <input type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" value="{{ old('name') }}" placeholder="{{  translate('Full Name') }}" name="name">
@@ -56,7 +56,7 @@
                                         @endif
 
                                         <div class="form-group">
-                                            <input type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{  translate('Password') }}" name="password">
+                                            <input type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{  translate('Password') }}" name="password" id="password" onkeyup='check();'>
                                             @if ($errors->has('password'))
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $errors->first('password') }}</strong>
@@ -64,8 +64,9 @@
                                             @endif
                                         </div>
 
-                                        <div class="form-group">
-                                            <input type="password" class="form-control" placeholder="{{  translate('Confirm Password') }}" name="password_confirmation">
+                                        <div class="form-group password-icon">
+                                            <input type="password" class="form-control" placeholder="{{  translate('Confirm Password') }}" name="password_confirmation" id="password_confirm" onkeyup='check();'>
+                                            <i class="bi bi-eye-slash" id="togglePassword"></i>
                                         </div>
 
                                         @if(get_setting('google_recaptcha') == 1)
@@ -83,7 +84,7 @@
                                         </div>
 
                                         <div class="mb-5">
-                                            <button type="submit" class="btn btn-primary btn-block fw-600">{{  translate('Create Account') }}</button>
+                                            <button type="submit" class="btn btn-primary btn-block fw-600" id="btn_submit">{{  translate('Create Account') }}</button>
                                         </div>
                                     </form>
                                     @if(get_setting('google_login') == 1 || get_setting('facebook_login') == 1 || get_setting('twitter_login') == 1)
@@ -136,6 +137,32 @@
     @endif
 
     <script type="text/javascript">
+
+        window.addEventListener("DOMContentLoaded", function () {
+            const togglePassword = document.querySelector("#togglePassword");
+
+            togglePassword.addEventListener("click", function (e) {
+                // toggle the type attribute
+                const type = password.getAttribute("type") === "password" ? "text" : "password";
+                const type_c = password_confirm.getAttribute("type") === "password" ? "text" : "password";
+                password.setAttribute("type", type);
+                password_confirm.setAttribute("type", type_c);
+                // toggle the eye / eye slash icon
+                this.classList.toggle("bi-eye");
+            });
+        });
+
+        var check = function() {
+            if (document.getElementById('password').value == document.getElementById('password_confirm').value) {
+                document.getElementById("password").classList.remove('password_error');
+                document.getElementById("password_confirm").classList.remove('password_error');
+                document.getElementById("btn_submit").disabled = false;
+            } else {
+                document.getElementById("password").classList.add('password_error');
+                document.getElementById("password_confirm").classList.add('password_error');
+                document.getElementById("btn_submit").disabled = true;
+            }
+        }
 
         @if(get_setting('google_recaptcha') == 1)
         // making the CAPTCHA  a required field for form submission

@@ -33,7 +33,7 @@
 @endsection
 
 @section('content')
-<section class="mb-4 pt-3">
+<section class="mb-4 pt-3 product-detail">
     <div class="container">
         <div class="bg-white shadow-sm rounded p-3">
             <div class="row">
@@ -97,7 +97,7 @@
                             </div>
                             @if ($detailedProduct->est_shipping_days)
                             <div class="col-auto ml">
-                                <small class="mr-2 opacity-50">{{ translate('Estimate Shipping Time') }}:
+                                <small class="mr-2">{{ translate('Estimate Shipping Time') }}:
                                 </small>{{ $detailedProduct->est_shipping_days }} {{ translate('Days') }}
                             </div>
                             @endif
@@ -107,9 +107,9 @@
 
                         <div class="row align-items-center">
                             <div class="col-auto">
-                                <small class="mr-2 opacity-50">{{ translate('Sold by') }}: </small><br>
+                                <small class="primary-title">{{ translate('Sold by') }}: </small><br>
                                 @if ($detailedProduct->added_by == 'seller' && get_setting('vendor_system_activation') == 1)
-                                <a href="{{ route('shop.visit', $detailedProduct->user->shop->slug) }}" class="text-reset">{{ $detailedProduct->user->shop->name }}</a>
+                                <a href="{{ route('shop.visit', $detailedProduct->user->shop->slug) }}" class="text-reset shop-name">{{ $detailedProduct->user->shop->name }}</a>
                                 @else
                                 {{ translate('Inhouse product') }}
                                 @endif
@@ -154,10 +154,10 @@
                         @if (home_price($detailedProduct) != home_discounted_price($detailedProduct))
                         <div class="row no-gutters mt-3">
                             <div class="col-sm-2">
-                                <div class="opacity-50 my-2">{{ translate('Price') }}:</div>
+                                <div class="my-2 primary-title">{{ translate('Price') }}:</div>
                             </div>
                             <div class="col-sm-10">
-                                <div class="fs-20 opacity-60">
+                                <div class="fs-20">
                                     <del>
                                         {{ home_price($detailedProduct) }}
                                         @if ($detailedProduct->unit != null)
@@ -170,7 +170,7 @@
 
                         <div class="row no-gutters my-2">
                             <div class="col-sm-2">
-                                <div class="opacity-50">{{ translate('Discount Price') }}:</div>
+                                <div class="primary-title">{{ translate('Discount Price') }}:</div>
                             </div>
                             <div class="col-sm-10">
                                 <div class="">
@@ -178,7 +178,7 @@
                                         {{ home_discounted_price($detailedProduct) }}
                                     </strong>
                                     @if ($detailedProduct->unit != null)
-                                    <span class="opacity-70">/{{ $detailedProduct->getTranslation('unit') }}</span>
+                                    <span class="">/{{ $detailedProduct->getTranslation('unit') }}</span>
                                     @endif
                                 </div>
                             </div>
@@ -186,7 +186,7 @@
                         @else
                         <div class="row no-gutters mt-3">
                             <div class="col-sm-2">
-                                <div class="opacity-50 my-2">{{ translate('Price') }}:</div>
+                                <div class="my-2 primary-title">{{ translate('Price') }}:</div>
                             </div>
                             <div class="col-sm-10">
                                 <div class="">
@@ -194,7 +194,7 @@
                                         {{ home_discounted_price($detailedProduct) }}
                                     </strong>
                                     @if ($detailedProduct->unit != null)
-                                    <span class="opacity-70">/{{ $detailedProduct->getTranslation('unit') }}</span>
+                                    <span class="">/{{ $detailedProduct->getTranslation('unit') }}</span>
                                     @endif
                                 </div>
                             </div>
@@ -205,7 +205,7 @@
                         @if (addon_is_activated('club_point') && $detailedProduct->earn_point > 0)
                         <div class="row no-gutters mt-4">
                             <div class="col-sm-2">
-                                <div class="opacity-50 my-2">{{ translate('Club Point') }}:</div>
+                                <div class="my-2 primary-title">{{ translate('Club Point') }}:</div>
                             </div>
                             <div class="col-sm-10">
                                 <div class="d-inline-block rounded px-2 bg-soft-primary border-soft-primary border">
@@ -225,7 +225,7 @@
                             @foreach (json_decode($detailedProduct->choice_options) as $key => $choice)
                             <div class="row no-gutters">
                                 <div class="col-sm-2">
-                                    <div class="opacity-50 my-2">
+                                    <div class="my-2 primary-title">
                                         {{ \App\Models\Attribute::find($choice->attribute_id)->getTranslation('name') }}:
                                     </div>
                                 </div>
@@ -248,7 +248,7 @@
                             @if (count(json_decode($detailedProduct->colors)) > 0)
                             <div class="row no-gutters">
                                 <div class="col-sm-2">
-                                    <div class="opacity-50 my-2">{{ translate('Color') }}:</div>
+                                    <div class="my-2 primary-title">{{ translate('Color') }}:</div>
                                 </div>
                                 <div class="col-sm-10">
                                     <div class="aiz-radio-inline">
@@ -270,7 +270,7 @@
                             <!-- Quantity + Add to cart -->
                             <div class="row no-gutters">
                                 <div class="col-sm-2">
-                                    <div class="opacity-50 my-2">{{ translate('Quantity') }}:</div>
+                                    <div class="my-2 primary-title">{{ translate('Quantity') }}:</div>
                                 </div>
                                 <div class="col-sm-10">
                                     <div class="product-quantity d-flex align-items-center">
@@ -289,7 +289,7 @@
                                         $qty += $stock->qty;
                                         }
                                         @endphp
-                                        <div class="avialable-amount opacity-60">
+                                        <div class="avialable-amount">
                                             @if ($detailedProduct->stock_visibility_state == 'quantity')
                                             (<span id="available-quantity">{{ $qty }}</span>
                                             {{ translate('available') }})
@@ -305,7 +305,7 @@
 
                             <div class="row no-gutters pb-3 d-none" id="chosen_price_div">
                                 <div class="col-sm-2">
-                                    <div class="opacity-50 my-2">{{ translate('Total Price') }}:</div>
+                                    <div class="my-2">{{ translate('Total Price') }}:</div>
                                 </div>
                                 <div class="col-sm-10">
                                     <div class="product-price">
@@ -374,7 +374,7 @@
                         @if (addon_is_activated('refund_request'))
                         <div class="row no-gutters mt-3">
                             <div class="col-2">
-                                <div class="opacity-50 mt-2">{{ translate('Refund') }}:</div>
+                                <div class="mt-2">{{ translate('Refund') }}:</div>
                             </div>
                             <div class="col-10">
                                 <a href="{{ route('returnpolicy') }}" target="_blank">
@@ -390,7 +390,7 @@
                         @endif
                         <div class="row no-gutters mt-4">
                             <div class="col-sm-2">
-                                <div class="opacity-50 my-2">{{ translate('Share') }}:</div>
+                                <div class="my-2 primary-title">{{ translate('Share') }}:</div>
                             </div>
                             <div class="col-sm-10">
                                 <div class="aiz-share"></div>
@@ -403,7 +403,7 @@
     </div>
 </section>
 
-<section class="mb-4">
+<section class="mb-4 product-detail">
     <div class="container">
         <div class="row gutters-10">
             <div class="col-xl-3 order-1 order-xl-0">
@@ -421,7 +421,7 @@
                             </svg>
                         </div>
                         @endif
-                        <div class="opacity-50 fs-12 border-bottom">{{ translate('Sold by') }}</div>
+                        <div class="border-bottom primary-title">{{ translate('Sold by') }}</div>
                         <a href="{{ route('shop.visit', $detailedProduct->user->shop->slug) }}" class="text-reset d-block fw-600">
                             {{ $detailedProduct->user->shop->name }}
                             @if ($detailedProduct->user->shop->verification_status == 1)
@@ -430,7 +430,7 @@
                             <span class="ml-2"><i class="fa fa-times-circle" style="color:red"></i></span>
                             @endif
                         </a>
-                        <div class="location opacity-70">{{ $detailedProduct->user->shop->address }}</div>
+                        <div class="location">{{ $detailedProduct->user->shop->address }}</div>
                         <div class="text-center border rounded p-2 mt-3">
                             <div class="rating">
                                 @if ($total > 0)
@@ -439,7 +439,7 @@
                                 {{ renderStarRating(0) }}
                                 @endif
                             </div>
-                            <div class="opacity-60 fs-12">({{ $total }}
+                            <div class="fs-12">({{ $total }}
                                 {{ translate('customer reviews') }})
                             </div>
                         </div>
@@ -452,22 +452,22 @@
                             <ul class="social list-inline mb-0">
                                 <li class="list-inline-item mr-0">
                                     <a href="{{ $detailedProduct->user->shop->facebook }}" class="facebook" target="_blank">
-                                        <i class="lab la-facebook-f opacity-60"></i>
+                                        <i class="lab la-facebook-f"></i>
                                     </a>
                                 </li>
                                 <li class="list-inline-item mr-0">
                                     <a href="{{ $detailedProduct->user->shop->google }}" class="google" target="_blank">
-                                        <i class="lab la-google opacity-60"></i>
+                                        <i class="lab la-google"></i>
                                     </a>
                                 </li>
                                 <li class="list-inline-item mr-0">
                                     <a href="{{ $detailedProduct->user->shop->twitter }}" class="twitter" target="_blank">
-                                        <i class="lab la-twitter opacity-60"></i>
+                                        <i class="lab la-twitter"></i>
                                     </a>
                                 </li>
                                 <li class="list-inline-item">
                                     <a href="{{ $detailedProduct->user->shop->youtube }}" class="youtube" target="_blank">
-                                        <i class="lab la-youtube opacity-60"></i>
+                                        <i class="lab la-youtube"></i>
                                     </a>
                                 </li>
                             </ul>
@@ -491,9 +491,9 @@
                                         </a>
                                     </div>
                                     <div class="col-7 text-left">
-                                        <h4 class="fs-13 text-truncate-2">
+                                        <h3 class="fw-600 fs-13 text-truncate-2 lh-1-4 mb-0 h-auto">
                                             <a href="{{ route('product', $top_product->slug) }}" class="d-block text-reset">{{ $top_product->getTranslation('name') }}</a>
-                                        </h4>
+                                        </h3>
                                         <div class="rating rating-sm mt-1">
                                             {{ renderStarRating($top_product->rating) }}
                                         </div>
@@ -572,7 +572,7 @@
                                                             @endfor
                                                 </span>
                                             </div>
-                                            <div class="opacity-60 mb-2">
+                                            <div class="mb-2">
                                                 {{ date('d-m-Y', strtotime($review->created_at)) }}
                                             </div>
                                             <p class="comment-text">
@@ -584,7 +584,7 @@
                                     @endforeach
                                 </ul>
 
-                                @if (count($detailedProduct->reviews) <= 0) <div class="text-center fs-18 opacity-70">
+                                @if (count($detailedProduct->reviews) <= 0) <div class="text-center fs-18">
                                     {{ translate('There have been no reviews for this product yet.') }}
                             </div>
                             @endif
@@ -612,7 +612,7 @@
                                 <div class="p-md-3 p-2 text-left">
                                     <div class="fs-15">
                                         @if (home_base_price($related_product) != home_discounted_base_price($related_product))
-                                        <del class="fw-600 opacity-50 mr-1">{{ home_base_price($related_product) }}</del>
+                                        <del class="fw-600 mr-1">{{ home_base_price($related_product) }}</del>
                                         @endif
                                         <span class="fw-700 text-primary">{{ home_discounted_base_price($related_product) }}</span>
                                     </div>
@@ -780,7 +780,7 @@
                             <input type="email" class="form-control h-auto form-control-lg {{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{ old('email') }}" placeholder="{{ translate('Email') }}" name="email">
                             @endif
                             @if (addon_is_activated('otp_system'))
-                            <span class="opacity-60">{{ translate('Use country code before number') }}</span>
+                            <span class="">{{ translate('Use country code before number') }}</span>
                             @endif
                         </div>
 
@@ -792,7 +792,7 @@
                             <div class="col-6">
                                 <label class="aiz-checkbox">
                                     <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
-                                    <span class=opacity-60>{{ translate('Remember Me') }}</span>
+                                    <span class="opacity-60">{{ translate('Remember Me') }}</span>
                                     <span class="aiz-square-check"></span>
                                 </label>
                             </div>

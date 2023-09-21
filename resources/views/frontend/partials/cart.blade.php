@@ -12,7 +12,7 @@ if (auth()->user() != null) {
 @endphp
 <a href="javascript:void(0)" class="d-flex align-items-center text-reset h-100" data-toggle="dropdown"
     data-display="static">
-    <i class="la la-shopping-cart la-2x opacity-80"></i>
+    <i class="la la-shopping-cart la-2x"></i>
     <span class="flex-grow-1 ml-1">
         @if (isset($cart) && count($cart) > 0)
             <span class="badge badge-primary badge-inline badge-pill cart-count">
@@ -21,7 +21,7 @@ if (auth()->user() != null) {
         @else
             <span class="badge badge-primary badge-inline badge-pill cart-count">0</span>
         @endif
-        <span class="nav-box-text d-none d-xl-block opacity-70">{{ translate('Cart') }}</span>
+        <span class="nav-box-text d-none d-xl-block">{{ translate('Cart') }}</span>
     </span>
 </a>
 <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg p-0 stop-propagation">
@@ -71,7 +71,7 @@ if (auth()->user() != null) {
             @endforeach
         </ul>
         <div class="px-3 py-2 fs-15 border-top d-flex justify-content-between">
-            <span class="opacity-60">{{ translate('Subtotal') }}</span>
+            <span class="">{{ translate('Subtotal') }}</span>
             <span class="fw-600">{{ single_price($total) }}</span>
         </div>
         <div class="px-3 py-2 text-center border-top">
@@ -92,7 +92,7 @@ if (auth()->user() != null) {
         </div>
     @else
         <div class="text-center p-3">
-            <i class="las la-frown la-3x opacity-60 mb-3"></i>
+            <i class="las la-frown la-3x mb-3"></i>
             <h3 class="h6 fw-700">{{ translate('Your Cart is empty') }}</h3>
         </div>
     @endif

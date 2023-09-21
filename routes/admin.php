@@ -353,6 +353,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::get('support_ticket/', 'admin_index')->name('support_ticket.admin_index');
         Route::get('support_ticket/{id}/show', 'admin_show')->name('support_ticket.admin_show');
         Route::post('support_ticket/reply', 'admin_store')->name('support_ticket.admin_store');
+        Route::get('support_ticket/solve/{id}/', 'solve_ticket')->name('support_ticket.solve_ticket');
     });
 
     //Pickup_Points

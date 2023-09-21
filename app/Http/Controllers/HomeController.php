@@ -679,27 +679,27 @@ class HomeController extends Controller
     // Reset Password
     public function reset_password_with_code(Request $request)
     {
-        if (($user = User::where('email', $request->email)->where('verification_code', $request->code)->first()) != null) {
+        if (User::where('email', $request->email)->first() != null) {
+            if (($user = User::where('email', $request->email)->where('verification_code', $request->code)->first()) != null) {
+                if ($request->password == $request->password_confirmation) {
 
-            if ($request->password == $request->password_confirmation) {
+                    $user->password = Hash::make($request->password);
+                    $user->email_verified_at = date('Y-m-d h:m:s');
+                    $user->save();
 
-                $user->password = Hash::make($request->password);
-                $user->email_verified_at = date('Y-m-d h:m:s');
-                $user->save();
+                    event(new PasswordReset($user));
+                    auth()->login($user, true);
 
-                event(new PasswordReset($user));
-                auth()->login($user, true);
+                    if (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff')
+                        return redirect()->route('admin.dashboard')->with('success', translate('Password updated successfully'));
 
-                if (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff')
-                    return redirect()->route('admin.dashboard')->with('success', translate('Password updated successfully'));
-
-                return redirect()->route('home')->with('success', translate('Password updated successfully'));
+                    return redirect()->route('home')->with('success', translate('Password updated successfully'));
+                }
+                return back()->with('warning', translate("Passwords do not match"));
             }
-
-            return view('auth.passwords.reset')->with('warning', "Password and confirm password didn't match");
+            return back()->with('danger', translate('Verification code mismatch'));
         }
-
-        return view('auth.passwords.reset')->with('danger', "Verification code mismatch");
+        return back()->with('danger', translate('No account exists with this email'));
     }
 
     // All Flash Deals

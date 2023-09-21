@@ -303,7 +303,11 @@
                     <div class="form-group row">
                         <label class="col-md-3 col-from-label">{{ translate('Description')}}</label>
                         <div class="col-md-8">
-                            <textarea class="aiz-text-editor" name="description"></textarea>
+                            <textarea class="form-control" name="description" rows="8" oninput="updateText();" 
+                                ondrop="setTimeout('updateText();',0);" 
+                                onpaste="setTimeout('updateText();',0);" 
+                                onkeyup="updateText();" id='textarea_desc'>
+                            </textarea>
                         </div>
                     </div>
                 </div>
@@ -347,7 +351,11 @@
                     <div class="form-group row">
                         <label class="col-md-3 col-from-label">{{ translate('Description')}}</label>
                         <div class="col-md-8">
-                            <textarea name="meta_description" rows="8" class="form-control"></textarea>
+                            <textarea class="form-control" name="meta_description" rows="8" oninput="updateTextMetaDesc();" 
+                                ondrop="setTimeout('updateTextMetaDesc();',0);" 
+                                onpaste="setTimeout('updateTextMetaDesc();',0);" 
+                                onkeyup="updateTextMetaDesc();" id='textarea_meta_desc'>
+                            </textarea>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -559,6 +567,146 @@
 
 @section('script')
 <script type="text/javascript">
+
+    /**
+    * This function delete html tags from a text, even if the html tag is 
+    * not well formed.
+    * This function update the pointer position to maintain it after the replacement.
+    * @param {string} text The text to modify
+    * @param {int} initPos The current position of the pointer in the text 
+    * @return {int} The new pointer position
+    */
+    function removeHtmlTags( text, initPos )
+    {
+        // Define the regex to delete html tags
+        if (undefined===removeHtmlTags.htmlTagRegexp)
+        {
+            removeHtmlTags.htmlTagRegexp = new RegExp('</?(?:article|aside|bdi|command|'+
+                'details|dialog|summary|figure|figcaption|footer|header|hgroup|mark|'+
+                'meter|nav|progress|ruby|rt|rp|section|time|wbr|audio|'+
+                'video|source|embed|track|canvas|datalist|keygen|output|'+
+                '!--|!DOCTYPE|a|abbr|address|area|b|base|bdo|blockquote|body|'+
+                'br|button|canvas|caption|cite|code|col|colgroup|dd|del|dfn|div|'+
+                'dl|dt|em|embed|fieldset|figcaption|figure|footer|form|h1|h2|h3|h4|'+
+                'h5|h6|head|hr|html|i|iframe|img|input|ins|kdb|keygen|label|legend|'+
+                'li|link|map|menu|meta|noscript|object|ol|optgroup|option|p|param|'+
+                'pre|q|s|samp|script|select|small|source|span|strong|style|sub|'+
+                'sup|table|tbody|td|textarea|tfoot|th|thead|title|tr|u|ul|var|'+
+                'acronym|applet|basefont|big|center|dir|font|frame|'+
+                'frameset|noframes|strike|tt)(?:(?: [^<>]*)>|>?)', 'i');
+        }
+
+        // Delete html tags
+        var thereIsMore=true;
+        removeHtmlTags.htmlTagRegexp.lastIndex=0;
+        // While I am not sure that all html tags are removed.
+        while (thereIsMore)
+        {
+            var str = text.match(removeHtmlTags.htmlTagRegexp);
+            if ( str!=null) // There is a match
+            {
+                text = text.replace(str[0], '');
+                // Update the position
+                if (str.index < initPos) 
+                    initPos= Math.max(initPos-str[0].length,str.index);
+            }
+            else thereIsMore = false;
+        }
+
+        // If getCaretPosition fail, the initPos may be negative
+        if (initPos<0) initPos=0;
+
+        return {text: text, pos: initPos};
+    }
+
+    /**
+     * This function get/set the position of the carret in a node.
+     * If the value is set, this function try to set the new position value.
+     * Anyway, it return the (new) position.
+     * @param {Element} node The textarea element
+     * @param {int} value The new carret position
+     * @return {int} The (new) carret position 
+     */
+    function caretPosition(node, value) 
+    {
+        // Set default Caret pos, will be returned if this function fail.
+        var caretPos = 0;
+
+        // Ensure that value is valid
+        value = parseInt(value);
+
+        // Set the new caret position if necesary
+        if (!isNaN(value)) // We want to set the position
+        {
+            if (node.selectionStart)
+            {
+                node.selectionStart=value;
+                node.selectionEnd= value;
+            }
+            else if(node.setSelectionRang)
+            {
+                node.focus();
+                node.setSelectionRange(value, value);
+            }
+            else if (node.createTextRange)
+            {
+                var range = node.createTextRange();
+                range.collapse(true);
+                range.moveEnd('character', value);
+                range.moveStart('character', value);
+                range.select();
+            }
+        }
+
+        // Get the position to return it.
+        if (node.selectionStart) return node.selectionStart;
+        else if (document.selection)
+        {
+            node.focus();
+            var sel = document.selection.createRange();
+            sel.moveStart('character', -node.value.length);
+            caretPos = sel.text.length;
+        }
+
+        return caretPos;
+    }
+
+    /**
+     * This event function remove html tags from the textarea with id=textarea_desc and textarea_meta_desc
+     */
+    function updateText()
+    {
+        // Get the textarea
+        var t = document.getElementById('textarea_desc');
+
+        // Get the caret position
+        var pos = caretPosition(t);
+
+        // Remove html from the text
+        var result = removeHtmlTags(t.value, pos);
+        t.value = result.text;
+
+        // Set the new caret position
+        caretPosition(t, result.pos);
+    }
+
+    function updateTextMetaDesc()
+    {
+        // Get the textarea
+        var t = document.getElementById('textarea_meta_desc');
+
+        // Get the caret position
+        var pos = caretPosition(t);
+
+        // Remove html from the text
+        var result = removeHtmlTags(t.value, pos);
+        t.value = result.text;
+
+        // Set the new caret position
+        caretPosition(t, result.pos);
+    }
+
+
     $("[name=shipping_type]").on("change", function (){
             $(".product_wise_shipping_div").hide();
             $(".flat_rate_shipping_div").hide();
