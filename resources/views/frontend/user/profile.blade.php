@@ -135,6 +135,7 @@
 
 
     <!-- Change Email -->
+    <!--
     <form action="{{ route('user.change.email') }}" method="POST">
         @csrf
         <div class="card">
@@ -166,6 +167,7 @@
           </div>
         </div>
     </form>
+    -->
 
 @endsection
 
