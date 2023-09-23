@@ -12,7 +12,7 @@
                         @csrf
 
                         <div class="form-group">
-                            <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ $email ?? old('email') }}" placeholder="{{ translate('Email') }}" required autofocus>
+                            <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ request('email') }}" placeholder="{{ translate('Email') }}" required readonly>
 
                             @if ($errors->has('email'))
                                 <span class="invalid-feedback" role="alert">

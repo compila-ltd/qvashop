@@ -181,11 +181,16 @@ class HomeController extends Controller
 
         if ($request->new_password != null && ($request->new_password == $request->confirm_password))
             $user->password = Hash::make($request->new_password);
+        
 
         $user->avatar_original = $request->photo;
-        $user->save();
 
-        return back()->with('success', translate('Your Profile has been updated successfully!'));
+        if($user->save())
+            return back()->with('success', translate('Your Profile has been updated successfully!'));
+        else
+            return back()->with('danger', translate('Sorry! Something went wrong.'));
+
+        
     }
 
     // Flash Deals
@@ -599,7 +604,7 @@ class HomeController extends Controller
         $email = $request->email;
         if (isUnique($email) == '0') {
             $response['status'] = 2;
-            $response['message'] = 'Email already exists!';
+            $response['message'] = translate('Email already exists!');
             return json_encode($response);
         }
 
@@ -679,27 +684,20 @@ class HomeController extends Controller
     // Reset Password
     public function reset_password_with_code(Request $request)
     {
-        if (User::where('email', $request->email)->first() != null) {
-            if (($user = User::where('email', $request->email)->where('verification_code', $request->code)->first()) != null) {
-                if ($request->password == $request->password_confirmation) {
+        if (($user = User::where('email', $request->email)->where('verification_code', $request->code)->first()) != null) {
+            $user->password = Hash::make($request->password_confirmation);
+            $user->email_verified_at = date('Y-m-d h:m:s');
+            $user->save();
 
-                    $user->password = Hash::make($request->password);
-                    $user->email_verified_at = date('Y-m-d h:m:s');
-                    $user->save();
+            event(new PasswordReset($user));
+            auth()->login($user, true);
 
-                    event(new PasswordReset($user));
-                    auth()->login($user, true);
+            if (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff')
+                return redirect()->route('admin.dashboard')->with('success', translate('Password updated successfully'));
 
-                    if (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff')
-                        return redirect()->route('admin.dashboard')->with('success', translate('Password updated successfully'));
-
-                    return redirect()->route('home')->with('success', translate('Password updated successfully'));
-                }
-                return back()->with('warning', translate("Passwords do not match"));
-            }
-            return back()->with('danger', translate('Verification code mismatch'));
+            return redirect()->route('home')->with('success', translate('Password updated successfully'));
         }
-        return back()->with('danger', translate('No account exists with this email'));
+        return redirect()->route("password.request")->with('danger', translate('Verification code mismatch'));
     }
 
     // All Flash Deals
