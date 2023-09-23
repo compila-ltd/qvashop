@@ -246,6 +246,7 @@
         });
     }
 
+    /*
     $('.new-email-verification').on('click', function() {
         $(this).find('.loading').removeClass('d-none');
         $(this).find('.default').addClass('d-none');
@@ -263,6 +264,7 @@
                 AIZ.plugins.notify('danger', data.message);
         });
     });
+    */
 
 </script>
 
