@@ -101,7 +101,7 @@
                                 <label>{{ translate('Phone')}}</label>
                             </div>
                             <div class="col-md-10">
-                                <input type="text" class="form-control mb-3" placeholder="{{ translate('+880')}}" name="phone" value="" required>
+                                <input type="text" class="form-control mb-3" placeholder="+53" name="phone" value="" required>
                             </div>
                         </div>
                         <div class="form-group text-right">
@@ -133,6 +133,33 @@
 
 @section('script')
 <script type="text/javascript">
+
+    window.addEventListener("DOMContentLoaded", function () {
+        const togglePassword = document.querySelector("#togglePassword");
+
+        togglePassword.addEventListener("click", function (e) {
+            // toggle the type attribute
+            const type = new_password.getAttribute("type") === "password" ? "text" : "password";
+            const type_c = confirm_password.getAttribute("type") === "password" ? "text" : "password";
+            new_password.setAttribute("type", type);
+            confirm_password.setAttribute("type", type_c);
+            // toggle the eye / eye slash icon
+            this.classList.toggle("bi-eye");
+        });
+    });
+
+    var check = function() {
+        if (document.getElementById('new_password').value == document.getElementById('confirm_password').value) {
+            document.getElementById("new_password").classList.remove('password_error');
+            document.getElementById("confirm_password").classList.remove('password_error');
+            document.getElementById("btn_submit").disabled = false;
+        } else {
+            document.getElementById("new_password").classList.add('password_error');
+            document.getElementById("confirm_password").classList.add('password_error');
+            document.getElementById("btn_submit").disabled = true;
+        }
+    }
+
     function add_new_address() {
         $('#new-address-modal').modal('show');
     }
@@ -218,6 +245,27 @@
             }
         });
     }
+
+    /*
+    $('.new-email-verification').on('click', function() {
+        $(this).find('.loading').removeClass('d-none');
+        $(this).find('.default').addClass('d-none');
+        var email = $("input[name=email]").val();
+
+        $.post('{{ route('user.new.verify') }}', {_token:'{{ csrf_token() }}', email: email}, function(data){
+            data = JSON.parse(data);
+            $('.default').removeClass('d-none');
+            $('.loading').addClass('d-none');
+            if(data.status == 2)
+                AIZ.plugins.notify('warning', data.message);
+            else if(data.status == 1)
+                AIZ.plugins.notify('success', data.message);
+            else
+                AIZ.plugins.notify('danger', data.message);
+        });
+    });
+    */
+
 </script>
 
 

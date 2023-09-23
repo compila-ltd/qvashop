@@ -8,7 +8,7 @@
         </div>
       </div>
     </div>
-    <form action="{{ route('user.profile.update') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('user.profile.update') }}" method="POST" enctype="multipart/form-data" class="form-password">
         @csrf
         <!-- Basic Info-->
         <div class="card">
@@ -46,13 +46,14 @@
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label">{{ translate('Your Password') }}</label>
                     <div class="col-md-10">
-                        <input type="password" class="form-control" placeholder="{{ translate('New Password') }}" name="new_password">
+                        <input type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{ translate('New Password') }}" name="new_password" id="new_password" onkeyup='check();'>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label">{{ translate('Confirm Password') }}</label>
-                    <div class="col-md-10">
-                        <input type="password" class="form-control" placeholder="{{ translate('Confirm Password') }}" name="confirm_password">
+                    <div class="col-md-10 password-icon">
+                        <input type="password" class="form-control" placeholder="{{ translate('Confirm Password') }}" name="confirm_password" id="confirm_password" onkeyup='check();'>
+                        <i class="bi bi-eye-slash pr-3" id="togglePassword"></i>
                     </div>
                 </div>
 
@@ -60,7 +61,7 @@
         </div>
 
         <div class="form-group mb-0 text-right">
-            <button type="submit" class="btn btn-primary">{{ translate('Update Profile')}}</button>
+            <button type="submit" class="btn btn-primary" id="btn_submit">{{ translate('Update Profile')}}</button>
         </div>
     </form>
 
@@ -134,6 +135,7 @@
 
 
     <!-- Change Email -->
+    <!--
     <form action="{{ route('user.change.email') }}" method="POST">
         @csrf
         <div class="card">
@@ -165,6 +167,7 @@
           </div>
         </div>
     </form>
+    -->
 
 @endsection
 
@@ -174,24 +177,8 @@
 
 @section('script')
     <script type="text/javascript">
-        
-        $('.new-email-verification').on('click', function() {
-            $(this).find('.loading').removeClass('d-none');
-            $(this).find('.default').addClass('d-none');
-            var email = $("input[name=email]").val();
 
-            $.post('{{ route('user.new.verify') }}', {_token:'{{ csrf_token() }}', email: email}, function(data){
-                data = JSON.parse(data);
-                $('.default').removeClass('d-none');
-                $('.loading').addClass('d-none');
-                if(data.status == 2)
-                    AIZ.plugins.notify('warning', data.message);
-                else if(data.status == 1)
-                    AIZ.plugins.notify('success', data.message);
-                else
-                    AIZ.plugins.notify('danger', data.message);
-            });
-        });
+        
     </script>
 
     @if (get_setting('google_map') == 1)
