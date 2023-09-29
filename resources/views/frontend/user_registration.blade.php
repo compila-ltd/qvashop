@@ -5,11 +5,11 @@
         <div class="profile">
             <div class="container">
                 <div class="row">
-                    <div class="col-xxl-4 col-xl-5 col-lg-6 col-md-8 mx-auto">
+                    <div class="col-xxl-3 col-xl-5 col-lg-6 col-md-8 mx-auto">
                         <div class="card">
                             <div class="text-center pt-4">
                                 <h1 class="h4 fw-600">
-                                    {{ translate('Create an account.')}}
+                                    {{ translate('Create an account')}}
                                 </h1>
                             </div>
                             <div class="px-4 py-3 py-lg-4">

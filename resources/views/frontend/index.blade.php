@@ -4,7 +4,7 @@
 <div class="home-banner-area mb-4 pt-3">
     <div class="container">
         <div class="row gutters-10 position-relative">
-            <div class="col-lg-3 position-static d-none d-lg-block">
+            <div class="col-lg-3 col-xxl-2 position-static d-none d-lg-block">
                 <x-frontend.partials.category-menu />
             </div>
 
@@ -12,9 +12,9 @@
             $num_todays_deal = count($todays_deal_products);
             @endphp
 
-            <div class="@if($num_todays_deal > 0) col-lg-7 @else col-lg-9 @endif">
+            <div class="@if($num_todays_deal > 0) col-lg-7 col-xxl-8 @else col-lg-9 @endif">
                 @if (get_setting('home_slider_images') != null)
-                <div class="aiz-carousel dots-inside-bottom mobile-img-auto-height" data-arrows="true" data-dots="true" data-autoplay="true">
+                <div class="aiz-carousel dots-inside-bottom mobile-img-auto-height" data-arrows="true" data-dots="true" data-autoplay="true" data-infinite='true'>
                     @php $slider_images = json_decode(get_setting('home_slider_images'), true); @endphp
                     @foreach ($slider_images as $key => $value)
                     <div class="carousel-box">
@@ -102,10 +102,6 @@
 </div>
 @endif
 
-{{-- Best Selling  --}}
-<div id="section_best_selling">
-</div>
-
 {{-- Flash Deal --}}
 @if($flash_deal != null && strtotime(date('Y-m-d H:i:s')) >= $flash_deal->start_date && strtotime(date('Y-m-d H:i:s')) <= $flash_deal->end_date)
     <section class="mb-4">
@@ -135,7 +131,7 @@
             </div>
         </div>
     </section>
-    @endif
+@endif
 
     <div id="section_newest">
         @if (count($newest_products) > 0)
@@ -160,6 +156,10 @@
             </div>
         </section>
         @endif
+    </div>
+
+    {{-- Best Selling  --}}
+    <div id="section_best_selling">
     </div>
 
     {{-- Featured Section --}}

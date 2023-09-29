@@ -20,7 +20,7 @@
                 @if (addon_is_activated('delivery_boy'))
                     <div class="col-md-3 ml-auto">
                         <label for="assign_deliver_boy">{{ translate('Assign Deliver Boy') }}</label>
-                        @if (($delivery_status == 'pending' || $delivery_status == 'confirmed' || $delivery_status == 'picked_up') && auth()->user()->can('assign_delivery_boy_for_orders'))
+                        @if (($delivery_status == 'pending' || $delivery_status == 'in_progress' || $delivery_status == 'picked_up') && auth()->user()->can('assign_delivery_boy_for_orders'))
                             <select class="form-control aiz-selectpicker" data-live-search="true"
                                 data-minimum-results-for-search="Infinity" id="assign_deliver_boy">
                                 <option value="">{{ translate('Select Delivery Boy') }}</option>
@@ -62,8 +62,8 @@
                             <option value="pending" @if ($delivery_status == 'pending') selected @endif>
                                 {{ translate('Pending') }}
                             </option>
-                            <option value="confirmed" @if ($delivery_status == 'confirmed') selected @endif>
-                                {{ translate('Confirmed') }}
+                            <option value="in_progress" @if ($delivery_status == 'in_progress') selected @endif>
+                                {{ translate('In progress') }}
                             </option>
                             <option value="picked_up" @if ($delivery_status == 'picked_up') selected @endif>
                                 {{ translate('Picked Up') }}

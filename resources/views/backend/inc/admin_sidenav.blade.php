@@ -291,6 +291,7 @@
                         $orders = DB::table('orders')
                         ->where('payment_status', 'paid')
                         ->where('delivery_status', '!=' ,'delivered')
+                        ->where('delivery_status', '!=' ,'cancelled')
                         ->select('id')
                         ->count();
                         @endphp

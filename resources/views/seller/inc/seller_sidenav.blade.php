@@ -146,11 +146,23 @@
                         </li>
                     @endif
                 @endif
+
+                @php
+                    $new_orders = DB::table('orders')
+                        ->where('seller_id', Auth::user()->id)
+                        ->where('payment_status', 'paid')
+                        ->where('delivery_status', '=' ,'pending')
+                        ->select('id')
+                        ->count();
+                @endphp
                 <li class="aiz-side-nav-item">
                     <a href="{{ route('seller.orders.index') }}"
                         class="aiz-side-nav-link {{ areActiveRoutes(['seller.orders.index', 'seller.orders.show']) }}">
                         <i class="las la-money-bill aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('Orders') }}</span>
+                        @if ($new_orders > 0)
+                            <span class="badge badge-inline" style="background-color: #007bff; color: #fff">{{ $new_orders }}</span>
+                        @endif
                     </a>
                 </li>
                 @if (addon_is_activated('refund_request'))

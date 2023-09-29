@@ -20,7 +20,7 @@
                 <select class="form-control aiz-selectpicker" data-placeholder="{{ translate('Filter by Payment Status')}}" name="delivery_status" onchange="sort_orders()">
                     <option value="">{{ translate('Filter by Deliver Status')}}</option>
                     <option value="pending" @isset($delivery_status) @if($delivery_status == 'pending') selected @endif @endisset>{{ translate('Pending')}}</option>
-                    <option value="confirmed" @isset($delivery_status) @if($delivery_status == 'confirmed') selected @endif @endisset>{{ translate('Confirmed')}}</option>
+                    <option value="in_progress" @isset($delivery_status) @if($delivery_status == 'in_progress') selected @endif @endisset>{{ translate('In progress')}}</option>
                     <option value="on_delivery" @isset($delivery_status) @if($delivery_status == 'on_delivery') selected @endif @endisset>{{ translate('On delivery')}}</option>
                     <option value="delivered" @isset($delivery_status) @if($delivery_status == 'delivered') selected @endif @endisset>{{ translate('Delivered')}}</option>
                 </select>
@@ -78,13 +78,27 @@
                                         @php
                                             $status = $order->delivery_status;
                                         @endphp
-                                        {{ translate(ucfirst(str_replace('_', ' ', $status))) }}
+                                        @if ($order->payment_status == 'paid')
+                                            @if($status == 'delivered')
+                                                <span class="badge badge-inline badge-success">{{ translate(ucfirst(str_replace('_', ' ', $status))) }}</span>
+                                            @elseif($status == 'pending')
+                                                <span class="badge badge-inline" style="background-color: #007bff; color: #fff">{{ translate(ucfirst(str_replace('_', ' ', $status))) }}</span>
+                                            @elseif($status == 'in_progress')
+                                                <span class="badge badge-inline badge-warning">{{ translate(ucfirst(str_replace('_', ' ', $status))) }}</span>
+                                            @elseif($status == 'picked_up')
+                                                <span class="badge badge-inline badge-info">{{ translate(ucfirst(str_replace('_', ' ', $status))) }}</span>
+                                            @elseif($status == 'on_the_way')
+                                                <span class="badge badge-inline badge-info">{{ translate(ucfirst(str_replace('_', ' ', $status))) }}</span>
+                                            @endif
+                                        @else
+                                            <span class="badge badge-inline badge-dark">{{ translate('Unpaid')}}</span>
+                                        @endif
                                     </td>
                                     <td>
                                         @if ($order->payment_status == 'paid')
                                             <span class="badge badge-inline badge-success">{{ translate('Paid')}}</span>
                                         @else
-                                            <span class="badge badge-inline badge-danger">{{ translate('Unpaid')}}</span>
+                                            <span class="badge badge-inline badge-dark">{{ translate('Unpaid')}}</span>
                                         @endif
                                     </td>
                                     <td class="text-right">

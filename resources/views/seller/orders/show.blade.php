@@ -35,21 +35,56 @@
                         @if ($delivery_status != 'delivered' && $delivery_status != 'cancelled')
                             <select class="form-control aiz-selectpicker" data-minimum-results-for-search="Infinity"
                                 id="update_delivery_status">
-                                <option value="pending" @if ($delivery_status == 'pending') selected @endif>
-                                    {{ translate('Pending') }}</option>
-                                <option value="confirmed" @if ($delivery_status == 'confirmed') selected @endif>
-                                    {{ translate('Confirmed') }}</option>
-                                <option value="picked_up" @if ($delivery_status == 'picked_up') selected @endif>
-                                    {{ translate('Picked Up') }}</option>
-                                <option value="on_the_way" @if ($delivery_status == 'on_the_way') selected @endif>
-                                    {{ translate('On The Way') }}</option>
-                                <option value="delivered" @if ($delivery_status == 'delivered') selected @endif>
-                                    {{ translate('Delivered') }}</option>
-                                <option value="cancelled" @if ($delivery_status == 'cancelled') selected @endif>
-                                    {{ translate('Cancel') }}</option>
+                                @if ($payment_status == 'paid')
+                                    @if ($delivery_status == 'pending')
+                                        <option value="pending" @if ($delivery_status == 'pending') selected @endif>
+                                            {{ translate('Pending') }}</option>
+                                        <option value="in_progress" @if ($delivery_status == 'in_progress') selected @endif>
+                                            {{ translate('In progress') }}</option>
+                                        <option value="picked_up" @if ($delivery_status == 'picked_up') selected @endif>
+                                            {{ translate('Picked Up') }}</option>
+                                        <option value="on_the_way" @if ($delivery_status == 'on_the_way') selected @endif>
+                                            {{ translate('On The Way') }}</option>
+                                        <option value="delivered" @if ($delivery_status == 'delivered') selected @endif>
+                                            {{ translate('Delivered') }}</option>
+                                        <option value="cancelled" @if ($delivery_status == 'cancelled') selected @endif>
+                                            {{ translate('Cancel') }}</option>
+                                    @elseif ($delivery_status == 'in_progress')
+                                        <option value="in_progress" @if ($delivery_status == 'in_progress') selected @endif>
+                                            {{ translate('In progress') }}</option>
+                                        <option value="picked_up" @if ($delivery_status == 'picked_up') selected @endif>
+                                            {{ translate('Picked Up') }}</option>
+                                        <option value="on_the_way" @if ($delivery_status == 'on_the_way') selected @endif>
+                                            {{ translate('On The Way') }}</option>
+                                        <option value="delivered" @if ($delivery_status == 'delivered') selected @endif>
+                                            {{ translate('Delivered') }}</option>
+                                        <option value="cancelled" @if ($delivery_status == 'cancelled') selected @endif>
+                                            {{ translate('Cancel') }}</option>
+                                    @elseif ($delivery_status == 'picked_up')
+                                        <option value="picked_up" @if ($delivery_status == 'picked_up') selected @endif>
+                                            {{ translate('Picked Up') }}</option>
+                                        <option value="on_the_way" @if ($delivery_status == 'on_the_way') selected @endif>
+                                            {{ translate('On The Way') }}</option>
+                                        <option value="delivered" @if ($delivery_status == 'delivered') selected @endif>
+                                            {{ translate('Delivered') }}</option>
+                                        <option value="cancelled" @if ($delivery_status == 'cancelled') selected @endif>
+                                            {{ translate('Cancel') }}</option>
+                                    @elseif ($delivery_status == 'on_the_way')
+                                        <option value="on_the_way" @if ($delivery_status == 'on_the_way') selected @endif>
+                                            {{ translate('On The Way') }}</option>
+                                        <option value="delivered" @if ($delivery_status == 'delivered') selected @endif>
+                                            {{ translate('Delivered') }}</option>
+                                        <option value="cancelled" @if ($delivery_status == 'cancelled') selected @endif>
+                                            {{ translate('Cancel') }}</option>
+                                    @endif
+                                @else
+                                    <option value="" selected></option>
+                                    <option value="cancelled" @if ($delivery_status == 'cancelled') selected @endif>
+                                        {{ translate('Cancel') }}</option>
+                                @endif
                             </select>
                         @else
-                            <input type="text" class="form-control" value="{{ $delivery_status }}" disabled>
+                            <input type="text" class="form-control" value="{{ translate($delivery_status) }}" disabled>
                         @endif
                     </div>
                 @endif
@@ -99,12 +134,20 @@
                             <tr>
                                 <td class="text-main text-bold">{{ translate('Order Status') }}</td>
                                 <td class="text-right">
-                                    @if ($delivery_status == 'delivered')
-                                        <span
-                                            class="badge badge-inline badge-success">{{ translate(ucfirst(str_replace('_', ' ', $delivery_status))) }}</span>
+                                    @if ($payment_status == 'paid')
+                                        @if($delivery_status == 'delivered')
+                                            <span class="badge badge-inline badge-success">{{ translate(ucfirst(str_replace('_', ' ', $delivery_status))) }}</span>
+                                        @elseif($delivery_status == 'pending')
+                                            <span class="badge badge-inline" style="background-color: #007bff; color: #fff">{{ translate(ucfirst(str_replace('_', ' ', $delivery_status))) }}</span>
+                                        @elseif($delivery_status == 'in_progress')
+                                            <span class="badge badge-inline badge-warning">{{ translate(ucfirst(str_replace('_', ' ', $delivery_status))) }}</span>
+                                        @elseif($delivery_status == 'picked_up')
+                                            <span class="badge badge-inline badge-info">{{ translate(ucfirst(str_replace('_', ' ', $delivery_status))) }}</span>
+                                        @elseif($delivery_status == 'on_the_way')
+                                            <span class="badge badge-inline badge-info">{{ translate(ucfirst(str_replace('_', ' ', $delivery_status))) }}</span>
+                                        @endif
                                     @else
-                                        <span
-                                            class="badge badge-inline badge-info">{{ translate(ucfirst(str_replace('_', ' ', $delivery_status))) }}</span>
+                                        <span class="badge badge-inline badge-dark">{{ translate('Unpaid')}}</span>
                                     @endif
                                 </td>
                             </tr>
