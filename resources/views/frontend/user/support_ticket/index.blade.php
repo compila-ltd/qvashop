@@ -1,68 +1,68 @@
 @extends('frontend.layouts.user_panel')
 
 @section('panel_content')
-    <div class="aiz-titlebar mt-2 mb-4">
-        <div class="row align-items-center">
-            <div class="col-md-6">
-                <h1 class="h3">{{ translate('Support Ticket') }}</h1>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4 mx-auto mb-3" >
-            <div class="p-3 rounded mb-3 c-pointer text-center bg-white shadow-sm hov-shadow-lg has-transition" data-toggle="modal" data-target="#ticket_modal">
-                <span class="size-70px rounded-circle mx-auto bg-secondary d-flex align-items-center justify-content-center mb-3">
-                    <i class="las la-plus la-3x text-white"></i>
-                </span>
-                <div class="fs-20 text-primary">{{ translate('Create a Ticket') }}</div>
-            </div>
-        </div>
-    </div>
-
     <div class="card">
         <div class="card-header">
-            <h5 class="mb-0 h6">{{ translate('Tickets')}}</h5>
+            <h5 class="mb-0 h6">{{ translate('Support Ticket') }}</h5>
         </div>
-          <div class="card-body">
-              <table class="table aiz-table mb-0">
-                  <thead>
-                      <tr>
-                          <th data-breakpoints="lg">{{ translate('Ticket ID') }}</th>
-                          <th data-breakpoints="lg">{{ translate('Sending Date') }}</th>
-                          <th>{{ translate('Subject')}}</th>
-                          <th>{{ translate('Status')}}</th>
-                          <th data-breakpoints="lg">{{ translate('Options')}}</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      @foreach ($tickets as $key => $ticket)
-                          <tr>
-                              <td>#{{ $ticket->code }}</td>
-                              <td>{{ $ticket->created_at }}</td>
-                              <td>{{ $ticket->subject }}</td>
-                              <td>
-                                  @if ($ticket->status == 'pending')
-                                      <span class="badge badge-inline badge-danger">{{ translate('Pending')}}</span>
-                                  @elseif ($ticket->status == 'open')
-                                      <span class="badge badge-inline badge-secondary">{{ translate('Open')}}</span>
-                                  @else
-                                      <span class="badge badge-inline badge-success">{{ translate('Solved')}}</span>
-                                  @endif
-                              </td>
-                              <td>
-                                  <a href="{{route('support_ticket.show', encrypt($ticket->id))}}" class="btn btn-styled btn-link py-1 px-0 icon-anim text-underline--none">
-                                      {{ translate('View Details')}}
-                                      <i class="la la-angle-right text-sm"></i>
-                                  </a>
-                              </td>
-                          </tr>
-                      @endforeach
-                  </tbody>
-              </table>
-              <div class="aiz-pagination">
-                  {{ $tickets->links() }}
-              </div>
-          </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 mx-auto mb-3" >
+                    <div class="p-3 rounded mb-3 c-pointer text-center bg-white shadow-sm hov-shadow-lg has-transition" data-toggle="modal" data-target="#ticket_modal">
+                        <span class="size-70px rounded-circle mx-auto bg-secondary d-flex align-items-center justify-content-center mb-3">
+                            <i class="las la-plus la-3x text-white"></i>
+                        </span>
+                        <div class="fs-20 text-primary">{{ translate('Create a Ticket') }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0 h6">{{ translate('Tickets')}}</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table aiz-table mb-0">
+                        <thead>
+                            <tr>
+                                <th data-breakpoints="lg">{{ translate('Ticket ID') }}</th>
+                                <th data-breakpoints="lg">{{ translate('Sending Date') }}</th>
+                                <th>{{ translate('Subject')}}</th>
+                                <th>{{ translate('Status')}}</th>
+                                <th data-breakpoints="lg">{{ translate('Options')}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($tickets as $key => $ticket)
+                                <tr>
+                                    <td>#{{ $ticket->code }}</td>
+                                    <td>{{ $ticket->created_at }}</td>
+                                    <td>{{ $ticket->subject }}</td>
+                                    <td>
+                                        @if ($ticket->status == 'pending')
+                                            <span class="badge badge-inline badge-danger">{{ translate('Pending')}}</span>
+                                        @elseif ($ticket->status == 'open')
+                                            <span class="badge badge-inline badge-secondary">{{ translate('Open')}}</span>
+                                        @else
+                                            <span class="badge badge-inline badge-success">{{ translate('Solved')}}</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <a href="{{route('support_ticket.show', encrypt($ticket->id))}}" class="btn btn-styled btn-link py-1 px-0 icon-anim text-underline--none">
+                                            {{ translate('View Details')}}
+                                            <i class="la la-angle-right text-sm"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    <div class="aiz-pagination">
+                        {{ $tickets->links() }}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 

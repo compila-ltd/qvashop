@@ -22,7 +22,7 @@
                 <select class="form-control aiz-selectpicker" name="delivery_status" id="delivery_status">
                     <option value="">{{ translate('Filter by Delivery Status')}}</option>
                     <option value="pending" @if ($delivery_status == 'pending') selected @endif>{{ translate('Pending')}}</option>
-                    <option value="confirmed" @if ($delivery_status == 'confirmed') selected @endif>{{ translate('Confirmed')}}</option>
+                    <option value="in_progress" @if ($delivery_status == 'in_progress') selected @endif>{{ translate('In Progress')}}</option>
                     <option value="picked_up" @if ($delivery_status == 'picked_up') selected @endif>{{ translate('Picked Up')}}</option>
                     <option value="on_the_way" @if ($delivery_status == 'on_the_way') selected @endif>{{ translate('On The Way')}}</option>
                     <option value="delivered" @if ($delivery_status == 'delivered') selected @endif>{{ translate('Delivered')}}</option>
@@ -119,15 +119,21 @@
                             {{ single_price($order->grand_total) }}
                         </td>
                         <td>
+                        @if ($order->payment_status == 'paid')
                             @if ($order->delivery_status == 'delivered')
-                            <span class="badge badge-inline badge-success">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
+                                <span class="badge badge-inline badge-success">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
                             @elseif ($order->delivery_status == 'pending')
-                            <span class="badge badge-inline badge-danger">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
-                            @elseif (($order->delivery_status == 'confirmed') || ($order->delivery_status == 'on_the_way'))
-                            <span class="badge badge-inline badge-warning">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
+                                <span class="badge badge-inline badge-danger">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
+                            @elseif ($order->delivery_status == 'in_progress')
+                                <span class="badge badge-inline badge-warning">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
+                            @elseif (($order->delivery_status == 'picked_up') || ($order->delivery_status == 'on_the_way'))
+                                <span class="badge badge-inline badge-info">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
                             @else
-                            <span class="badge badge-inline badge-light">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
+                                <span class="badge badge-inline badge-dark">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
                             @endif
+                        @else
+                            <span class="badge badge-inline badge-dark">{{ translate('Unpaid')}}</span>
+                        @endif 
                             
                         </td>
                         <td>

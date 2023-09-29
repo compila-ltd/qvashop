@@ -14,63 +14,67 @@
                     </div>
                     <ul class="list-group list-group-flush">
                         @php
-                        $total = 0;
+                            $total = 0;
                         @endphp
                         @foreach ($carts as $key => $cartItem)
-                        @php
-                        $product = \App\Models\Product::find($cartItem['product_id']);
-                        if ($product != null) {
-                            $product_stock = $product->stocks->where('variant', $cartItem['variation'])->first();
-                        } else {
-                            continue;
-                        }
-                        $total = $total + ($cartItem['price'] + $cartItem['tax']) * $cartItem['quantity'];
-                        $product_name_with_choice = $product->getTranslation('name');
-                        if ($cartItem['variation'] != null) {
-                        $product_name_with_choice = $product->getTranslation('name').' - '.$cartItem['variation'];
-                        }
-                        <li class="list-group-item px-0 px-lg-3">
-                            <div class="row gutters-5">
-                                <div class="col-lg-5 d-flex">
-                                    <span class="mr-2 ml-0">
-                                        <img src="{{ uploaded_asset($product->thumbnail_img) }}" class="img-fit size-60px rounded" alt="{{ $product->getTranslation('name')  }}">
-                                    </span>
-                                    <span class="fs-14 opacity-60">{{ $product_name_with_choice }}</span>
-                                </div>
-
-                                <div class="col-lg col-4 order-1 order-lg-0 my-3 my-lg-0">
-                                    <span class="opacity-60 fs-12 d-block d-lg-none">{{ translate('Price')}}</span>
-                                    <span class="fw-600 fs-16">{{ single_price($cartItem['price']) }}</span>
-                                </div>
-                                <div class="col-lg col-4 order-2 order-lg-0 my-3 my-lg-0">
-                                    <span class="opacity-60 fs-12 d-block d-lg-none">{{ translate('Tax')}}</span>
-                                    <span class="fw-600 fs-16">{{ single_price($cartItem['tax']) }}</span>
-                                </div>
-
-                                <div class="col-lg col-6 order-4 order-lg-0">
-                                    @if($cartItem['digital'] != 1)
-                                    <div class="row no-gutters align-items-center aiz-plus-minus mr-2 ml-0">
-                                        <button class="btn col-auto btn-icon btn-sm btn-circle btn-light" type="button" data-type="minus" data-field="quantity[{{ $cartItem['id'] }}]">
-                                            <i class="las la-minus"></i>
-                                        </button>
-                                        <input type="number" name="quantity[{{ $cartItem['id'] }}]" class="col border-0 text-center flex-grow-1 fs-16 input-number" placeholder="1" value="{{ $cartItem['quantity'] }}" min="{{ $product->min_qty }}" max="{{ $product_stock->qty }}" onchange="updateQuantity({{ $cartItem['id'] }}, this)">
-                                        <button class="btn col-auto btn-icon btn-sm btn-circle btn-light" type="button" data-type="plus" data-field="quantity[{{ $cartItem['id'] }}]">
-                                            <i class="las la-plus"></i>
-                                        </button>
+                            @php
+                                $product = \App\Models\Product::find($cartItem['product_id']);
+                                
+                                if ($product != null) {
+                                    $product_stock = $product->stocks->where('variant', $cartItem['variation'])->first();
+                                } else {
+                                    continue;
+                                }
+                                
+                                $total = $total + ($cartItem['price'] + $cartItem['tax']) * $cartItem['quantity'];
+                                $product_name_with_choice = $product->getTranslation('name');
+                                
+                                if ($cartItem['variation'] != null) {
+                                    $product_name_with_choice = $product->getTranslation('name').' - '.$cartItem['variation'];
+                                }
+                            @endphp
+                            <li class="list-group-item px-0 px-lg-3">
+                                <div class="row gutters-5">
+                                    <div class="col-lg-5 d-flex">
+                                        <span class="mr-2 ml-0">
+                                            <img src="{{ uploaded_asset($product->thumbnail_img) }}" class="img-fit size-60px rounded" alt="{{ $product->getTranslation('name')  }}">
+                                        </span>
+                                        <span class="fs-14 opacity-60">{{ $product_name_with_choice }}</span>
                                     </div>
-                                    @endif
+
+                                    <div class="col-lg col-4 order-1 order-lg-0 my-3 my-lg-0">
+                                        <span class="opacity-60 fs-12 d-block d-lg-none">{{ translate('Price')}}</span>
+                                        <span class="fw-600 fs-16">{{ single_price($cartItem['price']) }}</span>
+                                    </div>
+                                    <div class="col-lg col-4 order-2 order-lg-0 my-3 my-lg-0">
+                                        <span class="opacity-60 fs-12 d-block d-lg-none">{{ translate('Tax')}}</span>
+                                        <span class="fw-600 fs-16">{{ single_price($cartItem['tax']) }}</span>
+                                    </div>
+
+                                    <div class="col-lg col-6 order-4 order-lg-0">
+                                        @if($cartItem['digital'] != 1)
+                                        <div class="row no-gutters align-items-center aiz-plus-minus mr-2 ml-0">
+                                            <button class="btn col-auto btn-icon btn-sm btn-circle btn-light" type="button" data-type="minus" data-field="quantity[{{ $cartItem['id'] }}]">
+                                                <i class="las la-minus"></i>
+                                            </button>
+                                            <input type="number" name="quantity[{{ $cartItem['id'] }}]" class="col border-0 text-center flex-grow-1 fs-16 input-number" placeholder="1" value="{{ $cartItem['quantity'] }}" min="{{ $product->min_qty }}" max="{{ $product_stock->qty }}" onchange="updateQuantity({{ $cartItem['id'] }}, this)">
+                                            <button class="btn col-auto btn-icon btn-sm btn-circle btn-light" type="button" data-type="plus" data-field="quantity[{{ $cartItem['id'] }}]">
+                                                <i class="las la-plus"></i>
+                                            </button>
+                                        </div>
+                                        @endif
+                                    </div>
+                                    <div class="col-lg col-4 order-3 order-lg-0 my-3 my-lg-0">
+                                        <span class="opacity-60 fs-12 d-block d-lg-none">{{ translate('Total')}}</span>
+                                        <span class="fw-600 fs-16 text-primary">{{ single_price(($cartItem['price'] + $cartItem['tax']) * $cartItem['quantity']) }}</span>
+                                    </div>
+                                    <div class="col-lg-auto col-6 order-5 order-lg-0 text-right">
+                                        <a href="javascript:void(0)" onclick="removeFromCartView(event, {{ $cartItem['id'] }})" class="btn btn-icon btn-sm btn-soft-primary btn-circle">
+                                            <i class="las la-trash"></i>
+                                        </a>
+                                    </div>
                                 </div>
-                                <div class="col-lg col-4 order-3 order-lg-0 my-3 my-lg-0">
-                                    <span class="opacity-60 fs-12 d-block d-lg-none">{{ translate('Total')}}</span>
-                                    <span class="fw-600 fs-16 text-primary">{{ single_price(($cartItem['price'] + $cartItem['tax']) * $cartItem['quantity']) }}</span>
-                                </div>
-                                <div class="col-lg-auto col-6 order-5 order-lg-0 text-right">
-                                    <a href="javascript:void(0)" onclick="removeFromCartView(event, {{ $cartItem['id'] }})" class="btn btn-icon btn-sm btn-soft-primary btn-circle">
-                                        <i class="las la-trash"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </li>
+                            </li>
                         @endforeach
                     </ul>
                 </div>

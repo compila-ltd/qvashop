@@ -13,24 +13,104 @@
     opacity: 0.6;
 }
 
-.form-password .password_error{
+.form-password .password_error {
     border: 1px solid #cc0000;
 }
 
-.hot_section{
+.hot_section {
     background-color: #f2f3f8;
 }
 
-.aiz-category-menu .categories .category-nav-element a img{
+.aiz-category-menu .categories .category-nav-element a img {
     height: 25px;
     width: 25px;
 }
 
-.product-detail .primary-title{
+.product-detail .primary-title {
     font-size: 15px;
 }
 
-.product-detail .shop-name{
+.product-detail .shop-name {
     font-size: 14px;
     font-weight: bold;
 }
+
+.aiz-category-menu .sub-cat-menu {
+    display: none;
+    position: absolute;
+    width: calc(68%);
+    left: calc(16%);
+    height: calc(100% + 0px);
+    overflow: hidden;
+    top: 0;
+    z-index: 11;
+    background-color: #ffffff;
+    overflow-y: auto;
+}
+
+@media (min-width: 1500px) {
+    .container {
+        max-width: 95% !important;
+    }
+
+    .aiz-category-menu .sub-cat-menu {
+        width: calc(68%) !important;
+        left: calc(16%) !important;
+        height: calc(100% + 0px);
+    }
+
+    .hover-category-menu .aiz-category-menu .sub-cat-menu {
+        width: calc(80%) !important;
+        left: calc(23%) !important;
+    }
+}
+
+@media (min-width: 1200px) {
+
+    .container,
+    .container-lg,
+    .container-md,
+    .container-sm,
+    .container-xl {
+        max-width: 95% !important;
+    }
+}
+
+@media (min-width: 992px) {
+
+    .container,
+    .container-lg,
+    .container-md,
+    .container-sm {
+        max-width: 95% !important;
+    }
+
+    .aiz-category-menu .sub-cat-menu {
+        width: calc(60%);
+        left: calc(24%);
+        height: calc(100% + 0px);
+    }
+
+    .hover-category-menu .aiz-category-menu .sub-cat-menu {
+        width: calc(80%) !important;
+        left: calc(23%) !important;
+    }
+}
+
+@media (min-width: 768px) {
+
+    .container,
+    .container-md,
+    .container-sm {
+        max-width: 95% !important;
+    }
+}
+
+@media (min-width: 576px) {
+
+    .container,
+    .container-sm {
+        max-width: 95% !important;
+    }
+}
+

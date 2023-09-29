@@ -33,8 +33,8 @@ $payment_status = $order->orderDetails->where('seller_id', Auth::user()->id)->fi
                         data-minimum-results-for-search="Infinity" id="update_delivery_status">
                         <option value="pending" @if ($status == 'pending') selected @endif>
                             {{ translate('Pending') }}</option>
-                        <option value="confirmed" @if ($status == 'confirmed') selected @endif>
-                            {{ translate('Confirmed') }}</option>
+                        <option value="in_progress" @if ($status == 'in_progress') selected @endif>
+                            {{ translate('In progress') }}</option>
                         <option value="picked_up" @if ($status == 'picked_up') selected @endif>
                             {{ translate('Picked Up') }}</option>
                         <option value="on_the_way" @if ($status == 'on_the_way') selected @endif>

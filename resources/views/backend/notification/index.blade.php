@@ -30,7 +30,7 @@
                                                 <a href="{{route('all_orders.show', encrypt($notification->data['order_id']))}}">
                                                     {{$notification->data['order_code']}}
                                                 </a>
-                                                {{ translate(' has been '. ucfirst(str_replace('_', ' ', $notification->data['status'])))}}
+                                                {{ translate('has been '. ucfirst(str_replace('_', ' ', $notification->data['status'])))}}
                                             </p>
                                             <small class="text-muted">
                                                 {{ date("F j Y, g:i a", strtotime($notification->created_at)) }}

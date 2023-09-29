@@ -77,7 +77,7 @@ class DeliveryBoyController extends Controller
             $order_query->where('delivery_status', 'pending')
                     ->where('cancel_request', '0');
         })->orWhere(function ($order_query) {
-            $order_query->where('delivery_status', 'confirmed')
+            $order_query->where('delivery_status', 'in_progress')
                     ->where('cancel_request', '0');
         });
 

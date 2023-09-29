@@ -106,7 +106,7 @@
                                         @if(Auth::user()->user_type == 'customer')
                                         <a href="{{route('purchase_history.details', encrypt($notification->data['order_id']))}}" class="text-reset">
                                             <span class="ml-2">
-                                                {{ translate('Order code: ')}} {{$notification->data['order_code']}} {{ translate('has been '. ucfirst(str_replace('_', ' ', $notification->data['status'])))}}
+                                                {{ translate('Your Order: ')}} {{$notification->data['order_code']}} {{ translate('has been '. ucfirst(str_replace('_', ' ', $notification->data['status'])))}}
                                             </span>
                                         </a>
                                         @elseif (Auth::user()->user_type == 'seller')
@@ -165,7 +165,7 @@
         <div class="container">
             <div class="d-flex align-items-center">
 
-                <div class="col-auto col-xl-3 pl-0 pr-3 d-flex align-items-center">
+                <div class="col-auto col-xl-2 pl-0 pr-3 d-flex align-items-center">
                     <a class="d-block py-20px mr-3 ml-0" href="{{ route('home') }}">
                         @php
                         $header_logo = get_setting('header_logo');
@@ -257,7 +257,7 @@
             </div>
         </div>
         @if(Route::currentRouteName() != 'home')
-        <div class="hover-category-menu position-absolute w-100 top-100 left-0 right-0 d-none z-3" id="hover-category-menu">
+        <div class="hover-category-menu position-absolute w-75 top-100 left-0 right-0 d-none z-3" id="hover-category-menu">
             <div class="container">
                 <div class="row gutters-10 position-relative">
                     <div class="col-lg-3 position-static">

@@ -9,7 +9,7 @@
                     <h1 class="h3 fw-600 mb-3">{{ translate('Verify Your Email Address') }}</h1>
                     <p class="opacity-60">
                         {{ translate('Before proceeding, please check your email for a verification link.') }}
-                        {{ translate('If you did not receive the email.') }}
+                        {{ translate('If you did not receive the email') }}:
                     </p>
                     <a href="{{ route('verification.resend.new') }}" class="btn btn-primary btn-block">{{ translate('Click here to request another') }}</a>
                     @if (session('resent'))

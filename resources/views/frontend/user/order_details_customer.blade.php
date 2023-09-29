@@ -1,15 +1,11 @@
 @extends('frontend.layouts.user_panel')
 
 @section('panel_content')
-    <div class="aiz-titlebar mt-2 mb-4">
-        <div class="row align-items-center">
-            <div class="col-md-6">
-                <h1 class="h3">{{ translate('Order id') }}: {{ $order->code }}</h1>
-            </div>
-        </div>
-    </div>
-
     <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0 h6">{{ translate('Order id') }}: {{ $order->code }}</h5>
+        </div>
+
         <div class="card-header">
             <h5 class="h6 mb-0">{{ translate('Order Summary') }}</h5>
         </div>
@@ -49,7 +45,21 @@
                         </tr>
                         <tr>
                             <td class="w-50 fw-600">{{ translate('Order status') }}:</td>
-                            <td>{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</td>
+                            @if ($order->payment_status != 'unpaid')
+                                @if ($order->delivery_status == 'delivered')
+                                    <td><span class="badge badge-inline badge-success">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span></td>
+                                @elseif ($order->delivery_status == 'pending')
+                                    <td><span class="badge badge-inline badge-danger">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span></td>
+                                @elseif ($order->delivery_status == 'in_progress')
+                                    <td><span class="badge badge-inline badge-warning">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span></td>
+                                @elseif (($order->delivery_status == 'picked_up') || ($order->delivery_status == 'on_the_way'))
+                                    <td><span class="badge badge-inline badge-info">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span></td>
+                                @else
+                                    <td><span class="badge badge-inline badge-dark">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span></td>
+                                @endif
+                            @else
+                                <td><span class="badge badge-inline badge-dark">{{ translate($order->payment_status) }}</span></td>
+                            @endif
                         </tr>
                         <tr>
                             <td class="w-50 fw-600">{{ translate('Total order amount') }}:</td>
@@ -79,159 +89,167 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-9">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="h6 mb-0">{{ translate('Order Details') }}</h5>
-                </div>
-                <div class="card-body">
-                    <table class="aiz-table table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th width="30%">{{ translate('Product') }}</th>
-                                <th data-breakpoints="md">{{ translate('Variation') }}</th>
-                                <th>{{ translate('Quantity') }}</th>
-                                <th data-breakpoints="md">{{ translate('Delivery Type') }}</th>
-                                <th>{{ translate('Price') }}</th>
-                                @if (addon_is_activated('refund_request'))
-                                    <th data-breakpoints="md">{{ translate('Refund') }}</th>
-                                @endif
-                                <th data-breakpoints="md" class="text-right">{{ translate('Review') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($order->orderDetails as $key => $orderDetail)
+        <div class="row">
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="h6 mb-0">{{ translate('Order Details') }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="aiz-table table">
+                            <thead>
                                 <tr>
-                                    <td>{{ $key + 1 }}</td>
-                                    <td>
-                                        @if ($orderDetail->product != null && $orderDetail->product->auction_product == 0)
-                                            <a href="{{ route('product', $orderDetail->product->slug) }}"
-                                                target="_blank">{{ $orderDetail->product->getTranslation('name') }}</a>
-                                        @elseif($orderDetail->product != null && $orderDetail->product->auction_product == 1)
-                                            <a href="{{ route('auction-product', $orderDetail->product->slug) }}"
-                                                target="_blank">{{ $orderDetail->product->getTranslation('name') }}</a>
-                                        @else
-                                            <strong>{{ translate('Product Unavailable') }}</strong>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        {{ $orderDetail->variation }}
-                                    </td>
-                                    <td>
-                                        {{ $orderDetail->quantity }}
-                                    </td>
-                                    <td>
-                                        @if ($order->shipping_type != null && $order->shipping_type == 'home_delivery')
-                                            {{ translate('Home Delivery') }}
-                                        @elseif ($order->shipping_type == 'pickup_point')
-                                            @if ($order->pickup_point != null)
-                                                {{ $order->pickup_point->name }} ({{ translate('Pickip Point') }})
-                                            @else
-                                                {{ translate('Pickup Point') }}
-                                            @endif
-                                        @elseif($order->shipping_type == 'carrier')
-                                            @if ($order->carrier != null)
-                                                {{ $order->carrier->name }} ({{ translate('Carrier') }})
-                                                <br>
-                                                {{ translate('Transit Time').' - '.$order->carrier->transit_time.' '.translate('days') }}
-                                            @else
-                                                {{ translate('Carrier') }}
-                                            @endif
-                                        @endif
-                                    </td>
-                                    <td>{{ single_price($orderDetail->price) }}</td>
+                                    <th>#</th>
+                                    <th width="30%">{{ translate('Product') }}</th>
+                                    <th data-breakpoints="md">{{ translate('Variation') }}</th>
+                                    <th>{{ translate('Quantity') }}</th>
+                                    <th data-breakpoints="md">{{ translate('Delivery Type') }}</th>
+                                    <th>{{ translate('Price') }}</th>
                                     @if (addon_is_activated('refund_request'))
-                                        @php
-                                            $no_of_max_day = get_setting('refund_request_time');
-                                            $last_refund_date = $orderDetail->created_at->addDays($no_of_max_day);
-                                            $today_date = Carbon\Carbon::now();
-                                        @endphp
+                                        <th data-breakpoints="md">{{ translate('Refund') }}</th>
+                                    @endif
+                                    <th data-breakpoints="md" class="text-right">{{ translate('Review') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($order->orderDetails as $key => $orderDetail)
+                                    <tr>
+                                        <td>{{ $key + 1 }}</td>
                                         <td>
-                                            @if ($orderDetail->product != null && $orderDetail->product->refundable != 0 && $orderDetail->refund_request == null && $today_date <= $last_refund_date && $orderDetail->payment_status == 'paid' && $orderDetail->delivery_status == 'delivered')
-                                                <a href="{{ route('refund_request_send_page', $orderDetail->id) }}"
-                                                    class="btn btn-primary btn-sm">{{ translate('Send') }}</a>
-                                            @elseif ($orderDetail->refund_request != null && $orderDetail->refund_request->refund_status == 0)
-                                                <b class="text-info">{{ translate('Pending') }}</b>
-                                            @elseif ($orderDetail->refund_request != null && $orderDetail->refund_request->refund_status == 2)
-                                                <b class="text-success">{{ translate('Rejected') }}</b>
-                                            @elseif ($orderDetail->refund_request != null && $orderDetail->refund_request->refund_status == 1)
-                                                <b class="text-success">{{ translate('Approved') }}</b>
-                                            @elseif ($orderDetail->product->refundable != 0)
-                                                <b>{{ translate('N/A') }}</b>
+                                            @if ($orderDetail->product != null && $orderDetail->product->auction_product == 0)
+                                                <a href="{{ route('product', $orderDetail->product->slug) }}"
+                                                    target="_blank">{{ $orderDetail->product->getTranslation('name') }}</a>
+                                            @elseif($orderDetail->product != null && $orderDetail->product->auction_product == 1)
+                                                <a href="{{ route('auction-product', $orderDetail->product->slug) }}"
+                                                    target="_blank">{{ $orderDetail->product->getTranslation('name') }}</a>
                                             @else
-                                                <b>{{ translate('Non-refundable') }}</b>
+                                                <strong>{{ translate('Product Unavailable') }}</strong>
                                             @endif
                                         </td>
-                                    @endif
-                                    <td class="text-right">
-                                        @if ($orderDetail->delivery_status == 'delivered')
-                                            <a href="javascript:void(0);"
-                                                onclick="product_review('{{ $orderDetail->product_id }}')"
-                                                class="btn btn-primary btn-sm"> {{ translate('Review') }} </a>
-                                        @else
-                                            <span class="text-danger">{{ translate('Not Delivered Yet') }}</span>
+                                        <td>
+                                            {{ $orderDetail->variation }}
+                                        </td>
+                                        <td>
+                                            {{ $orderDetail->quantity }}
+                                        </td>
+                                        <td>
+                                            @if ($order->shipping_type != null && $order->shipping_type == 'home_delivery')
+                                                {{ translate('Home Delivery') }}
+                                            @elseif ($order->shipping_type == 'pickup_point')
+                                                @if ($order->pickup_point != null)
+                                                    {{ $order->pickup_point->name }} ({{ translate('Pickip Point') }})
+                                                @else
+                                                    {{ translate('Pickup Point') }}
+                                                @endif
+                                            @elseif($order->shipping_type == 'carrier')
+                                                @if ($order->carrier != null)
+                                                    {{ $order->carrier->name }} ({{ translate('Carrier') }})
+                                                    <br>
+                                                    {{ translate('Transit Time').' - '.$order->carrier->transit_time.' '.translate('days') }}
+                                                @else
+                                                    {{ translate('Carrier') }}
+                                                @endif
+                                            @endif
+                                        </td>
+                                        <td>{{ single_price($orderDetail->price) }}</td>
+                                        @if (addon_is_activated('refund_request'))
+                                            @php
+                                                $no_of_max_day = get_setting('refund_request_time');
+                                                $last_refund_date = $orderDetail->created_at->addDays($no_of_max_day);
+                                                $today_date = Carbon\Carbon::now();
+                                            @endphp
+                                            <td>
+                                                @if ($orderDetail->product != null && $orderDetail->product->refundable != 0 && $orderDetail->refund_request == null && $today_date <= $last_refund_date && $orderDetail->payment_status == 'paid' && $orderDetail->delivery_status == 'delivered')
+                                                    <a href="{{ route('refund_request_send_page', $orderDetail->id) }}"
+                                                        class="btn btn-primary btn-sm">{{ translate('Send') }}</a>
+                                                @elseif ($orderDetail->refund_request != null && $orderDetail->refund_request->refund_status == 0)
+                                                    <b class="text-info">{{ translate('Pending') }}</b>
+                                                @elseif ($orderDetail->refund_request != null && $orderDetail->refund_request->refund_status == 2)
+                                                    <b class="text-success">{{ translate('Rejected') }}</b>
+                                                @elseif ($orderDetail->refund_request != null && $orderDetail->refund_request->refund_status == 1)
+                                                    <b class="text-success">{{ translate('Approved') }}</b>
+                                                @elseif ($orderDetail->product->refundable != 0)
+                                                    <b>{{ translate('N/A') }}</b>
+                                                @else
+                                                    <b>{{ translate('Non-refundable') }}</b>
+                                                @endif
+                                            </td>
                                         @endif
+                                        <td class="text-right">
+                                            @if ($orderDetail->delivery_status == 'delivered')
+                                                <a href="javascript:void(0);"
+                                                    onclick="product_review('{{ $orderDetail->product_id }}')"
+                                                    class="btn btn-primary btn-sm"> {{ translate('Write a review') }} </a>
+                                            @elseif ($orderDetail->payment_status != 'unpaid')
+                                                @if ($order->delivery_status == 'pending')
+                                                    <span class="badge badge-inline badge-danger">{{ translate(ucfirst(str_replace('_', ' ', $orderDetail->delivery_status))) }}</span>
+                                                @elseif ($order->delivery_status == 'in_progress')
+                                                    <span class="badge badge-inline badge-warning">{{ translate(ucfirst(str_replace('_', ' ', $orderDetail->delivery_status))) }}</span>
+                                                @elseif (($order->delivery_status == 'picked_up') || ($order->delivery_status == 'on_the_way'))
+                                                    <span class="badge badge-inline badge-info">{{ translate(ucfirst(str_replace('_', ' ', $orderDetail->delivery_status))) }}</span>
+                                                @endif
+                                            @else
+                                                <span class="badge badge-inline badge-dark">{{ translate($orderDetail->payment_status) }}</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        <b class="fs-15">{{ translate('Order Ammount') }}</b>
+                    </div>
+                    <div class="card-body pb-0">
+                        <table class="table-borderless table">
+                            <tbody>
+                                <tr>
+                                    <td class="w-50 fw-600">{{ translate('Subtotal') }}</td>
+                                    <td class="text-right">
+                                        <span
+                                            class="strong-600">{{ single_price($order->orderDetails->sum('price')) }}</span>
                                     </td>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                <tr>
+                                    <td class="w-50 fw-600">{{ translate('Shipping') }}</td>
+                                    <td class="text-right">
+                                        <span
+                                            class="text-italic">{{ single_price($order->orderDetails->sum('shipping_cost')) }}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="w-50 fw-600">{{ translate('Tax') }}</td>
+                                    <td class="text-right">
+                                        <span
+                                            class="text-italic">{{ single_price($order->orderDetails->sum('tax')) }}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="w-50 fw-600">{{ translate('Coupon') }}</td>
+                                    <td class="text-right">
+                                        <span class="text-italic">{{ single_price($order->coupon_discount) }}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="w-50 fw-600">{{ translate('Total') }}</td>
+                                    <td class="text-right">
+                                        <strong><span>{{ single_price($order->grand_total) }}</span></strong>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+                @if ($order->manual_payment && $order->manual_payment_data == null)
+                    <button onclick="show_make_payment_modal({{ $order->id }})"
+                        class="btn btn-block btn-primary">{{ translate('Make Payment') }}</button>
+                @endif
             </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-header">
-                    <b class="fs-15">{{ translate('Order Ammount') }}</b>
-                </div>
-                <div class="card-body pb-0">
-                    <table class="table-borderless table">
-                        <tbody>
-                            <tr>
-                                <td class="w-50 fw-600">{{ translate('Subtotal') }}</td>
-                                <td class="text-right">
-                                    <span
-                                        class="strong-600">{{ single_price($order->orderDetails->sum('price')) }}</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="w-50 fw-600">{{ translate('Shipping') }}</td>
-                                <td class="text-right">
-                                    <span
-                                        class="text-italic">{{ single_price($order->orderDetails->sum('shipping_cost')) }}</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="w-50 fw-600">{{ translate('Tax') }}</td>
-                                <td class="text-right">
-                                    <span
-                                        class="text-italic">{{ single_price($order->orderDetails->sum('tax')) }}</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="w-50 fw-600">{{ translate('Coupon') }}</td>
-                                <td class="text-right">
-                                    <span class="text-italic">{{ single_price($order->coupon_discount) }}</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="w-50 fw-600">{{ translate('Total') }}</td>
-                                <td class="text-right">
-                                    <strong><span>{{ single_price($order->grand_total) }}</span></strong>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            @if ($order->manual_payment && $order->manual_payment_data == null)
-                <button onclick="show_make_payment_modal({{ $order->id }})"
-                    class="btn btn-block btn-primary">{{ translate('Make Payment') }}</button>
-            @endif
         </div>
     </div>
 @endsection
