@@ -145,6 +145,8 @@
                                             <span class="badge badge-inline badge-info">{{ translate(ucfirst(str_replace('_', ' ', $delivery_status))) }}</span>
                                         @elseif($delivery_status == 'on_the_way')
                                             <span class="badge badge-inline badge-info">{{ translate(ucfirst(str_replace('_', ' ', $delivery_status))) }}</span>
+                                        @elseif($delivery_status == 'cancelled')
+                                            <span class="badge badge-inline badge-dark">{{ translate(ucfirst(str_replace('_', ' ', $delivery_status))) }}</span>
                                         @endif
                                     @else
                                         <span class="badge badge-inline badge-dark">{{ translate('Unpaid')}}</span>

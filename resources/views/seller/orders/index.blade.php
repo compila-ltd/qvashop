@@ -8,14 +8,7 @@
             <div class="col text-center text-md-left">
               <h5 class="mb-md-0 h6">{{ translate('Orders') }}</h5>
             </div>
-              <div class="col-md-3 ml-auto">
-                  <select class="form-control aiz-selectpicker" data-placeholder="{{ translate('Filter by Payment Status')}}" name="payment_status" onchange="sort_orders()">
-                      <option value="">{{ translate('Filter by Payment Status')}}</option>
-                      <option value="paid" @isset($payment_status) @if($payment_status == 'paid') selected @endif @endisset>{{ translate('Paid')}}</option>
-                      <option value="unpaid" @isset($payment_status) @if($payment_status == 'unpaid') selected @endif @endisset>{{ translate('Un-Paid')}}</option>
-                  </select>
-              </div>
-
+              
               <div class="col-md-3 ml-auto">
                 <select class="form-control aiz-selectpicker" data-placeholder="{{ translate('Filter by Payment Status')}}" name="delivery_status" onchange="sort_orders()">
                     <option value="">{{ translate('Filter by Deliver Status')}}</option>
@@ -24,6 +17,14 @@
                     <option value="on_delivery" @isset($delivery_status) @if($delivery_status == 'on_delivery') selected @endif @endisset>{{ translate('On delivery')}}</option>
                     <option value="delivered" @isset($delivery_status) @if($delivery_status == 'delivered') selected @endif @endisset>{{ translate('Delivered')}}</option>
                 </select>
+              </div>
+
+              <div class="col-md-3 ml-auto">
+                  <select class="form-control aiz-selectpicker" data-placeholder="{{ translate('Filter by Payment Status')}}" name="payment_status" onchange="sort_orders()">
+                      <option value="">{{ translate('Filter by Payment Status')}}</option>
+                      <option value="paid" @isset($payment_status) @if($payment_status == 'paid') selected @endif @endisset>{{ translate('Paid')}}</option>
+                      <option value="unpaid" @isset($payment_status) @if($payment_status == 'unpaid') selected @endif @endisset>{{ translate('Un-Paid')}}</option>
+                  </select>
               </div>
               <div class="col-md-3">
                 <div class="from-group mb-0">
@@ -89,6 +90,8 @@
                                                 <span class="badge badge-inline badge-info">{{ translate(ucfirst(str_replace('_', ' ', $status))) }}</span>
                                             @elseif($status == 'on_the_way')
                                                 <span class="badge badge-inline badge-info">{{ translate(ucfirst(str_replace('_', ' ', $status))) }}</span>
+                                            @elseif($status == 'cancelled')
+                                                <span class="badge badge-inline badge-dark">{{ translate(ucfirst(str_replace('_', ' ', $status))) }}</span>
                                             @endif
                                         @else
                                             <span class="badge badge-inline badge-dark">{{ translate('Unpaid')}}</span>
