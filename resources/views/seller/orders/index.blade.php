@@ -8,23 +8,19 @@
             <div class="col text-center text-md-left">
               <h5 class="mb-md-0 h6">{{ translate('Orders') }}</h5>
             </div>
-              <div class="col-md-3 ml-auto">
-                  <select class="form-control aiz-selectpicker" data-placeholder="{{ translate('Filter by Payment Status')}}" name="payment_status" onchange="sort_orders()">
-                      <option value="">{{ translate('Filter by Payment Status')}}</option>
-                      <option value="paid" @isset($payment_status) @if($payment_status == 'paid') selected @endif @endisset>{{ translate('Paid')}}</option>
-                      <option value="unpaid" @isset($payment_status) @if($payment_status == 'unpaid') selected @endif @endisset>{{ translate('Un-Paid')}}</option>
-                  </select>
-              </div>
-
+              
               <div class="col-md-3 ml-auto">
                 <select class="form-control aiz-selectpicker" data-placeholder="{{ translate('Filter by Payment Status')}}" name="delivery_status" onchange="sort_orders()">
-                    <option value="">{{ translate('Filter by Deliver Status')}}</option>
+                    <option value="all">{{ translate('Filter by Deliver Status')}}</option>
                     <option value="pending" @isset($delivery_status) @if($delivery_status == 'pending') selected @endif @endisset>{{ translate('Pending')}}</option>
                     <option value="in_progress" @isset($delivery_status) @if($delivery_status == 'in_progress') selected @endif @endisset>{{ translate('In progress')}}</option>
-                    <option value="on_delivery" @isset($delivery_status) @if($delivery_status == 'on_delivery') selected @endif @endisset>{{ translate('On delivery')}}</option>
+                    <option value="picked_up" @isset($delivery_status) @if($delivery_status == 'picked_up') selected @endif @endisset>{{ translate('Picked up')}}</option>
+                    <option value="on_the_way" @isset($delivery_status) @if($delivery_status == 'on_the_way') selected @endif @endisset>{{ translate('On the way')}}</option>
                     <option value="delivered" @isset($delivery_status) @if($delivery_status == 'delivered') selected @endif @endisset>{{ translate('Delivered')}}</option>
+                    <option value="cancelled" @isset($delivery_status) @if($delivery_status == 'cancelled') selected @endif @endisset>{{ translate('Cancelled')}}</option>
                 </select>
               </div>
+
               <div class="col-md-3">
                 <div class="from-group mb-0">
                     <input type="text" class="form-control" id="search" name="search" @isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Type Order code & hit Enter') }}">
@@ -82,13 +78,15 @@
                                             @if($status == 'delivered')
                                                 <span class="badge badge-inline badge-success">{{ translate(ucfirst(str_replace('_', ' ', $status))) }}</span>
                                             @elseif($status == 'pending')
-                                                <span class="badge badge-inline" style="background-color: #007bff; color: #fff">{{ translate(ucfirst(str_replace('_', ' ', $status))) }}</span>
+                                                <span class="badge badge-inline badge-danger">{{ translate(ucfirst(str_replace('_', ' ', $status))) }}</span>
                                             @elseif($status == 'in_progress')
                                                 <span class="badge badge-inline badge-warning">{{ translate(ucfirst(str_replace('_', ' ', $status))) }}</span>
                                             @elseif($status == 'picked_up')
                                                 <span class="badge badge-inline badge-info">{{ translate(ucfirst(str_replace('_', ' ', $status))) }}</span>
                                             @elseif($status == 'on_the_way')
                                                 <span class="badge badge-inline badge-info">{{ translate(ucfirst(str_replace('_', ' ', $status))) }}</span>
+                                            @elseif($status == 'cancelled')
+                                                <span class="badge badge-inline badge-secondary">{{ translate(ucfirst(str_replace('_', ' ', $status))) }}</span>
                                             @endif
                                         @else
                                             <span class="badge badge-inline badge-dark">{{ translate('Unpaid')}}</span>
@@ -117,6 +115,25 @@
                 <div class="aiz-pagination">
                     {{ $orders->links() }}
               	</div>
+            </div>
+        @else
+            <div class="col">
+                <div class="text-center bg-white p-4 rounded shadow">
+                    @if($delivery_status == 'pending')
+                        <img class="mw-100 h-200px" src="{{ asset('assets/img/pending.png') }}" alt="Image">
+                    @elseif($delivery_status == 'in_progress')
+                        <img class="mw-100 h-200px" src="{{ asset('assets/img/in_progress.jpg') }}" alt="Image">
+                    @elseif($delivery_status == 'picked_up')
+                        <img class="mw-100 h-200px" src="{{ asset('assets/img/pick_up.png') }}" alt="Image">
+                    @elseif($delivery_status == 'on_the_way')
+                        <img class="mw-100 h-200px" src="{{ asset('assets/img/on_the_way.png') }}" alt="Image">
+                    @elseif($delivery_status == 'delivered')
+                        <img class="mw-100 h-200px" src="{{ asset('assets/img/delivered.jpg') }}" alt="Image">
+                    @elseif($delivery_status == 'cancelled')
+                        <img class="mw-100 h-200px" src="{{ asset('assets/img/cancelled.png') }}" alt="Image">
+                    @endif
+                    <h5 class="mb-0 h5 mt-3">{{ translate("Without orders in this state")}}</h5>
+                </div>
             </div>
         @endif
     </div>

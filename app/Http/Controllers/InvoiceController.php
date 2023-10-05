@@ -63,6 +63,7 @@ class InvoiceController extends Controller
         $config = [];
 
         $order = Order::findOrFail($id);
+       
         return PDF::loadView('backend.invoices.invoice',[
             'order' => $order,
             'font_family' => $font_family,

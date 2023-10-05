@@ -151,7 +151,8 @@
                     $new_orders = DB::table('orders')
                         ->where('seller_id', Auth::user()->id)
                         ->where('payment_status', 'paid')
-                        ->where('delivery_status', '=' ,'pending')
+                        ->where('delivery_status', '!=' ,'delivered')
+                        ->where('delivery_status', '!=' ,'cancelled')
                         ->select('id')
                         ->count();
                 @endphp
@@ -161,7 +162,7 @@
                         <i class="las la-money-bill aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('Orders') }}</span>
                         @if ($new_orders > 0)
-                            <span class="badge badge-inline" style="background-color: #007bff; color: #fff">{{ $new_orders }}</span>
+                            <span class="badge badge-danger">{{ $new_orders }}</span>
                         @endif
                     </a>
                 </li>

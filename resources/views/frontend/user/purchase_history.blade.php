@@ -40,7 +40,7 @@
                                             @elseif (($order->delivery_status == 'picked_up') || ($order->delivery_status == 'on_the_way'))
                                                 <span class="badge badge-inline badge-info">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
                                             @else
-                                                <span class="badge badge-inline badge-dark">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
+                                                <span class="badge badge-inline badge-secondary">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
                                             @endif
                                             @if($order->delivery_viewed == 0)
                                                 <span class="ml-2" style="color:green"><strong>*</strong></span>

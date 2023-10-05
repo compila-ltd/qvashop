@@ -21,23 +21,28 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
+        //dd($request);
         $payment_status = null;
         $delivery_status = null;
         $sort_search = null;
         $orders = DB::table('orders')
             ->orderBy('id', 'desc')
             ->where('seller_id', Auth::user()->id)
+            ->where('payment_status', 'paid')
             ->select('orders.id')
             ->distinct();
 
-        if ($request->payment_status != null) {
-            $orders = $orders->where('payment_status', $request->payment_status);
-            $payment_status = $request->payment_status;
-        }
-        if ($request->delivery_status != null) {
+        if (($request->delivery_status != null) && ($request->delivery_status != 'all')) {
             $orders = $orders->where('delivery_status', $request->delivery_status);
             $delivery_status = $request->delivery_status;
         }
+        else{
+            if($request->delivery_status != 'all'){
+                $orders = $orders->where('delivery_status', 'pending');
+                $delivery_status = 'pending';
+            }
+        }
+
         if ($request->has('search')) {
             $sort_search = $request->search;
             $orders = $orders->where('code', 'like', '%' . $sort_search . '%');

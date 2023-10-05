@@ -4,6 +4,7 @@
     <title>{{  translate('INVOICE') }}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="UTF-8">
+
 	<style media="all">
         @page {
 			margin: 0;
@@ -18,6 +19,55 @@
 			padding:0;
 			margin:0; 
 		}
+
+		.badge {
+			display: inline-block;
+			font-size: 13px;
+			font-weight: 700;
+			line-height: 1;
+			color: #fff;
+			text-align: center;
+			white-space: nowrap;
+			vertical-align: baseline;
+			border-radius: 0.25rem;
+		}
+
+		.bg-primary {
+			background-color: #0d6efd !important;
+		}
+
+		.bg-secondary {
+			background-color: #6c757d !important;
+		}
+
+		.bg-success {
+			background-color: #198754 !important;
+		}
+
+		.bg-danger {
+			background-color: #dc3545 !important;
+		}
+
+		.bg-warning {
+			background-color: #ffc107 !important;
+		}
+
+		.bg-info {
+			background-color: #0dcaf0 !important;
+		}
+		
+		.bg-dark {
+			background-color: #212529 !important;
+		}
+		
+		.text-dark {
+			color: #212529 !important;
+		}
+
+		.badge-inline {
+			width: auto;
+		}
+
 		.gry-color *,
 		.gry-color{
 			color:#000;
@@ -85,6 +135,23 @@
 				<tr>
 					<td class="gry-color small">{{  translate('Phone') }}: {{ get_setting('contact_phone') }}</td>
 					<td class="text-right small"><span class="gry-color small">{{  translate('Order Date') }}:</span> <span class=" strong">{{ date('d-m-Y', $order->date) }}</span></td>
+				</tr>
+				<tr>
+					<td class="gry-color small"></td>
+					<td class="text-right small">
+						<span class="gry-color small">{{  translate('Order Status') }}:</span>
+						@if ($order->delivery_status == 'delivered')
+							<span class="strong badge badge-inline bg-success">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
+						@elseif ($order->delivery_status == 'pending')
+							<span class="badge badge-inline bg-danger">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
+						@elseif ($order->delivery_status == 'in_progress')
+							<span class="badge badge-inline bg-warning">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
+						@elseif (($order->delivery_status == 'picked_up') || ($order->delivery_status == 'on_the_way'))
+							<span class="badge badge-inline bg-info">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
+						@else
+							<span class="badge badge-inline bg-secondary">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
+						@endif
+					</td>
 				</tr>
 				<tr>
 					<td class="gry-color small"></td>

@@ -19,18 +19,18 @@
             </div>
 
             <div class="col-lg-2 ml-auto">
-                <select class="form-control aiz-selectpicker" name="delivery_status" id="delivery_status">
-                    <option value="">{{ translate('Filter by Delivery Status')}}</option>
+                <select class="form-control aiz-selectpicker" name="delivery_status" id="delivery_status" onchange="sort_orders()">
+                    <option value="">{{ translate('Filter by Deliver Status')}}</option>
                     <option value="pending" @if ($delivery_status == 'pending') selected @endif>{{ translate('Pending')}}</option>
                     <option value="in_progress" @if ($delivery_status == 'in_progress') selected @endif>{{ translate('In Progress')}}</option>
                     <option value="picked_up" @if ($delivery_status == 'picked_up') selected @endif>{{ translate('Picked Up')}}</option>
                     <option value="on_the_way" @if ($delivery_status == 'on_the_way') selected @endif>{{ translate('On The Way')}}</option>
                     <option value="delivered" @if ($delivery_status == 'delivered') selected @endif>{{ translate('Delivered')}}</option>
-                    <option value="cancelled" @if ($delivery_status == 'cancelled') selected @endif>{{ translate('Cancel')}}</option>
+                    <option value="cancelled" @if ($delivery_status == 'cancelled') selected @endif>{{ translate('Cancelled')}}</option>
                 </select>
             </div>
             <div class="col-lg-2 ml-auto">
-                <select class="form-control aiz-selectpicker" name="payment_status" id="payment_status">
+                <select class="form-control aiz-selectpicker" name="payment_status" id="payment_status" onchange="sort_orders()">
                     <option value="">{{ translate('Filter by Payment Status')}}</option>
                     <option value="paid"  @isset($payment_status) @if($payment_status == 'paid') selected @endif @endisset>{{ translate('Paid')}}</option>
                     <option value="unpaid"  @isset($payment_status) @if($payment_status == 'unpaid') selected @endif @endisset>{{ translate('Un-Paid')}}</option>
@@ -38,7 +38,7 @@
               </div>
             <div class="col-lg-2">
                 <div class="form-group mb-0">
-                    <input type="text" class="aiz-date-range form-control" value="{{ $date }}" name="date" placeholder="{{ translate('Filter by date') }}" data-format="DD-MM-Y" data-separator=" to " data-advanced-range="true" autocomplete="off">
+                    <input type="text" class="aiz-date-range form-control" value="{{ $date }}" name="date" placeholder="{{ translate('Filter by date') }}" data-format="DD-MM-Y" data-separator=" to " data-advanced-range="true" autocomplete="off" onchange="sort_orders()">
                 </div>
             </div>
             <div class="col-lg-2">
@@ -129,7 +129,7 @@
                             @elseif (($order->delivery_status == 'picked_up') || ($order->delivery_status == 'on_the_way'))
                                 <span class="badge badge-inline badge-info">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
                             @else
-                                <span class="badge badge-inline badge-dark">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
+                                <span class="badge badge-inline badge-secondary">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
                             @endif
                         @else
                             <span class="badge badge-inline badge-dark">{{ translate('Unpaid')}}</span>
@@ -257,5 +257,10 @@
                 }
             });
         }
+
+        function sort_orders(el){
+            $('#sort_orders').submit();
+        }
+
     </script>
 @endsection

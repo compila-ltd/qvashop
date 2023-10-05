@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-rtl.min.css') }}">
     @endif
 	<link rel="stylesheet" href="{{ asset('assets/css/aiz-seller.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/css/custom-style-seller.css?v=202310041513') }}">
 
     <style>
         body {

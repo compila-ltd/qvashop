@@ -219,7 +219,7 @@ class ProductController extends Controller
         Artisan::call('view:clear');
         Artisan::call('cache:clear');
 
-        return back()->with('suceess', translate('Product has been updated successfully'));
+        return back()->with('success', translate('Product has been updated successfully'));
     }
 
     /**
