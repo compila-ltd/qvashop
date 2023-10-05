@@ -34,8 +34,13 @@ class PaymentController extends Controller
     {
         $user = User::find(decrypt($id));
         $payments = Payment::where('seller_id', $user->id)->orderBy('created_at', 'desc')->get();
+        $total_amount = Payment::where('seller_id', $user->id)->sum('amount');
+        
+        if($total_amount == NULL)
+            $total_amount = 0;
+
         if ($payments->count() > 0) {
-            return view('backend.sellers.payment', compact('payments', 'user'));
+            return view('backend.sellers.payment', compact('payments', 'user', 'total_amount'));
         }
 
         return back()->with('warning', translate('No payment history available for this seller'));

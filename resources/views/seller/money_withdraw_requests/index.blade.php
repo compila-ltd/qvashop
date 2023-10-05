@@ -88,7 +88,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <label>{{ translate('Amount')}} <span class="text-danger">*</span></label>
-                            <input type="number" lang="en" class="form-control mb-3" name="amount" min="{{ get_setting('minimum_seller_amount_withdraw') }}" max="{{ Auth::user()->shop->admin_to_pay }}" placeholder="{{ translate('Amount') }}" required>
+                            <input type="number" lang="en" class="form-control mb-3" name="amount" min="{{ get_setting('minimum_seller_amount_withdraw') }}" placeholder="{{ translate('Amount') }}" required>
                         </div>
                     </div>
                     <div class="row">

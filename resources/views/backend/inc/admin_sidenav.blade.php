@@ -40,14 +40,14 @@
                     <a href="#" class="aiz-side-nav-link">
                         <i class="las la-link aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('Support') }}</span>
-                        @if($support_ticket > 0)<span class="badge badge-info">{{ $support_ticket }}</span>@endif
+                        @if($support_ticket > 0)<span class="badge badge-danger">{{ $support_ticket }}</span>@endif
                         <span class="aiz-side-nav-arrow"></span>
                     </a>
                     <ul class="aiz-side-nav-list level-2">
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('support_ticket.admin_index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['support_ticket.admin_index', 'support_ticket.admin_show']) }}">
                                 <span class="aiz-side-nav-text">{{ translate('Ticket') }}</span>
-                                @if($support_ticket > 0)<span class="badge badge-info">{{ $support_ticket }}</span>@endif
+                                @if($support_ticket > 0)<span class="badge badge-danger">{{ $support_ticket }}</span>@endif
                             </a>
                         </li>
                         @endcan
@@ -298,7 +298,7 @@
                     <a href="#" class="aiz-side-nav-link">
                         <i class="las la-money-bill aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('Sales') }}</span>
-                        @if($orders > 0)<span class="badge badge-info">{{ $orders }}</span>@endif
+                        @if($orders > 0)<span class="badge badge-danger">{{ $orders }}</span>@endif
                         <span class="aiz-side-nav-arrow"></span>
                     </a>
                     <!--Submenu-->
@@ -306,7 +306,7 @@
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('all_orders.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['all_orders.index', 'all_orders.show']) }}">
                                 <span class="aiz-side-nav-text">{{ translate('All Orders') }}</span>
-                                @if($orders > 0)<span class="badge badge-info">{{ $orders }}</span>@endif
+                                @if($orders > 0)<span class="badge badge-danger">{{ $orders }}</span>@endif
                             </a>
                         </li>
                         @endcan
@@ -476,17 +476,23 @@
                 <!-- Sellers -->
                 @canany(['view_all_seller','seller_payment_history','view_seller_payout_requests','seller_commission_configuration','view_all_seller_packages','seller_verification_form_configuration'])
                 <li class="aiz-side-nav-item">
+                    @php
+                        $sellers = \App\Models\Shop::where('verification_status', 0)->where('verification_info', '!=', null)->count();
+                        $withdraw_requests = DB::table('seller_withdraw_requests')
+                            ->where('status', '0')
+                            ->count(['user_id']);
+                    @endphp
                     <a href="#" class="aiz-side-nav-link">
                         <i class="las la-user aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('Sellers') }}</span>
+                        @if($sellers > 0)<span class="badge badge-info">{{ $sellers }}</span> @endif
+                        @if($withdraw_requests  > 0)<span class="badge badge-danger">{{ $withdraw_requests  }}</span>@endif
                         <span class="aiz-side-nav-arrow"></span>
                     </a>
                     <ul class="aiz-side-nav-list level-2">
                         @can('view_all_seller')
                         <li class="aiz-side-nav-item">
-                            @php
-                            $sellers = \App\Models\Shop::where('verification_status', 0)->where('verification_info', '!=', null)->count();
-                            @endphp
+                            
                             <a href="{{ route('sellers.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['sellers.index', 'sellers.create', 'sellers.edit', 'sellers.payment_history','sellers.approved','sellers.profile_modal','sellers.show_verification_request']) }}">
                                 <span class="aiz-side-nav-text">{{ translate('All Seller') }}</span>
                                 @if($sellers > 0)<span class="badge badge-info">{{ $sellers }}</span> @endif
@@ -504,6 +510,7 @@
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('withdraw_requests_all') }}" class="aiz-side-nav-link">
                                 <span class="aiz-side-nav-text">{{ translate('Payout Requests') }}</span>
+                                @if($withdraw_requests  > 0)<span class="badge badge-danger">{{ $withdraw_requests  }}</span>@endif
                             </a>
                         </li>
                         @endcan

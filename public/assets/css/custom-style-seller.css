@@ -1,0 +1,8 @@
+.order_status .row{
+    background: #ebebeb;
+    transition: ease-in 0.3s;
+}
+
+.order_status .row:hover{
+    background: #7be0ff;
+}

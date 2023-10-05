@@ -53,7 +53,7 @@
     <!-- CSS Files -->
     <link rel="stylesheet" href="{{ asset('assets/css/vendors.css?v=202309211553') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/aiz-core.css?v=202309211553') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/custom-style.css?v=202309291011') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/custom-style.css?v=202310041511') }}">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css?v=202309211553">
 

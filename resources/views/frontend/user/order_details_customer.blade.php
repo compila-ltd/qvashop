@@ -55,7 +55,7 @@
                                 @elseif (($order->delivery_status == 'picked_up') || ($order->delivery_status == 'on_the_way'))
                                     <td><span class="badge badge-inline badge-info">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span></td>
                                 @else
-                                    <td><span class="badge badge-inline badge-dark">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span></td>
+                                    <td><span class="badge badge-inline badge-secondary">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span></td>
                                 @endif
                             @else
                                 <td><span class="badge badge-inline badge-dark">{{ translate($order->payment_status) }}</span></td>
@@ -188,6 +188,8 @@
                                                     <span class="badge badge-inline badge-warning">{{ translate(ucfirst(str_replace('_', ' ', $orderDetail->delivery_status))) }}</span>
                                                 @elseif (($order->delivery_status == 'picked_up') || ($order->delivery_status == 'on_the_way'))
                                                     <span class="badge badge-inline badge-info">{{ translate(ucfirst(str_replace('_', ' ', $orderDetail->delivery_status))) }}</span>
+                                                @elseif ($order->delivery_status == 'cancelled')
+                                                    <span class="badge badge-inline badge-secondary">{{ translate(ucfirst(str_replace('_', ' ', $orderDetail->delivery_status))) }}</span>
                                                 @endif
                                             @else
                                                 <span class="badge badge-inline badge-dark">{{ translate($orderDetail->payment_status) }}</span>

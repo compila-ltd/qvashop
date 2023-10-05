@@ -39,9 +39,15 @@
                         @endif
                     </td>
                     <td class="text-right">
-                        <a onclick="show_seller_payment_modal('{{$seller_withdraw_request->user_id}}','{{ $seller_withdraw_request->id }}');" class="btn btn-soft-warning btn-icon btn-circle btn-sm" href="javascript:void(0);" title="{{ translate('Pay Now') }}">
-                            <i class="las la-money-bill"></i>
-                        </a>
+                        @if ($seller_withdraw_request->status == 0)
+                            <a onclick="show_seller_payment_modal('{{$seller_withdraw_request->user_id}}','{{ $seller_withdraw_request->id }}');" class="btn btn-soft-warning btn-icon btn-circle btn-sm" href="javascript:void(0);" title="{{ translate('Pay Now') }}">
+                                <i class="las la-money-bill"></i>
+                            </a>
+                        @else
+                            <a onclick="show_seller_payment_modal('{{$seller_withdraw_request->user_id}}','{{ $seller_withdraw_request->id }}');" class="btn btn-soft-warning btn-icon btn-circle btn-sm" href="javascript:void(0);" title="{{ translate('View Details') }}">
+                                <i class="las la-money-bill"></i>
+                            </a>
+                        @endif
                         @can('pay_to_seller')
                         <a onclick="show_message_modal('{{ $seller_withdraw_request->id }}');" class="btn btn-soft-success btn-icon btn-circle btn-sm" href="javascript:void(0);" title="{{ translate('Message View') }}">
                             <i class="las la-eye"></i>

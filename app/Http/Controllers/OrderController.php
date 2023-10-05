@@ -70,7 +70,11 @@ class OrderController extends Controller
             $payment_status = $request->payment_status;
         }
         if ($request->delivery_status != null) {
-            $orders = $orders->where('delivery_status', $request->delivery_status);
+            if(($request->delivery_status == 'pending')||(($request->delivery_status == 'cancelled')))
+                $orders = $orders->where('delivery_status', $request->delivery_status)->where('payment_status', 'paid');
+            else
+                $orders = $orders->where('delivery_status', $request->delivery_status);
+
             $delivery_status = $request->delivery_status;
         }
         if ($date != null) {

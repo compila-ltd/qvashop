@@ -4,7 +4,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h5 class="mb-0 h6">{{ $user->name }} ({{ $user->shop->name }})</h5>
+        <h5 class="mb-0 h6">{{ $user->name }} - ({{ $user->shop->name }}) - {{translate('Paid')}}: ${{$total_amount}}</h5>
     </div>
     <div class="card-body">
         <table class="table aiz-table">
@@ -24,7 +24,7 @@
                         <td>
                             {{ single_price($payment->amount) }}
                         </td>
-                        <td>{{ ucfirst(str_replace('_', ' ', $payment->payment_method)) }} @if ($payment->txn_code != null) ({{ translate('TRX ID') }} : {{ $payment->txn_code }}) @endif</td>
+                        <td>{{ ucfirst(str_replace('_', ' ', translate($payment->payment_method))) }} @if ($payment->txn_code != null) ({{ translate('TRX ID') }} : {{ $payment->txn_code }}) @endif</td>
                     </tr>
                 @endforeach
             </tbody>

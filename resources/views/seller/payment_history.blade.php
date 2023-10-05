@@ -3,7 +3,7 @@
 @section('panel_content')
     <div class="card">
         <div class="card-header">
-            <h5 class="mb-0 h6">{{ translate('Payment History') }}</h5>
+            <h5 class="mb-0 h6">{{ translate('Payment History') }} - {{translate('Paid')}}: ${{$total_amount}}</h5>
         </div>
         @if (count($payments) > 0)
             <div class="card-body">
@@ -27,7 +27,7 @@
                                     {{ single_price($payment->amount) }}
                                 </td>
                                 <td>
-                                    {{ ucfirst(str_replace('_', ' ', $payment->payment_method)) }} @if ($payment->txn_code != null) ({{  translate('TRX ID') }} : {{ $payment->txn_code }}) @endif
+                                    {{ ucfirst(str_replace('_', ' ', translate($payment->payment_method))) }} @if ($payment->txn_code != null) ({{  translate('TRX ID') }} : {{ $payment->txn_code }}) @endif
                                 </td>
                             </tr>
                         @endforeach
