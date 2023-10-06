@@ -147,7 +147,7 @@
                             </span>
                         </h3>
                     </div>
-                    <div class="aiz-carousel gutters-10 half-outside-arrow" data-rows="2" data-items="6" data-xl-items="5" data-lg-items="4" data-md-items="3" data-sm-items="2" data-xs-items="2" data-arrows='true'>
+                    <div class="aiz-carousel gutters-10 half-outside-arrow" data-rows="2" data-items="6" data-xl-items="5" data-lg-items="4" data-md-items="3" data-sm-items="2" data-xs-items="2" data-arrows='true' data-infinite="true">
                         @foreach ($newest_products as $key => $new_product)
                         <div class="carousel-box">
                             <x-frontend.partials.product-box :product="$new_product" />
