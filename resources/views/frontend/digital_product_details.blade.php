@@ -574,7 +574,7 @@
 
                                                     <div class="form-group">
                                                         <label class="opacity-60">{{ translate('Comment')}}</label>
-                                                        <textarea class="form-control" rows="4" name="comment" placeholder="{{ translate('Your review')}}" required></textarea>
+                                                        <textarea class="form-control" rows="4" name="comment" placeholder="{{ translate('Your review')}}"></textarea>
                                                     </div>
 
                                                     <div class="text-right">

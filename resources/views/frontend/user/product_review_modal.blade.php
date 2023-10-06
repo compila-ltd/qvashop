@@ -1,10 +1,9 @@
-<div class="modal-header">
-    <h5 class="modal-title h6">{{ translate('Review')}}</h5>
-    <button type="button" class="close" data-dismiss="modal">
-    </button>
-</div>
-
 @if($review == null)
+    <div class="modal-header">
+        <h5 class="modal-title h6">{{ translate('Write a review')}}</h5>
+        <button type="button" class="close" data-dismiss="modal">
+        </button>
+    </div>
     <form action="{{ route('reviews.store') }}" method="POST" >
         @csrf
         <input type="hidden" name="product_id" value="{{ $product->id }}">
@@ -41,7 +40,7 @@
 
             <div class="form-group">
                 <label class="opacity-60">{{ translate('Comment')}}</label>
-                <textarea class="form-control" rows="4" name="comment" placeholder="{{ translate('Your review')}}" required></textarea>
+                <textarea class="form-control" rows="4" name="comment" placeholder="{{ translate('Your review')}}"></textarea>
             </div>
         </div>
         <div class="modal-footer">
@@ -50,26 +49,31 @@
         </div>
     </form>
 @else
-<li class="media list-group-item d-flex">
-    <div class="media-body text-left">
-        <div class="form-group">
-            <label class="opacity-60">{{ translate('Rating')}}</label>
-            <p class="rating rating-sm">
-                @for ($i=0; $i < $review->rating; $i++)
-                    <i class="las la-star active"></i>
-                @endfor
-                @for ($i=0; $i < 5-$review->rating; $i++)
-                    <i class="las la-star"></i>
-                @endfor
-            </p>
-        </div>
-        <div class="form-group">
-            <label class="opacity-60">{{ translate('Comment')}}</label>
-            <p class="comment-text">
-                {{ $review->comment }}
-            </p>
-        </div>
+    <div class="modal-header">
+        <h5 class="modal-title h6">{{ translate('My review')}}</h5>
+        <button type="button" class="close" data-dismiss="modal">
+        </button>
     </div>
-</li>
+    <li class="media list-group-item d-flex">
+        <div class="media-body text-left">
+            <div class="form-group">
+                <label class="opacity-60">{{ translate('Rating')}}</label>
+                <p class="rating rating-sm">
+                    @for ($i=0; $i < $review->rating; $i++)
+                        <i class="las la-star active"></i>
+                    @endfor
+                    @for ($i=0; $i < 5-$review->rating; $i++)
+                        <i class="las la-star"></i>
+                    @endfor
+                </p>
+            </div>
+            <div class="form-group">
+                <label class="opacity-60">{{ translate('Comment')}}</label>
+                <p class="comment-text">
+                    {{ $review->comment }}
+                </p>
+            </div>
+        </div>
+    </li>
 @endif
 
