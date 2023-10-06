@@ -59,7 +59,7 @@ class HomeController extends Controller
 
         // Newest products
         $newest_products = Cache::remember('newest_products', 7200, function () {
-            return filter_products(Product::latest())->limit(12)->get();
+            return filter_products(Product::latest())->limit(48)->get();
         });
 
         // Flash Deals

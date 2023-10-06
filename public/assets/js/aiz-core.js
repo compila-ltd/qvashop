@@ -1076,6 +1076,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
 
                 $this.slick({
                     slidesToShow: slidesPerView,
+                    slidesToScroll: slidesPerView,
                     autoplay: slidesAutoplay,
                     dots: slidesDots,
                     arrows: slidesArrows,
@@ -1089,7 +1090,6 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                     asNavFor: asNavFor,
                     focusOnSelect: focusOnSelect,
                     adaptiveHeight: adaptiveHeight,
-                    slidesToScroll: 1,
                     prevArrow:
                         '<button type="button" class="slick-prev"><i class="las la-angle-left"></i></button>',
                     nextArrow:
@@ -1099,6 +1099,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                             breakpoint: 1500,
                             settings: {
                                 slidesToShow: slidesPerViewXl,
+                                slidesToScroll: slidesPerViewXl,
                                 vertical: verticalXl,
                                 rtl: slidesRtlXL,
                             },
@@ -1107,6 +1108,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                             breakpoint: 1200,
                             settings: {
                                 slidesToShow: slidesPerViewLg,
+                                slidesToScroll: slidesPerViewLg,
                                 vertical: verticalLg,
                                 rtl: slidesRtlLg,
                             },
@@ -1115,6 +1117,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                             breakpoint: 992,
                             settings: {
                                 slidesToShow: slidesPerViewMd,
+                                slidesToScroll: slidesPerViewMd,
                                 vertical: verticalMd,
                                 rtl: slidesRtlMd,
                             },
@@ -1123,6 +1126,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                             breakpoint: 768,
                             settings: {
                                 slidesToShow: slidesPerViewSm,
+                                slidesToScroll: slidesPerViewSm,
                                 vertical: verticalSm,
                                 rtl: slidesRtlSm,
                             },
@@ -1131,6 +1135,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                             breakpoint: 576,
                             settings: {
                                 slidesToShow: slidesPerViewXs,
+                                slidesToScroll: slidesPerViewXs,
                                 vertical: verticalXs,
                                 rtl: slidesRtlXs,
                             },

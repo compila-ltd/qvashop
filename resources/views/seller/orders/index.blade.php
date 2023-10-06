@@ -10,8 +10,8 @@
             </div>
               
               <div class="col-md-3 ml-auto">
-                <select class="form-control aiz-selectpicker" data-placeholder="{{ translate('Filter by Payment Status')}}" name="delivery_status" onchange="sort_orders()">
-                    <option value="all">{{ translate('Filter by Deliver Status')}}</option>
+                <select class="form-control aiz-selectpicker" data-placeholder="{{ translate('View all')}}" name="delivery_status" onchange="sort_orders()">
+                    <option value="all">{{ translate('View all')}}</option>
                     <option value="pending" @isset($delivery_status) @if($delivery_status == 'pending') selected @endif @endisset>{{ translate('Pending')}}</option>
                     <option value="in_progress" @isset($delivery_status) @if($delivery_status == 'in_progress') selected @endif @endisset>{{ translate('In progress')}}</option>
                     <option value="picked_up" @isset($delivery_status) @if($delivery_status == 'picked_up') selected @endif @endisset>{{ translate('Picked up')}}</option>
@@ -122,7 +122,7 @@
                     @if($delivery_status == 'pending')
                         <img class="mw-100 h-200px" src="{{ asset('assets/img/pending.png') }}" alt="Image">
                     @elseif($delivery_status == 'in_progress')
-                        <img class="mw-100 h-200px" src="{{ asset('assets/img/in_progress.jpg') }}" alt="Image">
+                        <img class="mw-100 h-200px" src="{{ asset('assets/img/in_progress.png') }}" alt="Image">
                     @elseif($delivery_status == 'picked_up')
                         <img class="mw-100 h-200px" src="{{ asset('assets/img/pick_up.png') }}" alt="Image">
                     @elseif($delivery_status == 'on_the_way')
@@ -131,8 +131,10 @@
                         <img class="mw-100 h-200px" src="{{ asset('assets/img/delivered.jpg') }}" alt="Image">
                     @elseif($delivery_status == 'cancelled')
                         <img class="mw-100 h-200px" src="{{ asset('assets/img/cancelled.png') }}" alt="Image">
+                    @elseif($delivery_status == '')
+                        <img class="mw-100 h-200px" src="{{ asset('assets/img/nothing.svg') }}" alt="Image">
                     @endif
-                    <h5 class="mb-0 h5 mt-3">{{ translate("Without orders in this state")}}</h5>
+                    <h5 class="mb-0 h5 mt-3">{{ translate("Without orders")}}</h5>
                 </div>
             </div>
         @endif

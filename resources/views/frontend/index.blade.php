@@ -4,15 +4,17 @@
 <div class="home-banner-area mb-4 pt-3">
     <div class="container">
         <div class="row gutters-10 position-relative">
-            <div class="col-lg-3 col-xxl-2 position-static d-none d-lg-block">
-                <x-frontend.partials.category-menu />
-            </div>
+            <!--
+                <div class="col-lg-3 col-xxl-2 position-static d-none d-lg-block">
+                    <x-frontend.partials.category-menu />
+                </div>
+            -->
 
             @php
             $num_todays_deal = count($todays_deal_products);
             @endphp
 
-            <div class="@if($num_todays_deal > 0) col-lg-7 col-xxl-8 @else col-lg-9 @endif">
+            <div class="@if($num_todays_deal > 0) col-lg-10 col-xxl-10 @else col-lg-12 @endif">
                 @if (get_setting('home_slider_images') != null)
                 <div class="aiz-carousel dots-inside-bottom mobile-img-auto-height" data-arrows="true" data-dots="true" data-autoplay="true" data-infinite='true'>
                     @php $slider_images = json_decode(get_setting('home_slider_images'), true); @endphp
@@ -145,7 +147,7 @@
                             </span>
                         </h3>
                     </div>
-                    <div class="aiz-carousel gutters-10 half-outside-arrow" data-items="6" data-xl-items="5" data-lg-items="4" data-md-items="3" data-sm-items="2" data-xs-items="2" data-arrows='true'>
+                    <div class="aiz-carousel gutters-10 half-outside-arrow" data-rows="2" data-items="6" data-xl-items="5" data-lg-items="4" data-md-items="3" data-sm-items="2" data-xs-items="2" data-arrows='true'>
                         @foreach ($newest_products as $key => $new_product)
                         <div class="carousel-box">
                             <x-frontend.partials.product-box :product="$new_product" />
