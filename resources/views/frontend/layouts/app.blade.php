@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
+        <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DD43RLW1N5"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-DD43RLW1N5');
+    </script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="app-url" content="{{ getBaseURL() }}">
     <meta name="file-base-url" content="{{ getFileBaseURL() }}">
