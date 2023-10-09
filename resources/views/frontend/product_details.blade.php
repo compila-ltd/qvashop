@@ -92,8 +92,7 @@
                                 <span class="rating">
                                     {{ renderStarRating($detailedProduct->rating) }}
                                 </span>
-                                <span class="ml-1 opacity-50">({{ $total }}
-                                    {{ translate('reviews') }})</span>
+                                <span class="ml-1 opacity-50">({{ $total }})</span>
                             </div>
                             @if ($detailedProduct->est_shipping_days)
                             <div class="col-auto ml">
@@ -552,7 +551,7 @@
                             <div class="p-4">
                                 <ul class="list-group list-group-flush">
                                     @foreach ($detailedProduct->reviews as $key => $review)
-                                    @if ($review->user != null)
+                                    @if ($review->user != null && $review->comment != null)
                                     <li class="media list-group-item d-flex">
                                         <span class="avatar avatar-md mr-3">
                                             <img class="lazyload" src="{{ asset('assets/img/placeholder.jpg') }}" @if ($review->user->avatar_original != null) data-src="{{ uploaded_asset($review->user->avatar_original) }}"

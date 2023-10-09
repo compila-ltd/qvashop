@@ -93,7 +93,7 @@
                                     <span class="rating">
                                         {{ renderStarRating($detailedProduct->rating) }}
                                     </span>
-                                    <span class="ml-1 opacity-50">({{ $total }} {{ translate('reviews')}})</span>
+                                    <span class="ml-1 opacity-50">({{ $total }})</span>
                                 </div>
                                 <div class="col-6 text-right">
                                     @php
@@ -468,7 +468,7 @@
                                 <div class="p-4">
                                     <ul class="list-group list-group-flush">
                                         @foreach ($detailedProduct->reviews as $key => $review)
-                                            @if($review->user != null)
+                                            @if($review->user != null && $review->comment != null)
                                             <li class="media list-group-item d-flex">
 
                                                 <span class="avatar avatar-md mr-3">

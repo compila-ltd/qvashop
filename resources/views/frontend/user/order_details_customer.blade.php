@@ -177,10 +177,27 @@
                                             </td>
                                         @endif
                                         <td class="text-right">
+                                            @php
+                                                $product_now = DB::table('products')
+                                                ->where('id', $orderDetail->product_id)
+                                                ->first();
+                                                
+                                                $review_now = DB::table('reviews')
+                                                ->where('user_id', Auth::user()->id)
+                                                ->where('product_id', $product_now->id)
+                                                ->first();
+                                            @endphp
+
                                             @if ($orderDetail->delivery_status == 'delivered')
-                                                <a href="javascript:void(0);"
-                                                    onclick="product_review('{{ $orderDetail->product_id }}')"
-                                                    class="btn btn-primary btn-sm"> {{ translate('Write a review') }} </a>
+                                                @if($review_now == null)
+                                                    <a href="javascript:void(0);"
+                                                        onclick="product_review('{{ $orderDetail->product_id }}')"
+                                                        class="btn btn-primary btn-sm"> {{ translate('Write a review') }} </a>
+                                                @else
+                                                    <a href="javascript:void(0);"
+                                                        onclick="product_review('{{ $orderDetail->product_id }}')"
+                                                        class="btn btn-success btn-sm"> {{ translate('My review') }} </a>
+                                                @endif
                                             @elseif ($orderDetail->payment_status != 'unpaid')
                                                 @if ($order->delivery_status == 'pending')
                                                     <span class="badge badge-inline badge-danger">{{ translate(ucfirst(str_replace('_', ' ', $orderDetail->delivery_status))) }}</span>
