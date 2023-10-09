@@ -35,6 +35,7 @@ class ReviewController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request);
         $review = new Review;
         $review->product_id = $request->product_id;
         $review->user_id = Auth::user()->id;

@@ -177,7 +177,7 @@
                         @endif
                     </a>
 
-                    @if(Route::currentRouteName() != 'home')
+                    
                     <div class="d-none d-xl-block align-self-stretch category-menu-icon-box ml-auto mr-0">
                         <div class="h-100 d-flex align-items-center" id="category-menu-icon">
                             <div class="dropdown-toggle navbar-light bg-light h-40px w-50px pl-2 rounded border c-pointer">
@@ -185,7 +185,7 @@
                             </div>
                         </div>
                     </div>
-                    @endif
+                    
                 </div>
                 <div class="d-lg-none ml-auto mr-0">
                     <a class="p-2 d-block text-reset" href="javascript:void(0);" data-toggle="class-toggle" data-target=".front-header-search">
@@ -256,7 +256,7 @@
 
             </div>
         </div>
-        @if(Route::currentRouteName() != 'home')
+        
         <div class="hover-category-menu position-absolute w-75 top-100 left-0 right-0 d-none z-3" id="hover-category-menu">
             <div class="container">
                 <div class="row gutters-10 position-relative">
@@ -266,7 +266,7 @@
                 </div>
             </div>
         </div>
-        @endif
+   
     </div>
     @if ( get_setting('header_menu_labels') != null )
     <div class="bg-white border-top border-gray-200 py-1">
