@@ -67,11 +67,14 @@
 			<table>
 				<tr>
 					<td>
+						<!--
 						@if($logo != null)
 							<img loading="lazy"  src="{{ uploaded_asset($logo) }}" height="40" style="display:inline-block;">
 						@else
 							<img loading="lazy"  src="{{ asset('assets/img/logo.png') }}" height="40" style="display:inline-block;">
 						@endif
+						-->
+						<img loading="lazy"  src="{{ asset('assets/img/logo-qvashop.png') }}" height="40" style="display:inline-block;">
 					</td>
 				</tr>
 			</table>
@@ -115,7 +118,7 @@
 	                <tr class="gry-color" style="background: #eceff4;">
 	                    <th width="35%">{{ translate('Product Name') }}</th>
 						<th width="15%">{{ translate('Delivery Type') }}</th>
-	                    <th width="10%">{{ translate('Qty') }}</th>
+	                    <th width="10%">{{ ucfirst(strtolower(translate('Qty'))) }}</th>
 	                    <th width="15%">{{ translate('Unit Price') }}</th>
 	                    <th width="10%">{{ translate('Tax') }}</th>
 	                    <th width="15%" class="text-right">{{ translate('Total') }}</th>
