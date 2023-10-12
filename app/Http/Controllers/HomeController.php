@@ -54,7 +54,7 @@ class HomeController extends Controller
 
         // Todays Deal
         $todays_deal_products = Cache::remember('todays_deal_products', 7200, function () {
-            return filter_products(Product::where('published', 1)->where('todays_deal', '1'))->get();
+            return filter_products(Product::where('published', 1)->where('todays_deal', '1'))->orderBy('id', 'desc')->get();
         });
 
         // Newest products
