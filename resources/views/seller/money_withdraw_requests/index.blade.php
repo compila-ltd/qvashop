@@ -10,18 +10,50 @@
 </div>
 
 <div class="row gutters-10">
-    <div class="col-md-4 mb-3 ml-auto">
+    @php
+        $amount_request = DB::table('seller_withdraw_requests')
+        ->where('user_id', Auth::user()->id)
+        ->where('status', '0')
+        ->sum('amount');
+
+        $admin_to_pay = Auth::user()->shop->admin_to_pay;
+        
+        $pending = $admin_to_pay - $amount_request;    
+    @endphp
+    <div class="col-md-3 mb-3 ml-auto">
+        <div class="bg-grad-2 text-white rounded-lg overflow-hidden">
+            <span class="size-30px rounded-circle mx-auto bg-soft-primary d-flex align-items-center justify-content-center mt-3">
+                <i class="las la-dollar-sign la-2x text-white"></i>
+            </span>
+            <div class="px-3 pt-3 pb-3">
+                <div class="h4 fw-700 text-center">{{ single_price($admin_to_pay) }}</div>
+                <div class="opacity-50 text-center">{{ translate('Total Amount to Pay') }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3 ml-auto">
         <div class="bg-grad-1 text-white rounded-lg overflow-hidden">
             <span class="size-30px rounded-circle mx-auto bg-soft-primary d-flex align-items-center justify-content-center mt-3">
                 <i class="las la-dollar-sign la-2x text-white"></i>
             </span>
             <div class="px-3 pt-3 pb-3">
-                <div class="h4 fw-700 text-center">{{ single_price(Auth::user()->shop->admin_to_pay) }}</div>
-                <div class="opacity-50 text-center">{{ translate('Pending Balance') }}</div>
+                <div class="h4 fw-700 text-center">{{ single_price($amount_request) }}</div>
+                <div class="opacity-50 text-center">{{ translate('Solicitando') }}</div>
             </div>
         </div>
     </div>
-    <div class="col-md-4 mb-3 mr-auto">
+    <div class="col-md-3 mb-3 ml-auto">
+        <div class="bg-grad-4 text-white rounded-lg overflow-hidden">
+            <span class="size-30px rounded-circle mx-auto bg-soft-primary d-flex align-items-center justify-content-center mt-3">
+                <i class="las la-dollar-sign la-2x text-white"></i>
+            </span>
+            <div class="px-3 pt-3 pb-3">
+                <div class="h4 fw-700 text-center">{{ single_price($pending) }}</div>
+                <div class="opacity-50 text-center">{{ translate('Available for request') }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3 mr-auto">
         <div class="p-3 rounded mb-3 c-pointer text-center bg-white shadow-sm hov-shadow-lg has-transition" onclick="show_request_modal()">
             <span class="size-60px rounded-circle mx-auto bg-secondary d-flex align-items-center justify-content-center mb-3">
                 <i class="las la-plus la-3x text-white"></i>

@@ -3,12 +3,17 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Models\Order;
+use App\Models\Product;
 use App\Models\ProductStock;
+use App\Models\CommissionHistory;
+use App\Models\Shop;
 use App\Models\SmsTemplate;
+use App\Mail\InvoiceEmailManager;
 use App\Models\User;
 use App\Utility\NotificationUtility;
 use App\Utility\SmsUtility;
 use Illuminate\Http\Request;
+use Mail;
 use Auth;
 use DB;
 
@@ -101,9 +106,67 @@ class OrderController extends Controller
                     ->where('variant', $variant)
                     ->first();
 
+                $product = Product::where('id', $orderDetail->product_id)
+                    ->where('variant_product', $variant)
+                    ->first();
+
                 if ($product_stock != null) {
                     $product_stock->qty += $orderDetail->quantity;
                     $product_stock->save();
+                }
+
+                $product->num_of_sale -= $orderDetail->quantity;
+                $product->current_stock += $orderDetail->quantity;
+                $product->save();
+
+                $commission_history = CommissionHistory::where('order_id', $orderDetail->order_id)->first();
+
+                $shop = Shop::where('user_id', $orderDetail->seller_id)->first();
+
+                if($shop != null){
+                    if($commission_history){
+                        $shop->admin_to_pay -= $commission_history->seller_earning;
+                        $shop->num_of_sale -= $orderDetail->quantity;
+                        $shop->save(); 
+                        $commission_history->delete();
+                    }
+                }                
+
+                $array['view'] = 'emails.invoice';
+                $array['subject'] = translate('Su orden ha sido cancelada. Por favor contactar con soporte') . ' - ' . $order->code;
+                $array['from'] = env('MAIL_FROM_ADDRESS');
+                $array['order'] = $order;
+
+                try {
+                    $user = User::where('id', $order->user_id)->first();
+                    Mail::to($user->email)->queue(new InvoiceEmailManager($array));
+                } catch (\Exception $e) {
+                }
+            }
+
+            if ($request->status == 'on_the_way') {
+                $array['view'] = 'emails.invoice';
+                $array['subject'] = translate('Su orden está transportándose') . ' - ' . $order->code;
+                $array['from'] = env('MAIL_FROM_ADDRESS');
+                $array['order'] = $order;
+
+                try {
+                    $user = User::where('id', $order->user_id)->first();
+                    Mail::to($user->email)->queue(new InvoiceEmailManager($array));
+                } catch (\Exception $e) {
+                }
+            }
+
+            if ($request->status == 'delivered') {
+                $array['view'] = 'emails.invoice';
+                $array['subject'] = translate('Su orden ha sido entregada') . ' - ' . $order->code;
+                $array['from'] = env('MAIL_FROM_ADDRESS');
+                $array['order'] = $order;
+
+                try {
+                    $user = User::where('id', $order->user_id)->first();
+                    Mail::to($user->email)->queue(new InvoiceEmailManager($array));
+                } catch (\Exception $e) {
                 }
             }
         }

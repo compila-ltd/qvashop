@@ -288,12 +288,25 @@
                 <li class="aiz-side-nav-item">
                         @can('view_all_orders')
                         @php
-                        $orders = DB::table('orders')
-                        ->where('payment_status', 'paid')
-                        ->where('delivery_status', '!=' ,'delivered')
-                        ->where('delivery_status', '!=' ,'cancelled')
-                        ->select('id')
-                        ->count();
+                            $orders = DB::table('orders')
+                            ->where('payment_status', 'paid')
+                            ->where('delivery_status', '!=' ,'delivered')
+                            ->where('delivery_status', '!=' ,'cancelled')
+                            ->select('id')
+                            ->count();
+
+                            $admin_user_id = DB::table('users')
+                            ->where('user_type', 'admin')->first()->id;
+
+                            $inhouse_orders = DB::table('orders')
+                            ->where('seller_id', $admin_user_id)
+                            ->where('delivery_status', '!=' ,'delivered')
+                            ->where('delivery_status', '!=' ,'cancelled')
+                            ->select('id')
+                            ->count();
+
+                            $seller_orders = $orders - $inhouse_orders;
+
                         @endphp
                     <a href="#" class="aiz-side-nav-link">
                         <i class="las la-money-bill aiz-side-nav-icon"></i>
@@ -314,6 +327,7 @@
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('inhouse_orders.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['inhouse_orders.index', 'inhouse_orders.show']) }}">
                                 <span class="aiz-side-nav-text">{{ translate('Inhouse orders') }}</span>
+                                @if($inhouse_orders > 0)<span class="badge badge-danger">{{ $inhouse_orders }}</span>@endif
                             </a>
                         </li>
                         @endcan
@@ -322,6 +336,7 @@
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('seller_orders.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['seller_orders.index', 'seller_orders.show']) }}">
                                 <span class="aiz-side-nav-text">{{ translate('Seller Orders') }}</span>
+                                @if($seller_orders > 0)<span class="badge badge-danger">{{ $seller_orders }}</span>@endif
                             </a>
                         </li>
                         @endcan

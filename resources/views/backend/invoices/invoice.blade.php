@@ -110,11 +110,14 @@
 			<table>
 				<tr>
 					<td>
+						<!--
 						@if($logo != null)
-							<img src="{{ uploaded_asset($logo) }}" height="30" style="display:inline-block;">
+						<img src="{{ uploaded_asset($logo) }}" height="30" style="display:inline-block;">
 						@else
 							<img src="{{ asset('assets/img/logo.png') }}" height="30" style="display:inline-block;">
 						@endif
+						-->
+						<img src="{{ asset('assets/img/logo-qvashop.png') }}" height="30" style="display:inline-block;">
 					</td>
 					<td style="font-size: 1.5rem;" class="text-right strong">{{  translate('INVOICE') }}</td>
 				</tr>
@@ -187,10 +190,10 @@
 	                <tr class="gry-color" style="background: #eceff4;">
 	                    <th width="35%" class="text-left">{{ translate('Product Name') }}</th>
 						<th width="15%" class="text-left">{{ translate('Delivery Type') }}</th>
-	                    <th width="10%" class="text-left">{{ translate('Qty') }}</th>
+	                    <th width="10%" class="text-left">{{ ucfirst(strtolower(translate('Qty'))) }}</th>
 	                    <th width="15%" class="text-left">{{ translate('Unit Price') }}</th>
 	                    <th width="10%" class="text-left">{{ translate('Tax') }}</th>
-	                    <th width="15%" class="text-right">{{ translate('Total') }}</th>
+	                    <th width="10%" class="text-right">{{ translate('Total') }}</th>
 	                </tr>
 				</thead>
 				<tbody class="strong">

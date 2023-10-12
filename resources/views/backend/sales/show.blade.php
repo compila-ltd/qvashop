@@ -79,7 +79,7 @@
                             </option>
                         </select>
                     @else
-                        <input type="text" class="form-control" value="{{ $delivery_status }}" disabled>
+                        <input type="text" class="form-control" value="{{ translate($delivery_status) }}" disabled>
                     @endif
                 </div>
                 <div class="col-md-3 ml-auto">
@@ -353,6 +353,7 @@
                 status: status
             }, function(data) {
                 AIZ.plugins.notify('success', "{{ translate('Delivery status has been updated') }}");
+                location.reload().setTimeOut(500);
             });
         });
         $('#update_payment_status').on('change', function() {
@@ -364,6 +365,7 @@
                 status: status
             }, function(data) {
                 AIZ.plugins.notify('success', "{{ translate('Payment status has been updated') }}");
+                location.reload().setTimeOut(500);
             });
         });
         $('#update_tracking_code').on('change', function() {

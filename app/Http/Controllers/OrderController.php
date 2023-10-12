@@ -18,10 +18,10 @@ use App\Models\CombinedOrder;
 use App\Mail\InvoiceEmailManager;
 use App\Utility\NotificationUtility;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AffiliateController;
 use App\Http\Controllers\Api\V2\DeliveryBoyController;
+use Mail;
 
 class OrderController extends Controller
 {
@@ -267,6 +267,15 @@ class OrderController extends Controller
                         $product_stock->qty += $orderDetail->quantity;
                         $product_stock->save();
                     }
+
+                    $product = Product::where('id', $orderDetail->product_id)
+                        ->where('variant_product', $variant)
+                        ->first();
+    
+                    $product->num_of_sale -= $orderDetail->quantity;
+                    $product->current_stock += $orderDetail->quantity;
+                    $product->save();
+                    
                 } catch (\Exception $e) {
                 }
 
@@ -347,10 +356,56 @@ class OrderController extends Controller
                     $product_stock = ProductStock::where('product_id', $orderDetail->product_id)
                         ->where('variant', $variant)
                         ->first();
+                    
+                    $product = Product::where('id', $orderDetail->product_id)
+                        ->where('variant_product', $variant)
+                        ->first();
+    
 
                     if ($product_stock != null) {
                         $product_stock->qty += $orderDetail->quantity;
                         $product_stock->save();
+                    }
+
+                    $product->num_of_sale -= $orderDetail->quantity;
+                    $product->current_stock += $orderDetail->quantity;
+                    $product->save();
+
+                    $array['view'] = 'emails.invoice';
+                    $array['subject'] = translate('Su orden ha sido cancelada. Por favor contactar con soporte') . ' - ' . $order->code;
+                    $array['from'] = env('MAIL_FROM_ADDRESS');
+                    $array['order'] = $order;
+
+                    try {
+                        $user = User::where('id', $order->user_id)->first();
+                        Mail::to($user->email)->queue(new InvoiceEmailManager($array));
+                    } catch (\Exception $e) {
+                    }
+                }
+
+                if ($request->status == 'on_the_way') {
+                    $array['view'] = 'emails.invoice';
+                    $array['subject'] = translate('Su orden está transportándose') . ' - ' . $order->code;
+                    $array['from'] = env('MAIL_FROM_ADDRESS');
+                    $array['order'] = $order;
+    
+                    try {
+                        $user = User::where('id', $order->user_id)->first();
+                        Mail::to($user->email)->queue(new InvoiceEmailManager($array));
+                    } catch (\Exception $e) {
+                    }
+                }
+    
+                if ($request->status == 'delivered') {
+                    $array['view'] = 'emails.invoice';
+                    $array['subject'] = translate('Su orden ha sido entregada') . ' - ' . $order->code;
+                    $array['from'] = env('MAIL_FROM_ADDRESS');
+                    $array['order'] = $order;
+    
+                    try {
+                        $user = User::where('id', $order->user_id)->first();
+                        Mail::to($user->email)->queue(new InvoiceEmailManager($array));
+                    } catch (\Exception $e) {
                     }
                 }
 
