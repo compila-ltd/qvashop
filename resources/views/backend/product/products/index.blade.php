@@ -57,8 +57,16 @@
             </div>
             @endif
             <div class="col-md-2 ml-auto">
+                <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0" name="stock" id="stock" onchange="sort_products()">
+                    <option value="">{{ translate('All products') }}</option>
+                    <option value="withstock" @isset($stock) @if($stock=='withstock') selected @endif @endisset>{{ translate('Con stock')}}</option>
+                    <option value="withoutstock" @isset($stock) @if($stock=='withoutstock') selected @endif @endisset>{{ translate('Sin stock')}}</option>
+                </select>
+            </div>
+            <div class="col-md-2 ml-auto">
                 <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0" name="type" id="type" onchange="sort_products()">
                     <option value="">{{ translate('Sort By') }}</option>
+                    <option value="todaydeal" @isset($col_name) @if($col_name=='todaydeal') selected @endif @endisset>{{ translate('Todays deal')}}</option>
                     <option value="rating,desc" @isset($col_name , $query) @if($col_name=='rating' && $query=='desc' ) selected @endif @endisset>{{ translate('Rating (High > Low)')}}</option>
                     <option value="rating,asc" @isset($col_name , $query) @if($col_name=='rating' && $query=='asc' ) selected @endif @endisset>{{ translate('Rating (Low > High)')}}</option>
                     <option value="num_of_sale,desc" @isset($col_name , $query) @if($col_name=='num_of_sale' && $query=='desc' ) selected @endif @endisset>{{ translate('Num of Sale (High > Low)')}}</option>
