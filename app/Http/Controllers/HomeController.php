@@ -512,7 +512,7 @@ class HomeController extends Controller
     public function sellerpolicy()
     {
         // cache this for a week
-        $policy = Cache::remember('seller_policy_page', 10080, function () {
+        $policy = Cache::remember('seller_policy_page', 3600, function () {
             return Page::where('slug', 'seller_policy_page')->first();
         });
 
@@ -523,7 +523,7 @@ class HomeController extends Controller
     public function returnpolicy()
     {
         // cache this for a week
-        $page = Cache::remember('return_policy_page', 10080, function () {
+        $page = Cache::remember('return_policy_page', 3600, function () {
             return Page::where('type', 'return_policy_page')->first();
         });
 
@@ -534,7 +534,7 @@ class HomeController extends Controller
     public function supportpolicy()
     {
         // cache this for a week
-        $page = Cache::remember('support_policy_page', 10080, function () {
+        $page = Cache::remember('support_policy_page', 3600, function () {
             return Page::where('type', 'support_policy_page')->first();
         });
 
@@ -545,7 +545,7 @@ class HomeController extends Controller
     public function terms()
     {
         // cache this for a week
-        $page = Cache::remember('terms_page', 10080, function () {
+        $page = Cache::remember('terms_page', 3600, function () {
             return Page::where('type', 'terms_conditions_page')->first();
         });
 
@@ -556,7 +556,7 @@ class HomeController extends Controller
     public function privacypolicy()
     {
         // cache this for a week
-        $page = Cache::remember('privacy_policy_page', 10080, function () {
+        $page = Cache::remember('privacy_policy_page', 3600, function () {
             return Page::where('type', 'privacy_policy_page')->first();
         });
 
@@ -567,7 +567,7 @@ class HomeController extends Controller
     public function get_pick_up_points(Request $request)
     {
         // Cache this for a week
-        $pick_up_points = Cache::remember('pick_up_points', 10080, function () {
+        $pick_up_points = Cache::remember('pick_up_points', 3600, function () {
             return PickUpPoint::all();
         });
 
