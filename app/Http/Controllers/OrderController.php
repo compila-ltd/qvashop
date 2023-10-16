@@ -178,10 +178,7 @@ class OrderController extends Controller
                 if ($product->digital != 1 && $cartItem['quantity'] > $product_stock->qty) {
                     $order->delete();
                     return redirect()->route('cart')->send()->with('warning', translate('The requested quantity is not available for ') . $product->getTranslation('name'));
-                } elseif ($product->digital != 1) {
-                    $product_stock->qty -= $cartItem['quantity'];
-                    $product_stock->save();
-                }
+                } 
 
                 $order_detail = new OrderDetail;
                 $order_detail->order_id = $order->id;
@@ -199,9 +196,6 @@ class OrderController extends Controller
                 $order_detail->quantity = $cartItem['quantity'];
                 $order_detail->save();
 
-                $product->num_of_sale += $cartItem['quantity'];
-                $product->save();
-
                 $order->seller_id = $product->user_id;
 
                 $order->shipping_type = $cartItem['shipping_type'];
@@ -211,12 +205,6 @@ class OrderController extends Controller
 
                 if ($cartItem['shipping_type'] == 'carrier')
                     $order->carrier_id = $cartItem['carrier_id'];
-
-                if ($product->added_by == 'seller' && $product->user->seller != null) {
-                    $seller = $product->user->seller;
-                    $seller->num_of_sale += $cartItem['quantity'];
-                    $seller->save();
-                }
 
                 if (addon_is_activated('affiliate_system')) {
                     if ($order_detail->product_referral_code) {
@@ -275,7 +263,7 @@ class OrderController extends Controller
                     $product->num_of_sale -= $orderDetail->quantity;
                     $product->current_stock += $orderDetail->quantity;
                     $product->save();
-                    
+
                 } catch (\Exception $e) {
                 }
 

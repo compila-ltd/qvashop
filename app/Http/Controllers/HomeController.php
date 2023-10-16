@@ -48,22 +48,22 @@ class HomeController extends Controller
             ->url(route('home'));
 
         // Featured
-        $featured_categories = Cache::remember('featured_categories', 7200, function () {
+        $featured_categories = Cache::remember('featured_categories', 3600, function () {
             return Category::where('featured', 1)->get();
         });
 
         // Todays Deal
-        $todays_deal_products = Cache::remember('todays_deal_products', 7200, function () {
+        $todays_deal_products = Cache::remember('todays_deal_products', 3600, function () {
             return filter_products(Product::where('published', 1)->where('todays_deal', '1'))->orderBy('id', 'desc')->get();
         });
 
         // Newest products
-        $newest_products = Cache::remember('newest_products', 7200, function () {
+        $newest_products = Cache::remember('newest_products', 3600, function () {
             return filter_products(Product::latest())->limit(48)->get();
         });
 
         // Flash Deals
-        $flash_deal = Cache::remember('flash_deal', 7200, function () {
+        $flash_deal = Cache::remember('flash_deal', 3600, function () {
             return FlashDeal::where('status', 1)->where('featured', 1)->first();
         });
 
@@ -221,7 +221,7 @@ class HomeController extends Controller
     // Best Selling products
     public function load_best_selling_section()
     {
-        $best_selling_products = Cache::remember('best_selling_products', 86400, function () {
+        $best_selling_products = Cache::remember('best_selling_products', 3600, function () {
             return filter_products(Product::where('published', 1)->orderBy('num_of_sale', 'desc'))->limit(20)->get();
         });
 
@@ -247,7 +247,7 @@ class HomeController extends Controller
 
         // Get Every category and cache it for a week
         foreach ($home_categories as &$home_category) {
-            $category = Cache::remember('home_category_' . $home_category, 10080, function () use ($home_category) {
+            $category = Cache::remember('home_category_' . $home_category, 3600, function () use ($home_category) {
                 return Category::find($home_category);
             });
 
@@ -260,7 +260,7 @@ class HomeController extends Controller
     // Best Sellers
     public function load_best_sellers_section()
     {
-        $best_selers = Cache::remember('best_selers', 86400, function () {
+        $best_selers = Cache::remember('best_selers', 3600, function () {
             return Shop::where('verification_status', 1)->orderBy('num_of_sale', 'desc')->take(20)->get();
         });
 
@@ -364,7 +364,7 @@ class HomeController extends Controller
     // All Categories
     public function all_categories(Request $request)
     {
-        // Cache All categpries by 30 minutes
+        // Cache All categories by 30 minutes
         $categories = Cache::remember('all_categories_level_0_ordered', 1800, function () {
             return Category::where('level', 0)->orderBy('order_level', 'desc')->get();
         });
@@ -706,7 +706,7 @@ class HomeController extends Controller
         $today = strtotime(date('Y-m-d H:i:s'));
 
         // Cache all flash deals
-        $flash_deals = Cache::remember('all_flash_deals', 10080, function () use ($today) {
+        $flash_deals = Cache::remember('all_flash_deals', 3600, function () use ($today) {
             return FlashDeal::where('status', 1)
                 ->where('start_date', "<=", $today)
                 ->where('end_date', ">", $today)
