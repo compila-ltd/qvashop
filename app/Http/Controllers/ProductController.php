@@ -56,17 +56,26 @@ class ProductController extends Controller
     {
         $type = 'In House';
         $col_name = null;
+        $stock = null;
         $query = null;
         $sort_search = null;
 
         $products = Product::where('added_by', 'admin')->where('auction_product', 0)->where('wholesale_product', 0);
 
         if ($request->type != null) {
-            $var = explode(",", $request->type);
-            $col_name = $var[0];
-            $query = $var[1];
-            $products = $products->orderBy($col_name, $query);
-            $sort_type = $request->type;
+            if ($request->type != 'todaydeal') {
+                $var = explode(",", $request->type);
+                $col_name = $var[0];
+                $query = $var[1];
+                $products = $products->orderBy($col_name, $query);
+                $sort_type = $request->type;
+            }
+            else
+            if ($request->type == 'todaydeal') {
+                $col_name = 'todaydeal';
+                $products = $products->where('todays_deal', '1');
+                $sort_type = $request->type;
+            }
         }
         if ($request->search != null) {
             $sort_search = $request->search;
@@ -77,9 +86,21 @@ class ProductController extends Controller
                 });
         }
 
+        if($request->stock != null ){
+            if($request->stock == 'withstock'){
+                $stock = 'withstock';
+                $products = $products->where('current_stock', '>', '0');
+            }
+            else
+            if($request->stock == 'withoutstock'){
+                $stock = 'withoutstock';
+                $products = $products->where('current_stock', '=', '0');
+            }
+        }
+
         $products = $products->where('digital', 0)->orderBy('created_at', 'desc')->paginate(15);
 
-        return view('backend.product.products.index', compact('products', 'type', 'col_name', 'query', 'sort_search'));
+        return view('backend.product.products.index', compact('products', 'type', 'col_name', 'query', 'stock', 'sort_search'));
     }
 
     /**
@@ -91,6 +112,7 @@ class ProductController extends Controller
     {
         $col_name = null;
         $query = null;
+        $stock = null;
         $seller_id = null;
         $sort_search = null;
         $products = Product::where('added_by', 'seller')->where('auction_product', 0)->where('wholesale_product', 0);
@@ -104,17 +126,37 @@ class ProductController extends Controller
             $sort_search = $request->search;
         }
         if ($request->type != null) {
-            $var = explode(",", $request->type);
-            $col_name = $var[0];
-            $query = $var[1];
-            $products = $products->orderBy($col_name, $query);
-            $sort_type = $request->type;
+            if ($request->type != 'todaydeal') {
+                $var = explode(",", $request->type);
+                $col_name = $var[0];
+                $query = $var[1];
+                $products = $products->orderBy($col_name, $query);
+                $sort_type = $request->type;
+            }
+            else
+            if ($request->type == 'todaydeal') {
+                $col_name = 'todaydeal';
+                $products = $products->where('todays_deal', '1');
+                $sort_type = $request->type;
+            }
+        }
+
+        if($request->stock != null ){
+            if($request->stock == 'withstock'){
+                $stock = 'withstock';
+                $products = $products->where('current_stock', '>', '0');
+            }
+            else
+            if($request->stock == 'withoutstock'){
+                $stock = 'withoutstock';
+                $products = $products->where('current_stock', '=', '0');
+            }
         }
 
         $products = $products->where('digital', 0)->orderBy('created_at', 'desc')->paginate(15);
         $type = 'Seller';
 
-        return view('backend.product.products.index', compact('products', 'type', 'col_name', 'query', 'seller_id', 'sort_search'));
+        return view('backend.product.products.index', compact('products', 'type', 'col_name', 'query', 'stock', 'seller_id', 'sort_search'));
     }
 
     // All Products
