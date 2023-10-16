@@ -4,7 +4,7 @@
 <div class="aiz-titlebar mt-2 mb-4">
     <div class="row align-items-center">
         <div class="col-md-6">
-            <h1 class="h3">{{ translate('Money Withdraw') }}</h1>
+            <h1 class="h3">{{ translate('Money Withdraw') }} - {{ translate('El balance total reflejado tiene aplicado el 3% por el uso de nuestra tienda') }}</h1>
         </div>
     </div>
 </div>

@@ -118,7 +118,7 @@
                     <a href="{{ route('flash-deal-details', $flash_deal->slug) }}" class="ml-auto mr-0 btn btn-primary btn-sm shadow-md w-100 w-md-auto">{{ translate('View More') }}</a>
                 </div>
 
-                <div class="aiz-carousel gutters-10 half-outside-arrow" data-items="6" data-xl-items="5" data-lg-items="4" data-md-items="3" data-sm-items="2" data-xs-items="2" data-arrows='true'>
+                <div class="aiz-carousel gutters-10 half-outside-arrow" data-items="6" data-xl-items="5" data-lg-items="4" data-md-items="3" data-sm-items="2" data-xs-items="2" data-arrows='true' data-infinite="true">
                     @foreach ($flash_deal->flash_deal_products->take(20) as $key => $flash_deal_product)
                     @php
                     $product = \App\Models\Product::find($flash_deal_product->product_id);
@@ -213,7 +213,7 @@
                     </h3>
                     <a href="{{ route('customer.products') }}" class="ml-auto mr-0 btn btn-primary btn-sm shadow-md">{{ translate('View More') }}</a>
                 </div>
-                <div class="aiz-carousel gutters-10 half-outside-arrow" data-items="6" data-xl-items="5" data-lg-items="4" data-md-items="3" data-sm-items="2" data-xs-items="2" data-arrows='true'>
+                <div class="aiz-carousel gutters-10 half-outside-arrow" data-items="6" data-xl-items="5" data-lg-items="4" data-md-items="3" data-sm-items="2" data-xs-items="2" data-arrows='true' data-infinite="true">
                     @foreach ($classified_products as $key => $classified_product)
                     <div class="carousel-box">
                         <div class="aiz-card-box border border-light rounded hov-shadow-md my-2 has-transition">
