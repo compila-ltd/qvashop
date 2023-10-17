@@ -103,8 +103,8 @@
                 @else
 
                 @php
-                $delivery_viewed = App\Models\Order::where('user_id', Auth::user()->id)->where('delivery_viewed', 0)->get()->count();
-                $payment_status_viewed = App\Models\Order::where('user_id', Auth::user()->id)->where('payment_status_viewed', 0)->get()->count();
+                $delivery_viewed = App\Models\Order::where('user_id', Auth::user()->id)->where('delivery_viewed', 0)->where('payment_status', 'paid')->get()->count();
+                $payment_status_viewed = App\Models\Order::where('user_id', Auth::user()->id)->where('payment_status_viewed', 0)->where('payment_status', 'paid')->get()->count();
                 @endphp
                 @if(Auth::user()->user_type == 'customer')
                 <li class="aiz-side-nav-item">
