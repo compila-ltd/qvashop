@@ -186,7 +186,7 @@
                         <i class="las la-comment aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('Conversations') }}</span>
                         @if (count($conversation) > 0)
-                        <span class="badge badge-success">({{ count($conversation) }})</span>
+                        <span class="badge badge-success">{{ count($conversation) }}</span>
                         @endif
                     </a>
                 </li>
