@@ -8,6 +8,7 @@ use App\Models\Coupon;
 use App\Models\Address;
 use App\Models\Carrier;
 use App\Models\Product;
+use App\Models\Shop;
 use App\Models\Category;
 use App\Models\CouponUsage;
 use Illuminate\Http\Request;
@@ -96,6 +97,23 @@ class CheckoutController extends Controller
             $order->payment_status = 'paid';
             $order->payment_details = $payment;
             $order->save();
+
+            $quantity = $order->orderDetails->first()->quantity;
+
+            $product = $order->orderDetails->first()->product;
+            $product->num_of_sale += $quantity;
+            $product->current_stock -= $quantity;
+            $product->save();
+
+            $product_stock = $order->orderDetails->first()->product->stocks->first();
+            $product_stock->qty -= $quantity;
+            $product_stock->save();
+
+            if ($product->added_by == 'seller') {
+                $shop = $product->user->shop;
+                $shop->num_of_sale += $quantity;
+                $shop->save();
+            }
 
             // pay to the seller, or affiliate, or Club Points
             calculateCommissionAffilationClubPoint($order);

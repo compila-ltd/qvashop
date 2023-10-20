@@ -7280,7 +7280,7 @@ ul.social.colored [class*="linkedin"] {
     color: #ff0000;
     font-weight: 600;
     line-height: 26px;
-    position: absolute;
+    position: relative;
     background: #fff;
     z-index: 1;
     top: 20px;

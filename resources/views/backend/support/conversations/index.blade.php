@@ -26,7 +26,7 @@
                     <td>
                         @if ($conversation->sender != null)
                         {{ $conversation->sender->name }}
-                        @if ($conversation->receiver_viewed == 0)
+                        @if ($conversation->receiver_viewed == 0 && $conversation->receiver_id == Auth::user()->id)
                         <span class="badge badge-inline badge-info">{{ translate('New') }}</span>
                         @endif
                         @endif

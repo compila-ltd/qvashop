@@ -8,8 +8,8 @@ use App\Models\Conversation;
 use Illuminate\Http\Request;
 use App\Models\BusinessSetting;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use App\Mail\ConversationMailManager;
+use Mail;
 
 class ConversationController extends Controller
 {
@@ -28,7 +28,7 @@ class ConversationController extends Controller
     public function index()
     {
         if (BusinessSetting::where('type', 'conversation_system')->first()->value == 1) {
-            $conversations = Conversation::where('sender_id', Auth::user()->id)->orWhere('receiver_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(5);
+            $conversations = Conversation::where('sender_id', Auth::user()->id)->orWhere('receiver_id', Auth::user()->id)->orderBy('updated_at', 'desc')->paginate(5);
             return view('frontend.user.conversations.index', compact('conversations'));
         } else {
             return back()->with('warning', translate('Conversation is disabled at this moment'));
@@ -43,7 +43,7 @@ class ConversationController extends Controller
     public function admin_index()
     {
         if (BusinessSetting::where('type', 'conversation_system')->first()->value == 1) {
-            $conversations = Conversation::orderBy('created_at', 'desc')->get();
+            $conversations = Conversation::orderBy('updated_at', 'desc')->get();
             return view('backend.support.conversations.index', compact('conversations'));
         } else {
             return back()->with('warning', translate('Conversation is disabled at this moment'));
@@ -58,12 +58,12 @@ class ConversationController extends Controller
      */
     public function store(Request $request)
     {
-        $user_type = Product::findOrFail($request->product_id)->user->user_type;
-
         $conversation = new Conversation;
         $conversation->sender_id = Auth::user()->id;
         $conversation->receiver_id = Product::findOrFail($request->product_id)->user->id;
         $conversation->title = $request->title;
+
+        $conversation->receiver_viewed = 0;
 
         if ($conversation->save()) {
             $message = new Message;
@@ -71,26 +71,29 @@ class ConversationController extends Controller
             $message->user_id = Auth::user()->id;
             $message->message = $request->message;
 
+            $user_type = $conversation->receiver->user_type;
+
             if ($message->save()) {
                 $this->send_message_to_seller($conversation, $message, $user_type);
             }
         }
 
         return back()->with('success', translate('Message has been sent to seller'));
+        
     }
 
     public function send_message_to_seller($conversation, $message, $user_type)
     {
         $array['view'] = 'emails.conversation';
-        $array['subject'] = 'Sender:- ' . Auth::user()->name;
+        $array['subject'] = 'Sobre el producto: ' . $conversation->title;
         $array['from'] = env('MAIL_FROM_ADDRESS');
-        $array['content'] = 'Hi! You recieved a message from ' . Auth::user()->name . '.';
+        $array['content'] = '¡Hola! Tiene un mensaje del usuario: ' . Auth::user()->name . '.';
         $array['sender'] = Auth::user()->name;
 
         if ($user_type == 'admin') {
             $array['link'] = route('conversations.admin_show', encrypt($conversation->id));
         } else {
-            $array['link'] = route('conversations.show', encrypt($conversation->id));
+            $array['link'] = route('seller.conversations.show', encrypt($conversation->id));
         }
 
         $array['details'] = $message->message;
@@ -110,11 +113,14 @@ class ConversationController extends Controller
     public function show($id)
     {
         $conversation = Conversation::findOrFail(decrypt($id));
+        /*
         if ($conversation->sender_id == Auth::user()->id) {
             $conversation->sender_viewed = 1;
         } elseif ($conversation->receiver_id == Auth::user()->id) {
             $conversation->receiver_viewed = 1;
         }
+        */
+        $conversation->sender_viewed = 1;
         $conversation->save();
         return view('frontend.user.conversations.show', compact('conversation'));
     }
@@ -129,6 +135,7 @@ class ConversationController extends Controller
     public function refresh(Request $request)
     {
         $conversation = Conversation::findOrFail(decrypt($request->id));
+        /*
         if ($conversation->sender_id == Auth::user()->id) {
             $conversation->sender_viewed = 1;
             $conversation->save();
@@ -136,6 +143,7 @@ class ConversationController extends Controller
             $conversation->receiver_viewed = 1;
             $conversation->save();
         }
+        */
         return view('frontend.partials.messages', compact('conversation'));
     }
 

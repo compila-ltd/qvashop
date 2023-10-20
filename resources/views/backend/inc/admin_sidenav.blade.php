@@ -32,15 +32,24 @@
                 <li class="aiz-side-nav-item">
                         @can('view_all_support_tickets')
                         @php
-                        $support_ticket = DB::table('tickets')
-                        ->where('viewed', 0)
-                        ->select('id')
-                        ->count();
+                            $support_ticket = DB::table('tickets')
+                            ->where('viewed', 0)
+                            ->select('id')
+                            ->count();
+
+                            $conversation = DB::table('conversations')
+                            ->where('receiver_id', Auth::user()->id)
+                            ->where('receiver_viewed', 0)
+                            ->select('id')
+                            ->count();
+
+                            $total_support = $support_ticket + $conversation;
+
                         @endphp
                     <a href="#" class="aiz-side-nav-link">
                         <i class="las la-link aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('Support') }}</span>
-                        @if($support_ticket > 0)<span class="badge badge-danger">{{ $support_ticket }}</span>@endif
+                        @if($total_support > 0)<span class="badge badge-danger">{{ $total_support }}</span>@endif
                         <span class="aiz-side-nav-arrow"></span>
                     </a>
                     <ul class="aiz-side-nav-list level-2">
@@ -53,14 +62,11 @@
                         @endcan
 
                         @can('view_all_product_queries')
-                        @php
-                        $conversation = \App\Models\Conversation::where('receiver_id', Auth::user()->id)->where('receiver_viewed', '1')->get();
-                        @endphp
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('conversations.admin_index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['conversations.admin_index', 'conversations.admin_show']) }}">
                                 <span class="aiz-side-nav-text">{{ translate('Product Conversations') }}</span>
-                                @if (count($conversation) > 0)
-                                <span class="badge badge-info">{{ count($conversation) }}</span>
+                                @if ($conversation > 0)
+                                <span class="badge badge-info">{{ $conversation }}</span>
                                 @endif
                             </a>
                         </li>
@@ -300,6 +306,7 @@
 
                             $inhouse_orders = DB::table('orders')
                             ->where('seller_id', $admin_user_id)
+                            ->where('payment_status', 'paid')
                             ->where('delivery_status', '!=' ,'delivered')
                             ->where('delivery_status', '!=' ,'cancelled')
                             ->select('id')

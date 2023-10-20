@@ -210,8 +210,8 @@
 
                 @if (get_setting('conversation_system') == 1)
                     @php
-                        $conversation = \App\Models\Conversation::where('sender_id', Auth::user()->id)
-                            ->where('sender_viewed', 0)
+                        $conversation = \App\Models\Conversation::where('receiver_id', Auth::user()->id)
+                            ->where('receiver_viewed', 0)
                             ->get();
                     @endphp
                     <li class="aiz-side-nav-item">
@@ -220,7 +220,7 @@
                             <i class="las la-comment aiz-side-nav-icon"></i>
                             <span class="aiz-side-nav-text">{{ translate('Conversations') }}</span>
                             @if (count($conversation) > 0)
-                                <span class="badge badge-success">({{ count($conversation) }})</span>
+                                <span class="badge badge-success">{{ count($conversation) }}</span>
                             @endif
                         </a>
                     </li>
