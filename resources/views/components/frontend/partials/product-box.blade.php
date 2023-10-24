@@ -1,10 +1,11 @@
 <div class="aiz-card-box border border-light rounded hov-shadow-md mt-1 mb-2 has-transition bg-white">
 
-    @if(discount_in_percentage($product) > 0)
-    <span class="badge-custom">{{ translate('OFF') }}<span class="box ml-1 mr-0">&nbsp;{{ discount_in_percentage($product) }}%</span></span>
-    @endif
+    
 
     <div class="position-relative">
+        @if(discount_in_percentage($product) > 0)
+        <span class="badge-custom">{{ translate('OFF') }}<span class="box ml-1 mr-0">&nbsp;{{ discount_in_percentage($product) }}%</span></span>
+        @endif
         <a href="{{ $product->product_url }}" class="d-block">
             <img class="img-fit lazyload mx-auto h-140px h-md-210px" src="{{ asset('assets/img/placeholder.jpg') }}" data-src="{{ uploaded_asset($product->thumbnail_img) }}" alt="{{ $product->getTranslation('name') }}">
         </a>
