@@ -15,26 +15,26 @@
                     <div class="radio mar-btm">
                         <input id="product-shipping" class="magic-radio" type="radio" name="shipping_type" value="product_wise_shipping" @if(get_setting('shipping_type') == 'product_wise_shipping') checked @endif>
                         <label for="product-shipping">
-                            <span>{{ translate('Product Wise Shipping Cost')}}</span>
+                            <span>Costo de envío del producto (Product Wise Shipping)</span>
                             <span></span>
                         </label>
                     </div>
                     <div class="radio mar-btm">
                         <input id="flat-shipping" class="magic-radio" type="radio" name="shipping_type" value="flat_rate" @if(get_setting('shipping_type') == 'flat_rate') checked @endif>
-                        <label for="flat-shipping">{{ translate('Flat Rate Shipping Cost')}}</label>
+                        <label for="flat-shipping">{{ translate('Flat Rate Shipping Cost')}} (Flat Rate Shipping Cost)</label>
                     </div>
                     <div class="radio mar-btm">
                         <input id="seller-shipping" class="magic-radio" type="radio" name="shipping_type" value="seller_wise_shipping" @if(get_setting('shipping_type') == 'seller_wise_shipping') checked @endif>
-                        <label for="seller-shipping">{{ translate('Seller Wise Flat Shipping Cost')}}</label>
+                        <label for="seller-shipping">Costo de envío fijo según el vendedor (Seller Wise Shipping)</label>
                     </div>
                     <div class="radio mar-btm">
                         <input id="area-shipping" class="magic-radio" type="radio" name="shipping_type" value="area_wise_shipping" @if(get_setting('shipping_type') == 'area_wise_shipping') checked @endif>
-                        <label for="area-shipping">{{ translate('Area Wise Flat Shipping Cost')}}</label>
+                        <label for="area-shipping">Costo de envío fijo por área (Area Wise Shipping)</label>
                     </div>
                     <div class="radio mar-btm">
                         <input id="weight-shipping" class="magic-radio" type="radio" name="shipping_type" value="carrier_wise_shipping" @if(get_setting('shipping_type') == 'carrier_wise_shipping') checked @endif>
                         <label for="weight-shipping">
-                            {{ translate('Carrier Wise Shipping Cost')}}
+                            Costo de envío según el transportista (Carrier Wise Shipping)
                         </label>
                     </div>
                     <div class="form-group mb-0 text-right">
@@ -52,19 +52,19 @@
             <div class="card-body">
                 <ul class="list-group">
                     <li class="list-group-item">
-                        1. {{ translate('Product Wise Shipping Cost calculation: Shipping cost is calculate by addition of each product shipping cost') }}.
+                        1. Cálculo del costo de envío del producto: el costo de envío se calcula sumando el costo de envío de cada producto.
                     </li>
                     <li class="list-group-item">
-                        2. {{ translate('Flat Rate Shipping Cost calculation: How many products a customer purchase, doesn\'t matter. Shipping cost is fixed') }}.
+                        2. Cálculo del costo de envío de tarifa fija: no importa cuántos productos compra un cliente. El costo de envío es fijo.
                     </li>
                     <li class="list-group-item">
-                        3. {{ translate('Seller Wise Flat Shipping Cost calculation: Fixed rate for each seller. If customers purchase 2 product from two seller shipping cost is calculated by addition of each seller flat shipping cost') }}.
+                        3. Cálculo del costo de envío fijo del vendedor: tarifa fija para cada vendedor. Si los clientes compran 2 productos de dos vendedores, el costo de envío se calcula sumando el costo de envío fijo de cada vendedor.
                     </li>
                     <li class="list-group-item">
-                        4. {{ translate('Area Wise Flat Shipping Cost calculation: Fixed rate for each area. If customers purchase multiple products from one seller shipping cost is calculated by the customer shipping area. To configure area wise shipping cost go to ') }} <a href="{{ route('cities.index') }}">{{ translate('Shipping Cities') }}</a>.
+                        4. Cálculo del costo de envío fijo por área: tarifa fija para cada área. Si los clientes compran varios productos de un vendedor, el costo de envío lo calcula el área de envío del cliente. Para configurar el costo de envío por área, vaya a <a href="{{ route('cities.index') }}"> Ciudades de envío</a>.
                     </li>
                     <li class="list-group-item">
-                        5. {{ translate('Carrier Based Shipping Cost calculation: Shipping cost calculate in addition with carrier. In each carrier you can set free shipping cost or can set weight range or price range shipping cost. To configure carrier based shipping cost go to ') }} <a href="{{ route('carriers.index') }}">{{ translate('Shipping Carriers') }}</a>.
+                        5. Cálculo del costo de envío según el transportista: el costo de envío se calcula además con el transportista. En cada transportista puede establecer el costo de envío gratuito o puede establecer el rango de peso o el costo de envío del rango de precios. Para configurar el costo de envío según el transportista, vaya a <a href="{{ route('carriers.index') }}"> Transportistas</a>.
                     </li>
                 </ul>
             </div>
@@ -102,7 +102,7 @@
             <div class="card-body">
                 <ul class="list-group">
                     <li class="list-group-item">
-                        {{ translate('1. Flat rate shipping cost is applicable if Flat rate shipping is enabled.') }}
+                        El costo de envío de tarifa plana se aplica si el envío de tarifa plana está habilitado.
                     </li>
                 </ul>
             </div>
@@ -140,7 +140,7 @@
             <div class="card-body">
                 <ul class="list-group">
                     <li class="list-group-item">
-                        {{ translate('1. Shipping cost for admin is applicable if Seller wise shipping cost is enabled.') }}
+                        El costo de envío para el administrador se aplica si el costo de envío del vendedor está habilitado.
                     </li>
                 </ul>
             </div>
