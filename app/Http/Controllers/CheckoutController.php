@@ -98,25 +98,27 @@ class CheckoutController extends Controller
             $order->payment_details = $payment;
             $order->save();
 
-            $quantity = $order->orderDetails->first()->quantity;
+            foreach ($order->orderDetails as $order_detail){
+                $quantity = $order_detail->quantity;
 
-            $product = $order->orderDetails->first()->product;
-            $product->num_of_sale += $quantity;
-            $product->current_stock -= $quantity;
-            $product->save();
-
-            $product_stock = $order->orderDetails->first()->product->stocks->first();
-            $product_stock->qty -= $quantity;
-            $product_stock->save();
-
-            if ($product->added_by == 'seller') {
-                $shop = $product->user->shop;
-                $shop->num_of_sale += $quantity;
-                $shop->save();
+                $product = $order_detail->product;
+                $product->num_of_sale += $quantity;
+                $product->current_stock -= $quantity;
+                $product->save();
+    
+                $product_stock = $order_detail->product->stocks->first();
+                $product_stock->qty -= $quantity;
+                $product_stock->save();
+    
+                if ($product->added_by == 'seller') {
+                    $shop = $product->user->shop;
+                    $shop->num_of_sale += $quantity;
+                    $shop->save();
+                }
+    
+                // pay to the seller, or affiliate, or Club Points
+                calculateCommissionAffilationClubPoint($order);
             }
-
-            // pay to the seller, or affiliate, or Club Points
-            calculateCommissionAffilationClubPoint($order);
         }
 
         Session::put('combined_order_id', $combined_order_id);
