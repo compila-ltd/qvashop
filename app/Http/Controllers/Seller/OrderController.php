@@ -53,7 +53,7 @@ class OrderController extends Controller
             $orders = $orders->where('code', 'like', '%' . $sort_search . '%');
         }
 
-        $orders = $orders->paginate(15);
+        $orders = $orders->paginate(15)->withQueryString();
 
         foreach ($orders as $key => $value) {
             $order = Order::find($value->id);

@@ -73,6 +73,7 @@
 							$pickup_point_list = \App\Models\PickupPoint::where('pick_up_status',1)->get();
 						}
                     @endphp
+                    
                     @if (!empty($admin_products))
                     <div class="card mb-3 shadow-sm border-0 rounded">
                         <div class="card-header p-3">
@@ -214,9 +215,13 @@
                     @endif
                     @if (!empty($seller_products))
                         @foreach ($seller_products as $key => $seller_product)
+                            @php 
+                                $shop = \App\Models\Shop::where('user_id', $key)->first();
+                                //dd($shop);
+                            @endphp
                             <div class="card mb-3 shadow-sm border-0 rounded">
                                 <div class="card-header p-3">
-                                    <h5 class="fs-16 fw-600 mb-0">{{ \App\Models\Shop::where('user_id', $key)->first()->name }} {{ translate('Products') }}</h5>
+                                    <h5 class="fs-16 fw-600 mb-0">{{ $shop->name }} {{ translate('Products') }}</h5>
                                 </div>
                                 <div class="card-body">
                                     <ul class="list-group list-group-flush">
@@ -280,7 +285,7 @@
                                                 </div>
                                                 @endif
 
-                                                @if ($pickup_point_list)
+                                                @if ($shop->address)
                                                     <div class="col-6">
                                                         <label class="aiz-megabox d-block bg-white mb-0">
                                                             <input
@@ -298,25 +303,23 @@
                                                     </div>
                                                 @endif
                                             </div>
-                                            @if ($pickup_point_list)
+                                            @if ($shop->address)
                                                 <div class="mt-4 pickup_point_id_{{ $key }} d-none">
                                                     <select
                                                         class="form-control aiz-selectpicker"
                                                         name="pickup_point_id_{{ $key }}"
                                                         data-live-search="true"
                                                     >
-                                                        <option>{{ translate('Select your nearest pickup point')}}</option>
-                                                            @foreach ($pickup_point_list as $pick_up_point)
+                                                            <option>{{ translate('Select your nearest pickup point')}}</option>
                                                             <option
-                                                                value="{{ $pick_up_point->id }}"
+                                                                value="{{ $shop->id }}"
                                                                 data-content="<span class='d-block'>
-                                                                                <span class='d-block fs-16 fw-600 mb-2'>{{ $pick_up_point->getTranslation('name') }}</span>
-                                                                                <span class='d-block opacity-50 fs-12'><i class='las la-map-marker'></i> {{ $pick_up_point->getTranslation('address') }}</span>
-                                                                                <span class='d-block opacity-50 fs-12'><i class='las la-phone'></i>{{ $pick_up_point->phone }}</span>
+                                                                                <span class='d-block fs-16 fw-600 mb-2'>{{ $shop->name }}</span>
+                                                                                <span class='d-block opacity-50 fs-12'><i class='las la-map-marker'></i> {{ $shop->address }}</span>
+                                                                                <span class='d-block opacity-50 fs-12'><i class='las la-phone'></i>{{ $shop->phone }}</span>
                                                                             </span>"
                                                             >
                                                             </option>
-                                                            @endforeach
                                                     </select>
                                                 </div>
                                             @endif
