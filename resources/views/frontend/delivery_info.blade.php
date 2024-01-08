@@ -102,7 +102,7 @@
                                 $seller_products[$product->user_id] = $product_ids;
 
                                 $shop = \App\Models\Shop::where('user_id', $product->user_id)->first();
-
+                                
                                 if ($shop_delivery_address == '' || $shop_delivery_address != $shop->name) {
                                     $ok_state = \App\Models\ShopState::where('shop_id', $shop->id)
                                                 ->where('state_id', $delivery_address->state_id)
@@ -121,6 +121,7 @@
                                     }
 
                                     $shop_delivery_address = $shop->name;
+                                    
                                 }
                             }
                         }
@@ -329,7 +330,7 @@
                                         <div class="col-md-7">
                                             <div class="row gutters-5">
                                                 @if (get_setting('shipping_type') != 'carrier_wise_shipping')
-                                                    @if (!in_array($shop->name, $shops_delivery_errors))
+                                                    @if ((!in_array($shop->name, $shops_delivery_errors))&&($city_shop))
                                                     <div class="col-6">
                                                         <label class="aiz-megabox d-block bg-white mb-0">
                                                             <input type="radio" name="shipping_type_{{ $key }}"
@@ -337,7 +338,7 @@
                                                                 data-target=".pickup_point_id_{{ $key }}" checked>
                                                             <span class="d-flex p-3 aiz-megabox-elem">
                                                                 <span class="aiz-rounded-check flex-shrink-0 mt-1"></span>
-                                                                <span class="flex-grow-1 pl-3 fw-600">{{ translate('Home Delivery') }}: ${{$city_shop->cost}}</span>
+                                                                <span class="flex-grow-1 pl-3 fw-600">{{ translate('Home Delivery') }}</span>
                                                             </span>
                                                         </label>
                                                     </div>

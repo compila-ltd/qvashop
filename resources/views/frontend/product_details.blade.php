@@ -95,27 +95,39 @@
                                 <span class="ml-1 opacity-50">({{ $total }})</span>
                             </div>
                             @php 
-                                $user_id = Auth::user()->id;
-                                $user_address = \App\Models\Address::where('user_id', $user_id)->where('set_default', 1)->first();
-
-                                $shop_id = 0;
                                 $shop_delivery_state = null;
                                 $shop_delivery_city = null;
 
+                                $shop_id = 0;
+
                                 if ($detailedProduct->added_by == 'seller'){
                                     $shop_id = $detailedProduct->user->shop->id;
-                                    $shop_delivery_state = \App\Models\ShopState::where('shop_id', $shop_id)->where('state_id', $user_address->state_id)->where('status', 1)->first();
-                                    
-                                    if($shop_delivery_state)
-                                        $shop_delivery_city = \App\Models\ShopCity::where('shop_id', $shop_id)->where('city_id', $user_address->city_id)->where('status', 1)->first();
-                                }else{
-                                    $shop_delivery_state = \App\Models\State::where('id', $user_address->state_id)->where('status', 1)->first();
-
-                                    if($shop_delivery_state)
-                                        $shop_delivery_city = \App\Models\City::where('id', $user_address->city_id)->where('status', 1)->first();
                                 }
                                 
-                                //dd($shop_delivery_city);
+                                if(Auth::user()){
+                                    
+                                    $user_id = Auth::user()->id;
+                                    
+                                    if($user_id){
+                                        $user_address = \App\Models\Address::where('user_id', $user_id)->where('set_default', 1)->first();
+
+                                        if($user_address){
+                                            
+                                            $shop_delivery_state = \App\Models\ShopState::where('shop_id', $shop_id)->where('state_id', $user_address->state_id)->where('status', 1)->first();
+                                                
+                                            if($shop_delivery_state){
+                                                    $shop_delivery_city = \App\Models\ShopCity::where('shop_id', $shop_id)->where('city_id', $user_address->city_id)->where('status', 1)->first();
+                                            }else{
+                                                $shop_delivery_state = \App\Models\State::where('id', $user_address->state_id)->where('status', 1)->first();
+
+                                                if($shop_delivery_state)
+                                                    $shop_delivery_city = \App\Models\City::where('id', $user_address->city_id)->where('status', 1)->first();
+                                            }
+
+                                            //dd($shop_delivery_city);
+                                        }
+                                    }
+                                }
 
                             @endphp
                             @if ($detailedProduct->est_shipping_days)
@@ -157,20 +169,24 @@
                             @endif
                         </div>
                         
-                        @if(!$shop_delivery_state)
-                            <div class="row align-items-center">
-                                <div class="col-sm-12">
-                                    <div class="my-2">No tiene entrega a domicilio en tu provincia, según tu dirección de entrega por defecto</div>
+                        @if(Auth::user())
+                            @if(!$shop_delivery_state)
+                                <div class="row align-items-center">
+                                    <div class="col-sm-12">
+                                        <div class="my-2">No tiene entrega a domicilio en tu provincia, según tu dirección de entrega por defecto</div>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                         @endif
 
-                        @if(($shop_delivery_state)&&(!$shop_delivery_city))
-                            <div class="row align-items-center">
-                                <div class="col-sm-12">
-                                    <div class="my-2">No tiene entrega a domicilio en tu municipio, según tu dirección de entrega por defecto</div>
+                        @if(Auth::user())
+                            @if(($shop_delivery_state)&&(!$shop_delivery_city))
+                                <div class="row align-items-center">
+                                    <div class="col-sm-12">
+                                        <div class="my-2">No tiene entrega a domicilio en tu municipio, según tu dirección de entrega por defecto</div>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                         @endif
 
                         @if(($shop_delivery_state)&&($shop_delivery_city))
