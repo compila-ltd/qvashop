@@ -26,6 +26,10 @@ class StateController extends Controller
     {
         $shop = Auth::user()->shop;
 
+        $countries = Country::where('status', 1)->get();
+
+        //dd($countries->id);
+
         $sort_country = $request->sort_country;
         $sort_state = $request->sort_state;
 
@@ -37,7 +41,11 @@ class StateController extends Controller
         if ($request->sort_country) {
             $state_queries->where('country_id', $request->sort_country);
         }else{
-            $state_queries->where('country_id', 1);
+            // Obtener los IDs de los países activos
+            $activeCountryIds = $countries->pluck('id')->toArray();
+
+            // Filtrar por los países activos
+            $state_queries->whereIn('country_id', $activeCountryIds);
         }
 
         $states = $state_queries->orderBy('status', 'desc')->paginate(16);
