@@ -32,7 +32,8 @@
         <table class="table aiz-table mb-0">
             <thead>
                 <tr>
-                    <th data-breakpoints="lg" width="10%">#</th>
+                    <th data-breakpoints="lg" width="2%">#</th>
+                    <th>Tienda</th>
                     <th>{{ translate('Name')}}</th>
                     <th data-breakpoints="lg">{{ translate('Manager')}}</th>
                     <th data-breakpoints="lg">{{ translate('Location')}}</th>
@@ -44,10 +45,18 @@
             <tbody>
                 @foreach($pickup_points as $key => $pickup_point)
                     @php
-                    //dd($pickup_points)
+                        $shop_name = "";
+                        if($pickup_point->shop_id == 0){
+                            $shop_name = "QvaShop";
+                        } else {
+                            $shop = \App\Models\Shop::where('id', $pickup_point->shop_id)->first();
+                            //dd($shop_name);
+                            $shop_name = $shop->name;
+                        }
                     @endphp
                     <tr>
 						<td>{{ ($key+1) + ($pickup_points->currentPage() - 1)*$pickup_points->perPage() }}</td>
+                        <td>{{$shop_name}}</td>
                         <td>{{$pickup_point->getTranslation('name')}}</td>
                         @if ($pickup_point->shop_id == 0)
                             @if ($pickup_point->staff != null && $pickup_point->staff->user != null)
