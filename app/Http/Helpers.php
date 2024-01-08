@@ -3,6 +3,7 @@
 use Carbon\Carbon;
 use App\Models\Cart;
 use App\Models\City;
+use App\Models\ShopCity;
 use App\Models\Shop;
 use App\Models\User;
 use App\Models\Addon;
@@ -820,7 +821,9 @@ function getShippingCost($carts, $index, $carrier = '')
     $cartItem = $carts[$index];
     $product = Product::find($cartItem['product_id']);
 
-    if ($product->digital == 1) {
+    //dd($product);
+
+    if ($product->digital == 1 || $product->category_id == 4) {
         return 0;
     }
 
@@ -872,12 +875,26 @@ function getShippingCost($carts, $index, $carrier = '')
         }
     } elseif ($shipping_type == 'area_wise_shipping') {
         $shipping_info = Address::where('id', $carts[0]['address_id'])->first();
-        $city = City::where('id', $shipping_info->city_id)->first();
+        
+        $city = null;
+
+        $shop = Shop::where('user_id', $product->user_id)->first();
+
+        if($product->added_by == 'admin'){
+            $city = City::where('id', $shipping_info->city_id)->first();
+        }else{
+            $city = ShopCity::where('shop_id', $shop->id)->where('city_id', $shipping_info->city_id)->first();
+        }
+
+        //dd($city);
+
         if ($city != null) {
             if ($product->added_by == 'admin') {
-                return $city->cost / count($admin_products);
+                //return $city->cost / count($admin_products);
+                return $city->cost;
             } else {
-                return $city->cost / count($seller_products[$product->user_id]);
+                //return $city->cost / count($seller_products[$product->user_id]);
+                return $city->cost;
             }
         }
         return 0;

@@ -65,4 +65,18 @@ class SellerWithdrawRequestController extends Controller
         elseif (Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'staff')
             return view('backend.sellers.seller_withdraw_requests.withdraw_message_modal', compact('seller_withdraw_request'));
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        if (SellerWithdrawRequest::destroy($id))
+            return redirect()->route('withdraw_requests.index')->with('success', 'Se ha eliminado correctamente la solicitud de retiro');
+
+        return back()->with('danger', translate('Something went wrong'));
+    }
 }

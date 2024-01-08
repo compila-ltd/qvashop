@@ -43,16 +43,28 @@
             </thead>
             <tbody>
                 @foreach($pickup_points as $key => $pickup_point)
+                    @php
+                    //dd($pickup_points)
+                    @endphp
                     <tr>
 						<td>{{ ($key+1) + ($pickup_points->currentPage() - 1)*$pickup_points->perPage() }}</td>
                         <td>{{$pickup_point->getTranslation('name')}}</td>
-                        @if ($pickup_point->staff != null && $pickup_point->staff->user != null)
-                            <td>{{$pickup_point->staff->user->name}}</td>
-                        @else
-                            <td><div class="badge badge-inline badge-danger">
-                                {{ translate('No Manager') }}
-                            </div></td>
+                        @if ($pickup_point->shop_id == 0)
+                            @if ($pickup_point->staff != null && $pickup_point->staff->user != null)
+                                <td>{{$pickup_point->staff->user->name}}</td>
+                            @else
+                                <td><div class="badge badge-inline badge-danger">
+                                    {{ translate('No Manager') }}
+                                </div></td>
+                            @endif
+                        @elseif ($pickup_point->manager != null)
+                                <td>{{$pickup_point->manager}}</td>
+                            @else
+                                <td><div class="badge badge-inline badge-danger">
+                                    {{ translate('No Manager') }}
+                                </div></td>
                         @endif
+
                         <td>{{$pickup_point->getTranslation('address')}}</td>
                         <td>{{$pickup_point->phone}}</td>
                         <td>
@@ -66,14 +78,16 @@
                                 </div>
                             @endif
                         </td>
-						<td class="text-right">
-							<a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('pick_up_points.edit', ['id'=>$pickup_point->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="{{ translate('Edit') }}">
-								<i class="las la-edit"></i>
-							</a>
-							<a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('pick_up_points.destroy', $pickup_point->id)}}" title="{{ translate('Delete') }}">
-								<i class="las la-trash"></i>
-							</a>
-						</td>
+                        @if ($pickup_point->shop_id == 0)
+                            <td class="text-right">
+                                <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('pick_up_points.edit', ['id'=>$pickup_point->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="{{ translate('Edit') }}">
+                                    <i class="las la-edit"></i>
+                                </a>
+                                <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('pick_up_points.destroy', $pickup_point->id)}}" title="{{ translate('Delete') }}">
+                                    <i class="las la-trash"></i>
+                                </a>
+                            </td>
+                        @endif
                     </tr>
                 @endforeach
             </tbody>

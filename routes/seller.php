@@ -20,6 +20,9 @@ use App\Http\Controllers\Seller\DigitalProductController;
 use App\Http\Controllers\Seller\CommissionHistoryController;
 use App\Http\Controllers\Seller\ProductBulkUploadController;
 use App\Http\Controllers\Seller\SellerWithdrawRequestController;
+use App\Http\Controllers\Seller\PickupPointController;
+use App\Http\Controllers\Seller\StateController;
+use App\Http\Controllers\Seller\CityController;
 
 //Upload
 Route::group(['prefix' => 'seller', 'middleware' => ['seller', 'verified', 'user'], 'as' => 'seller.'], function () {
@@ -161,5 +164,23 @@ Route::group(['namespace' => 'App\Http\Controllers\Seller', 'prefix' => 'seller'
     // Notifications
     Route::controller(NotificationController::class)->group(function () {
         Route::get('/all-notification', 'index')->name('all-notification');
+    });
+
+    //Pickup_Points
+    Route::resource('pick_up_points', PickupPointController::class)->except('edit', 'destroy');
+    Route::controller(PickupPointController::class)->group(function () {
+        Route::get('/pick_up_points/edit/{id}', 'edit')->name('pick_up_points.edit');
+        Route::get('/pick_up_points/destroy/{id}', 'destroy')->name('pick_up_points.destroy');
+    });
+
+    // States
+    Route::resource('states', StateController::class);
+    Route::post('/states/status', [StateController::class, 'updateStatus'])->name('states.status');
+
+    // Cities
+    Route::resource('cities', CityController::class)->except('edit', 'destroy');
+    Route::controller(CityController::class)->group(function () {
+        Route::get('/cities/edit/{id}', 'edit')->name('cities.edit');
+        Route::post('/cities/status', 'updateStatus')->name('cities.status');
     });
 });

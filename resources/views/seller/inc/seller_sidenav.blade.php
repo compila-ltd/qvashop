@@ -49,12 +49,14 @@
                                 <span class="aiz-side-nav-text">{{ translate('Product Bulk Upload') }}</span>
                             </a>
                         </li>
+                        <!--
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('seller.digitalproducts') }}"
                                 class="aiz-side-nav-link {{ areActiveRoutes(['seller.digitalproducts', 'seller.digitalproducts.create', 'seller.digitalproducts.edit']) }}">
                                 <span class="aiz-side-nav-text">{{ translate('Digital Products') }}</span>
                             </a>
                         </li>
+                        -->
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('seller.reviews') }}"
                                 class="aiz-side-nav-link {{ areActiveRoutes(['seller.reviews']) }}">
@@ -63,6 +65,7 @@
                         </li>
                     </ul>
                 </li>
+                
                 <li class="aiz-side-nav-item">
                     <a href="{{ route('seller.uploaded-files.index') }}"
                         class="aiz-side-nav-link {{ areActiveRoutes(['seller.uploaded-files.index', 'seller.uploads.create']) }}">
@@ -176,15 +179,44 @@
                     </li>
                 @endif
 
-
                 <li class="aiz-side-nav-item">
-                    <a href="{{ route('seller.shop.index') }}"
-                        class="aiz-side-nav-link {{ areActiveRoutes(['seller.shop.index']) }}">
+                    <a href="#" class="aiz-side-nav-link">
                         <i class="las la-cog aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{ translate('Shop Setting') }}</span>
+                        <span class="aiz-side-nav-text">Configuración</span>
+                        <span class="aiz-side-nav-arrow"></span>
                     </a>
-                </li>
+                    <!--Submenu-->
+                    <ul class="aiz-side-nav-list level-2">
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('seller.shop.index') }}"
+                                class="aiz-side-nav-link {{ areActiveRoutes(['seller.shop.index']) }}">
+                                <span class="aiz-side-nav-text">Tienda</span>
+                            </a>
+                        </li>
+                        
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('seller.states.index') }}"
+                                class="aiz-side-nav-link {{ areActiveRoutes(['seller.states']) }}">
+                                <span class="aiz-side-nav-text">Provincias de envío</span>
+                            </a>
+                        </li>
 
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('seller.cities.index') }}"
+                                class="aiz-side-nav-link {{ areActiveRoutes(['product_bulk_upload.index']) }}">
+                                <span class="aiz-side-nav-text">Municipios y costo de envío</span>
+                            </a>
+                        </li>
+
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('seller.pick_up_points.index') }}"
+                                class="aiz-side-nav-link {{ areActiveRoutes(['seller.pick_up_points.index', 'seller.pick_up_points.create', 'seller.pick_up_points.edit']) }}">
+                                <span class="aiz-side-nav-text">{{ translate('Pickup point') }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                
                 <li class="aiz-side-nav-item">
                     <a href="{{ route('seller.payments.index') }}"
                         class="aiz-side-nav-link {{ areActiveRoutes(['seller.payments.index']) }}">

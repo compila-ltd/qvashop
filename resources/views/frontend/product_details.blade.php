@@ -86,19 +86,43 @@
                         <div class="row align-items-center">
                             <div class="col-12">
                                 @php
-                                $total = 0;
-                                $total += $detailedProduct->reviews->count();
+                                    $total = 0;
+                                    $total += $detailedProduct->reviews->count();
                                 @endphp
                                 <span class="rating">
                                     {{ renderStarRating($detailedProduct->rating) }}
                                 </span>
                                 <span class="ml-1 opacity-50">({{ $total }})</span>
                             </div>
+                            @php 
+                                $user_id = Auth::user()->id;
+                                $user_address = \App\Models\Address::where('user_id', $user_id)->where('set_default', 1)->first();
+
+                                $shop_id = 0;
+                                $shop_delivery_state = null;
+                                $shop_delivery_city = null;
+
+                                if ($detailedProduct->added_by == 'seller'){
+                                    $shop_id = $detailedProduct->user->shop->id;
+                                    $shop_delivery_state = \App\Models\ShopState::where('shop_id', $shop_id)->where('state_id', $user_address->state_id)->where('status', 1)->first();
+                                    
+                                    if($shop_delivery_state)
+                                        $shop_delivery_city = \App\Models\ShopCity::where('shop_id', $shop_id)->where('city_id', $user_address->city_id)->where('status', 1)->first();
+                                }else{
+                                    $shop_delivery_state = \App\Models\State::where('id', $user_address->state_id)->where('status', 1)->first();
+
+                                    if($shop_delivery_state)
+                                        $shop_delivery_city = \App\Models\City::where('id', $user_address->city_id)->where('status', 1)->first();
+                                }
+                                
+                                //dd($shop_delivery_city);
+
+                            @endphp
                             @if ($detailedProduct->est_shipping_days)
-                            <div class="col-auto ml">
-                                <small class="mr-2">{{ translate('Estimate Shipping Time') }}:
-                                </small>{{ $detailedProduct->est_shipping_days }} {{ translate('Days') }}
-                            </div>
+                                <div class="col-auto ml">
+                                    {{ translate('Estimate Shipping Time') }}:
+                                    {{ $detailedProduct->est_shipping_days }} {{ translate('Days') }}
+                                </div>
                             @endif
                         </div>
 
@@ -107,98 +131,215 @@
                         <div class="row align-items-center">
                             <div class="col-auto">
                                 <small class="primary-title">{{ translate('Sold by') }}: </small><br>
+                                @php 
+                                    $shop_name = '';
+                                @endphp
                                 @if ($detailedProduct->added_by == 'seller' && get_setting('vendor_system_activation') == 1)
-                                <a href="{{ route('shop.visit', $detailedProduct->user->shop->slug) }}" class="text-reset shop-name">{{ $detailedProduct->user->shop->name }}</a>
+                                    @php $shop_name = $detailedProduct->user->shop->name; @endphp
+                                    <a href="{{ route('shop.visit', $detailedProduct->user->shop->slug) }}" class="text-reset shop-name">{{ $detailedProduct->user->shop->name }}</a>
                                 @else
-                                {{ translate('Inhouse product') }}
+                                    @php $shop_name = "QvaShop" @endphp
+                                    {{ translate('Inhouse product') }}
                                 @endif
                             </div>
                             @if (get_setting('conversation_system') == 1)
-                            <div class="col-auto">
-                                <button class="btn btn-sm btn-soft-primary" onclick="show_chat_modal()">{{ translate('Message Seller') }}</button>
-                            </div>
+                                <div class="col-auto">
+                                    <button class="btn btn-sm btn-soft-primary" onclick="show_chat_modal()">{{ translate('Message Seller') }}</button>
+                                </div>
                             @endif
 
                             @if ($detailedProduct->brand != null)
-                            <div class="col-auto">
-                                <a href="{{ route('products.brand', $detailedProduct->brand->slug) }}">
-                                    <img src="{{ uploaded_asset($detailedProduct->brand->logo) }}" alt="{{ $detailedProduct->brand->getTranslation('name') }}" height="30">
-                                </a>
-                            </div>
+                                <div class="col-auto">
+                                    <a href="{{ route('products.brand', $detailedProduct->brand->slug) }}">
+                                        <img src="{{ uploaded_asset($detailedProduct->brand->logo) }}" alt="{{ $detailedProduct->brand->getTranslation('name') }}" height="30">
+                                    </a>
+                                </div>
                             @endif
                         </div>
+                        
+                        @if(!$shop_delivery_state)
+                            <div class="row align-items-center">
+                                <div class="col-sm-12">
+                                    <div class="my-2">No tiene entrega a domicilio en tu provincia, según tu dirección de entrega por defecto</div>
+                                </div>
+                            </div>
+                        @endif
 
+                        @if(($shop_delivery_state)&&(!$shop_delivery_city))
+                            <div class="row align-items-center">
+                                <div class="col-sm-12">
+                                    <div class="my-2">No tiene entrega a domicilio en tu municipio, según tu dirección de entrega por defecto</div>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if(($shop_delivery_state)&&($shop_delivery_city))
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="my-2">Costo de envío a domicilio: ${{ $shop_delivery_city->cost }}</div>
+                                </div>
+                            </div>
+                        @endif
+                                                
+                        <p>
+                            <a class="" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Ver costos de envío a domicilio de {{ $shop_name }}</a>
+                        </p>         
+                        <div class="row">
+                            <div class="col">
+                                <div class="collapse multi-collapse" id="multiCollapseExample1">
+                                <div class="card card-body">
+                                    @php 
+
+                                        $shop_active_states = [];
+                                        $cities_all = [];
+
+                                        if($shop_id == 0){
+                                            $shop_active_states = \App\Models\State::where('status', 1)
+                                                                ->get();
+                                            $cities_all = \App\Models\City::whereIn('state_id', $shop_active_states->pluck('id'))
+                                                        ->get();                    
+                                        } else {
+                                            $shop_active_states = \App\Models\ShopState::where('shop_id', $shop_id)
+                                                                ->where('status', 1)
+                                                                ->get();
+                                            
+                                            $cities_all = \App\Models\City::whereIn('state_id', $shop_active_states->pluck('state_id'))
+                                                        ->get();
+                                        }
+
+                                        //dd($shop_active_states);
+                                                                                
+                                        //dd($cities_all);
+
+                                        $cities_for_delivery = [];
+
+                                        foreach ($cities_all as $city) {
+
+                                            $shop_city = "";
+
+                                            if($shop_id == 0){
+                                                $shop_city = \App\Models\City::where('id', $city->id)
+                                                            ->where('status', '1')
+                                                            ->first();
+                                            } else {
+                                                $shop_city = \App\Models\ShopCity::where('city_id', $city->id)
+                                                            ->where('shop_id', $shop_id)
+                                                            ->where('status', '1')
+                                                            ->first();
+                                            }
+                                            
+                                            if ($shop_city) {
+                                                $city->cost = $shop_city->cost;
+                                                $city->status = $shop_city->status;
+
+                                                $cities_for_delivery[] = $city;
+                                            } 
+                                        }
+                                    @endphp
+                                    <table class="table aiz-table mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th width="1%">#</th>
+                                                <th width="20%">{{ translate('State')}}</th>
+                                                <th>Municipio</th>
+                                                <th class="text-center">Costo de envío (USD)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>                       
+                                            @foreach($cities_for_delivery as $key => $city)
+                                                <tr>
+                                                    <td>{{ $key+1 }}</td>
+                                                    <td>{{ $city->state->name }}</td>
+                                                    <td>{{ $city->name }}</td>
+                                                    <td class="text-center">
+                                                    @php 
+                                                        echo single_price($city->cost) == "$0.00" ? 'Gratis' : single_price($city->cost);
+                                                    @endphp
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <hr>
 
-                        @if ($detailedProduct->wholesale_product)
-                        <table class="table mb-0">
-                            <thead>
-                                <tr>
-                                    <th>{{ translate('Min Qty') }}</th>
-                                    <th>{{ translate('Max Qty') }}</th>
-                                    <th>{{ translate('Unit Price') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($detailedProduct->stocks->first()->wholesalePrices as $wholesalePrice)
-                                <tr>
-                                    <td>{{ $wholesalePrice->min_qty }}</td>
-                                    <td>{{ $wholesalePrice->max_qty }}</td>
-                                    <td>{{ single_price($wholesalePrice->price) }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        @else
-                        @if (home_price($detailedProduct) != home_discounted_price($detailedProduct))
-                        <div class="row no-gutters mt-3">
-                            <div class="col-sm-2">
-                                <div class="my-2 primary-title">{{ translate('Price') }}:</div>
-                            </div>
-                            <div class="col-sm-10">
-                                <div class="fs-20">
-                                    <del>
-                                        {{ home_price($detailedProduct) }}
-                                        @if ($detailedProduct->unit != null)
-                                        <span>/{{ $detailedProduct->getTranslation('unit') }}</span>
-                                        @endif
-                                    </del>
-                                </div>
-                            </div>
-                        </div>
+                        @php 
+                            //dd($detailedProduct);
+                        @endphp
 
-                        <div class="row no-gutters my-2">
-                            <div class="col-sm-2">
-                                <div class="primary-title">{{ translate('Discount Price') }}:</div>
-                            </div>
-                            <div class="col-sm-10">
-                                <div class="">
-                                    <strong class="h2 fw-600 text-primary">
-                                        {{ home_discounted_price($detailedProduct) }}
-                                    </strong>
-                                    @if ($detailedProduct->unit != null)
-                                    <span class="">/{{ $detailedProduct->getTranslation('unit') }}</span>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
+                        @if ($detailedProduct->wholesale_product)
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>{{ translate('Min Qty') }}</th>
+                                        <th>{{ translate('Max Qty') }}</th>
+                                        <th>{{ translate('Unit Price') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($detailedProduct->stocks->first()->wholesalePrices as $wholesalePrice)
+                                    <tr>
+                                        <td>{{ $wholesalePrice->min_qty }}</td>
+                                        <td>{{ $wholesalePrice->max_qty }}</td>
+                                        <td>{{ single_price($wholesalePrice->price) }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         @else
-                        <div class="row no-gutters mt-3">
-                            <div class="col-sm-2">
-                                <div class="my-2 primary-title">{{ translate('Price') }}:</div>
-                            </div>
-                            <div class="col-sm-10">
-                                <div class="">
-                                    <strong class="h2 fw-600 text-primary">
-                                        {{ home_discounted_price($detailedProduct) }}
-                                    </strong>
-                                    @if ($detailedProduct->unit != null)
-                                    <span class="">/{{ $detailedProduct->getTranslation('unit') }}</span>
-                                    @endif
+                            @if (home_price($detailedProduct) != home_discounted_price($detailedProduct))
+                                <div class="row no-gutters mt-3">
+                                    <div class="col-sm-2">
+                                        <div class="my-2 primary-title">{{ translate('Price') }}:</div>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <div class="fs-20">
+                                            <del>
+                                                {{ home_price($detailedProduct) }}
+                                                @if ($detailedProduct->unit != null)
+                                                    <span>/{{ $detailedProduct->getTranslation('unit') }}</span>
+                                                @endif
+                                            </del>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        @endif
+
+                                <div class="row no-gutters my-2">
+                                    <div class="col-sm-2">
+                                        <div class="primary-title">{{ translate('Discount Price') }}:</div>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <div class="">
+                                            <strong class="h2 fw-600 text-primary">
+                                                {{ home_discounted_price($detailedProduct) }}
+                                            </strong>
+                                            @if ($detailedProduct->unit != null)
+                                                <span class="">/{{ $detailedProduct->getTranslation('unit') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="row no-gutters mt-3">
+                                    <div class="col-sm-2">
+                                        <div class="my-2 primary-title">{{ translate('Price') }}:</div>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <div class="">
+                                            <strong class="h2 fw-600 text-primary">
+                                                {{ home_discounted_price($detailedProduct) }}
+                                            </strong>
+                                            @if ($detailedProduct->unit != null)
+                                            <span class="">/{{ $detailedProduct->getTranslation('unit') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
                         @endif
 
                         @if (addon_is_activated('club_point') && $detailedProduct->earn_point > 0)
@@ -309,7 +450,7 @@
                                 <div class="col-sm-10">
                                     <div class="product-price">
                                         <strong id="chosen_price" class="h4 fw-600 text-primary">
-
+fff
                                         </strong>
                                     </div>
                                 </div>

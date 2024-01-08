@@ -54,12 +54,12 @@
                         <div class="shadow-sm bg-white p-3 p-lg-4 rounded text-left">
                             <div class="mb-4">
                                 <div class="row gutters-5 d-none d-lg-flex border-bottom mb-3 pb-3">
-                                    <div class="col-md-5 fw-600">{{ translate('Product') }}</div>
-                                    <div class="col fw-600">{{ translate('Price') }}</div>
-                                    <div class="col fw-600">{{ translate('Tax') }}</div>
-                                    <div class="col fw-600">{{ translate('Quantity') }}</div>
-                                    <div class="col fw-600">{{ translate('Total') }}</div>
-                                    <div class="col-auto fw-600">{{ translate('Remove') }}</div>
+                                    <div class="col-md-6 fw-600">{{ translate('Product') }}</div>
+                                    <div class="col text-center fw-600">{{ translate('Price') }}</div>
+                                    <!--<div class="col fw-600">{{ translate('Tax') }}</div>-->
+                                    <div class="col text-center fw-600">{{ translate('Quantity') }}</div>
+                                    <div class="col text-center fw-600">{{ translate('Total') }}</div>
+                                    <div class="col-auto text-center fw-600">{{ translate('Remove') }}</div>
                                 </div>
                                 <ul class="list-group list-group-flush">
                                     @php
@@ -78,7 +78,7 @@
                                         @endphp
                                         <li class="list-group-item px-0 px-lg-3">
                                             <div class="row gutters-5">
-                                                <div class="col-lg-5 d-flex">
+                                                <div class="col-lg-6 d-flex">
                                                     <span class="mr-2 ml-0">
                                                         <img src="{{ uploaded_asset($product->thumbnail_img) }}"
                                                             class="img-fit size-60px rounded"
@@ -87,20 +87,21 @@
                                                     <span class="fs-14 opacity-60">{{ $product_name_with_choice }}</span>
                                                 </div>
 
-                                                <div class="col-lg col-4 order-1 order-lg-0 my-3 my-lg-0">
+                                                <div class="col-lg col-4 text-center order-1 order-lg-0 my-3 my-lg-0">
                                                     <span
                                                         class="opacity-60 fs-12 d-block d-lg-none">{{ translate('Price') }}</span>
                                                     <span
                                                         class="fw-600 fs-16">{{ cart_product_price($cartItem, $product, true, false) }}</span>
                                                 </div>
+                                                <!--
                                                 <div class="col-lg col-4 order-2 order-lg-0 my-3 my-lg-0">
                                                     <span
                                                         class="opacity-60 fs-12 d-block d-lg-none">{{ translate('Tax') }}</span>
                                                     <span
                                                         class="fw-600 fs-16">{{ cart_product_tax($cartItem, $product) }}</span>
                                                 </div>
-
-                                                <div class="col-lg col-6 order-4 order-lg-0">
+                                                -->
+                                                <div class="col-lg col-6 justify-center order-4 order-lg-0">
                                                     @if ($cartItem['digital'] != 1 && $product->auction_product == 0)
                                                         <div
                                                             class="row no-gutters align-items-center aiz-plus-minus mr-2 ml-0">
@@ -127,7 +128,7 @@
                                                         <span class="fw-600 fs-16">1</span>
                                                     @endif
                                                 </div>
-                                                <div class="col-lg col-4 order-3 order-lg-0 my-3 my-lg-0">
+                                                <div class="col-lg col-4 order-3 text-center order-lg-0 my-3 my-lg-0">
                                                     <span
                                                         class="opacity-60 fs-12 d-block d-lg-none">{{ translate('Total') }}</span>
                                                     <span
