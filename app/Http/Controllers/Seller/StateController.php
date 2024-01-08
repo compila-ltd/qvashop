@@ -36,6 +36,8 @@ class StateController extends Controller
         }
         if ($request->sort_country) {
             $state_queries->where('country_id', $request->sort_country);
+        }else{
+            $state_queries->where('country_id', 1);
         }
 
         $states = $state_queries->orderBy('status', 'desc')->paginate(16);
