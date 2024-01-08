@@ -112,9 +112,9 @@
                     @endif
                     <div class="row align-items-center">
                         <div class="col-md-6 text-center text-md-left order-1 order-md-0">
-                            <a href="{{ route('home') }}" class="btn btn-link">
+                            <a href="{{ route('cart') }}" class="btn btn-link">
                                 <i class="las la-arrow-left"></i>
-                                {{ translate('Return to shop')}}
+                                Retornar al carrito
                             </a>
                         </div>
                         <div class="col-md-6 text-center text-md-right">

@@ -58,6 +58,11 @@
                             <i class="las la-history"></i>
                         </a>
                         @endcan
+                        @if ($seller_withdraw_request->status == 0)
+                            <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('withdraw_request.destroy', $seller_withdraw_request->id)}}" title="{{ translate('Delete') }}">
+                                <i class="las la-trash"></i>
+                            </a>
+                        @endif
                     </td>
                 </tr>
                 @endif
@@ -72,6 +77,9 @@
 @endsection
 
 @section('modal')
+
+@include('modals.delete_modal')
+
 <!-- payment Modal -->
 <div class="modal fade" id="payment_modal">
     <div class="modal-dialog">

@@ -235,9 +235,9 @@
 
                     <div class="row align-items-center pt-3">
                         <div class="col-6">
-                            <a href="{{ route('home') }}" class="link link--style-3">
+                            <a href="{{ route('checkout.shipping_info') }}" class="link link--style-3">
                                 <i class="las la-arrow-left"></i>
-                                {{ translate('Return to shop') }}
+                                Retornar a Información de envío
                             </a>
                         </div>
                         <div class="col-6 text-right">

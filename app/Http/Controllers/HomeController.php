@@ -318,6 +318,8 @@ class HomeController extends Controller
                 // $affiliateController->processAffiliateStats($referred_by_user->id, 1, 0, 0, 0);
             }
 
+            //dd($detailedProduct);
+
             if ($detailedProduct->digital == 1) {
                 return view('frontend.digital_product_details', compact('detailedProduct', 'product_queries', 'total_query'));
             } else {

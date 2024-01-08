@@ -86,6 +86,10 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
+        if( !$request->has('shipping_type') ){
+            $product->shipping_type="flat_rate";
+        }
+        
         if (addon_is_activated('seller_subscription')) {
             if (!seller_package_validity_check()) {
                 return redirect()->route('seller.products')->with('warning', translate('Please upgrade your package.'));
@@ -164,6 +168,9 @@ class ProductController extends Controller
      */
     public function update(ProductRequest $request, Product $product)
     {
+        if( !$request->has('shipping_type') ){
+            $product->shipping_type="flat_rate";
+        }
         //Product
         $product = $this->productService->update($request->except([
             '_token',

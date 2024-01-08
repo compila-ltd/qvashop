@@ -129,9 +129,11 @@ class CheckoutController extends Controller
     public function get_shipping_info(Request $request)
     {
         $carts = Cart::where('user_id', Auth::user()->id)->get();
+        
         // if (Session::has('cart') && count(Session::get('cart')) > 0) {
         if ($carts && count($carts) > 0) {
             $categories = Category::all();
+            //dd($categories);
             return view('frontend.shipping_info', compact('categories', 'carts'));
         }
 
@@ -141,10 +143,12 @@ class CheckoutController extends Controller
     // Store Shipping destination
     public function store_shipping_info(Request $request)
     {
+        //dd($request);
         if ($request->address_id == null)
             return back()->with('warning', translate('Please add shipping address'));
 
         $carts = Cart::where('user_id', Auth::user()->id)->get();
+        //dd($carts);
         if ($carts->isEmpty())
             return redirect()->route('home')->with('warning', translate('Your cart is empty'));
 
@@ -178,6 +182,7 @@ class CheckoutController extends Controller
             return redirect()->route('home')->with('warning', translate('Your cart is empty'));
 
         $shipping_info = Address::where('id', $carts[0]['address_id'])->first();
+
         $total = 0;
         $tax = 0;
         $shipping = 0;
@@ -189,6 +194,8 @@ class CheckoutController extends Controller
                 $tax += cart_product_tax($cartItem, $product, false) * $cartItem['quantity'];
                 $subtotal += cart_product_price($cartItem, $product, false, false) * $cartItem['quantity'];
 
+                //dd($request['shipping_type_' . $product->user_id]);
+
                 if (get_setting('shipping_type') != 'carrier_wise_shipping' || $request['shipping_type_' . $product->user_id] == 'pickup_point') {
                     if ($request['shipping_type_' . $product->user_id] == 'pickup_point') {
                         $cartItem['shipping_type'] = 'pickup_point';
@@ -198,6 +205,7 @@ class CheckoutController extends Controller
                     }
                     $cartItem['shipping_cost'] = 0;
                     if ($cartItem['shipping_type'] == 'home_delivery') {
+                        //dd($carts);
                         $cartItem['shipping_cost'] = getShippingCost($carts, $key);
                     }
                 } else {
@@ -210,7 +218,7 @@ class CheckoutController extends Controller
                 $cartItem->save();
             }
             $total = $subtotal + $tax + $shipping;
-
+            //dd($carts);
             return view('frontend.payment_select', compact('carts', 'shipping_info', 'total'));
         }
 

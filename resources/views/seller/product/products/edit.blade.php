@@ -481,6 +481,18 @@
                 </h5>
             </div>
             <div class="card-body collapse show" id="collapse_2">
+                @if (get_setting('shipping_type') == 'area_wise_shipping')
+                <div class="form-group row">
+                    <label class="col-lg-6 col-from-label">{{ translate('Free Shipping')}}</label>
+                    <div class="col-lg-6">
+                        <label class="aiz-switch aiz-switch-success mb-0">
+                            <input type="checkbox" name="shipping_type" value="free" @if($product->shipping_type == 'free')
+                            checked @endif>
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+                @endif
                 @if (get_setting('shipping_type') == 'product_wise_shipping')
                 <div class="form-group row">
                     <label class="col-lg-6 col-from-label">{{ translate('Free Shipping')}}</label>
@@ -517,9 +529,11 @@
 
 
                 @else
-                <p>
-                    {{ translate('Shipping configuration is maintained by Admin.') }}
-                </p>
+                    @if (get_setting('shipping_type') != 'area_wise_shipping')
+                    <p>
+                        {{ translate('Shipping configuration is maintained by Admin.') }}
+                    </p>
+                    @endif
                 @endif
             </div>
         </div>
