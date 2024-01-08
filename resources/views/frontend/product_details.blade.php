@@ -113,9 +113,10 @@
 
                                         if($user_address){
                                             
-                                            $shop_delivery_state = \App\Models\ShopState::where('shop_id', $shop_id)->where('state_id', $user_address->state_id)->where('status', 1)->first();
+                                            if($shop_id != 0){
+                                                $shop_delivery_state = \App\Models\ShopState::where('shop_id', $shop_id)->where('state_id', $user_address->state_id)->where('status', 1)->first();
                                                 
-                                            if($shop_delivery_state){
+                                                if($shop_delivery_state)
                                                     $shop_delivery_city = \App\Models\ShopCity::where('shop_id', $shop_id)->where('city_id', $user_address->city_id)->where('status', 1)->first();
                                             }else{
                                                 $shop_delivery_state = \App\Models\State::where('id', $user_address->state_id)->where('status', 1)->first();
