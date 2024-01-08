@@ -87,6 +87,7 @@
                                         }
                                     } else {
                                         $admin_delivery_address_error = true;
+                                        array_push($shops_delivery_errors, 'QvaShop');
                                     }
 
                                     $admin_delivery_address_error_check = true;
@@ -102,12 +103,14 @@
                                 $seller_products[$product->user_id] = $product_ids;
 
                                 $shop = \App\Models\Shop::where('user_id', $product->user_id)->first();
-                                
+
                                 if ($shop_delivery_address == '' || $shop_delivery_address != $shop->name) {
                                     $ok_state = \App\Models\ShopState::where('shop_id', $shop->id)
                                                 ->where('state_id', $delivery_address->state_id)
                                                 ->where('status', 1)
                                                 ->first();
+
+                                    //dd($ok_state);
 
                                     if ($ok_state) {
                                         $ok_city = \App\Models\ShopCity::where('shop_id', $shop->id)
@@ -118,6 +121,8 @@
                                         if (!$ok_city) {
                                             array_push($shops_delivery_errors, $shop->name);
                                         }
+                                    }else{
+                                        array_push($shops_delivery_errors, $shop->name);
                                     }
 
                                     $shop_delivery_address = $shop->name;
