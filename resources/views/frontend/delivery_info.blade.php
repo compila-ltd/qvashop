@@ -245,7 +245,7 @@
                                                 </div>
                                             @endif
 
-                                            @if (count($pickup_point_list) > 0)
+                                            @if (count($pickup_point_list) > 0 && !$all_digitals_products)
                                             <div class="col-6">
                                                 <label class="aiz-megabox d-block bg-white mb-0">
                                                     <input type="radio"
@@ -435,7 +435,7 @@
                                                     </div>
                                                 @endif
 
-                                                @if (count($pickup_point_list) > 0)
+                                                @if (count($pickup_point_list) > 0 && !$all_digitals_products)
                                                     <div class="col-6">
                                                         <label class="aiz-megabox d-block bg-white mb-0">
                                                             <input type="radio" 
