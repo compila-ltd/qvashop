@@ -58,6 +58,8 @@
                         $delivery_address = \App\Models\Address::where('id', $carts[0]['address_id'])->first();
                         //dd($delivery_address);
 
+                        $all_digitals_products_error = true;
+
                         $shops_delivery_errors = [];
                         $admin_delivery_address_error = false;
                         $admin_delivery_address_error_check = false;
@@ -67,6 +69,8 @@
 
                         foreach ($carts as $key => $cartItem){
                             $product = \App\Models\Product::find($cartItem['product_id']);
+
+                            //dd($product);
 
                             if ($product->added_by == 'admin') {
                                 array_push($admin_products, $cartItem['product_id']);
@@ -151,9 +155,17 @@
                             </div>
                             <div class="card-body">
                                 <ul class="list-group list-group-flush">
+                                    @php
+                                        $product_count = count($admin_products);
+                                        $all_digitals_products = true;
+                                    @endphp
                                     @foreach ($admin_products as $key => $cartItem)
                                         @php
                                             $product = \App\Models\Product::find($cartItem);
+                                            if($product->category_id != 4){
+                                                $all_digitals_products = false;
+                                                $all_digitals_products_error = false;
+                                            }
                                         @endphp
                                         <li class="list-group-item">
                                             <div class="d-flex">
@@ -162,7 +174,13 @@
                                                         class="img-fit size-60px rounded"
                                                         alt="{{ $product->getTranslation('name') }}">
                                                 </span>
-                                                <span class="fs-14 opacity-60">{{ $product->getTranslation('name') }}</span>
+                                                <span class="fs-14 opacity-60">
+                                                    {{ $product->getTranslation('name') }}
+                                                    @php 
+                                                        if($product->category_id == 4)
+                                                            echo "(Envío gratis por email)";
+                                                    @endphp
+                                                </span>
                                             </div>
                                         </li>
                                     @endforeach
@@ -174,43 +192,57 @@
                                     <div class="col-md-7">
                                         <div class="row gutters-5">
                                             @if (get_setting('shipping_type') != 'carrier_wise_shipping')
-                                                @if (!in_array('QvaShop', $shops_delivery_errors))
+                                                @if(($product_count == 1 && $product->category_id == 4) || $all_digitals_products)
+                                                    <div class="col-6">
+                                                        <label class="aiz-megabox d-block bg-white mb-0">
+                                                            <input type="radio" name="shipping_type_{{ $key }}"
+                                                                value="home_delivery" onchange="show_pickup_point(this, {{ $key }})"
+                                                                data-target=".pickup_point_id_{{ $key }}" checked>
+                                                            <span class="d-flex p-3 aiz-megabox-elem">
+                                                                <span class="aiz-rounded-check flex-shrink-0 mt-1"></span>
+                                                                <span class="flex-grow-1 pl-3 fw-600">Envío gratis por email</span>
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                @else    
+                                                    @if (!in_array('QvaShop', $shops_delivery_errors))
+                                                        <div class="col-6">
+                                                            <label class="aiz-megabox d-block bg-white mb-0">
+                                                                <input type="radio"
+                                                                    name="shipping_type_{{ \App\Models\User::where('user_type', 'admin')->first()->id }}"
+                                                                    value="home_delivery" onchange="show_pickup_point(this, 'admin')"
+                                                                    data-target=".pickup_point_id_admin" checked>
+                                                                <span class="d-flex p-3 aiz-megabox-elem">
+                                                                    <span class="aiz-rounded-check flex-shrink-0 mt-1"></span>
+                                                                    <span class="flex-grow-1 pl-3 fw-600">{{ translate('Home Delivery') }}: ${{$city_admin->cost}}</span>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    @else
+                                                        <div class="col-6">
+                                                            <label class="aiz-megabox d-block bg-white mb-0">
+                                                                <span class="d-flex p-3 aiz-megabox-elem">
+                                                                    No entregan a domicilio en tu dirección
+                                                                </span>
+                                                            </label>
+
+                                                        </div>
+                                                    @endif
+                                                @endif
+                                            @else
                                                 <div class="col-6">
                                                     <label class="aiz-megabox d-block bg-white mb-0">
                                                         <input type="radio"
                                                             name="shipping_type_{{ \App\Models\User::where('user_type', 'admin')->first()->id }}"
-                                                            value="home_delivery" onchange="show_pickup_point(this, 'admin')"
+                                                            value="carrier" onchange="show_pickup_point(this, 'admin')"
                                                             data-target=".pickup_point_id_admin" checked>
                                                         <span class="d-flex p-3 aiz-megabox-elem">
                                                             <span class="aiz-rounded-check flex-shrink-0 mt-1"></span>
-                                                            <span class="flex-grow-1 pl-3 fw-600">{{ translate('Home Delivery') }}: ${{$city_admin->cost}}</span>
+                                                            <span class="flex-grow-1 pl-3 fw-600">{{ translate('Carrier')
+                                                                }}</span>
                                                         </span>
                                                     </label>
                                                 </div>
-                                                @else
-                                                <div class="col-6">
-                                                    <label class="aiz-megabox d-block bg-white mb-0">
-                                                        <span class="d-flex p-3 aiz-megabox-elem">
-                                                            No entregan a domicilio en tu dirección
-                                                        </span>
-                                                    </label>
-
-                                                </div>
-                                                @endif
-                                            @else
-                                            <div class="col-6">
-                                                <label class="aiz-megabox d-block bg-white mb-0">
-                                                    <input type="radio"
-                                                        name="shipping_type_{{ \App\Models\User::where('user_type', 'admin')->first()->id }}"
-                                                        value="carrier" onchange="show_pickup_point(this, 'admin')"
-                                                        data-target=".pickup_point_id_admin" checked>
-                                                    <span class="d-flex p-3 aiz-megabox-elem">
-                                                        <span class="aiz-rounded-check flex-shrink-0 mt-1"></span>
-                                                        <span class="flex-grow-1 pl-3 fw-600">{{ translate('Carrier')
-                                                            }}</span>
-                                                    </span>
-                                                </label>
-                                            </div>
                                             @endif
 
                                             @if (count($pickup_point_list) > 0)
@@ -250,7 +282,10 @@
                                         </div>
                                         @else
                                             @if (in_array('QvaShop', $shops_delivery_errors))
-                                                @php $delivery_error = true; @endphp
+                                                @php 
+                                                    if($product->category_id != 4)
+                                                        $delivery_error = true; 
+                                                @endphp
                                             @endif
                                         @endif
                                     </div>
@@ -312,9 +347,17 @@
                                 </div>
                                 <div class="card-body">
                                     <ul class="list-group list-group-flush">
+                                        @php
+                                            $product_count = count($seller_product);
+                                            $all_digitals_products = true;
+                                        @endphp
                                         @foreach ($seller_product as $cartItem)
                                             @php
                                                 $product = \App\Models\Product::find($cartItem);
+                                                if($product->category_id != 4){
+                                                    $all_digitals_products = false;
+                                                    $all_digitals_products_error = false;
+                                                }
                                             @endphp
                                             <li class="list-group-item">
                                                 <div class="d-flex">
@@ -323,7 +366,13 @@
                                                             class="img-fit size-60px rounded"
                                                             alt="{{ $product->getTranslation('name') }}">
                                                     </span>
-                                                    <span class="fs-14 opacity-60">{{ $product->getTranslation('name') }}</span>
+                                                    <span class="fs-14 opacity-60">
+                                                        {{ $product->getTranslation('name') }}
+                                                        @php 
+                                                            if($product->category_id == 4)
+                                                                echo "(Envío gratis por email)";
+                                                        @endphp
+                                                    </span>
                                                 </div>
                                             </li>
                                         @endforeach
@@ -335,27 +384,41 @@
                                         <div class="col-md-7">
                                             <div class="row gutters-5">
                                                 @if (get_setting('shipping_type') != 'carrier_wise_shipping')
-                                                    @if ((!in_array($shop->name, $shops_delivery_errors))&&($city_shop))
-                                                    <div class="col-6">
-                                                        <label class="aiz-megabox d-block bg-white mb-0">
-                                                            <input type="radio" name="shipping_type_{{ $key }}"
-                                                                value="home_delivery" onchange="show_pickup_point(this, {{ $key }})"
-                                                                data-target=".pickup_point_id_{{ $key }}" checked>
-                                                            <span class="d-flex p-3 aiz-megabox-elem">
-                                                                <span class="aiz-rounded-check flex-shrink-0 mt-1"></span>
-                                                                <span class="flex-grow-1 pl-3 fw-600">{{ translate('Home Delivery') }}</span>
-                                                            </span>
-                                                        </label>
-                                                    </div>
+                                                    @if(($product_count == 1 && $product->category_id == 4) || $all_digitals_products)
+                                                        <div class="col-6">
+                                                            <label class="aiz-megabox d-block bg-white mb-0">
+                                                                <input type="radio" name="shipping_type_{{ $key }}"
+                                                                    value="home_delivery" onchange="show_pickup_point(this, {{ $key }})"
+                                                                    data-target=".pickup_point_id_{{ $key }}" checked>
+                                                                <span class="d-flex p-3 aiz-megabox-elem">
+                                                                    <span class="aiz-rounded-check flex-shrink-0 mt-1"></span>
+                                                                    <span class="flex-grow-1 pl-3 fw-600">Envío gratis por email</span>
+                                                                </span>
+                                                            </label>
+                                                        </div>
                                                     @else
-                                                    <div class="col-6">
-                                                        <label class="aiz-megabox d-block bg-white mb-0">
-                                                            <span class="d-flex p-3 aiz-megabox-elem">
-                                                                No entregan a domicilio en tu dirección
-                                                            </span>
-                                                        </label>
+                                                        @if ((!in_array($shop->name, $shops_delivery_errors))&&($city_shop))
+                                                            <div class="col-6">
+                                                                <label class="aiz-megabox d-block bg-white mb-0">
+                                                                    <input type="radio" name="shipping_type_{{ $key }}"
+                                                                        value="home_delivery" onchange="show_pickup_point(this, {{ $key }})"
+                                                                        data-target=".pickup_point_id_{{ $key }}" checked>
+                                                                    <span class="d-flex p-3 aiz-megabox-elem">
+                                                                        <span class="aiz-rounded-check flex-shrink-0 mt-1"></span>
+                                                                        <span class="flex-grow-1 pl-3 fw-600">{{ translate('Home Delivery') }}: ${{$city_shop->cost}}</span>
+                                                                    </span>
+                                                                </label>
+                                                            </div>
+                                                        @else
+                                                            <div class="col-6">
+                                                                <label class="aiz-megabox d-block bg-white mb-0">
+                                                                    <span class="d-flex p-3 aiz-megabox-elem">
+                                                                        No entregan a domicilio en tu dirección
+                                                                    </span>
+                                                                </label>
 
-                                                    </div>
+                                                            </div>
+                                                        @endif
                                                     @endif
                                                 @else
                                                     <div class="col-6">
@@ -407,7 +470,10 @@
                                                 </div>
                                             @else
                                                 @if (in_array($shop->name, $shops_delivery_errors))
-                                                    @php $delivery_error = true; @endphp
+                                                    @php 
+                                                        if($product->category_id != 4)
+                                                            $delivery_error = true; 
+                                                    @endphp
                                                 @endif
                                             @endif
                                         </div>
@@ -449,8 +515,16 @@
                             <i class="la la-angle-left"></i>
                             Retornar a Información de envío
                         </a>
-                        <button type="submit" class="btn fw-600 btn-primary" @if ($delivery_error) disabled @endif>{{
-                            translate('Continue to Payment') }}</button>
+                        @php 
+                          //dd($all_digitals_products_error);
+                        @endphp
+                        @if(!$delivery_error && !$all_digitals_products_error)
+                            <button type="submit" class="btn fw-600 btn-primary">{{
+                                translate('Continue to Payment') }}</button>
+                        @else
+                            <button type="submit" class="btn fw-600 btn-primary" disabled>{{
+                                translate('Continue to Payment') }}</button>
+                        @endif
                     </div>
                 </form>
             </div>

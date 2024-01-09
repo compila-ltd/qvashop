@@ -87,15 +87,17 @@ class CityController extends Controller
         //dd($id);
         $shop = Auth::user()->shop;
         $city = ShopCity::where('shop_id', $shop->id)->where('city_id', $id)->first();
-
+        
         if($city){
             $city_temp = City::where('id', $city->city_id)->first();
             $city->name = $city_temp->name;
         }else{
             $city = City::where('id', $id)->first();
             $city->cost = 0.00;
+            $city->city_id = $id;
         }
-
+        
+        //dd($city);
         return view('seller.cities.edit', compact('city'));
     }
 

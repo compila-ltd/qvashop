@@ -84,7 +84,13 @@
                                                             class="img-fit size-60px rounded"
                                                             alt="{{ $product->getTranslation('name') }}">
                                                     </span>
-                                                    <span class="fs-14 opacity-60">{{ $product_name_with_choice }}</span>
+                                                    <span class="fs-14 opacity-60">
+                                                        {{ $product_name_with_choice }} 
+                                                        @php 
+                                                            if ($product->category_id == 4)
+                                                                echo "(Envío gratis por email)";
+                                                        @endphp
+                                                    </span>
                                                 </div>
 
                                                 <div class="col-lg col-4 text-center order-1 order-lg-0 my-3 my-lg-0">

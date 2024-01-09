@@ -170,32 +170,47 @@
                             @endif
                         </div>
                         
-                        @if(Auth::user())
-                            @if(!$shop_delivery_state)
-                                <div class="row align-items-center">
-                                    <div class="col-sm-12">
-                                        <div class="my-2">No tiene entrega a domicilio en tu provincia, según tu dirección de entrega por defecto</div>
-                                    </div>
-                                </div>
-                            @endif
-                        @endif
-
-                        @if(Auth::user())
-                            @if(($shop_delivery_state)&&(!$shop_delivery_city))
-                                <div class="row align-items-center">
-                                    <div class="col-sm-12">
-                                        <div class="my-2">No tiene entrega a domicilio en tu municipio, según tu dirección de entrega por defecto</div>
-                                    </div>
-                                </div>
-                            @endif
-                        @endif
-
-                        @if(($shop_delivery_state)&&($shop_delivery_city))
-                            <div class="row">
+                        @if($detailedProduct->category_id == 4)
+                            <div class="row align-items-center">
                                 <div class="col-sm-12">
-                                    <div class="my-2">Costo de envío a domicilio: ${{ $shop_delivery_city->cost }}</div>
+                                    <div class="my-2">Este es un producto digital, se envía mediante email, libre de costo de envío</div>
                                 </div>
                             </div>
+                            @else
+                                @if(Auth::user())
+                                    @if(!$shop_delivery_state)
+                                        <div class="row align-items-center">
+                                            <div class="col-sm-12">
+                                                <div class="my-2 text-danger">No tiene entrega a domicilio en tu provincia, según tu dirección de entrega por defecto</div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endif
+
+                                @if(Auth::user())
+                                    @if(($shop_delivery_state)&&(!$shop_delivery_city))
+                                        <div class="row align-items-center">
+                                            <div class="col-sm-12">
+                                                <div class="my-2 text-danger">No tiene entrega a domicilio en tu municipio, según tu dirección de entrega por defecto</div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endif
+
+                                @if(($shop_delivery_state)&&($shop_delivery_city))
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="my-2">Costo de envío a domicilio: 
+                                                @php 
+                                                    if($shop_delivery_city->cost == 0)
+                                                        echo "Gratis";
+                                                    else    
+                                                        echo "$".$shop_delivery_city->cost 
+                                                @endphp
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
                         @endif
                                                 
                         <p>
