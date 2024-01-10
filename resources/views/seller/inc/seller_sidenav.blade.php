@@ -49,14 +49,14 @@
                                 <span class="aiz-side-nav-text">{{ translate('Product Bulk Upload') }}</span>
                             </a>
                         </li>
-                        <!--
+                        
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('seller.digitalproducts') }}"
                                 class="aiz-side-nav-link {{ areActiveRoutes(['seller.digitalproducts', 'seller.digitalproducts.create', 'seller.digitalproducts.edit']) }}">
                                 <span class="aiz-side-nav-text">{{ translate('Digital Products') }}</span>
                             </a>
                         </li>
-                        -->
+                        
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('seller.reviews') }}"
                                 class="aiz-side-nav-link {{ areActiveRoutes(['seller.reviews']) }}">

@@ -40,7 +40,7 @@
                 <div class="col-xl-4 col-lg-6 mb-4">
                     <div class="sticky-top z-3 row gutters-10">
                         @php
-                        $photos = explode(',', $detailedProduct->photos);
+                            $photos = explode(',', $detailedProduct->photos);
                         @endphp
                         <div class="col order-1 order-md-2">
                             <div class="aiz-carousel product-gallery" data-nav-for='.product-gallery-thumb' data-fade='true' data-auto-height='true'>
@@ -170,7 +170,7 @@
                             @endif
                         </div>
                         
-                        @if($detailedProduct->category_id == 4)
+                        @if($detailedProduct->digital == 1)
                             <div class="row align-items-center">
                                 <div class="col-sm-12">
                                     <div class="my-2">Este es un producto digital, se envía mediante email, libre de costo de envío</div>
@@ -221,7 +221,6 @@
                                 <div class="collapse multi-collapse" id="multiCollapseExample1">
                                 <div class="card card-body">
                                     @php 
-
                                         $shop_active_states = [];
                                         $cities_all = [];
 
@@ -394,49 +393,55 @@
                             <input type="hidden" name="id" value="{{ $detailedProduct->id }}">
 
                             @if ($detailedProduct->choice_options != null)
-                            @foreach (json_decode($detailedProduct->choice_options) as $key => $choice)
-                            <div class="row no-gutters">
-                                <div class="col-sm-2">
-                                    <div class="my-2 primary-title">
-                                        {{ \App\Models\Attribute::find($choice->attribute_id)->getTranslation('name') }}:
+                                @foreach (json_decode($detailedProduct->choice_options) as $key => $choice)
+                                    <div class="row no-gutters">
+                                        <div class="col-sm-2">
+                                            <div class="my-2 primary-title">
+                                                {{ \App\Models\Attribute::find($choice->attribute_id)->getTranslation('name') }}:
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <div class="aiz-radio-inline">
+                                                @foreach ($choice->values as $key => $value)
+                                                <label class="aiz-megabox pl-0 mr-2">
+                                                    <input type="radio" name="attribute_id_{{ $choice->attribute_id }}" value="{{ $value }}" @if ($key==0) checked @endif>
+                                                    <span class="aiz-megabox-elem rounded d-flex align-items-center justify-content-center py-2 px-3 mb-2">
+                                                        {{ $value }}
+                                                    </span>
+                                                </label>
+                                                @endforeach
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-sm-10">
-                                    <div class="aiz-radio-inline">
-                                        @foreach ($choice->values as $key => $value)
-                                        <label class="aiz-megabox pl-0 mr-2">
-                                            <input type="radio" name="attribute_id_{{ $choice->attribute_id }}" value="{{ $value }}" @if ($key==0) checked @endif>
-                                            <span class="aiz-megabox-elem rounded d-flex align-items-center justify-content-center py-2 px-3 mb-2">
-                                                {{ $value }}
-                                            </span>
-                                        </label>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
-                            @endforeach
+                                @endforeach
                             @endif
 
-                            @if (count(json_decode($detailedProduct->colors)) > 0)
-                            <div class="row no-gutters">
-                                <div class="col-sm-2">
-                                    <div class="my-2 primary-title">{{ translate('Color') }}:</div>
-                                </div>
-                                <div class="col-sm-10">
-                                    <div class="aiz-radio-inline">
-                                        @foreach (json_decode($detailedProduct->colors) as $key => $color)
-                                        <label class="aiz-megabox pl-0 mr-2" data-toggle="tooltip" data-title="{{ \App\Models\Color::where('code', $color)->first()->name }}">
-                                            <input type="radio" name="color" value="{{ \App\Models\Color::where('code', $color)->first()->name }}" @if ($key==0) checked @endif>
-                                            <span class="aiz-megabox-elem rounded d-flex align-items-center justify-content-center p-1 mb-2">
-                                                <span class="size-30px d-inline-block rounded" style="background: {{ $color }};"></span>
-                                            </span>
-                                        </label>
-                                        @endforeach
+                            @php 
+                                //dd($detailedProduct);
+                            @endphp
+
+                            @if($detailedProduct->digital != 1)
+                                @if (count(json_decode($detailedProduct->colors)) > 0)
+                                <div class="row no-gutters">
+                                    <div class="col-sm-2">
+                                        <div class="my-2 primary-title">{{ translate('Color') }}:</div>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <div class="aiz-radio-inline">
+                                            @foreach (json_decode($detailedProduct->colors) as $key => $color)
+                                            <label class="aiz-megabox pl-0 mr-2" data-toggle="tooltip" data-title="{{ \App\Models\Color::where('code', $color)->first()->name }}">
+                                                <input type="radio" name="color" value="{{ \App\Models\Color::where('code', $color)->first()->name }}" @if ($key==0) checked @endif>
+                                                <span class="aiz-megabox-elem rounded d-flex align-items-center justify-content-center p-1 mb-2">
+                                                    <span class="size-30px d-inline-block rounded" style="background: {{ $color }};"></span>
+                                                </span>
+                                            </label>
+                                            @endforeach
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <hr>
+                                
+                                <hr>
+                                @endif
                             @endif
 
                             <!-- Quantity + Add to cart -->
@@ -456,10 +461,11 @@
                                             </button>
                                         </div>
                                         @php
-                                        $qty = 0;
-                                        foreach ($detailedProduct->stocks as $key => $stock) {
-                                        $qty += $stock->qty;
-                                        }
+                                            $qty = 0;
+                                            
+                                            foreach ($detailedProduct->stocks as $key => $stock) {
+                                                $qty += $stock->qty;
+                                            }
                                         @endphp
                                         <div class="avialable-amount">
                                             @if ($detailedProduct->stock_visibility_state == 'quantity')

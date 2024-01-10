@@ -38,6 +38,7 @@
                         </select>
                     </div>
                 </div>
+                <!--
                 <div class="form-group row">
                     <label class="col-lg-3 col-from-label">{{ translate('Product File')}} <span class="text-danger">*</span></label>
                     <div class="col-lg-9">
@@ -52,6 +53,7 @@
                         </div>
                     </div>
                 </div>
+                -->
                 <div class="form-group row">
                     <label class="col-lg-3 col-from-label">{{ translate('Tags')}} <span class="text-danger">*</span></label>
                     <div class="col-lg-9">
@@ -144,12 +146,14 @@
                         <input type="number" lang="en" min="0" value="0" step="0.01" placeholder="{{ translate('Unit price')}}" name="unit_price" class="form-control" required>
                     </div>
                 </div>
+                <!--
                 <div class="form-group row">
                     <label class="col-lg-3 col-from-label">{{ translate('Purchase price')}} <span class="text-danger">*</span></label>
                     <div class="col-lg-9">
                         <input type="number" lang="en" min="0" value="0" step="0.01" placeholder="{{ translate('Purchase price')}}" name="purchase_price" class="form-control" required>
                     </div>
                 </div>
+                -->
                 @foreach (\App\Models\Tax::where('tax_status', 1)->get() as $tax)
                 <div class="form-group row">
                     <label class="col-lg-3 col-from-label">

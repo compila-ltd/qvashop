@@ -320,11 +320,14 @@ class HomeController extends Controller
 
             //dd($detailedProduct);
 
+            return view('frontend.product_details', compact('schemaProduct', 'detailedProduct', 'product_queries', 'total_query'));
+            /*
             if ($detailedProduct->digital == 1) {
                 return view('frontend.digital_product_details', compact('detailedProduct', 'product_queries', 'total_query'));
             } else {
                 return view('frontend.product_details', compact('schemaProduct', 'detailedProduct', 'product_queries', 'total_query'));
             }
+            */
         }
 
         abort(404);
