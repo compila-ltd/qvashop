@@ -149,12 +149,14 @@
                         </li>
                         @endcan
                         @endif
+                        <!--
                         @can('show_digital_products')
                         <li class="aiz-side-nav-item">
                             <a href="{{route('digitalproducts.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['digitalproducts.index', 'digitalproducts.create', 'digitalproducts.edit']) }}">
                                 <span class="aiz-side-nav-text">{{ translate('Digital Products') }}</span>
                             </a>
                         </li>
+                        -->
                         @endcan
                         @can('view_product_categories')
                         <li class="aiz-side-nav-item">

@@ -322,6 +322,7 @@
                         </div>
                     </div>
                 </div>
+                <!--
                 <div class="form-group row">
                     <label class="col-md-3 col-from-label">
                         {{ translate('External link')}}
@@ -340,6 +341,7 @@
                         <small class="text-muted">{{ translate('Leave it blank if you do not use external site link')}}</small>
                     </div>
                 </div>
+                -->
                 <br>
                 <div class="sku_combination" id="sku_combination">
 
@@ -432,7 +434,27 @@
 </div>
 
 <div class="col-lg-4">
-
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0 h6">
+                {{ translate('Shipping Configuration')}}
+            </h5>
+        </div>
+        <div class="card-body">
+            @if (get_setting('shipping_type') == 'area_wise_shipping')
+                <div class="form-group row">
+                    <label class="col-md-6 col-from-label">Solo recogida en almacén (Punto de recogida)</label>
+                    <div class="col-md-6">
+                        <label class="aiz-switch aiz-switch-success mb-0">
+                            <input type="checkbox" name="only_pickup_point" value="1" @if($product->only_pickup_point == 1) checked @endif>
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+            @endif
+        </div>
+    </div>
+    <!--
     <div class="card">
         <div class="card-header">
             <h5 class="mb-0 h6" class="dropdown-toggle" data-toggle="collapse" data-target="#collapse_2">
@@ -488,8 +510,9 @@
             </p>
             @endif
         </div>
+        
     </div>
-
+    -->
     <div class="card">
         <div class="card-header">
             <h5 class="mb-0 h6">{{ translate('Low Stock Quantity Warning')}}</h5>

@@ -186,6 +186,65 @@
                 </div>
             </div>
         </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0 h6">{{ translate('Product Variation')}}</h5>
+            </div>
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" value="{{ translate('Colors')}}" disabled>
+                    </div>
+                    <div class="col-md-8">
+                        <select class="form-control aiz-selectpicker" data-live-search="true" name="colors[]"
+                            data-selected-text-format="count" id="colors" multiple disabled>
+                            @foreach (\App\Models\Color::orderBy('name', 'asc')->get() as $key => $color)
+                            <option value="{{ $color->code }}"
+                                data-content="<span><span class='size-15px d-inline-block mr-2 rounded border' style='background:{{ $color->code }}'></span><span>{{ $color->name }}</span></span>">
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <label class="aiz-switch aiz-switch-success mb-0">
+                            <input value="1" type="checkbox" name="colors_active">
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" value="{{ translate('Attributes')}}" disabled>
+                    </div>
+                    <div class="col-md-8">
+                        <select name="choice_attributes[]" id="choice_attributes"
+                            class="form-control aiz-selectpicker" data-live-search="true"
+                            data-selected-text-format="count" multiple
+                            data-placeholder="{{ translate('Choose Attributes') }}">
+                            @foreach (\App\Models\Attribute::all() as $key => $attribute)
+                            <option value="{{ $attribute->id }}">{{ $attribute->getTranslation('name') }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <p>{{ translate('Choose the attributes of this product and then input values of each attribute') }}
+                    </p>
+                    <br>
+                </div>
+
+                <div class="customer_choice_options" id="customer_choice_options">
+
+                </div>
+            </div>
+
+            <div class="sku_combination" id="sku_combination">
+
+            </div>
+        </div>
+        
         <div class="card">
             <div class="card-header">
                 <h5 class="mb-0 h6">{{ translate('Product Information')}}</h5>
@@ -204,4 +263,105 @@
         </div>
     </form>
 
+@endsection
+
+@section('script')
+<script type="text/javascript">
+
+function add_more_customer_choice_option(i, name){
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type:"POST",
+                url:'{{ route('seller.products.add-more-choice-option') }}',
+                data:{
+                attribute_id: i
+                },
+                success: function(data) {
+                    var obj = JSON.parse(data);
+                    $('#customer_choice_options').append('\
+                    <div class="form-group row">\
+                        <div class="col-md-3">\
+                            <input type="hidden" name="choice_no[]" value="'+i+'">\
+                            <input type="text" class="form-control" name="choice[]" value="'+name+'" placeholder="{{ translate('Choice Title') }}" readonly>\
+                        </div>\
+                        <div class="col-md-8">\
+                            <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_'+ i +'[]" multiple>\
+                                '+obj+'\
+                            </select>\
+                        </div>\
+                    </div>');
+                    AIZ.plugins.bootstrapSelect('refresh');
+            }
+        });
+
+
+        }
+
+        $('input[name="colors_active"]').on('change', function() {
+            if(!$('input[name="colors_active"]').is(':checked')){
+                $('#colors').prop('disabled', true);
+                AIZ.plugins.bootstrapSelect('refresh');
+            }
+            else{
+                $('#colors').prop('disabled', false);
+                AIZ.plugins.bootstrapSelect('refresh');
+            }
+            update_sku();
+        });
+
+        $(document).on("change", ".attribute_choice",function() {
+            update_sku();
+        });
+
+        $('#colors').on('change', function() {
+            update_sku();
+        });
+
+        $('input[name="unit_price"]').on('keyup', function() {
+            update_sku();
+        });
+
+        $('input[name="name"]').on('keyup', function() {
+            update_sku();
+        });
+
+        function delete_row(em){
+            $(em).closest('.form-group row').remove();
+            update_sku();
+        }
+
+        function delete_variant(em){
+            $(em).closest('.variant').remove();
+        }
+
+        function update_sku(){
+            $.ajax({
+               type:"POST",
+               url:'{{ route('seller.products.sku_combination') }}',
+               data:$('#choice_form').serialize(),
+               success: function(data){
+                   $('#sku_combination').html(data);
+                    AIZ.plugins.fooTable();
+                   if (data.length > 1) {
+                       $('#show-hide-div').hide();
+                   }
+                   else {
+                        $('#show-hide-div').show();
+                   }
+               }
+           });
+        }
+
+        $('#choice_attributes').on('change', function() {
+            $('#customer_choice_options').html(null);
+            $.each($("#choice_attributes option:selected"), function(){
+                add_more_customer_choice_option($(this).val(), $(this).text());
+            });
+            update_sku();
+        });
+
+</script>
+    
 @endsection

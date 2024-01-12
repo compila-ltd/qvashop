@@ -58,7 +58,7 @@
                         $delivery_address = \App\Models\Address::where('id', $carts[0]['address_id'])->first();
                         //dd($delivery_address);
 
-                        $all_digitals_products_error = true;
+                        $all_cart_digitals_products = true;
 
                         $shops_delivery_errors = [];
                         $admin_delivery_address_error = false;
@@ -158,14 +158,18 @@
                                     @php
                                         $product_count = count($admin_products);
                                         $all_digitals_products = true;
+                                        $one_only_pickup_point = false;
                                     @endphp
                                     @foreach ($admin_products as $key => $cartItem)
                                         @php
                                             $product = \App\Models\Product::find($cartItem);
-                                            if($product->category_id != 4){
+                                            if($product->digital != 1){
                                                 $all_digitals_products = false;
-                                                $all_digitals_products_error = false;
+                                                $all_cart_digitals_products = false;
                                             }
+
+                                            if($product->only_pickup_point == 1)
+                                                $one_only_pickup_point = true;
                                         @endphp
                                         <li class="list-group-item">
                                             <div class="d-flex">
@@ -177,8 +181,10 @@
                                                 <span class="fs-14 opacity-60">
                                                     {{ $product->getTranslation('name') }}
                                                     @php 
-                                                        if($product->category_id == 4)
+                                                        if($product->digital == 1)
                                                             echo "(Envío gratis por email)";
+                                                        if($one_only_pickup_point && $product->digital != 1)
+                                                            echo "(Solo recogida en almacén)"
                                                     @endphp
                                                 </span>
                                             </div>
@@ -192,7 +198,7 @@
                                     <div class="col-md-7">
                                         <div class="row gutters-5">
                                             @if (get_setting('shipping_type') != 'carrier_wise_shipping')
-                                                @if(($product_count == 1 && $product->category_id == 4) || $all_digitals_products)
+                                                @if(($product_count == 1 && $product->digital == 1) || $all_digitals_products)
                                                     <div class="col-6">
                                                         <label class="aiz-megabox d-block bg-white mb-0">
                                                             <input type="radio" name="shipping_type_{{ $key }}"
@@ -204,29 +210,45 @@
                                                             </span>
                                                         </label>
                                                     </div>
-                                                @else    
-                                                    @if (!in_array('QvaShop', $shops_delivery_errors))
+                                                @else 
+                                                    @if($one_only_pickup_point)
                                                         <div class="col-6">
                                                             <label class="aiz-megabox d-block bg-white mb-0">
-                                                                <input type="radio"
-                                                                    name="shipping_type_{{ \App\Models\User::where('user_type', 'admin')->first()->id }}"
-                                                                    value="home_delivery" onchange="show_pickup_point(this, 'admin')"
-                                                                    data-target=".pickup_point_id_admin" checked>
                                                                 <span class="d-flex p-3 aiz-megabox-elem">
-                                                                    <span class="aiz-rounded-check flex-shrink-0 mt-1"></span>
-                                                                    <span class="flex-grow-1 pl-3 fw-600">{{ translate('Home Delivery') }}: ${{$city_admin->cost}}</span>
+                                                                    Solo recogida en almacén
                                                                 </span>
                                                             </label>
                                                         </div>
                                                     @else
-                                                        <div class="col-6">
-                                                            <label class="aiz-megabox d-block bg-white mb-0">
-                                                                <span class="d-flex p-3 aiz-megabox-elem">
-                                                                    No entregan a domicilio en tu dirección
-                                                                </span>
-                                                            </label>
-
-                                                        </div>
+                                                        @if (!in_array('QvaShop', $shops_delivery_errors))
+                                                            <div class="col-6">
+                                                                <label class="aiz-megabox d-block bg-white mb-0">
+                                                                    <input type="radio"
+                                                                        name="shipping_type_{{ \App\Models\User::where('user_type', 'admin')->first()->id }}"
+                                                                        value="home_delivery" onchange="show_pickup_point(this, 'admin')"
+                                                                        data-target=".pickup_point_id_admin" checked>
+                                                                    <span class="d-flex p-3 aiz-megabox-elem">
+                                                                        <span class="aiz-rounded-check flex-shrink-0 mt-1"></span>
+                                                                        <span class="flex-grow-1 pl-3 fw-600">
+                                                                            {{ translate('Home Delivery') }}: 
+                                                                            @php 
+                                                                                if($city_admin->cost == 0)
+                                                                                    echo "Gratis";
+                                                                                else    
+                                                                                    echo single_price($city_admin->cost);
+                                                                            @endphp    
+                                                                        </span>
+                                                                </label>
+                                                            </div>
+                                                        @else
+                                                            <div class="col-6">
+                                                                <label class="aiz-megabox d-block bg-white mb-0">
+                                                                    <span class="d-flex p-3 aiz-megabox-elem">
+                                                                        No entregan a domicilio en tu dirección
+                                                                    </span>
+                                                                </label>
+                                                            </div>
+                                                        @endif
                                                     @endif
                                                 @endif
                                             @else
@@ -251,22 +273,36 @@
                                                     <input type="radio"
                                                         name="shipping_type_{{ \App\Models\User::where('user_type', 'admin')->first()->id }}"
                                                         value="pickup_point" 
-                                                        @if (in_array('QvaShop', $shops_delivery_errors)) checked @endif
+                                                        @if (in_array("QvaShop", $shops_delivery_errors) || $one_only_pickup_point) checked @endif
                                                         onchange="show_pickup_point(this, 'admin')"
                                                         data-target=".pickup_point_id_admin">
                                                     <span class="d-flex p-3 aiz-megabox-elem">
                                                         <span class="aiz-rounded-check flex-shrink-0 mt-1"></span>
-                                                        <span class="flex-grow-1 pl-3 fw-600">{{ translate('Local Pickup')
-                                                            }}</span>
+                                                        <span class="flex-grow-1 pl-3 fw-600">{{ translate('Local Pickup') }}</span>
                                                     </span>
                                                 </label>
                                             </div>
+                                            @else
+                                                @if(!$all_digitals_products)
+                                                    <div class="col-6">
+                                                        <label class="aiz-megabox d-block bg-white mb-0">
+                                                            <span class="d-flex p-3 aiz-megabox-elem">
+                                                                No tiene punto de recogida activo
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                @endif
+                                            @endif
+
+                                            @if ((count($pickup_point_list) == 0) && ($one_only_pickup_point))
+                                                @php
+                                                    $delivery_error = true;
+                                                @endphp
                                             @endif
 
                                         </div>
-                                        @if (count($pickup_point_list) > 0)
-                                        <div
-                                            class="mt-4 pickup_point_id_admin @if (in_array('QvaShop', $shops_delivery_errors)) d-block @else d-none @endif">
+                                        @if (count($pickup_point_list) > 0 && !$all_digitals_products)
+                                        <div class="mt-4 pickup_point_id_admin @if (in_array('QvaShop', $shops_delivery_errors) || $one_only_pickup_point) d-block @else d-none @endif">
                                             <select class="form-control aiz-selectpicker"
                                                 name="pickup_point_id_{{ \App\Models\User::where('user_type', 'admin')->first()->id }}"
                                                 data-live-search="true">
@@ -283,7 +319,7 @@
                                         @else
                                             @if (in_array('QvaShop', $shops_delivery_errors))
                                                 @php 
-                                                    if($product->category_id != 4)
+                                                    if($product->digital != 1)
                                                         $delivery_error = true; 
                                                 @endphp
                                             @endif
@@ -350,14 +386,20 @@
                                         @php
                                             $product_count = count($seller_product);
                                             $all_digitals_products = true;
+                                            $one_only_pickup_point = false;
                                         @endphp
                                         @foreach ($seller_product as $cartItem)
                                             @php
                                                 $product = \App\Models\Product::find($cartItem);
-                                                if($product->category_id != 4){
+                                                if($product->digital != 1){
                                                     $all_digitals_products = false;
-                                                    $all_digitals_products_error = false;
+                                                    $all_cart_digitals_products = false;
                                                 }
+
+                                                if($product->only_pickup_point == 1)
+                                                    $one_only_pickup_point = true;
+
+                                                //dd($all_cart_digitals_products);
                                             @endphp
                                             <li class="list-group-item">
                                                 <div class="d-flex">
@@ -369,8 +411,12 @@
                                                     <span class="fs-14 opacity-60">
                                                         {{ $product->getTranslation('name') }}
                                                         @php 
-                                                            if($product->category_id == 4)
+                                                            if($product->digital == 1)
                                                                 echo "(Envío gratis por email)";
+                                                                
+                                                            if($one_only_pickup_point && $product->digital != 1){
+                                                                echo "(Solo recogida en almacén)";
+                                                            }
                                                         @endphp
                                                     </span>
                                                 </div>
@@ -384,7 +430,7 @@
                                         <div class="col-md-7">
                                             <div class="row gutters-5">
                                                 @if (get_setting('shipping_type') != 'carrier_wise_shipping')
-                                                    @if(($product_count == 1 && $product->category_id == 4) || $all_digitals_products)
+                                                    @if(($product_count == 1 && $product->digital == 1) || $all_digitals_products)
                                                         <div class="col-6">
                                                             <label class="aiz-megabox d-block bg-white mb-0">
                                                                 <input type="radio" name="shipping_type_{{ $key }}"
@@ -397,27 +443,45 @@
                                                             </label>
                                                         </div>
                                                     @else
-                                                        @if ((!in_array($shop->name, $shops_delivery_errors))&&($city_shop))
+                                                        @if($one_only_pickup_point)
                                                             <div class="col-6">
                                                                 <label class="aiz-megabox d-block bg-white mb-0">
-                                                                    <input type="radio" name="shipping_type_{{ $key }}"
-                                                                        value="home_delivery" onchange="show_pickup_point(this, {{ $key }})"
-                                                                        data-target=".pickup_point_id_{{ $key }}" checked>
                                                                     <span class="d-flex p-3 aiz-megabox-elem">
-                                                                        <span class="aiz-rounded-check flex-shrink-0 mt-1"></span>
-                                                                        <span class="flex-grow-1 pl-3 fw-600">{{ translate('Home Delivery') }}: ${{$city_shop->cost}}</span>
+                                                                        Solo recogida en almacén
                                                                     </span>
                                                                 </label>
                                                             </div>
                                                         @else
-                                                            <div class="col-6">
-                                                                <label class="aiz-megabox d-block bg-white mb-0">
-                                                                    <span class="d-flex p-3 aiz-megabox-elem">
-                                                                        No entregan a domicilio en tu dirección
-                                                                    </span>
-                                                                </label>
+                                                            @if ((!in_array($shop->name, $shops_delivery_errors))&&($city_shop))
+                                                                <div class="col-6">
+                                                                    <label class="aiz-megabox d-block bg-white mb-0">
+                                                                        <input type="radio" name="shipping_type_{{ $key }}"
+                                                                            value="home_delivery" onchange="show_pickup_point(this, {{ $key }})"
+                                                                            data-target=".pickup_point_id_{{ $key }}" checked>
+                                                                        <span class="d-flex p-3 aiz-megabox-elem">
+                                                                            <span class="aiz-rounded-check flex-shrink-0 mt-1"></span>
+                                                                            <span class="flex-grow-1 pl-3 fw-600">
+                                                                                {{ translate('Home Delivery') }}: 
+                                                                                @php 
+                                                                                    if($city_shop->cost == 0)
+                                                                                        echo "Gratis";
+                                                                                    else    
+                                                                                        echo single_price($city_shop->cost); 
+                                                                                @endphp    
+                                                                            </span>
+                                                                        </span>
+                                                                    </label>
+                                                                </div>
+                                                            @else
+                                                                <div class="col-6">
+                                                                    <label class="aiz-megabox d-block bg-white mb-0">
+                                                                        <span class="d-flex p-3 aiz-megabox-elem">
+                                                                            No entregan a domicilio en tu dirección
+                                                                        </span>
+                                                                    </label>
 
-                                                            </div>
+                                                                </div>
+                                                            @endif
                                                         @endif
                                                     @endif
                                                 @else
@@ -441,21 +505,36 @@
                                                             <input type="radio" 
                                                                 name="shipping_type_{{ $key }}" 
                                                                 value="pickup_point"
-                                                                @if (in_array($shop->name, $shops_delivery_errors)) checked @endif
+                                                                @if (in_array($shop->name, $shops_delivery_errors) || $one_only_pickup_point) checked @endif
                                                                 onchange="show_pickup_point(this, {{ $key }})"
                                                                 data-target=".pickup_point_id_{{ $key }}">
                                                             <span class="d-flex p-3 aiz-megabox-elem">
                                                                 <span class="aiz-rounded-check flex-shrink-0 mt-1"></span>
-                                                                <span class="flex-grow-1 pl-3 fw-600">{{ translate('Local Pickup')
-                                                                    }}</span>
+                                                                <span class="flex-grow-1 pl-3 fw-600">{{ translate('Local Pickup') }}</span>
                                                             </span>
                                                         </label>
                                                     </div>
+                                                @else
+                                                    @if(!$all_digitals_products)
+                                                        <div class="col-6">
+                                                            <label class="aiz-megabox d-block bg-white mb-0">
+                                                                <span class="d-flex p-3 aiz-megabox-elem">
+                                                                    No tiene punto de recogida activo
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    @endif
+                                                @endif
+
+                                                @if ((count($pickup_point_list) == 0) && ($one_only_pickup_point))
+                                                    @php
+                                                        $delivery_error = true;
+                                                    @endphp
                                                 @endif
                                             </div>
-                                            @if (count($pickup_point_list) > 0)
+                                            @if (count($pickup_point_list) > 0 && !$all_digitals_products)
                                                 <div
-                                                    class="mt-4 pickup_point_id_{{ $key }} @if (in_array($shop->name, $shops_delivery_errors)) d-block @else d-none @endif">
+                                                    class="mt-4 pickup_point_id_{{ $key }} @if (in_array($shop->name, $shops_delivery_errors) || $one_only_pickup_point) d-block @else d-none @endif">
                                                     <select class="form-control aiz-selectpicker" name="pickup_point_id_{{ $key }}"
                                                         data-live-search="true">
                                                         @foreach ($pickup_point_list as $pick_up_point)
@@ -471,7 +550,7 @@
                                             @else
                                                 @if (in_array($shop->name, $shops_delivery_errors))
                                                     @php 
-                                                        if($product->category_id != 4)
+                                                        if($product->digital != 1)
                                                             $delivery_error = true; 
                                                     @endphp
                                                 @endif
@@ -516,14 +595,20 @@
                             Retornar a Información de envío
                         </a>
                         @php 
-                          //dd($all_digitals_products_error);
+                          //dd($all_cart_digitals_products);
                         @endphp
-                        @if(!$delivery_error && !$all_digitals_products_error)
+
+                        @if($all_cart_digitals_products)
                             <button type="submit" class="btn fw-600 btn-primary">{{
                                 translate('Continue to Payment') }}</button>
                         @else
-                            <button type="submit" class="btn fw-600 btn-primary" disabled>{{
-                                translate('Continue to Payment') }}</button>
+                            @if(!$delivery_error)
+                                <button type="submit" class="btn fw-600 btn-primary">{{
+                                    translate('Continue to Payment') }}</button>
+                            @else
+                                <button type="submit" class="btn fw-600 btn-primary" disabled>{{
+                                    translate('Continue to Payment') }}</button>
+                            @endif
                         @endif
                     </div>
                 </form>

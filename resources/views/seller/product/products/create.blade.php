@@ -165,6 +165,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="card">
                 <div class="card-header">
                     <h5 class="mb-0 h6">{{ translate('Product Variation')}}</h5>
@@ -218,6 +219,7 @@
                     </div>
                 </div>
             </div>
+   
             <div class="card">
                 <div class="card-header">
                     <h5 class="mb-0 h6">{{ translate('Product price + stock')}}</h5>
@@ -255,7 +257,7 @@
 
                     <div id="show-hide-div">
                         <div class="form-group row">
-                            <label class="col-md-3 col-from-label">{{ translate('Quantity')}}</label>
+                            <label class="col-md-3 col-from-label">Cantidad en Stock</label>
                             <div class="col-md-6">
                                 <input type="number" lang="en" min="0" value="0" step="1"
                                     placeholder="{{ translate('Quantity') }}" name="current_stock" class="form-control"
@@ -271,6 +273,7 @@
                             </div>
                         </div>
                     </div>
+                    <!--
                     <div class="form-group row">
                         <label class="col-md-3 col-from-label">
                             {{ translate('External link')}}
@@ -289,6 +292,7 @@
                             <small class="text-muted">{{ translate('Leave it blank if you do not use external site link')}}</small>
                         </div>
                     </div>
+                    -->
                     <br>
                     <div class="sku_combination" id="sku_combination">
 
@@ -312,7 +316,7 @@
                     </div>
                 </div>
             </div>
-
+            
             <div class="card">
                 <div class="card-header">
                     <h5 class="mb-0 h6">{{ translate('PDF Specification')}}</h5>
@@ -384,6 +388,27 @@
                         {{ translate('Shipping Configuration')}}
                     </h5>
                 </div>
+                <div class="card-body">
+                    @if (get_setting('shipping_type') == 'area_wise_shipping')
+                        <div class="form-group row">
+                            <label class="col-md-6 col-from-label">Solo recogida en almacén (Punto de recogida)</label>
+                            <div class="col-md-6">
+                                <label class="aiz-switch aiz-switch-success mb-0">
+                                    <input type="checkbox" name="only_pickup_point" value="1">
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
+            <!--
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0 h6">
+                        {{ translate('Shipping Configuration')}}
+                    </h5>
+                </div>
 
                 <div class="card-body">
                     @if (get_setting('shipping_type') == 'area_wise_shipping')
@@ -438,6 +463,7 @@
                     @endif
                 </div>
             </div>
+            -->
 
             <div class="card">
                 <div class="card-header">

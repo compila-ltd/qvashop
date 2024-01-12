@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Color;
 use App\Models\Product;
+use App\Models\Category;
 use App\Models\User;
 use App\Utility\ProductUtility;
 use Combinations;
@@ -14,6 +15,25 @@ class ProductService
     public function store(array $data)
     {
         $collection = collect($data);
+
+        //dd($collection);
+        
+        $category = Category::where('id', $collection['category_id'])->first();
+        
+        $digital = 0;
+        $only_pickup_point = 0;
+
+        if($category->digital == 1){
+            $digital = 1;
+            $collection['digital'] = 1;
+        }else{
+            if (isset($collection['only_pickup_point'])) {
+                $only_pickup_point = 1;
+            }
+            unset($collection['only_pickup_point']);
+        }
+
+        //dd($collection);
 
         $approved = 1;
         if (auth()->user()->user_type == 'seller') {
@@ -139,6 +159,8 @@ class ProductService
             'choice_options',
             'attributes',
             'published',
+            'only_pickup_point',
+            'digital'
         ))->toArray();
 
         return Product::create($data);
@@ -147,6 +169,22 @@ class ProductService
     public function update(array $data, Product $product)
     {
         $collection = collect($data);
+
+        $category = Category::where('id', $collection['category_id'])->first();
+        
+        $digital = 0;
+
+        if($category->digital == 1){
+            $digital = 1;
+            $collection['digital'] = 1;
+            $collection['only_pickup_point'] = 0;
+        }else{
+            if (!isset($collection['only_pickup_point'])) {
+                $collection['only_pickup_point'] = 0;
+            }
+        }
+
+        //dd($collection);
 
         $slug = Str::slug($collection['name']);
         $slug = $collection['slug'] ? Str::slug($collection['slug']) : Str::slug($collection['name']);
@@ -171,6 +209,8 @@ class ProductService
         if (!isset($collection['todays_deal'])) {
             $collection['todays_deal'] = 0;
         }
+
+        //dd($collection);
 
         if ($collection['lang'] != env("DEFAULT_LANGUAGE")) {
             unset($collection['name']);
@@ -281,6 +321,7 @@ class ProductService
             'colors',
             'choice_options',
             'attributes',
+            'digital'
         ))->toArray();
 
         $product->update($data);

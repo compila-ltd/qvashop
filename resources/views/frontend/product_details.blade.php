@@ -176,6 +176,13 @@
                                     <div class="my-2">Este es un producto digital, se envía mediante email, libre de costo de envío</div>
                                 </div>
                             </div>
+                        @else
+                            @if($detailedProduct->only_pickup_point == 1)
+                                <div class="row align-items-center">
+                                    <div class="col-sm-12">
+                                        <div class="my-2">Este no tiene envío a domicilio. Solo se puede recoger en el punto de recogida</div>
+                                    </div>
+                                </div>
                             @else
                                 @if(Auth::user())
                                     @if(!$shop_delivery_state)
@@ -211,10 +218,11 @@
                                         </div>
                                     </div>
                                 @endif
+                            @endif
                         @endif
                                                 
                         <p>
-                            <a class="" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Ver costos de envío a domicilio de {{ $shop_name }}</a>
+                            <a class="" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Ver puntos de recogida (almacén) y costos de envío a domicilio de {{ $shop_name }}</a>
                         </p>         
                         <div class="row">
                             <div class="col">
@@ -223,6 +231,8 @@
                                     @php 
                                         $shop_active_states = [];
                                         $cities_all = [];
+
+                                        $pickup_points = [];
 
                                         if($shop_id == 0){
                                             $shop_active_states = \App\Models\State::where('status', 1)
@@ -238,7 +248,11 @@
                                                         ->get();
                                         }
 
-                                        //dd($shop_active_states);
+                                        $pickup_points = \App\Models\PickupPoint::where('shop_id', $shop_id)
+                                                        ->where('pick_up_status', 1)
+                                                        ->get();
+
+                                        //dd($pickup_points);
                                                                                 
                                         //dd($cities_all);
 
@@ -271,24 +285,56 @@
                                         <thead>
                                             <tr>
                                                 <th width="1%">#</th>
+                                                <th width="20%">{{ translate('Name')}} almacén</th>
+                                                <th>{{ translate('Address')}}</th>
+                                                <th class="text-center">{{ translate('Phone')}}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>        
+                                            @if(count($pickup_points)>0)               
+                                                @foreach($pickup_points as $key => $point)
+                                                    <tr>
+                                                        <td>{{ $key+1 }}</td>
+                                                        <td>{{ $point->name }}</td>
+                                                        <td>{{ $point->address }}</td>
+                                                        <td class="text-center">{{ $point->phone }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            @else
+                                                <tr>
+                                                    <td colspan="100%" class="text-center">Esta tienda no tiene configurado ningún punto de recogida</td>
+                                                </tr>
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                    <table class="table aiz-table mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th width="1%">#</th>
                                                 <th width="20%">{{ translate('State')}}</th>
                                                 <th>Municipio</th>
                                                 <th class="text-center">Costo de envío (USD)</th>
                                             </tr>
                                         </thead>
-                                        <tbody>                       
-                                            @foreach($cities_for_delivery as $key => $city)
+                                        <tbody>
+                                            @if(count($cities_for_delivery) > 0)                       
+                                                @foreach($cities_for_delivery as $key => $city)
+                                                    <tr>
+                                                        <td>{{ $key+1 }}</td>
+                                                        <td>{{ $city->state->name }}</td>
+                                                        <td>{{ $city->name }}</td>
+                                                        <td class="text-center">
+                                                        @php 
+                                                            echo single_price($city->cost) == "$0.00" ? 'Gratis' : single_price($city->cost);
+                                                        @endphp
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            @else
                                                 <tr>
-                                                    <td>{{ $key+1 }}</td>
-                                                    <td>{{ $city->state->name }}</td>
-                                                    <td>{{ $city->name }}</td>
-                                                    <td class="text-center">
-                                                    @php 
-                                                        echo single_price($city->cost) == "$0.00" ? 'Gratis' : single_price($city->cost);
-                                                    @endphp
-                                                    </td>
+                                                    <td colspan="100%" class="text-center">Esta tienda no realiza envíos a domicilio</td>
                                                 </tr>
-                                            @endforeach
+                                            @endif
                                         </tbody>
                                     </table>
                                 </div>
@@ -478,7 +524,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <hr>
 
                             <div class="row no-gutters pb-3 d-none" id="chosen_price_div">
@@ -497,23 +542,46 @@ fff
                         </form>
 
                         <div class="mt-3">
+                            @if($detailedProduct->only_pickup_point == 1 && count($pickup_points) == 0)
+                                <span class="text-danger">La tienda no tiene ningún punto de recogida activo</span>  
+                            @else              
+                                @if((count($pickup_points) > 0) || (count($cities_for_delivery) > 0) || $detailedProduct->digital == 1)
+                                    <button type="button" class="btn btn-soft-primary mr-2 add-to-cart fw-600" onclick="addToCart()">
+                                        <i class="las la-shopping-bag"></i>
+                                        <span class="d-none d-md-inline-block"> {{ translate('Add to cart') }}</span>
+                                    </button>
+                                    <button type="button" class="btn btn-primary buy-now fw-600" onclick="buyNow()">
+                                        <i class="la la-shopping-cart"></i> {{ translate('Buy Now') }}
+                                    </button>
+                                @else
+                                    <span class="text-danger">La tienda aún no tiene configurado el envío a domicilio o algún punto de recogida</span>
+                                @endif
+                            @endif
+                                <button type="button" class="btn btn-secondary out-of-stock fw-600 d-none" disabled>
+                                    <i class="la la-cart-arrow-down"></i> {{ translate('Out of Stock') }}
+                                </button>
+                        </div>
+
+                        <!--
+                        <div class="mt-3">
                             @if ($detailedProduct->external_link != null)
-                            <a type="button" class="btn btn-primary buy-now fw-600" href="{{ $detailedProduct->external_link }}">
-                                <i class="la la-share"></i> {{ translate($detailedProduct->external_link_btn) }}
-                            </a>
+                                <a type="button" class="btn btn-primary buy-now fw-600" href="{{ $detailedProduct->external_link }}">
+                                    <i class="la la-share"></i> {{ translate($detailedProduct->external_link_btn) }}
+                                </a>
                             @else
-                            <button type="button" class="btn btn-soft-primary mr-2 add-to-cart fw-600" onclick="addToCart()">
-                                <i class="las la-shopping-bag"></i>
-                                <span class="d-none d-md-inline-block"> {{ translate('Add to cart') }}</span>
-                            </button>
-                            <button type="button" class="btn btn-primary buy-now fw-600" onclick="buyNow()">
-                                <i class="la la-shopping-cart"></i> {{ translate('Buy Now') }}
-                            </button>
+                                <button type="button" class="btn btn-soft-primary mr-2 add-to-cart fw-600" onclick="addToCart()">
+                                    <i class="las la-shopping-bag"></i>
+                                    <span class="d-none d-md-inline-block"> {{ translate('Add to cart') }}</span>
+                                </button>
+                                <button type="button" class="btn btn-primary buy-now fw-600" onclick="buyNow()">
+                                    <i class="la la-shopping-cart"></i> {{ translate('Buy Now') }}
+                                </button>
                             @endif
                             <button type="button" class="btn btn-secondary out-of-stock fw-600 d-none" disabled>
                                 <i class="la la-cart-arrow-down"></i> {{ translate('Out of Stock') }}
                             </button>
                         </div>
+                        -->
 
 
 

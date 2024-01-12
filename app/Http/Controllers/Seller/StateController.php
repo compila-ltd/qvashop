@@ -138,12 +138,13 @@ class StateController extends Controller
 
         if($state){
             $state->status = $request->status;
-
+            
             $state->save();
         }else{
             $new_state = new ShopState;
             $new_state->shop_id = $shop->id;
             $new_state->state_id = $request->id;
+            $new_state->status = $request->status;
 
             $new_state->save();
         }
