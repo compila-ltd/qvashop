@@ -75,15 +75,16 @@
                     <tr>
                         <th>#</th>
                         <th width="30%">{{ translate('Name')}}</th>
-                        <th data-breakpoints="md">{{ translate('Category')}}</th>
-                        <th data-breakpoints="md">{{ translate('Current Qty')}}</th>
-                        <th>{{ translate('Base Price')}}</th>
+                        <th data-breakpoints="md" class="text-center">{{ translate('Category')}}</th>
+                        <th data-breakpoints="md" class="text-center">{{ translate('Current Qty')}}</th>
+                        <th class="text-center">{{ translate('Base Price')}}</th>
                         @if(get_setting('product_approve_by_admin') == 1)
                             <th data-breakpoints="md">{{ translate('Approval')}}</th>
                         @endif
-                        <th data-breakpoints="md">{{ translate('Published')}}</th>
-                        <th data-breakpoints="md">{{ translate('Featured')}}</th>
-                        <th data-breakpoints="md" class="text-right">{{ translate('Options')}}</th>
+                        <th data-breakpoints="md" class="text-center">{{ translate('Published')}}</th>
+                        <th data-breakpoints="md" class="text-center">{{ translate('Featured')}}</th>
+                        <th data-breakpoints="md" class="text-center">Solo recogida en almacén</th>
+                        <th data-breakpoints="md" class="text-center">{{ translate('Options')}}</th>
                     </tr>
                 </thead>
 
@@ -96,12 +97,12 @@
                                     {{ $product->getTranslation('name') }}
                                 </a>
                             </td>
-                            <td>
+                            <td class="text-center">
                                 @if ($product->category != null)
                                     {{ $product->category->getTranslation('name') }}
                                 @endif
                             </td>
-                            <td>
+                            <td class="text-center">
                                 @php
                                     $qty = 0;
                                     foreach ($product->stocks as $key => $stock) {
@@ -110,9 +111,9 @@
                                     echo $qty;
                                 @endphp
                             </td>
-                            <td>{{ $product->unit_price }}</td>
+                            <td class="text-center">{{ $product->unit_price }}</td>
                             @if(get_setting('product_approve_by_admin') == 1)
-                                <td>
+                                <td class="text-center">
                                     @if ($product->approved == 1)
                                         <span class="badge badge-inline badge-success">{{ translate('Approved')}}</span>
                                     @else
@@ -120,18 +121,29 @@
                                     @endif
                                 </td>
                             @endif
-                            <td>
+                            <td class="text-center">
                                 <label class="aiz-switch aiz-switch-success mb-0">
                                     <input onchange="update_published(this)" value="{{ $product->id }}" type="checkbox" <?php if($product->published == 1) echo "checked";?> >
                                     <span class="slider round"></span>
                                 </label>
                             </td>
-                            <td>
+                            <td class="text-center">
                                 <label class="aiz-switch aiz-switch-success mb-0">
                                     <input onchange="update_featured(this)" value="{{ $product->id }}" type="checkbox" <?php if($product->seller_featured == 1) echo "checked";?> >
                                     <span class="slider round"></span>
                                 </label>
                             </td>
+                            <td class="text-center">
+                                <label class="aiz-switch aiz-switch-success mb-0">
+                                @if($product->digital != 1)
+                                    <input onchange="update_only_pickup_point(this)" value="{{ $product->id }}" type="checkbox" <?php if($product->only_pickup_point == 1) echo "checked";?> >
+                                    <span class="slider round"></span>
+                                @else
+                                    <span class="">-</span>
+                                @endif
+                                </label>
+                            </td>
+                            
                             <td class="text-right">
 		                      <a class="btn btn-soft-info btn-icon btn-circle btn-sm" href="{{route('seller.products.edit', ['id'=>$product->id, 'lang'=>env('DEFAULT_LANGUAGE')])}}" title="{{ translate('Edit') }}">
 		                          <i class="las la-edit"></i>
@@ -171,6 +183,24 @@
             $.post('{{ route('seller.products.featured') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
                 if(data == 1){
                     AIZ.plugins.notify('success', '{{ translate('Featured products updated successfully') }}');
+                }
+                else{
+                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                    location.reload();
+                }
+            });
+        }
+
+        function update_only_pickup_point(el){
+            if(el.checked){
+                var status = 1;
+            }
+            else{
+                var status = 0;
+            }
+            $.post('{{ route('seller.products.only_pickup_point') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
+                if(data == 1){
+                    AIZ.plugins.notify('success', 'Actualizado correctamente');
                 }
                 else{
                     AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');

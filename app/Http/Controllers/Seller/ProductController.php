@@ -46,7 +46,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $search = null;
-        $products = Product::where('user_id', Auth::user()->id)->where('digital', 0)->orderBy('created_at', 'desc');
+        $products = Product::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc');
         if ($request->has('search')) {
             $search = $request->search;
             $products = $products->where('name', 'like', '%' . $search . '%');
@@ -64,7 +64,6 @@ class ProductController extends Controller
         if (addon_is_activated('seller_subscription')) {
             if (seller_package_validity_check()) {
                 $categories = Category::where('parent_id', 0)
-                    ->where('digital', 0)
                     ->with('childrenCategories')
                     ->get();
                 return view('seller.product.products.create', compact('categories'));
@@ -74,7 +73,6 @@ class ProductController extends Controller
         }
 
         $categories = Category::where('parent_id', 0)
-            ->where('digital', 0)
             ->with('childrenCategories')
             ->get();
 
@@ -86,9 +84,11 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
+        /*
         if( !$request->has('shipping_type') ){
-            $product->shipping_type="flat_rate";
+            $product->shipping_type = "flat_rate";
         }
+        */
         
         if (addon_is_activated('seller_subscription')) {
             if (!seller_package_validity_check()) {
@@ -156,7 +156,6 @@ class ProductController extends Controller
         $lang = $request->lang;
         $tags = json_decode($product->tags);
         $categories = Category::where('parent_id', 0)
-            ->where('digital', 0)
             ->with('childrenCategories')
             ->get();
 
@@ -322,6 +321,18 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($request->id);
         $product->seller_featured = $request->status;
+        if ($product->save()) {
+            Artisan::call('view:clear');
+            Artisan::call('cache:clear');
+            return 1;
+        }
+        return 0;
+    }
+
+    public function updateOnlyPickupPoint(Request $request)
+    {
+        $product = Product::findOrFail($request->id);
+        $product->only_pickup_point = $request->status;
         if ($product->save()) {
             Artisan::call('view:clear');
             Artisan::call('cache:clear');

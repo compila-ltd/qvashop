@@ -98,7 +98,7 @@ class ProductController extends Controller
             }
         }
 
-        $products = $products->where('digital', 0)->orderBy('created_at', 'desc')->paginate(15);
+        $products = $products->orderBy('created_at', 'desc')->paginate(15);
 
         return view('backend.product.products.index', compact('products', 'type', 'col_name', 'query', 'stock', 'sort_search'));
     }
@@ -153,7 +153,7 @@ class ProductController extends Controller
             }
         }
 
-        $products = $products->where('digital', 0)->orderBy('created_at', 'desc')->paginate(15);
+        $products = $products->orderBy('created_at', 'desc')->paginate(15);
         $type = 'Seller';
 
         return view('backend.product.products.index', compact('products', 'type', 'col_name', 'query', 'stock', 'seller_id', 'sort_search'));
@@ -221,7 +221,7 @@ class ProductController extends Controller
     public function create()
     {
         // Categories
-        $categories = Category::where('parent_id', 0)->where('digital', 0)->with('childrenCategories')->get();
+        $categories = Category::where('parent_id', 0)->with('childrenCategories')->get();
 
         // Brands
         $brands = Brand::all();
@@ -304,7 +304,6 @@ class ProductController extends Controller
         $lang = $request->lang;
         $tags = json_decode($product->tags);
         $categories = Category::where('parent_id', 0)
-            ->where('digital', 0)
             ->with('childrenCategories')
             ->get();
             
@@ -327,7 +326,6 @@ class ProductController extends Controller
         $tags = json_decode($product->tags);
         // $categories = Category::all();
         $categories = Category::where('parent_id', 0)
-            ->where('digital', 0)
             ->with('childrenCategories')
             ->get();
 
@@ -522,6 +520,18 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($request->id);
         $product->featured = $request->status;
+        if ($product->save()) {
+            Artisan::call('view:clear');
+            Artisan::call('cache:clear');
+            return 1;
+        }
+        return 0;
+    }
+
+    public function updateOnlyPickupPoint(Request $request)
+    {
+        $product = Product::findOrFail($request->id);
+        $product->only_pickup_point = $request->status;
         if ($product->save()) {
             Artisan::call('view:clear');
             Artisan::call('cache:clear');

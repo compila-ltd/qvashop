@@ -823,7 +823,7 @@ function getShippingCost($carts, $index, $carrier = '')
 
     //dd($product);
 
-    if ($product->digital == 1 || $product->category_id == 4) {
+    if ($product->digital == 1) {
         return 0;
     }
 

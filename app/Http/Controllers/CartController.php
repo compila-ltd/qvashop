@@ -53,7 +53,6 @@ class CartController extends Controller
     // Add to Cart
     public function addToCart(Request $request)
     {
-
         $product = Product::find($request->id);
         $carts = array();
         $data = array();
@@ -79,7 +78,8 @@ class CartController extends Controller
         $str = '';
         $tax = 0;
         if ($product->auction_product == 0) {
-            if ($product->digital != 1 && $request->quantity < $product->min_qty) {
+            //if ($product->digital != 1 && $request->quantity < $product->min_qty) {
+            if ($request->quantity < $product->min_qty) {
                 return array(
                     'status' => 0,
                     'cart_count' => count($carts),
@@ -93,7 +93,7 @@ class CartController extends Controller
                 $str = $request['color'];
             }
 
-            if ($product->digital != 1) {
+            //if ($product->digital != 1) {
                 //Gets all the choice values of customer choice option and generate a string like Black-S-Cotton
                 foreach (json_decode(Product::find($request->id)->choice_options) as $key => $choice) {
                     if ($str != null) {
@@ -102,7 +102,7 @@ class CartController extends Controller
                         $str .= str_replace(' ', '', $request['attribute_id_' . $choice->attribute_id]);
                     }
                 }
-            }
+            //}
 
             $data['variation'] = $str;
 

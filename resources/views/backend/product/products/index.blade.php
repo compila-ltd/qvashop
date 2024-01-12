@@ -112,6 +112,7 @@
                         <th data-breakpoints="lg">{{ translate('Approved')}}</th>
                         @endif
                         <th data-breakpoints="lg">{{ translate('Featured')}}</th>
+                        <th data-breakpoints="lg" class="text-center">Solo recogida en almacén</th>
                         <th data-breakpoints="sm" class="text-right">{{ translate('Options')}}</th>
                     </tr>
                 </thead>
@@ -191,6 +192,16 @@
                             <label class="aiz-switch aiz-switch-success mb-0">
                                 <input onchange="update_featured(this)" value="{{ $product->id }}" type="checkbox" <?php if ($product->featured == 1) echo "checked"; ?>>
                                 <span class="slider round"></span>
+                            </label>
+                        </td>
+                        <td class="text-center">
+                            <label class="aiz-switch aiz-switch-success mb-0">
+                                @if($product->digital != 1)
+                                    <input onchange="update_only_pickup_point(this)" value="{{ $product->id }}" type="checkbox" <?php if($product->only_pickup_point == 1) echo "checked";?> >
+                                    <span class="slider round"></span>
+                                @else
+                                    <span class="">-</span>
+                                @endif
                             </label>
                         </td>
                         <td class="text-right">
@@ -325,6 +336,24 @@
                 AIZ.plugins.notify('success', "{{ translate('Featured products updated successfully') }}");
             } else {
                 AIZ.plugins.notify('danger', "{{ translate('Something went wrong') }}");
+            }
+        });
+    }
+
+    function update_only_pickup_point(el){
+        if(el.checked){
+            var status = 1;
+        }
+        else{
+            var status = 0;
+        }
+        $.post('{{ route('products.only_pickup_point') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
+            if(data == 1){
+                AIZ.plugins.notify('success', 'Actualizado correctamente');
+            }
+            else{
+                AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                location.reload();
             }
         });
     }

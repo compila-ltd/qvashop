@@ -87,8 +87,10 @@
                                                     <span class="fs-14 opacity-60">
                                                         {{ $product_name_with_choice }} 
                                                         @php 
-                                                            if ($product->category_id == 4)
+                                                            if($product->digital == 1)
                                                                 echo "(Envío gratis por email)";
+                                                            if($product->only_pickup_point == 1)
+                                                                echo "(Solo recogida en almacén)"
                                                         @endphp
                                                     </span>
                                                 </div>
