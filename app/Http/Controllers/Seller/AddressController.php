@@ -94,7 +94,8 @@ class AddressController extends Controller
 
     public function getStates(Request $request)
     {
-        $states = State::where('status', 1)->where('country_id', $request->country_id)->get();
+        //$states = State::where('status', 1)->where('country_id', $request->country_id)->get();
+        $states = State::where('country_id', $request->country_id)->get();
         $html = '<option value="">' . translate("Select State") . '</option>';
 
         foreach ($states as $state) {
