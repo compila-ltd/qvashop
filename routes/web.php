@@ -31,6 +31,7 @@ use App\Http\Controllers\CustomerPackageController;
 use App\Http\Controllers\CustomerProductController;
 use App\Http\Controllers\Payments\QvaPayController;
 use App\Http\Controllers\PurchaseHistoryController;
+use App\Http\Controllers\CombinedOrderController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Payments\LightningController;
 
@@ -205,11 +206,15 @@ Route::group(['middleware' => ['customer', 'verified', 'unbanned']], function ()
     // Purchase History
     Route::resource('purchase_history', PurchaseHistoryController::class)->except('destroy');
     Route::controller(PurchaseHistoryController::class)->group(function () {
+        Route::get('/purchase_history/order/{id}', 'purchase_history_orders')->name('purchase_history.orders');
         Route::get('/purchase_history/details/{id}', 'purchase_history_details')->name('purchase_history.details');
         Route::get('/purchase_history/destroy/{id}', 'order_cancel')->name('purchase_history.destroy');
         Route::get('digital_purchase_history', 'digital_index')->name('digital_purchase_history.index');
     });
 
+    // Combined Order History
+    Route::resource('combined_order', CombinedOrderController::class)->except('destroy');
+    
     // Wishlist
     Route::resource('wishlists', WishlistController::class);
     Route::post('/wishlists/remove', [WishlistController::class, 'remove'])->name('wishlists.remove');

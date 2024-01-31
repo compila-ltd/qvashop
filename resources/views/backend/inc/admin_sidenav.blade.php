@@ -326,6 +326,11 @@
                     <!--Submenu-->
                     <ul class="aiz-side-nav-list level-2">
                         <li class="aiz-side-nav-item">
+                            <a href="{{ route('combined_orders.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['all_orders.show']) }}">
+                                <span class="aiz-side-nav-text">{{ translate('Combined Orders') }}</span>
+                            </a>
+                        </li>
+                        <li class="aiz-side-nav-item">
                             <a href="{{ route('all_orders.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['all_orders.index', 'all_orders.show']) }}">
                                 <span class="aiz-side-nav-text">{{ translate('All Orders') }}</span>
                                 @if($orders > 0)<span class="badge badge-danger">{{ $orders }}</span>@endif

@@ -35,12 +35,12 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>{{ translate('Order Code')}}</th>
-                            <th data-breakpoints="lg">{{ translate('Num. of Products')}}</th>
-                            <th data-breakpoints="lg">{{ translate('Customer')}}</th>
-                            <th data-breakpoints="md">{{ translate('Amount')}}</th>
-                            <th data-breakpoints="lg">{{ translate('Delivery Status')}}</th>
-                            <th>{{ translate('Payment Status')}}</th>
+                            <th width="10%">{{ translate('Order Code')}}</th>
+                            <th width="10%" class="text-center" data-breakpoints="lg">{{ translate('Num. of Products')}}</th>
+                            <th width="25%" class="text-center" data-breakpoints="lg">{{ translate('Customer')}}</th>
+                            <th class="text-center" data-breakpoints="md">Importe</th>
+                            <th class="text-center" data-breakpoints="lg">{{ translate('Delivery Status')}}</th>
+                            <th class="text-center">{{ translate('Payment Status')}}</th>
                             <th class="text-right">{{ translate('Options')}}</th>
                         </tr>
                     </thead>
@@ -57,20 +57,20 @@
                                     <td>
                                         <a href="#{{ $order->code }}" onclick="show_order_details({{ $order->id }})">{{ $order->code }}</a>
                                     </td>
-                                    <td>
+                                    <td class="text-center" >
                                         {{ count($order->orderDetails->where('seller_id', Auth::user()->id)) }}
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                         @if ($order->user_id != null)
                                             {{ optional($order->user)->name }}
                                         @else
                                             {{ translate('Guest') }} ({{ $order->guest_id }})
                                         @endif
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                         {{ single_price($order->grand_total) }}
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                         @php
                                             $status = $order->delivery_status;
                                         @endphp
@@ -92,7 +92,7 @@
                                             <span class="badge badge-inline badge-dark">{{ translate('Unpaid')}}</span>
                                         @endif
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                         @if ($order->payment_status == 'paid')
                                             <span class="badge badge-inline badge-success">{{ translate('Paid')}}</span>
                                         @else

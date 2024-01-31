@@ -13,10 +13,12 @@
                 $delivery_status = $order->delivery_status;
                 $payment_status = $order->payment_status;
                 $admin_user_id = App\Models\User::where('user_type', 'admin')->first()->id;
+
+                //dd($order);
             @endphp
 
             <!--Assign Delivery Boy-->
-            @if ($order->seller_id == $admin_user_id || get_setting('product_manage_by_admin') == 1)
+            @if ($order->seller_id == $admin_user_id || get_setting('product_manage_by_admin') == 1 || ($order->payment_type == 'cup_payment' && $order->payment_status == 'unpaid') || ($order->payment_type == 'mlc_payment' && $order->payment_status == 'unpaid'))
                 @if (addon_is_activated('delivery_boy'))
                     <div class="col-md-3 ml-auto">
                         <label for="assign_deliver_boy">{{ translate('Assign Deliver Boy') }}</label>
@@ -37,7 +39,8 @@
                         @endif
                     </div>
                 @endif
-
+                <!--
+                //Las ordenes solo se pueden pagar desde ordenes combinadas, que se pagan todas las ordenes que enten en esa orden combinada
                 <div class="col-md-3 ml-auto">
                     <label for="update_payment_status">{{ translate('Payment Status') }}</label>
                     @if (auth()->user()->can('update_order_payment_status'))
@@ -54,34 +57,37 @@
                         <input type="text" class="form-control" value="{{ $payment_status }}" disabled>
                     @endif
                 </div>
-                <div class="col-md-3 ml-auto">
-                    <label for="update_delivery_status">{{ translate('Delivery Status') }}</label>
-                    @if (auth()->user()->can('update_order_delivery_status') && $delivery_status != 'delivered' && $delivery_status != 'cancelled')
-                        <select class="form-control aiz-selectpicker" data-minimum-results-for-search="Infinity"
-                            id="update_delivery_status">
-                            <option value="pending" @if ($delivery_status == 'pending') selected @endif>
-                                {{ translate('Pending') }}
-                            </option>
-                            <option value="in_progress" @if ($delivery_status == 'in_progress') selected @endif>
-                                {{ translate('In progress') }}
-                            </option>
-                            <option value="picked_up" @if ($delivery_status == 'picked_up') selected @endif>
-                                {{ translate('Picked Up') }}
-                            </option>
-                            <option value="on_the_way" @if ($delivery_status == 'on_the_way') selected @endif>
-                                {{ translate('On The Way') }}
-                            </option>
-                            <option value="delivered" @if ($delivery_status == 'delivered') selected @endif>
-                                {{ translate('Delivered') }}
-                            </option>
-                            <option value="cancelled" @if ($delivery_status == 'cancelled') selected @endif>
-                                {{ translate('Cancel') }}
-                            </option>
-                        </select>
-                    @else
-                        <input type="text" class="form-control" value="{{ translate($delivery_status) }}" disabled>
-                    @endif
-                </div>
+                -->
+                @if($order->payment_status == "paid")
+                    <div class="col-md-3 ml-auto">
+                        <label for="update_delivery_status">{{ translate('Delivery Status') }}</label>
+                        @if (auth()->user()->can('update_order_delivery_status') && $delivery_status != 'delivered' && $delivery_status != 'cancelled')
+                            <select class="form-control aiz-selectpicker" data-minimum-results-for-search="Infinity"
+                                id="update_delivery_status">
+                                <option value="pending" @if ($delivery_status == 'pending') selected @endif>
+                                    {{ translate('Pending') }}
+                                </option>
+                                <option value="in_progress" @if ($delivery_status == 'in_progress') selected @endif>
+                                    {{ translate('In progress') }}
+                                </option>
+                                <option value="picked_up" @if ($delivery_status == 'picked_up') selected @endif>
+                                    {{ translate('Picked Up') }}
+                                </option>
+                                <option value="on_the_way" @if ($delivery_status == 'on_the_way') selected @endif>
+                                    {{ translate('On The Way') }}
+                                </option>
+                                <option value="delivered" @if ($delivery_status == 'delivered') selected @endif>
+                                    {{ translate('Delivered') }}
+                                </option>
+                                <option value="cancelled" @if ($delivery_status == 'cancelled') selected @endif>
+                                    {{ translate('Cancel') }}
+                                </option>
+                            </select>
+                        @else
+                            <input type="text" class="form-control" value="{{ translate($delivery_status) }}" disabled>
+                        @endif
+                    </div>
+                @endif
                 <div class="col-md-3 ml-auto">
                     <label for="update_tracking_code">
                         {{ translate('Tracking Code (optional)') }}
@@ -163,13 +169,36 @@
                             <td class="text-main text-bold">{{ translate('Order Date') }} </td>
                             <td class="text-right">{{ date('d-m-Y h:i A', $order->date) }}</td>
                         </tr>
-                        <tr>
-                            <td class="text-main text-bold">{{ translate('Total amount') }}</td>
-                            <td class="text-right">{{ single_price($order->grand_total) }}</td>
-                        </tr>
-                        <tr>
-                            <td class="text-main text-bold">{{ translate('Payment method') }}</td>
-                            <td class="text-right">{{ translate(ucfirst(str_replace('_', ' ', $order->payment_type))) }}</td>
+                        @if($order->payment_type == 'cup_payment')
+                            <tr>
+                                <td class="text-main text-bold">{{ translate('Total amount') }}</td>
+                                <td class="text-right">{{ single_price($order->grand_total_cup) }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-main text-bold">{{ translate('Payment method') }}</td>
+                                <td class="text-right">CUP</td>
+                            </tr>
+                        @else
+                            @if($order->payment_type == 'mlc_payment')
+                                <tr>
+                                    <td class="text-main text-bold">{{ translate('Total amount') }}</td>
+                                    <td class="text-right">{{ single_price($order->grand_total_mlc) }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-main text-bold">{{ translate('Payment method') }}</td>
+                                    <td class="text-right">MLC</td>
+                                </tr>
+                            @else
+                                <tr>
+                                    <td class="text-main text-bold">{{ translate('Total amount') }}</td>
+                                    <td class="text-right">{{ single_price($order->grand_total_mlc) }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-main text-bold">{{ translate('Payment method') }}</td>
+                                    <td class="text-right">QvaPay</td>
+                                </tr>
+                            @endif
+                            @endif
                         </tr>
                         <tr>
                             <td class="text-main text-bold">{{ translate('Additional Info') }}</td>
@@ -188,10 +217,10 @@
                             <th data-breakpoints="lg" class="min-col">#</th>
                             <th width="10%">{{ translate('Photo') }}</th>
                             <th class="text-uppercase">{{ translate('Description') }}</th>
-                            <th data-breakpoints="lg" class="text-uppercase">{{ translate('Delivery Type') }}</th>
+                            <th data-breakpoints="lg" class="text-uppercase text-center">{{ translate('Delivery Type') }}</th>
                             <th data-breakpoints="lg" class="min-col text-uppercase text-center">{{ translate('Qty') }}</th>
                             <th data-breakpoints="lg" class="min-col text-uppercase text-center">{{ translate('Price') }}</th>
-                            <th data-breakpoints="lg" class="min-col text-uppercase text-right">{{ translate('Total') }}</th>
+                            <th data-breakpoints="lg" class="min-col text-uppercase text-center">{{ translate('Total') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -240,7 +269,7 @@
                                         <strong>{{ translate('Product Unavailable') }}</strong>
                                     @endif
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     @if ($order->shipping_type != null && $order->shipping_type == 'home_delivery')
                                         {{ translate('Home Delivery') }}
                                     @elseif ($order->shipping_type == 'pickup_point')
@@ -263,12 +292,30 @@
                                 <td class="text-center">
                                     {{ $orderDetail->quantity }}
                                 </td>
-                                <td class="text-center">
-                                    {{ single_price($orderDetail->price / $orderDetail->quantity) }}
-                                </td>
-                                <td class="text-center">
-                                    {{ single_price($orderDetail->price) }}
-                                </td>
+                                @if($order->payment_type == 'cup_payment')
+                                    <td class="text-center">
+                                        {{ single_price($orderDetail->price_cup / $orderDetail->quantity) }}
+                                    </td>
+                                    <td class="text-center">
+                                        {{ single_price($orderDetail->price_cup) }}
+                                    </td>
+                                @else
+                                    @if($order->payment_type == 'mlc_payment')
+                                        <td class="text-center">
+                                            {{ single_price($orderDetail->price_mlc / $orderDetail->quantity) }}
+                                        </td>
+                                        <td class="text-center">
+                                            {{ single_price($orderDetail->price_mlc) }}
+                                        </td>
+                                    @else
+                                        <td class="text-center">
+                                            {{ single_price($orderDetail->price / $orderDetail->quantity) }}
+                                        </td>
+                                        <td class="text-center">
+                                            {{ single_price($orderDetail->price) }}
+                                        </td>
+                                    @endif
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>
@@ -277,13 +324,42 @@
         </div>
         <div class="clearfix float-right">
             <table class="table">
+            @php
+					$price = 0;
+					$shipping_cost = 0;
+					$coupon_discount = 0;
+					$grand_total = 0;
+					
+                    if($order->payment_type=='cup_payment')
+                    {
+                        $price = single_price($order->orderDetails->sum('price_cup'));
+                        $shipping_cost = single_price($order->orderDetails->sum('shipping_cost_cup'));
+                        $coupon_discount = single_price($order->coupon_discount_cup);
+                        $grand_total = single_price($order->grand_total_cup);
+                    } else 
+                        if($order->payment_type=='mlc_payment')
+                        {
+                            $price = single_price($order->orderDetails->sum('price_mlc'));
+                            $shipping_cost = single_price($order->orderDetails->sum('shipping_cost_mlc'));
+                            $coupon_discount = single_price($order->coupon_discount_mlc);
+                            $grand_total = single_price($order->grand_total_mlc);
+                        }
+                        else 
+                            if($order->payment_type=='qvapay')
+                            {
+                                $price = single_price($order->orderDetails->sum('price'));
+                                $shipping_cost = single_price($order->orderDetails->sum('shipping_cost'));
+                                $coupon_discount = single_price($order->coupon_discount);
+                                $grand_total = single_price($order->grand_total);
+                            }
+				@endphp
                 <tbody>
                     <tr>
                         <td>
                             <strong class="text-muted">{{ translate('Sub Total') }} :</strong>
                         </td>
                         <td>
-                            {{ single_price($order->orderDetails->sum('price')) }}
+                            {{ $price }}
                         </td>
                     </tr>
                     <tr>
@@ -299,7 +375,7 @@
                             <strong class="text-muted">{{ translate('Shipping') }} :</strong>
                         </td>
                         <td>
-                            {{ single_price($order->orderDetails->sum('shipping_cost')) }}
+                            {{ $shipping_cost }}
                         </td>
                     </tr>
                     <tr>
@@ -307,7 +383,7 @@
                             <strong class="text-muted">{{ translate('Coupon') }} :</strong>
                         </td>
                         <td>
-                            {{ single_price($order->coupon_discount) }}
+                            {{ $coupon_discount }}
                         </td>
                     </tr>
                     <tr>
@@ -315,7 +391,7 @@
                             <strong class="text-muted">{{ translate('TOTAL') }} :</strong>
                         </td>
                         <td class="text-muted h5">
-                            {{ single_price($order->grand_total) }}
+                            {{ $grand_total }}
                         </td>
                     </tr>
                 </tbody>

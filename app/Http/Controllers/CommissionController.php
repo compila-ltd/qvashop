@@ -87,6 +87,7 @@ class CommissionController extends Controller
     // Calculate seller commission after payment
     public function calculateCommission($order)
     {
+        $count = 0;
         if ($order->payment_type == 'cash_on_delivery') {
 
             foreach ($order->orderDetails as $orderDetail) {
@@ -129,6 +130,8 @@ class CommissionController extends Controller
 
             foreach ($order->orderDetails as $orderDetail) {
 
+                $count++;
+
                 $orderDetail->payment_status = 'paid';
                 $orderDetail->save();
                 $commission_percentage = 0;
@@ -146,16 +149,21 @@ class CommissionController extends Controller
                 if ($orderDetail->product->user->user_type == 'seller') {
 
                     $seller = $orderDetail->product->user->shop;
+                    $seller->refresh();
+
                     $admin_commission = ($orderDetail->price * $commission_percentage) / 100;
 
                     if (get_setting('product_manage_by_admin') == 1) {
                         $seller_earning = ($orderDetail->tax + $orderDetail->price) - $admin_commission;
                         $seller->admin_to_pay += $seller_earning;
                     } else {
+                        $admin_commission += $orderDetail->shipping_cost * $commission_percentage / 100;
+                        
                         $seller_earning = ($orderDetail->tax + $orderDetail->shipping_cost + $orderDetail->price) - $admin_commission;
                         $seller->admin_to_pay += $seller_earning;
                     }
-                    $seller->save();
+
+                    $seller->save();                  
 
                     $commission_history = new CommissionHistory;
                     $commission_history->order_id = $order->id;

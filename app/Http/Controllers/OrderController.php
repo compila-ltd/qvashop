@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Coupon;
+use App\Models\Currency;
 use App\Models\Address;
 use App\Models\Product;
 use App\Models\CouponUsage;
@@ -37,6 +38,23 @@ class OrderController extends Controller
         $this->middleware(['permission:delete_order'])->only('destroy');
     }
 
+    //Combined Orders
+    public function combined_orders(Request $request)
+    {
+        $combined_orders = CombinedOrder::orderBy('id', 'desc');
+
+        if ($request->search) {
+            $sort_search = strtotime($request->search);
+            $formatted_date = date('Y-m-d H:i:s', $request->search);
+            //dd($formatted_date);
+            $combined_orders = $combined_orders->where('created_at', 'like', '%' . $formatted_date . '%');
+        }
+
+        $combined_orders = $combined_orders->paginate(15);
+
+        return view('backend.sales.combined_order', compact('combined_orders'));
+    }
+
     // All Orders
     public function all_orders(Request $request)
     {
@@ -45,6 +63,7 @@ class OrderController extends Controller
         $sort_search = null;
         $delivery_status = null;
         $payment_status = '';
+        $payment_type = '';
 
         $orders = Order::orderBy('id', 'desc');
         $admin_user_id = User::where('user_type', 'admin')->first()->id;
@@ -69,6 +88,10 @@ class OrderController extends Controller
             $orders = $orders->where('payment_status', $request->payment_status);
             $payment_status = $request->payment_status;
         }
+        if ($request->payment_type != null) {
+            $orders = $orders->where('payment_type', $request->payment_type);
+            $payment_type = $request->payment_type;
+        }
         if ($request->delivery_status != null) {
             if(($request->delivery_status == 'pending')||(($request->delivery_status == 'cancelled')))
                 $orders = $orders->where('delivery_status', $request->delivery_status)->where('payment_status', 'paid');
@@ -82,7 +105,7 @@ class OrderController extends Controller
                 ->where('created_at', '<=', date('Y-m-d', strtotime(explode(" to ", $date)[1])) . '  23:59:59');
         }
         $orders = $orders->paginate(15);
-        return view('backend.sales.index', compact('orders', 'sort_search', 'payment_status', 'delivery_status', 'date'));
+        return view('backend.sales.index', compact('orders', 'sort_search', 'payment_status', 'payment_type', 'delivery_status', 'date'));
     }
 
     public function show($id)
@@ -106,6 +129,23 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request);
+
+        $currencies = Currency::where('status', 1)->get();
+
+        $cup_exchange_rate = -1;
+        $mlc_exchange_rate = -1;
+
+        $currency = $currencies->where('code', 'MLC')->first();
+
+        if ($currency) 
+            $mlc_exchange_rate = $currency->exchange_rate;
+
+        $currency = $currencies->where('code', 'CUP')->first();
+
+        if ($currency) 
+            $cup_exchange_rate = $currency->exchange_rate;
+        
         $carts = Cart::where('user_id', Auth::user()->id)->get();
 
         if ($carts->isEmpty())
@@ -193,6 +233,16 @@ class OrderController extends Controller
 
                 $shipping += $order_detail->shipping_cost;
 
+                if($order->payment_type == 'cup_payment'){
+                    $order_detail->price_cup = $order_detail->price * $cup_exchange_rate;
+                    $order_detail->shipping_cost_cup = $order_detail->shipping_cost * $cup_exchange_rate;
+                }
+    
+                if($order->payment_type == 'mlc_payment'){
+                    $order_detail->price_mlc = $order_detail->price * $mlc_exchange_rate;
+                    $order_detail->shipping_cost_mlc = $order_detail->shipping_cost * $mlc_exchange_rate;
+                }
+
                 $order_detail->quantity = $cartItem['quantity'];
                 $order_detail->save();
 
@@ -219,6 +269,15 @@ class OrderController extends Controller
 
             if ($seller_product[0]->coupon_code != null) {
                 $order->coupon_discount = $coupon_discount;
+
+                if($order->payment_type == 'cup_payment'){
+                    $order->coupon_discount_cup = $order->coupon_discount * $cup_exchange_rate;
+                }
+    
+                if($order->payment_type == 'mlc_payment'){
+                    $order->coupon_discount_mlc = $order->coupon_discount * $mlc_exchange_rate;
+                }
+
                 $order->grand_total -= $coupon_discount;
 
                 $coupon_usage = new CouponUsage;
@@ -229,12 +288,23 @@ class OrderController extends Controller
 
             $combined_order->grand_total += $order->grand_total;
 
+            if($order->payment_type == 'cup_payment'){
+                $order->grand_total_cup = $order->grand_total * $cup_exchange_rate;
+                $combined_order->grand_total_cup = $combined_order->grand_total * $cup_exchange_rate;
+            }
+
+            if($order->payment_type == 'mlc_payment'){
+                $order->grand_total_mlc = $order->grand_total * $mlc_exchange_rate;
+                $combined_order->grand_total_mlc = $combined_order->grand_total * $mlc_exchange_rate;
+            }
+
             $order->save();
         }
 
         $combined_order->save();
 
         $request->session()->put('combined_order_id', $combined_order->id);
+        $request->session()->put('order_code', $order->code);
     }
 
     /**
@@ -269,6 +339,27 @@ class OrderController extends Controller
 
                 $orderDetail->delete();
             }
+
+
+            $total_orders = Order::where('combined_order_id', $order->combined_order_id)->count();
+
+            $combined_order = CombinedOrder::where('id', $order->combined_order_id)->first();
+            
+            if($total_orders==1)
+                $combined_order->delete();
+            else
+            {
+                if($order->payment_type == 'cup_payment')
+                    $combined_order->grand_total_cup -= $order->grand_total_cup;
+                else
+                    if($order->payment_type == 'mlc_payment')
+                        $combined_order->grand_total_mlc -= $order->grand_total_mlc;
+                    else
+                        $combined_order->grand_total -= $order->grand_total;
+                
+                $combined_order->save();
+            }
+
             $order->delete();
             flash(translate('Order has been deleted successfully'))->success();
         } else {
@@ -301,6 +392,8 @@ class OrderController extends Controller
         $order->delivery_viewed = '0';
         $order->delivery_status = $request->status;
         $order->save();
+
+        $order->email_to_customer = false;
 
         if ($request->status == 'cancelled' && $order->payment_type == 'wallet') {
             $user = User::where('id', $order->user_id)->first();
@@ -463,6 +556,45 @@ class OrderController extends Controller
         return 1;
     }
 
+    public function confirm_payment(Request $request)
+    {
+        $combined_order = CombinedOrder::findOrFail($request->id);
+
+        foreach ($combined_order->orders as $order) {
+
+            $order = Order::findOrFail($order->id);
+            $order->payment_status = 'paid';
+            $order->save();
+
+            foreach ($order->orderDetails as $order_detail){
+                $quantity = $order_detail->quantity;
+
+                $product = $order_detail->product;
+                $product->num_of_sale += $quantity;
+                $product->current_stock -= $quantity;
+                $product->save();
+    
+                $product_stock = $order_detail->product->stocks->first();
+                $product_stock->qty -= $quantity;
+                $product_stock->save();
+    
+                if ($product->added_by == 'seller') {
+                    $shop = $product->user->shop;
+                    $shop->num_of_sale += $quantity;
+                    $shop->save();
+                }
+            }
+
+            // pay to the seller, or affiliate, or Club Points
+            calculateCommissionAffilationClubPoint($order);
+            NotificationUtility::sendOrderPlacedNotification($order);
+        }
+
+        flash('La orden se ha pagado correctamente')->success();
+
+        return back();
+    }
+
     public function update_payment_status(Request $request)
     {
         $order = Order::findOrFail($request->order_id);
@@ -489,7 +621,6 @@ class OrderController extends Controller
         }
         $order->payment_status = $status;
         $order->save();
-
 
         if ($order->payment_status == 'paid' && $order->commission_calculated == 0) {
             calculateCommissionAffilationClubPoint($order);

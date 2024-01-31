@@ -19,12 +19,18 @@ class NotificationUtility
         $array['view'] = 'emails.invoice';
         $array['subject'] = translate('A new order has been placed') . ' - ' . $order->code;
         $array['from'] = env('MAIL_FROM_ADDRESS');
-        $array['order'] = $order;
-        try {
-            Mail::to($order->user->email)->queue(new InvoiceEmailManager($array));
-            Mail::to($order->orderDetails->first()->product->user->email)->queue(new InvoiceEmailManager($array));
-        } catch (\Exception $e) {
 
+        try {
+            $order->email_to_customer = true;
+            $array['order'] = $order;
+            Mail::to($order->user->email)->queue(new InvoiceEmailManager($array));
+            
+            $order->email_to_customer = false;
+            $array['order'] = $order;
+            Mail::to($order->orderDetails->first()->product->user->email)->queue(new InvoiceEmailManager($array));
+            //dd($order);
+        } catch (\Exception $e) {
+            //dd($order);
         }
 
         if (addon_is_activated('otp_system') && SmsTemplate::where('identifier', 'order_placement')->first()->status == 1) {

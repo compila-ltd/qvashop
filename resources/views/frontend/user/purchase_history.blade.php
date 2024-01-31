@@ -5,16 +5,17 @@
         <div class="card-header">
             <h5 class="mb-0 h6">{{ translate('Purchase History') }}</h5>
         </div>
-        <div class="card-body row gutters-5">
+        <div class="card-body">
             @if (count($orders) > 0)
                 <table class="table aiz-table mb-0">
                     <thead>
                         <tr>
-                            <th>{{ translate('Code')}}</th>
-                            <th data-breakpoints="md">{{ translate('Date')}}</th>
-                            <th>{{ translate('Amount')}}</th>
-                            <th data-breakpoints="md">{{ translate('Delivery Status')}}</th>
-                            <th data-breakpoints="md">{{ translate('Payment Status')}}</th>
+                            <th width="13%">{{ translate('Code')}}</th>
+                            <th width="10%" class='text-center' data-breakpoints="md">{{ translate('Date')}}</th>
+                            <th class='text-center'>Importe</th>
+                            <th class='text-center'>{{ translate('Payment Method')}}</th>
+                            <th class='text-center' data-breakpoints="md">{{ translate('Delivery Status')}}</th>
+                            <th class='text-center' data-breakpoints="md">{{ translate('Payment Status')}}</th>
                             <th class="text-right">{{ translate('Options')}}</th>
                         </tr>
                     </thead>
@@ -25,11 +26,32 @@
                                     <td>
                                         <a href="{{route('purchase_history.details', encrypt($order->id))}}">{{ $order->code }}</a>
                                     </td>
-                                    <td>{{ date('d-m-Y', $order->date) }}</td>
-                                    <td>
-                                        {{ single_price($order->grand_total) }}
-                                    </td>
-                                    <td>
+                                    <td class='text-center'>{{ date('d-m-Y', $order->date) }}</td>
+                                        @if($order->payment_type == 'cup_payment')
+                                            <td class='text-center'>
+                                                {{ single_price($order->grand_total_cup) }}
+                                            </td>
+                                            <td class='text-center'>
+                                                CUP
+                                            </td>
+                                        @else
+                                            @if($order->payment_type == 'mlc_payment')
+                                                <td class='text-center'>
+                                                    {{ single_price($order->grand_total_mlc) }}
+                                                </td>
+                                                <td class='text-center'>
+                                                    MLC
+                                                </td>
+                                            @else
+                                                <td class='text-center'>
+                                                    {{ single_price($order->grand_total) }}
+                                                </td>
+                                                <td class='text-center'>
+                                                    Qvapay
+                                                </td>
+                                            @endif
+                                        @endif
+                                    <td class='text-center'>
                                         @if ($order->payment_status == 'paid')
                                             @if ($order->delivery_status == 'delivered')
                                                 <span class="badge badge-inline badge-success">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
@@ -49,7 +71,7 @@
                                             <span class="badge badge-inline badge-dark">{{ translate('Unpaid')}}</span>
                                         @endif    
                                     </td>
-                                    <td>
+                                    <td class='text-center'>
                                         @if ($order->payment_status == 'paid')
                                             <span class="badge badge-inline badge-success">{{ translate('Paid')}}</span>
                                         @else
@@ -60,11 +82,13 @@
                                         @endif
                                     </td>
                                     <td class="text-right">
+                                        <!--
                                         @if ($order->payment_status == 'unpaid')
                                             <a href="javascript:void(0)" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('purchase_history.destroy', $order->id)}}" title="{{ translate('Cancel') }}">
                                                 <i class="las la-trash"></i>
                                             </a>
                                         @endif
+                                        -->
                                         <a href="{{route('purchase_history.details', encrypt($order->id))}}" class="btn btn-soft-info btn-icon btn-circle btn-sm" title="{{ translate('Order Details') }}">
                                             <i class="las la-eye"></i>
                                         </a>

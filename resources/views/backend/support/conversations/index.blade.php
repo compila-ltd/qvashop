@@ -12,6 +12,7 @@
                     <th data-breakpoints="lg">#</th>
                     <th data-breakpoints="lg">{{ translate('Date') }}</th>
                     <th data-breakpoints="lg">{{ translate('Title')}}</th>
+                    <th data-breakpoints="lg">{{ translate('Link')}}</th>
                     <th>{{ translate('Sender')}}</th>
                     <th>{{ translate('Receiver')}}</th>
                     <th width="10%">{{ translate('Options')}}</th>
@@ -24,10 +25,17 @@
                     <td>{{ $conversation->created_at }}</td>
                     <td>{{ $conversation->title }}</td>
                     <td>
+                        @if($conversation->product_url != "")
+                            <a href="{{ $conversation->product_url }}" target="_blank" class="fw-300">
+                                {{ $conversation->product_url }}
+                            </a>
+                        @endif               
+                    </td>
+                    <td>
                         @if ($conversation->sender != null)
                         {{ $conversation->sender->name }}
                         @if ($conversation->receiver_viewed == 0 && $conversation->receiver_id == Auth::user()->id)
-                        <span class="badge badge-inline badge-info">{{ translate('New') }}</span>
+                            <span class="badge badge-inline badge-info">{{ translate('New') }}</span>
                         @endif
                         @endif
                     </td>

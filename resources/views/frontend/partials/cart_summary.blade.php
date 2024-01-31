@@ -44,6 +44,27 @@
         </div>
     </div>
 
+    @php
+        $currencies = \App\Models\Currency::where('status', 1)->get();
+        //dd($currencies);
+
+        $cup_exchange_rate = -1;
+        $mlc_exchange_rate = -1;
+
+        $currency = $currencies->where('code', 'MLC')->first();
+
+        if ($currency) 
+            $mlc_exchange_rate = $currency->exchange_rate;
+
+        $currency = $currencies->where('code', 'CUP')->first();
+
+        if ($currency) 
+            $cup_exchange_rate = $currency->exchange_rate;
+                        
+        //dd($cup_exchange_rate);
+
+    @endphp    
+
     <div class="card-body">
         @if (addon_is_activated('club_point'))
             @php
@@ -97,9 +118,17 @@
                                 × {{ $cartItem['quantity'] }}
                             </strong>
                         </td>
-                        <td class="product-total text-right">
+                        <td class="product-total text-right total_price_product" id="total_price_product">
                             <span
                                 class="pl-4 pr-0">{{ single_price(cart_product_price($cartItem, $cartItem->product, false, false) * $cartItem['quantity']) }}</span>
+                        </td>
+                        <td class="product-total text-right total_price_product_cup d-none" id="total_price_product_cup">
+                            <span
+                                class="pl-4 pr-0">{{ single_price((cart_product_price($cartItem, $cartItem->product, false, false) * $cartItem['quantity']) * $cup_exchange_rate ) }}</span>
+                        </td>
+                        <td class="product-total text-right total_price_product_mlc d-none" id="total_price_product_mlc">
+                            <span
+                                class="pl-4 pr-0">{{ single_price((cart_product_price($cartItem, $cartItem->product, false, false) * $cartItem['quantity']) * $mlc_exchange_rate) }}</span>
                         </td>
                     </tr>
                 @endforeach
@@ -109,12 +138,24 @@
         <table class="table">
 
             <tfoot>
-                <tr class="cart-subtotal">
-                    <th>{{ translate('Subtotal') }}</th>
+                <tr class="cart-subtotal subtotal" id="subtotal">
+                    <th>{{ translate('Subtotal') }} USD</th>
                     <td class="text-right">
                         <span class="fw-600">{{ single_price($subtotal) }}</span>
                     </td>
                 </tr>
+                <tr class="cart-subtotal subtotal_cup d-none" id="subtotal_cup">
+                    <th>{{ translate('Subtotal') }} CUP</th>
+                    <td class="text-right">
+                        <span class="fw-600">{{ single_price($subtotal * $cup_exchange_rate) }}</span>
+                    </td>
+                </tr>
+                <tr class="cart-subtotal subtotal_mlc d-none" id="subtotal_mlc">
+                    <th>{{ translate('Subtotal') }} MLC</th>
+                    <td class="text-right">
+                        <span class="fw-600">{{ single_price($subtotal * $mlc_exchange_rate) }}</span>
+                    </td>
+                </tr>                
 
                 <tr class="cart-shipping">
                     <th>{{ translate('Tax') }}</th>
@@ -123,10 +164,22 @@
                     </td>
                 </tr>
 
-                <tr class="cart-shipping">
-                    <th>{{ translate('Total Shipping') }}</th>
+                <tr class="cart-shipping shipping" id="shipping">
+                    <th>{{ translate('Total Shipping') }} USD</th>
                     <td class="text-right">
                         <span class="font-italic">{{ single_price($shipping) }}</span>
+                    </td>
+                </tr>
+                <tr class="cart-shipping shipping_cup d-none" id="shipping_cup">
+                    <th>{{ translate('Total Shipping') }} CUP</th>
+                    <td class="text-right">  
+                        <span class="font-italic">{{ single_price($shipping * $cup_exchange_rate) }}</span>
+                    </td>
+                </tr>
+                <tr class="cart-shipping shipping_mlc d-none" id="shipping_mlc">
+                    <th>{{ translate('Total Shipping') }} MLC</th>
+                    <td class="text-right">
+                        <span class="font-italic">{{ single_price($shipping * $mlc_exchange_rate) }}</span>
                     </td>
                 </tr>
 
@@ -158,12 +211,30 @@
                     }
                 @endphp
 
-                <tr class="cart-total">
-                    <th><span class="strong-600">{{ translate('Total') }}</span></th>
+                <tr class="cart-total qvapay" id="qvapay">
+                    <th><span class="strong-600">{{ translate('Total') }} USD</span></th>
                     <td class="text-right">
                         <strong><span>{{ single_price($total) }}</span></strong>
                     </td>
                 </tr>
+                
+                @if (get_setting('cup_payment') == 1)
+                    <tr class="cart-total cup_payment d-none" id="cup_payment">
+                        <th><span class="strong-600">{{ translate('Total') }} CUP</span></th>
+                        <td class="text-right">
+                            <strong><span>{{ single_price($total * $cup_exchange_rate) }} </span></strong>
+                        </td>
+                    </tr>
+                @endif
+
+                @if (get_setting('mlc_payment') == 1)
+                    <tr class="cart-total mlc_payment d-none" id="mlc_payment">
+                        <th><span class="strong-600">{{ translate('Total') }} MLC</span></th>
+                        <td class="text-right">
+                            <strong><span>{{ single_price($total * $mlc_exchange_rate) }}</span></strong>
+                        </td>
+                    </tr>
+                @endif
             </tfoot>
         </table>
 
