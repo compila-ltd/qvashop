@@ -6,6 +6,7 @@
             <h5 class="mb-0 h6">{{ translate('Combined Orders') }}</h5>
         </div>
         <div class="card-body">
+        @dd($combined_orders);
             @if (count($combined_orders) > 0)
                 <table class="table aiz-table mb-0">
                     <thead>
@@ -26,63 +27,65 @@
                                 $payment_type = "";
                                 $total_cost = 0;
                             @endphp
-                            @if($order->payment_type == 'qvapay' && $order->payment_status == 'unpaid')
-                                @else
-                                <tr>
-                                    <td>
-                                        {{ strtotime($combined_order->created_at); }}
-                                    </td>
-                                    <td class='text-center'>{{ $combined_order->created_at->format('d-m-Y H:i:s') }}</td>
-                                    @if($order->payment_type == 'cup_payment')
-                                        <td class='text-center'>
-                                            {{ single_price($combined_order->grand_total_cup) }}
-                                        </td>
-                                        <td class='text-center'>
-                                            CUP
-                                        </td>
-                                        @php 
-                                            $payment_type = "CUP";
-                                            $total_cost = single_price($combined_order->grand_total_cup);
-                                        @endphp
+                            @if($order != null)
+                                @if($order->payment_type == 'qvapay' && $order->payment_status == 'unpaid')
                                     @else
-                                        @if($order->payment_type == 'mlc_payment')
+                                    <tr>
+                                        <td>
+                                            {{ strtotime($combined_order->created_at); }}
+                                        </td>
+                                        <td class='text-center'>{{ $combined_order->created_at->format('d-m-Y H:i:s') }}</td>
+                                        @if($order->payment_type == 'cup_payment')
                                             <td class='text-center'>
-                                                {{ single_price($combined_order->grand_total_mlc) }}
+                                                {{ single_price($combined_order->grand_total_cup) }}
                                             </td>
                                             <td class='text-center'>
-                                                MLC
+                                                CUP
                                             </td>
                                             @php 
-                                                $payment_type = "MLC";
-                                                $total_cost = single_price($combined_order->grand_total_mlc);
+                                                $payment_type = "CUP";
+                                                $total_cost = single_price($combined_order->grand_total_cup);
                                             @endphp
                                         @else
-                                            <td class='text-center'>
-                                                {{ single_price($combined_order->grand_total) }}
-                                            </td>
-                                            <td class='text-center'>
-                                                Qvapay
-                                            </td>
+                                            @if($order->payment_type == 'mlc_payment')
+                                                <td class='text-center'>
+                                                    {{ single_price($combined_order->grand_total_mlc) }}
+                                                </td>
+                                                <td class='text-center'>
+                                                    MLC
+                                                </td>
+                                                @php 
+                                                    $payment_type = "MLC";
+                                                    $total_cost = single_price($combined_order->grand_total_mlc);
+                                                @endphp
+                                            @else
+                                                <td class='text-center'>
+                                                    {{ single_price($combined_order->grand_total) }}
+                                                </td>
+                                                <td class='text-center'>
+                                                    Qvapay
+                                                </td>
+                                            @endif
                                         @endif
-                                    @endif
-                                    <td class='text-center'>
-                                        @if ($order->payment_status == 'paid')
-                                            <span class="badge badge-inline badge-success">{{ translate('Paid')}}</span>
-                                        @else
-                                            <span class="badge badge-inline badge-dark">{{ translate('Unpaid')}}</span>
-                                        @endif
-                                    </td>
-                                    <td class="text-right">
-                                        @if ($order->payment_status == 'unpaid')
-                                            <a href="https://wa.me/{{ get_setting('helpline_number') }}?text=<?php echo urlencode('Hola. Mi nombre de usuario en QvaShop es: '.json_decode($order->shipping_address)->name.' y quiero pagar la orden con código: '.strtotime($combined_order->created_at).' con un importe de '.$total_cost.' '.$payment_type.' '); ?>" target="_blank" class="btn btn-soft-success btn-icon btn-circle btn-sm" title="Pagar orden">
-                                                <i class="las la-money-bill"></i>
+                                        <td class='text-center'>
+                                            @if ($order->payment_status == 'paid')
+                                                <span class="badge badge-inline badge-success">{{ translate('Paid')}}</span>
+                                            @else
+                                                <span class="badge badge-inline badge-dark">{{ translate('Unpaid')}}</span>
+                                            @endif
+                                        </td>
+                                        <td class="text-right">
+                                            @if ($order->payment_status == 'unpaid')
+                                                <a href="https://wa.me/{{ get_setting('helpline_number') }}?text=<?php echo urlencode('Hola. Mi nombre de usuario en QvaShop es: '.json_decode($order->shipping_address)->name.' y quiero pagar la orden con código: '.strtotime($combined_order->created_at).' con un importe de '.$total_cost.' '.$payment_type.' '); ?>" target="_blank" class="btn btn-soft-success btn-icon btn-circle btn-sm" title="Pagar orden">
+                                                    <i class="las la-money-bill"></i>
+                                                </a>
+                                            @endif
+                                            <a href="{{route('purchase_history.orders', encrypt($combined_order->id))}}" class="btn btn-soft-info btn-icon btn-circle btn-sm" title="{{ translate('Order Details') }}">
+                                                <i class="las la-eye"></i>
                                             </a>
-                                        @endif
-                                        <a href="{{route('purchase_history.orders', encrypt($combined_order->id))}}" class="btn btn-soft-info btn-icon btn-circle btn-sm" title="{{ translate('Order Details') }}">
-                                            <i class="las la-eye"></i>
-                                        </a>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
+                                @endif
                             @endif
                         @endforeach
                     </tbody>
