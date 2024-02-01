@@ -542,24 +542,28 @@ fff
                         </form>
 
                         <div class="mt-3">
-                            @if($detailedProduct->only_pickup_point == 1 && count($pickup_points) == 0)
-                                <span class="text-danger">La tienda no tiene ningún punto de recogida activo</span>  
-                            @else              
-                                @if((count($pickup_points) > 0) || (count($cities_for_delivery) > 0) || $detailedProduct->digital == 1)
-                                    <button type="button" class="btn btn-soft-primary mr-2 add-to-cart fw-600" onclick="addToCart()">
-                                        <i class="las la-shopping-bag"></i>
-                                        <span class="d-none d-md-inline-block"> {{ translate('Add to cart') }}</span>
-                                    </button>
-                                    <button type="button" class="btn btn-primary buy-now fw-600" onclick="buyNow()">
-                                        <i class="la la-shopping-cart"></i> {{ translate('Buy Now') }}
-                                    </button>
-                                @else
-                                    <span class="text-danger">La tienda aún no tiene configurado el envío a domicilio o algún punto de recogida</span>
+                            @if($detailedProduct->current_stock == 0)
+                                <button type="button" class="btn btn-secondary out-of-stock fw-600" disabled>
+                                    <i class="la la-cart-arrow-down"></i>
+                                    <span class="d-none d-md-inline-block"> {{ translate('Out of Stock') }} </span>
+                                </button>
+                            @else         
+                                @if($detailedProduct->only_pickup_point == 1 && count($pickup_points) == 0)
+                                    <span class="text-danger">La tienda no tiene ningún punto de recogida activo</span>  
+                                @else              
+                                    @if((count($pickup_points) > 0) || (count($cities_for_delivery) > 0) || $detailedProduct->digital == 1)
+                                        <button type="button" class="btn btn-soft-primary mr-2 add-to-cart fw-600" onclick="addToCart()">
+                                            <i class="las la-shopping-bag"></i>
+                                            <span class="d-none d-md-inline-block"> {{ translate('Add to cart') }}</span>
+                                        </button>
+                                        <button type="button" class="btn btn-primary buy-now fw-600" onclick="buyNow()">
+                                            <i class="la la-shopping-cart"></i> {{ translate('Buy Now') }}
+                                        </button>
+                                    @else
+                                        <span class="text-danger">La tienda aún no tiene configurado el envío a domicilio o algún punto de recogida</span>
+                                    @endif
                                 @endif
                             @endif
-                                <button type="button" class="btn btn-secondary out-of-stock fw-600 d-none" disabled>
-                                    <i class="la la-cart-arrow-down"></i> {{ translate('Out of Stock') }}
-                                </button>
                         </div>
 
                         <!--
@@ -993,17 +997,26 @@ fff
                         <input type="text" class="form-control mb-3" name="title" value="{{ $detailedProduct->name }}" placeholder="{{ translate('Product Name') }}" required>
                     </div>
                     <div class="form-group">
-                        <textarea class="form-control" rows="8" name="message" required placeholder="{{ translate('Your Question') }}">{{ route('product', $detailedProduct->slug) }}</textarea>
+                        <input type="hidden" class="form-control mb-3" name="product_url" value="{{ route('product', $detailedProduct->slug) }}" placeholder="{{ translate('Product URL') }}" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" rows="8" name="message" required placeholder="{{ translate('Your Question') }}"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary fw-600" data-dismiss="modal">{{ translate('Cancel') }}</button>
-                    <button type="submit" class="btn btn-primary fw-600">{{ translate('Send') }}</button>
+                    <button type="submit" onclick="disable_button()" class="btn btn-primary fw-600">{{ translate('Send') }}</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+<script>
+    function disable_button() {
+        $('#chat_modal').modal('hide');
+    }
+</script>
 
 <!-- Modal -->
 <div class="modal fade" id="login_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

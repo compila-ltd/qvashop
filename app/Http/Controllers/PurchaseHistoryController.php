@@ -15,8 +15,14 @@ class PurchaseHistoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {//->where('payment_status', 'paid')
         $orders = Order::where('user_id', Auth::user()->id)->where('payment_status', 'paid')->orderBy('code', 'desc')->paginate(9);
+        return view('frontend.user.purchase_history', compact('orders'));
+    }
+
+    public function purchase_history_orders($id)
+    {
+        $orders = Order::where('user_id', Auth::user()->id)->where('combined_order_id', decrypt($id))->orderBy('code', 'desc')->paginate(9);
         return view('frontend.user.purchase_history', compact('orders'));
     }
 

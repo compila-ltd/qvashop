@@ -27,20 +27,20 @@
               <table class="table aiz-table mb-0">
                   <thead>
                       <tr>
-                          <th data-breakpoints="lg">{{ translate('Ticket ID') }}</th>
-                          <th data-breakpoints="lg">{{ translate('Sending Date') }}</th>
-                          <th>{{ translate('Subject')}}</th>
-                          <th>{{ translate('Status')}}</th>
-                          <th data-breakpoints="lg">{{ translate('Options')}}</th>
+                          <th width="15%" data-breakpoints="lg">{{ translate('Ticket ID') }}</th>
+                          <th width="15%" data-breakpoints="lg">{{ translate('Sending Date') }}</th>
+                          <th width="50%">{{ translate('Subject')}}</th>
+                          <th width="10%" class="text-center">{{ translate('Status')}}</th>
+                          <th width="10%" data-breakpoints="lg" class="text-center">{{ translate('Options')}}</th>
                       </tr>
                   </thead>
                   <tbody>
                       @foreach ($tickets as $key => $ticket)
                           <tr>
-                              <td>#{{ $ticket->code }}</td>
-                              <td>{{ $ticket->created_at }}</td>
-                              <td>{{ $ticket->subject }}</td>
-                              <td>
+                              <td class="align-middle">#{{ $ticket->code }}</td>
+                              <td class="align-middle">{{ $ticket->created_at }}</td>
+                              <td class="align-middle">{{ $ticket->subject }}</td>
+                              <td class="align-middle text-center">
                                   @if ($ticket->status == 'pending')
                                       <span class="badge badge-inline badge-danger">{{ translate('Pending')}}</span>
                                   @elseif ($ticket->status == 'open')
@@ -49,11 +49,10 @@
                                       <span class="badge badge-inline badge-success">{{ translate('Solved')}}</span>
                                   @endif
                               </td>
-                              <td>
-                                  <a href="{{route('seller.support_ticket.show', encrypt($ticket->id))}}" class="btn btn-styled btn-link py-1 px-0 icon-anim text-underline--none">
-                                      {{ translate('View Details')}}
-                                      <i class="la la-angle-right text-sm"></i>
-                                  </a>
+                              <td class="align-middle text-center">
+                                    <a href="{{route('seller.support_ticket.show', encrypt($ticket->id))}}" class="btn btn-soft-info btn-icon btn-circle btn-sm" title="{{ translate('View Details')}}">
+                                        <i class="las la-eye"></i>
+                                    </a>
                               </td>
                           </tr>
                       @endforeach

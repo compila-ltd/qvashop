@@ -28,6 +28,74 @@
                         <span class="aiz-side-nav-text">{{ translate('Dashboard') }}</span>
                     </a>
                 </li>
+
+                @php
+                    $new_orders = DB::table('orders')
+                        ->where('seller_id', Auth::user()->id)
+                        ->where('payment_status', 'paid')
+                        ->where('delivery_status', '!=' ,'delivered')
+                        ->where('delivery_status', '!=' ,'cancelled')
+                        ->select('id')
+                        ->count();
+                @endphp
+                <li class="aiz-side-nav-item">
+                    <a href="{{ route('seller.orders.index') }}"
+                        class="aiz-side-nav-link {{ areActiveRoutes(['seller.orders.index', 'seller.orders.show']) }}">
+                        <i class="las la-money-bill aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">{{ translate('Orders') }}</span>
+                        @if ($new_orders > 0)
+                            <span class="badge badge-danger">{{ $new_orders }}</span>
+                        @endif
+                    </a>
+                </li>
+                @if (addon_is_activated('refund_request'))
+                    <li class="aiz-side-nav-item">
+                        <a href="{{ route('vendor_refund_request') }}"
+                            class="aiz-side-nav-link {{ areActiveRoutes(['vendor_refund_request', 'reason_show']) }}">
+                            <i class="las la-backward aiz-side-nav-icon"></i>
+                            <span class="aiz-side-nav-text">{{ translate('Received Refund Request') }}</span>
+                        </a>
+                    </li>
+                @endif
+
+                <li class="aiz-side-nav-item">
+                    <a href="#" class="aiz-side-nav-link">
+                        <i class="las la-cog aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">Configuración</span>
+                        <span class="aiz-side-nav-arrow"></span>
+                    </a>
+                    <!--Submenu-->
+                    <ul class="aiz-side-nav-list level-2">
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('seller.shop.index') }}"
+                                class="aiz-side-nav-link {{ areActiveRoutes(['seller.shop.index']) }}">
+                                <span class="aiz-side-nav-text">Tienda</span>
+                            </a>
+                        </li>
+                        
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('seller.states.index') }}"
+                                class="aiz-side-nav-link {{ areActiveRoutes(['seller.states']) }}">
+                                <span class="aiz-side-nav-text">Provincias de envío</span>
+                            </a>
+                        </li>
+
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('seller.cities.index') }}"
+                                class="aiz-side-nav-link {{ areActiveRoutes(['product_bulk_upload.index']) }}">
+                                <span class="aiz-side-nav-text">Municipios y costo de envío</span>
+                            </a>
+                        </li>
+
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('seller.pick_up_points.index') }}"
+                                class="aiz-side-nav-link {{ areActiveRoutes(['seller.pick_up_points.index', 'seller.pick_up_points.create', 'seller.pick_up_points.edit']) }}">
+                                <span class="aiz-side-nav-text">{{ translate('Pickup point') }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
                 <li class="aiz-side-nav-item">
                     <a href="#" class="aiz-side-nav-link">
                         <i class="las la-shopping-cart aiz-side-nav-icon"></i>
@@ -150,71 +218,12 @@
                     @endif
                 @endif
 
-                @php
-                    $new_orders = DB::table('orders')
-                        ->where('seller_id', Auth::user()->id)
-                        ->where('payment_status', 'paid')
-                        ->where('delivery_status', '!=' ,'delivered')
-                        ->where('delivery_status', '!=' ,'cancelled')
-                        ->select('id')
-                        ->count();
-                @endphp
                 <li class="aiz-side-nav-item">
-                    <a href="{{ route('seller.orders.index') }}"
-                        class="aiz-side-nav-link {{ areActiveRoutes(['seller.orders.index', 'seller.orders.show']) }}">
-                        <i class="las la-money-bill aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{ translate('Orders') }}</span>
-                        @if ($new_orders > 0)
-                            <span class="badge badge-danger">{{ $new_orders }}</span>
-                        @endif
+                    <a href="{{ route('seller.money_withdraw_requests.index') }}"
+                        class="aiz-side-nav-link {{ areActiveRoutes(['seller.money_withdraw_requests.index']) }}">
+                        <i class="las la-money-bill-wave-alt aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">{{ translate('Money Withdraw') }}</span>
                     </a>
-                </li>
-                @if (addon_is_activated('refund_request'))
-                    <li class="aiz-side-nav-item">
-                        <a href="{{ route('vendor_refund_request') }}"
-                            class="aiz-side-nav-link {{ areActiveRoutes(['vendor_refund_request', 'reason_show']) }}">
-                            <i class="las la-backward aiz-side-nav-icon"></i>
-                            <span class="aiz-side-nav-text">{{ translate('Received Refund Request') }}</span>
-                        </a>
-                    </li>
-                @endif
-
-                <li class="aiz-side-nav-item">
-                    <a href="#" class="aiz-side-nav-link">
-                        <i class="las la-cog aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">Configuración</span>
-                        <span class="aiz-side-nav-arrow"></span>
-                    </a>
-                    <!--Submenu-->
-                    <ul class="aiz-side-nav-list level-2">
-                        <li class="aiz-side-nav-item">
-                            <a href="{{ route('seller.shop.index') }}"
-                                class="aiz-side-nav-link {{ areActiveRoutes(['seller.shop.index']) }}">
-                                <span class="aiz-side-nav-text">Tienda</span>
-                            </a>
-                        </li>
-                        
-                        <li class="aiz-side-nav-item">
-                            <a href="{{ route('seller.states.index') }}"
-                                class="aiz-side-nav-link {{ areActiveRoutes(['seller.states']) }}">
-                                <span class="aiz-side-nav-text">Provincias de envío</span>
-                            </a>
-                        </li>
-
-                        <li class="aiz-side-nav-item">
-                            <a href="{{ route('seller.cities.index') }}"
-                                class="aiz-side-nav-link {{ areActiveRoutes(['product_bulk_upload.index']) }}">
-                                <span class="aiz-side-nav-text">Municipios y costo de envío</span>
-                            </a>
-                        </li>
-
-                        <li class="aiz-side-nav-item">
-                            <a href="{{ route('seller.pick_up_points.index') }}"
-                                class="aiz-side-nav-link {{ areActiveRoutes(['seller.pick_up_points.index', 'seller.pick_up_points.create', 'seller.pick_up_points.edit']) }}">
-                                <span class="aiz-side-nav-text">{{ translate('Pickup point') }}</span>
-                            </a>
-                        </li>
-                    </ul>
                 </li>
                 
                 <li class="aiz-side-nav-item">
@@ -222,14 +231,6 @@
                         class="aiz-side-nav-link {{ areActiveRoutes(['seller.payments.index']) }}">
                         <i class="las la-history aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('Payment History') }}</span>
-                    </a>
-                </li>
-
-                <li class="aiz-side-nav-item">
-                    <a href="{{ route('seller.money_withdraw_requests.index') }}"
-                        class="aiz-side-nav-link {{ areActiveRoutes(['seller.money_withdraw_requests.index']) }}">
-                        <i class="las la-money-bill-wave-alt aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{ translate('Money Withdraw') }}</span>
                     </a>
                 </li>
 

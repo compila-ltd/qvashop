@@ -23,11 +23,11 @@
             <table class="table aiz-table mb-0">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th data-breakpoints="lg">{{ translate('Order Code') }}</th>
-                        <th>{{ translate('Admin Commission') }}</th>
-                        <th>{{ translate('Earning') }}</th>
-                        <th data-breakpoints="lg">{{ translate('Created At') }}</th>
+                        <th width="5%">#</th>
+                        <th width="15%" data-breakpoints="lg">{{ translate('Order Code') }}</th>
+                        <th width="30%" class="text-center">{{ translate('Earning') }}</th>
+                        <th width="30%" class="text-center">{{ translate('Admin Commission') }}</th>
+                        <th width="10%" data-breakpoints="lg">{{ translate('Date') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,9 +43,9 @@
                                 </span>
                             @endif
                         </td>
-                        <td>{{ $history->admin_commission }}</td>
-                        <td>{{ $history->seller_earning }}</td>
-                        <td>{{ $history->created_at }}</td>
+                        <td class="text-center">{{ $history->seller_earning }}</td>
+                        <td class="text-center">{{ $history->admin_commission }}</td>
+                        <td>{{ $history->created_at->format('d-m-Y H:i:s') }}</td>
                     </tr>
                     @endforeach
                 </tbody>

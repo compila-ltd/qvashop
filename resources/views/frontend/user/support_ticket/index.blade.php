@@ -12,7 +12,7 @@
                         <span class="size-70px rounded-circle mx-auto bg-secondary d-flex align-items-center justify-content-center mb-3">
                             <i class="las la-plus la-3x text-white"></i>
                         </span>
-                        <div class="fs-20 text-primary">{{ translate('Create a Ticket') }}</div>
+                        <div class="fs-18 text-primary">{{ translate('Create a Ticket') }}</div>
                     </div>
                 </div>
             </div>
@@ -22,23 +22,23 @@
                     <h5 class="mb-0 h6">{{ translate('Tickets')}}</h5>
                 </div>
                 <div class="card-body">
-                    <table class="table aiz-table mb-0">
+                    <table class="table aiz-table mb-0 fs-13">
                         <thead>
                             <tr>
-                                <th data-breakpoints="lg">{{ translate('Ticket ID') }}</th>
-                                <th data-breakpoints="lg">{{ translate('Sending Date') }}</th>
-                                <th>{{ translate('Subject')}}</th>
-                                <th>{{ translate('Status')}}</th>
-                                <th data-breakpoints="lg">{{ translate('Options')}}</th>
+                                <th width="10%" data-breakpoints="lg">{{ translate('Code') }}</th>
+                                <th width="15%" data-breakpoints="lg">{{ translate('Sending Date') }}</th>
+                                <th width="55%">{{ translate('Subject')}}</th>
+                                <th width="8%">{{ translate('Status')}}</th>
+                                <th width="13%" data-breakpoints="lg" class="text-center">{{ translate('Options')}}</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($tickets as $key => $ticket)
                                 <tr>
-                                    <td>#{{ $ticket->code }}</td>
-                                    <td>{{ $ticket->created_at }}</td>
-                                    <td>{{ $ticket->subject }}</td>
-                                    <td>
+                                    <td class="align-middle">#{{ $ticket->code }}</td>
+                                    <td class="align-middle">{{ $ticket->created_at->format('d-m-Y H:i:s') }}</td>
+                                    <td class="align-middle">{{ $ticket->subject }}</td>
+                                    <td class="align-middle">
                                         @if ($ticket->status == 'pending')
                                             <span class="badge badge-inline badge-danger">{{ translate('Pending')}}</span>
                                         @elseif ($ticket->status == 'open')
@@ -47,10 +47,9 @@
                                             <span class="badge badge-inline badge-success">{{ translate('Solved')}}</span>
                                         @endif
                                     </td>
-                                    <td>
-                                        <a href="{{route('support_ticket.show', encrypt($ticket->id))}}" class="btn btn-styled btn-link py-1 px-0 icon-anim text-underline--none">
-                                            {{ translate('View Details')}}
-                                            <i class="la la-angle-right text-sm"></i>
+                                    <td class="align-middle text-center">
+                                        <a href="{{route('support_ticket.show', encrypt($ticket->id))}}" class="btn btn-soft-info btn-icon btn-circle btn-sm" title="{{ translate('View Details')}}">
+                                            <i class="las la-eye"></i>
                                         </a>
                                     </td>
                                 </tr>
@@ -111,8 +110,8 @@
                           </div>
                       </div>
                       <div class="text-right mt-4">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ translate('cancel')}}</button>
-                          <button type="submit" class="btn btn-primary">{{ translate('Send Ticket')}}</button>
+                          <button type="button" class="btn btn-secondary" id="cancel_ticket_button" data-dismiss="modal">{{ translate('cancel')}}</button>
+                          <button type="submit" class="btn btn-primary" id="send_ticket_button" onclick="hide_ticket_modal()">{{ translate('Send Ticket')}}</button>
                       </div>
                   </form>
               </div>
@@ -120,3 +119,9 @@
         </div>
     </div>
 @endsection
+
+<script>
+    function hide_ticket_modal() {
+        $('#ticket_modal').modal('hide');
+    }
+</script>

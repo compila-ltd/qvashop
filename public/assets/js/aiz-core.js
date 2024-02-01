@@ -1264,6 +1264,13 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
             });
         },
         deleteConfirm: function () {
+            $(".payment-confirm-complete").click(function (e) {
+                e.preventDefault();
+                var url = $(this).data("href");
+                $("#payment-confirm-modal").modal("show");
+                $("#payment-confirm-link").attr("href", url);
+            });
+
             $(".confirm-delete").click(function (e) {
                 e.preventDefault();
                 var url = $(this).data("href");

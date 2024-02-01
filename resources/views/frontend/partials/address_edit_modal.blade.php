@@ -18,7 +18,7 @@
                     <select class="form-control aiz-selectpicker" data-live-search="true" data-placeholder="{{ translate('Select your country')}}" name="country_id" id="edit_country" required>
                         <option value="">{{ translate('Select your country') }}</option>
                         @foreach (\App\Models\Country::where('status', 1)->get() as $key => $country)
-                        <option value="{{ $country->id }}" @if($address_data->country_id == $country->id) selected @endif>
+                        <option value="{{ $country->id }}">
                             {{ $country->name }}
                         </option>
                         @endforeach
@@ -34,7 +34,7 @@
             <div class="col-md-10">
                 <select class="form-control mb-3 aiz-selectpicker" name="state_id" id="edit_state" data-live-search="true" required>
                     @foreach ($states as $key => $state)
-                    <option value="{{ $state->id }}" @if($address_data->state_id == $state->id) selected @endif>
+                    <option value="{{ $state->id }}">
                         {{ $state->name }}
                     </option>
                     @endforeach
@@ -49,7 +49,7 @@
             <div class="col-md-10">
                 <select class="form-control mb-3 aiz-selectpicker" data-live-search="true" name="city_id" required>
                     @foreach ($cities as $key => $city)
-                    <option value="{{ $city->id }}" @if($address_data->city_id == $city->id) selected @endif>
+                    <option value="{{ $city->id }}">
                         {{ $city->name }}
                     </option>
                     @endforeach

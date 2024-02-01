@@ -18,7 +18,7 @@
                     <select class="form-control aiz-selectpicker" data-live-search="true" data-placeholder="{{ translate('Select your country')}}" name="country_id" id="edit_country" required>
                         <option value="">{{ translate('Select your country') }}</option>
                         @foreach (\App\Models\Country::where('status', 1)->get() as $key => $country)
-                        <option value="{{ $country->id }}" @if($address_data->country_id == $country->id) selected @endif>
+                        <option value="{{ $country->id }}">
                             {{ $country->name }}
                         </option>
                         @endforeach
@@ -101,7 +101,7 @@
                 <label>{{ translate('Phone')}}</label>
             </div>
             <div class="col-md-10">
-                <input type="text" class="form-control mb-3" placeholder="{{ translate('+880')}}" value="{{ $address_data->phone }}" name="phone" value="" required>
+                <input type="text" class="form-control mb-3" placeholder="{{ translate('+53')}}" value="{{ $address_data->phone }}" name="phone" value="" required>
             </div>
         </div>
         <div class="form-group text-right">

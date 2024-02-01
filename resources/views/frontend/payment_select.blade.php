@@ -74,11 +74,45 @@
                                         @if (get_setting('qvapay') == 1)
                                         <div class="col-6 col-md-4">
                                             <label class="aiz-megabox d-block mb-3">
-                                                <input value="qvapay" class="online_payment" type="radio" name="payment_option" checked>
+                                                <input value="qvapay" class="online_payment" type="radio" name="payment_option" checked 
+                                                onchange="update_payment(this, 'mlc')"
+                                                data-target="qvapay">
                                                 <span class="d-block aiz-megabox-elem p-3">
                                                     <img src="{{ asset('assets/img/cards/qvapay.png') }}" class="img-fluid mb-2">
                                                     <span class="d-block text-center">
                                                         <span class="d-block fw-600 fs-15">{{ translate('QvaPay') }}</span>
+                                                    </span>
+                                                </span>
+                                            </label>
+                                        </div>
+                                        @endif
+
+                                        @if (get_setting('cup_payment') == 1)
+                                        <div class="col-6 col-md-4">
+                                            <label class="aiz-megabox d-block mb-3">
+                                                <input value="cup_payment" class="online_payment" type="radio" name="payment_option" 
+                                                onchange="update_payment(this, 'cup')"
+                                                data-target="cup_payment">
+                                                <span class="d-block aiz-megabox-elem p-3">
+                                                    <img src="{{ asset('assets/img/cards/cup.png') }}" class="img-fluid mb-2">
+                                                    <span class="d-block text-center">
+                                                        <span class="d-block fw-600 fs-15">CUP</span>
+                                                    </span>
+                                                </span>
+                                            </label>
+                                        </div>
+                                        @endif
+
+                                        @if (get_setting('mlc_payment') == 1)
+                                        <div class="col-6 col-md-4">
+                                            <label class="aiz-megabox d-block mb-3">
+                                                <input value="mlc_payment" class="online_payment" type="radio" name="payment_option" 
+                                                onchange="update_payment(this, 'mlc')"
+                                                data-target="mlc_payment">
+                                                <span class="d-block aiz-megabox-elem p-3">
+                                                    <img src="{{ asset('assets/img/cards/mlc.png') }}" class="img-fluid mb-2">
+                                                    <span class="d-block text-center">
+                                                        <span class="d-block fw-600 fs-15">MLC</span>
                                                     </span>
                                                 </span>
                                             </label>
@@ -220,7 +254,11 @@
                                     @endif
                             </div>
                             @endif
+                            
+                            <span class="fw-600 d-none cup_mlc_payment_note" id="cup_mlc_payment_note">Al completar la orden se le proporcionará un enlace al Whatsapp de nuestro soporte para que realice el pago.</span> 
+                    </tr>
                         </div>
+
                     </div>
                     <div class="pt-3">
                         <label class="aiz-checkbox">
@@ -257,6 +295,22 @@
 
 @section('script')
 <script type="text/javascript">
+    function update_payment(el, type) {
+        var value = $(el).val();
+
+        $('.cup_mlc_payment_note, .qvapay, .cup_payment, .mlc_payment, .total_price_product, .total_price_product_cup, .total_price_product_mlc, .subtotal, .subtotal_cup, .subtotal_mlc, .shipping, .shipping_cup, .shipping_mlc').removeClass('d-block d-none');
+
+        if (value == "qvapay") {
+            $('#cup_mlc_payment_note, #cup_payment, #subtotal_cup, #shipping_cup, #mlc_payment, #subtotal_mlc, #shipping_mlc, #total_price_product_cup, #total_price_product_mlc').addClass('d-none');
+        } else if (value == 'cup_payment') {
+            $('#qvapay, #subtotal, #shipping, #total_price_product, #total_price_product_mlc, #mlc_payment, #subtotal_mlc, #shipping_mlc').addClass('d-none');
+        } else if (value == 'mlc_payment') {
+            $('#qvapay, #subtotal, #shipping, #total_price_product, #total_price_product_cup, #cup_payment, #subtotal_cup, #shipping_cup').addClass('d-none');
+        }
+    }
+
+
+
     $(document).ready(function() {
         $(".online_payment").click(function() {
             $('#manual_payment_description').parent().addClass('d-none');

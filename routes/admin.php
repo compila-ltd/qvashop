@@ -287,6 +287,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::resource('orders', OrderController::class)->except('destroy');
     Route::controller(OrderController::class)->group(function () {
         // All Orders
+        Route::get('/combined_orders', 'combined_orders')->name('combined_orders.index');
         Route::get('/all_orders', 'all_orders')->name('all_orders.index');
         Route::get('/inhouse-orders', 'all_orders')->name('inhouse_orders.index');
         Route::get('/seller_orders', 'all_orders')->name('seller_orders.index');
@@ -305,6 +306,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::post('/orders/details', 'order_details')->name('orders.details');
         Route::post('/orders/update_delivery_status', 'update_delivery_status')->name('orders.update_delivery_status');
         Route::post('/orders/update_payment_status', 'update_payment_status')->name('orders.update_payment_status');
+        Route::get('/orders/confirm_payment/{id}', 'confirm_payment')->name('orders.confirm_payment');
         Route::post('/orders/update_tracking_code', 'update_tracking_code')->name('orders.update_tracking_code');
 
         //Delivery Boy Assign

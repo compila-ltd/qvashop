@@ -58,10 +58,12 @@ class ConversationController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request);
         $conversation = new Conversation;
         $conversation->sender_id = Auth::user()->id;
         $conversation->receiver_id = Product::findOrFail($request->product_id)->user->id;
         $conversation->title = $request->title;
+        $conversation->product_url = $request->product_url;
 
         $conversation->receiver_viewed = 0;
 

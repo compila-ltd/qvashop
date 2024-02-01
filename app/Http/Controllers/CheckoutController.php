@@ -47,7 +47,7 @@ class CheckoutController extends Controller
             $request->session()->put('payment_data', $data);
 
             if ($request->session()->get('combined_order_id') != null) {
-
+//dd($request->session()->get('order_code'));
                 // Pay with QvaPay
                 if ($request->payment_option == 'qvapay') {
                     $qvapay = new QvaPayController;
@@ -62,6 +62,8 @@ class CheckoutController extends Controller
                     // Chage this return for a view()
                     return view('frontend.payment.lncpayments', compact('wallet'));
 
+                } elseif ($request->payment_option == 'cup_payment' || $request->payment_option == 'mlc_payment') {
+                    return redirect()->route('order_confirmed')->with('success', 'Su orden ha sido completada, pero aún necesita realizar el pago. Por favor, contáctenos por Telegram para completar el mismo.');
                 } else {
 
                     $combined_order = CombinedOrder::findOrFail($request->session()->get('combined_order_id'));
@@ -115,10 +117,10 @@ class CheckoutController extends Controller
                     $shop->num_of_sale += $quantity;
                     $shop->save();
                 }
-    
-                // pay to the seller, or affiliate, or Club Points
-                calculateCommissionAffilationClubPoint($order);
             }
+
+            // pay to the seller, or affiliate, or Club Points
+            calculateCommissionAffilationClubPoint($order);
         }
 
         Session::put('combined_order_id', $combined_order_id);
@@ -360,12 +362,18 @@ class CheckoutController extends Controller
     public function order_confirmed()
     {
         $combined_order = CombinedOrder::findOrFail(Session::get('combined_order_id'));
+        $order = Order::where('combined_order_id', Session::get('combined_order_id'))->first();
+        
         Cart::where('user_id', $combined_order->user_id)->delete();
 
-        foreach ($combined_order->orders as $order) {
-            NotificationUtility::sendOrderPlacedNotification($order);
-        }
+        if($order->payment_type == "cup_payment" || $order->payment_type == "mlc_payment") {
 
+        } else {
+            foreach ($combined_order->orders as $order) {
+                NotificationUtility::sendOrderPlacedNotification($order);
+            }
+        }
+        
         return view('frontend.order_confirmed', compact('combined_order'));
     }
 }

@@ -25,13 +25,13 @@
                                 <div class="col-auto col-lg-3">
                                     <p>
                                         @if (Auth::user()->id == $conversation->sender_id)
-                                            <span class="fw-600">{{ $conversation->receiver->name }}</span>
+                                            <span class="fs-13 fw-600">{{ $conversation->receiver->name }}</span>
                                         @else
-                                            <span class="fw-600">{{ $conversation->sender->name }}</span>
+                                            <span class="fs-13 fw-600">{{ $conversation->sender->name }}</span>
                                         @endif
                                         <br>
                                         <span class="opacity-50">
-                                            {{ date('h:i:m d-m-Y', strtotime($conversation->messages->last()->created_at)) }}
+                                            {{ date('d-m-Y h:i:m', strtotime($conversation->messages->last()->created_at)) }}
                                         </span>
                                     </p>
                                 </div>
@@ -41,13 +41,23 @@
                                             <div class="row no-gutters">
                                                 <div class="col">
                                                     <h6 class="mt-0">
-                                                        <a href="{{ route('conversations.show', encrypt($conversation->id)) }}" class="text-dark fw-600">
+                                                        <a href="{{ route('conversations.show', encrypt($conversation->id)) }}" class="fs-13 fw-600">
                                                             {{ $conversation->title }}
                                                         </a>
+                                                        @if($conversation->product_url != "")
+                                                            <a href="{{ $conversation->product_url }}" target="_blank" class="fs-12 fw-300">
+                                                                {{ translate('Link') }}: {{ $conversation->product_url }}
+                                                            </a>
+                                                        @endif
                                                         @if ((Auth::user()->id == $conversation->sender_id && $conversation->sender_viewed == 0) || (Auth::user()->id == $conversation->receiver_id && $conversation->receiver_viewed == 0))
                                                             <span class="badge badge-inline badge-danger">{{ translate('New') }}</span>
                                                         @endif
                                                     </h6>
+                                                </div>
+                                                <div class="col align-middle">
+                                                    <a href="{{route('conversations.show', encrypt($conversation->id))}}" class="btn btn-soft-info btn-icon btn-circle btn-sm" title="{{ translate('View Details')}}">
+                                                        <i class="las la-eye"></i>
+                                                    </a>
                                                 </div>
                                             </div>
                                             <p class="mb-0 opacity-50">

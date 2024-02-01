@@ -35,8 +35,16 @@
                     <option value="paid"  @isset($payment_status) @if($payment_status == 'paid') selected @endif @endisset>{{ translate('Paid')}}</option>
                     <option value="unpaid"  @isset($payment_status) @if($payment_status == 'unpaid') selected @endif @endisset>{{ translate('Un-Paid')}}</option>
                 </select>
-              </div>
-            <div class="col-lg-2">
+            </div>
+            <div class="col-lg-2 ml-auto">
+                <select class="form-control aiz-selectpicker" name="payment_type" id="payment_type" onchange="sort_orders()">
+                    <option value="">{{ translate('Filter by payment type?')}}</option>
+                    <option value="qvapay"  @isset($payment_type) @if($payment_type == 'qvapay') selected @endif @endisset>{{ translate('QvaPay')}}</option>
+                    <option value="cup_payment"  @isset($payment_type) @if($payment_type == 'cup_payment') selected @endif @endisset>{{ translate('CUP')}}</option>
+                    <option value="mlc_payment"  @isset($payment_type) @if($payment_type == 'mlc_payment') selected @endif @endisset>{{ translate('MLC')}}</option>
+                </select>
+            </div>
+            <div class="col-lg-1">
                 <div class="form-group mb-0">
                     <input type="text" class="aiz-date-range form-control" value="{{ $date }}" name="date" placeholder="{{ translate('Filter by date') }}" data-format="DD-MM-Y" data-separator=" to " data-advanced-range="true" autocomplete="off" onchange="sort_orders()">
                 </div>
@@ -58,7 +66,7 @@
                 <thead>
                     <tr>
                         <!--<th>#</th>-->
-                        <th>
+                        <th width="1%">
                             <div class="form-group">
                                 <div class="aiz-checkbox-inline">
                                     <label class="aiz-checkbox">
@@ -68,18 +76,18 @@
                                 </div>
                             </div>
                         </th>
-                        <th>{{ translate('Order Code') }}</th>
-                        <th data-breakpoints="md">{{ translate('Num. of Products') }}</th>
-                        <th data-breakpoints="md">{{ translate('Customer') }}</th>
-                        <th data-breakpoints="md">{{ translate('Seller') }}</th>
-                        <th data-breakpoints="md">{{ translate('Amount') }}</th>
-                        <th data-breakpoints="md">{{ translate('Delivery Status') }}</th>
-                        <th data-breakpoints="md">{{ translate('Payment method') }}</th>
-                        <th data-breakpoints="md">{{ translate('Payment Status') }}</th>
+                        <th width="13%">{{ translate('Order Code') }}</th>
+                        <th width="10%" class='text-center' data-breakpoints="md">{{ translate('Num. of Products') }}</th>
+                        <th width="15%" class='text-center' data-breakpoints="md">{{ translate('Customer') }}</th>
+                        <th width="15%" class='text-center' data-breakpoints="md">{{ translate('Seller') }}</th>
+                        <th class='text-center' data-breakpoints="md">Importe</th>
+                        <th class='text-center' data-breakpoints="md">{{ translate('Payment method') }}</th>
+                        <th class='text-center' data-breakpoints="md">{{ translate('Payment Status') }}</th>
+                        <th class='text-center' data-breakpoints="md">{{ translate('Delivery Status') }}</th>
                         @if (addon_is_activated('refund_request'))
                         <th>{{ translate('Refund') }}</th>
                         @endif
-                        <th class="text-right" width="15%">{{ translate('options')}}</th>
+                        <th width="10%" class="text-right" width="15%">{{ translate('options')}}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -95,67 +103,88 @@
                                 </div>
                             </div>
                         </td>
-                        <td>
+                        <td class="align-middle">
                             {{ $order->code }}@if($order->viewed == 0 && $order->payment_status == 'paid') <span class="badge badge-inline badge-info">{{ translate('New')}}</span>@endif
                         </td>
-                        <td>
+                        <td class='text-center align-middle'>
                             {{ count($order->orderDetails) }}
                         </td>
-                        <td>
+                        <td class='text-center align-middle'>
                             @if ($order->user != null)
                                 {{ $order->user->name }}
                             @else
                                 Guest ({{ $order->guest_id }})
                             @endif
                         </td>
-                        <td>
+                        <td class='text-center align-middle'>
                             @if($order->shop)
                                 {{ $order->shop->name }}
                             @else
                                 {{ translate('Inhouse Order') }}
                             @endif
                         </td>
-                        <td>
-                            {{ single_price($order->grand_total) }}
-                        </td>
-                        <td>
-                        @if ($order->payment_status == 'paid')
-                            @if ($order->delivery_status == 'delivered')
-                                <span class="badge badge-inline badge-success">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
-                            @elseif ($order->delivery_status == 'pending')
-                                <span class="badge badge-inline badge-danger">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
-                            @elseif ($order->delivery_status == 'in_progress')
-                                <span class="badge badge-inline badge-warning">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
-                            @elseif (($order->delivery_status == 'picked_up') || ($order->delivery_status == 'on_the_way'))
-                                <span class="badge badge-inline badge-info">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
-                            @else
-                                <span class="badge badge-inline badge-secondary">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
-                            @endif
+                        @if($order->payment_type == 'cup_payment')
+                            <td class='text-center align-middle'>
+                                {{ single_price($order->grand_total_cup) }}
+                            </td>
                         @else
-                            <span class="badge badge-inline badge-dark">{{ translate('Unpaid')}}</span>
-                        @endif 
-                            
-                        </td>
-                        <td>
-                            {{ translate(ucfirst(str_replace('_', ' ', $order->payment_type))) }}
-                        </td>
-                        <td>
-                            @if ($order->payment_status == 'paid')
-                            <span class="badge badge-inline badge-success">{{ translate('Paid')}}</span>
+                            @if($order->payment_type == 'mlc_payment')
+                                <td class='text-center align-middle'>
+                                    {{ single_price($order->grand_total_mlc) }}
+                                </td>
                             @else
-                            <span class="badge badge-inline badge-dark">{{ translate('Unpaid')}}</span>
+                                <td class='text-center align-middle'>
+                                    {{ single_price($order->grand_total) }}
+                                </td>
                             @endif
-                        </td>
-                        @if (addon_is_activated('refund_request'))
-                        <td>
-                            @if (count($order->refund_requests) > 0)
-                                {{ count($order->refund_requests) }} {{ translate('Refund') }}
-                            @else
-                                {{ translate('No Refund') }}
-                            @endif
-                        </td>
                         @endif
-                        <td class="text-right">
+
+                        @if($order->payment_type == 'cup_payment')
+                            <td class='text-center align-middle'>CUP</td>
+                        @else
+                            @if($order->payment_type == 'mlc_payment')
+                                <td class='text-center align-middle'>MLC</td>
+                            @else
+                                <td class='text-center align-middle'>{{ translate(ucfirst(str_replace('_', ' ', $order->payment_type))) }}</td>
+                            @endif
+                        @endif
+                        
+                        <td class='text-center align-middle'>
+                            @if ($order->payment_status == 'paid')
+                                <span class="badge badge-inline badge-success">{{ translate('Paid')}}</span>
+                            @else
+                                <span class="badge badge-inline badge-dark">{{ translate('Unpaid')}}</span>
+                            @endif
+                        </td>
+
+                        <td class='text-center align-middle'>
+                            @if ($order->payment_status == 'paid')
+                                @if ($order->delivery_status == 'delivered')
+                                    <span class="badge badge-inline badge-success">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
+                                @elseif ($order->delivery_status == 'pending')
+                                    <span class="badge badge-inline badge-danger">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
+                                @elseif ($order->delivery_status == 'in_progress')
+                                    <span class="badge badge-inline badge-warning">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
+                                @elseif (($order->delivery_status == 'picked_up') || ($order->delivery_status == 'on_the_way'))
+                                    <span class="badge badge-inline badge-info">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
+                                @else
+                                    <span class="badge badge-inline badge-secondary">{{ translate(ucfirst(str_replace('_', ' ', $order->delivery_status))) }}</span>
+                                @endif
+                            @else
+                                <span class="badge badge-inline badge-dark">{{ translate('Unpaid')}}</span>
+                            @endif 
+                        </td>
+
+                        @if (addon_is_activated('refund_request'))
+                            <td class='text-center align-middle'>
+                                @if (count($order->refund_requests) > 0)
+                                    {{ count($order->refund_requests) }} {{ translate('Refund') }}
+                                @else
+                                    {{ translate('No Refund') }}
+                                @endif
+                            </td>
+                        @endif
+                        <td class="text-right align-middle">
 
                             @can('view_order_details')
                                 @php

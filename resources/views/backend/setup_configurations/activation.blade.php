@@ -233,6 +233,40 @@
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
+                <h3 class="mb-0 h6 text-center">Activación de pago por CUP</h3>
+            </div>
+            <div class="card-body text-center">
+                <div class="clearfix">
+                    <img class="float-left" src="{{ asset('assets/img/cards/cup.png') }}" height="30">
+                    <label class="aiz-switch aiz-switch-success mb-0 float-right">
+                        <input type="checkbox" onchange="updateSettings(this, 'cup_payment')" <?php if (get_setting('cup[') == 1) echo "checked"; ?>>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="mb-0 h6 text-center">Activación de pago por MLC</h3>
+            </div>
+            <div class="card-body text-center">
+                <div class="clearfix">
+                    <img class="float-left" src="{{ asset('assets/img/cards/mlc.png') }}" height="30">
+                    <label class="aiz-switch aiz-switch-success mb-0 float-right">
+                        <input type="checkbox" onchange="updateSettings(this, 'mlc_payment')" <?php if (get_setting('mlc[') == 1) echo "checked"; ?>>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
                 <h3 class="mb-0 h6 text-center">{{ translate('Bitcoin LN Activation') }}</h3>
             </div>
             <div class="card-body text-center">
@@ -246,8 +280,6 @@
             </div>
         </div>
     </div>
-</div>
-<div class="row">
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
