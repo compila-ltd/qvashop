@@ -6,7 +6,6 @@
             <h5 class="mb-0 h6">{{ translate('Combined Orders') }}</h5>
         </div>
         <div class="card-body">
-        @dd($combined_orders);
             @if (count($combined_orders) > 0)
                 <table class="table aiz-table mb-0">
                     <thead>
