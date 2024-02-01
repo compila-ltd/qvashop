@@ -16,7 +16,7 @@ class CombinedOrderController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {//->where('payment_status', 'paid')
+    {
         $combined_orders = CombinedOrder::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->paginate(9);
         return view('frontend.user.combined_order', compact('combined_orders'));
     }
