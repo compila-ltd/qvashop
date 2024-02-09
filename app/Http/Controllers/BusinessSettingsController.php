@@ -92,7 +92,7 @@ class BusinessSettingsController extends Controller
     public function payment_method(Request $request)
     {
 
-        return view('backend.setup_configurations.payment_method');
+        return view('backend.setup_configurations.payment_method.index');
     }
 
     public function file_system(Request $request)
@@ -375,6 +375,7 @@ class BusinessSettingsController extends Controller
 
     public function update(Request $request)
     {
+        
         foreach ($request->types as $key => $type) {
             if ($type == 'site_name') {
                 $this->overWriteEnvFile('APP_NAME', $request[$type]);

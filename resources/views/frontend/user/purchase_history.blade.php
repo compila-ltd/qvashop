@@ -27,30 +27,12 @@
                                         <a href="{{route('purchase_history.details', encrypt($order->id))}}">{{ $order->code }}</a>
                                     </td>
                                     <td class='text-center'>{{ date('d-m-Y', $order->date) }}</td>
-                                        @if($order->payment_type == 'cup_payment')
-                                            <td class='text-center'>
-                                                {{ single_price($order->grand_total_cup) }}
-                                            </td>
-                                            <td class='text-center'>
-                                                CUP
-                                            </td>
-                                        @else
-                                            @if($order->payment_type == 'mlc_payment')
-                                                <td class='text-center'>
-                                                    {{ single_price($order->grand_total_mlc) }}
-                                                </td>
-                                                <td class='text-center'>
-                                                    MLC
-                                                </td>
-                                            @else
-                                                <td class='text-center'>
-                                                    {{ single_price($order->grand_total) }}
-                                                </td>
-                                                <td class='text-center'>
-                                                    Qvapay
-                                                </td>
-                                            @endif
-                                        @endif
+                                        <td class='text-center'>
+                                            {{ single_price($order->grand_total * $order->exchange_rate) }}
+                                        </td>
+                                        <td class='text-center'>
+                                            {{ $order->payment_type }}
+                                        </td>
                                     <td class='text-center'>
                                         @if ($order->payment_status == 'paid')
                                             @if ($order->delivery_status == 'delivered')

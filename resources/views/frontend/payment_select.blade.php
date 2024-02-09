@@ -66,71 +66,96 @@
                                 {{ translate('Select a payment option') }}
                             </h3>
                         </div>
+                        @php
+                            $payment_methods = \App\Models\PaymentMethod::where('status', 1)->get();
+                        @endphp
                         <div class="card-body text-center">
                             <div class="row">
                                 <div class="col-xxl-8 col-xl-10 mx-auto">
                                     <div class="row gutters-10">
                                         
-                                        @if (get_setting('qvapay') == 1)
+                                    @foreach($payment_methods as $key => $payment_method)
                                         <div class="col-6 col-md-4">
                                             <label class="aiz-megabox d-block mb-3">
-                                                <input value="qvapay" class="online_payment" type="radio" name="payment_option" checked 
-                                                onchange="update_payment(this, 'mlc')"
-                                                data-target="qvapay">
+                                                <input value="{{$payment_method->short_name}}" class="online_payment" type="radio" name="payment_option" {{ $key == 0 ? 'checked' : '' }}
+                                                    onchange="update_payment(this)"
+                                                    data-target="{{$payment_method->short_name}}">
                                                 <span class="d-block aiz-megabox-elem p-3">
-                                                    <img src="{{ asset('assets/img/cards/qvapay.png') }}" class="img-fluid mb-2">
+                                                    <img 
+                                                        class="lazyload img-fluid mb-2"
+                                                        src="{{ asset('assets/img/placeholder.jpg') }}"
+                                                        data-src="{{ uploaded_asset($payment_method->photo) }}"
+                                                        onerror="this.onerror=null;this.src='{{ asset('assets/img/placeholder.jpg') }}';"
+                                                        height="30">
                                                     <span class="d-block text-center">
-                                                        <span class="d-block fw-600 fs-15">{{ translate('QvaPay') }}</span>
+                                                        <span class="d-block fw-600 fs-15">{{ $payment_method->short_name }}</span>
                                                     </span>
                                                 </span>
                                             </label>
                                         </div>
+                                    @endforeach
+
+                                        <!--
+                                        @if (get_setting('qvapay') == 1)
+                                            <div class="col-6 col-md-4">
+                                                <label class="aiz-megabox d-block mb-3">
+                                                    <input value="qvapay" class="online_payment" type="radio" name="payment_option" checked 
+                                                    onchange="update_payment(this, 'mlc')"
+                                                    data-target="qvapay">
+                                                    <span class="d-block aiz-megabox-elem p-3">
+                                                        <img src="{{ asset('assets/img/cards/qvapay.png') }}" class="img-fluid mb-2">
+                                                        <span class="d-block text-center">
+                                                            <span class="d-block fw-600 fs-15">{{ translate('QvaPay') }}</span>
+                                                        </span>
+                                                    </span>
+                                                </label>
+                                            </div>
                                         @endif
 
                                         @if (get_setting('cup_payment') == 1)
-                                        <div class="col-6 col-md-4">
-                                            <label class="aiz-megabox d-block mb-3">
-                                                <input value="cup_payment" class="online_payment" type="radio" name="payment_option" 
-                                                onchange="update_payment(this, 'cup')"
-                                                data-target="cup_payment">
-                                                <span class="d-block aiz-megabox-elem p-3">
-                                                    <img src="{{ asset('assets/img/cards/cup.png') }}" class="img-fluid mb-2">
-                                                    <span class="d-block text-center">
-                                                        <span class="d-block fw-600 fs-15">CUP</span>
+                                            <div class="col-6 col-md-4">
+                                                <label class="aiz-megabox d-block mb-3">
+                                                    <input value="cup_payment" class="online_payment" type="radio" name="payment_option" 
+                                                    onchange="update_payment(this, 'cup')"
+                                                    data-target="cup_payment">
+                                                    <span class="d-block aiz-megabox-elem p-3">
+                                                        <img src="{{ asset('assets/img/cards/cup.png') }}" class="img-fluid mb-2">
+                                                        <span class="d-block text-center">
+                                                            <span class="d-block fw-600 fs-15">CUP</span>
+                                                        </span>
                                                     </span>
-                                                </span>
-                                            </label>
-                                        </div>
+                                                </label>
+                                            </div>
                                         @endif
 
                                         @if (get_setting('mlc_payment') == 1)
-                                        <div class="col-6 col-md-4">
-                                            <label class="aiz-megabox d-block mb-3">
-                                                <input value="mlc_payment" class="online_payment" type="radio" name="payment_option" 
-                                                onchange="update_payment(this, 'mlc')"
-                                                data-target="mlc_payment">
-                                                <span class="d-block aiz-megabox-elem p-3">
-                                                    <img src="{{ asset('assets/img/cards/mlc.png') }}" class="img-fluid mb-2">
-                                                    <span class="d-block text-center">
-                                                        <span class="d-block fw-600 fs-15">MLC</span>
+                                            <div class="col-6 col-md-4">
+                                                <label class="aiz-megabox d-block mb-3">
+                                                    <input value="mlc_payment" class="online_payment" type="radio" name="payment_option" 
+                                                    onchange="update_payment(this, 'mlc')"
+                                                    data-target="mlc_payment">
+                                                    <span class="d-block aiz-megabox-elem p-3">
+                                                        <img src="{{ asset('assets/img/cards/mlc.png') }}" class="img-fluid mb-2">
+                                                        <span class="d-block text-center">
+                                                            <span class="d-block fw-600 fs-15">MLC</span>
+                                                        </span>
                                                     </span>
-                                                </span>
-                                            </label>
-                                        </div>
+                                                </label>
+                                            </div>
                                         @endif
 
                                         @if (get_setting('bitcoinln') == 1)
-                                        <div class="col-6 col-md-4">
-                                            <label class="aiz-megabox d-block mb-3">
-                                                <input value="bitcoinln" class="online_payment" type="radio" name="payment_option">
-                                                <span class="d-block aiz-megabox-elem p-3">
-                                                    <img src="{{ asset('assets/img/cards/bitcoinln.jpg') }}" class="img-fluid mb-2">
-                                                    <span class="d-block text-center">
-                                                        <span class="d-block fw-600 fs-15">{{ translate('Bitcoin ⚡️') }}</span>
+                                            <div class="col-6 col-md-4">
+                                                <label class="aiz-megabox d-block mb-3">
+                                                    <input value="bitcoinln" class="online_payment" type="radio" name="payment_option">
+                                                    <span class="d-block aiz-megabox-elem p-3">
+                                                        <img src="{{ asset('assets/img/cards/bitcoinln.jpg') }}" class="img-fluid mb-2">
+                                                        <span class="d-block text-center">
+                                                            <span class="d-block fw-600 fs-15">{{ translate('Bitcoin ⚡️') }}</span>
+                                                        </span>
                                                     </span>
-                                                </span>
-                                            </label>
-                                        </div>
+                                                </label>
+                                            </div>
                                         @endif
 
                                         @if (get_setting('cash_payment') == 1)
@@ -147,58 +172,59 @@
                                                     }
                                                 }
                                             @endphp
-                                        @if ($digital != 1 && $cod_on == 1)
-                                        <div class="col-6 col-md-4">
-                                            <label class="aiz-megabox d-block mb-3">
-                                                <input value="cash_on_delivery" class="online_payment" type="radio" name="payment_option" checked>
-                                                <span class="d-block aiz-megabox-elem p-3">
-                                                    <img src="{{ asset('assets/img/cards/cod.png') }}" class="img-fluid mb-2">
-                                                    <span class="d-block text-center">
-                                                        <span class="d-block fw-600 fs-15">{{ translate('Cash on Delivery') }}</span>
-                                                    </span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                        @endif
+                                            @if ($digital != 1 && $cod_on == 1)
+                                                <div class="col-6 col-md-4">
+                                                    <label class="aiz-megabox d-block mb-3">
+                                                        <input value="cash_on_delivery" class="online_payment" type="radio" name="payment_option" checked>
+                                                        <span class="d-block aiz-megabox-elem p-3">
+                                                            <img src="{{ asset('assets/img/cards/cod.png') }}" class="img-fluid mb-2">
+                                                            <span class="d-block text-center">
+                                                                <span class="d-block fw-600 fs-15">{{ translate('Cash on Delivery') }}</span>
+                                                            </span>
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                            @endif
                                         @endif
                                         @if (Auth::check())
-                                        @if (addon_is_activated('offline_payment'))
-                                        @foreach (\App\Models\ManualPaymentMethod::all() as $method)
-                                        <div class="col-6 col-md-4">
-                                            <label class="aiz-megabox d-block mb-3">
-                                                <input value="{{ $method->heading }}" type="radio" name="payment_option" class="offline_payment_option" onchange="toggleManualPaymentData('{{ $method->id }}')" data-id="{{ $method->id }}" checked>
-                                                <span class="d-block aiz-megabox-elem p-3">
-                                                    <img src="{{ uploaded_asset($method->photo) }}" class="img-fluid mb-2">
-                                                    <span class="d-block text-center">
-                                                        <span class="d-block fw-600 fs-15">{{ $method->heading }}</span>
-                                                    </span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                        @endforeach
-
-                                        @foreach (\App\Models\ManualPaymentMethod::all() as $method)
-                                        <div id="manual_payment_info_{{ $method->id }}" class="d-none">
-                                            @php echo $method->description @endphp
-                                            @if ($method->bank_info != null)
-                                            <ul>
-                                                @foreach (json_decode($method->bank_info) as $key => $info)
-                                                <li>{{ translate('Bank Name') }} -
-                                                    {{ $info->bank_name }},
-                                                    {{ translate('Account Name') }} -
-                                                    {{ $info->account_name }},
-                                                    {{ translate('Account Number') }} -
-                                                    {{ $info->account_number }},
-                                                    {{ translate('Routing Number') }} -
-                                                    {{ $info->routing_number }}
-                                                </li>
+                                            @if (addon_is_activated('offline_payment'))
+                                                @foreach (\App\Models\ManualPaymentMethod::all() as $method)
+                                                <div class="col-6 col-md-4">
+                                                    <label class="aiz-megabox d-block mb-3">
+                                                        <input value="{{ $method->heading }}" type="radio" name="payment_option" class="offline_payment_option" onchange="toggleManualPaymentData('{{ $method->id }}')" data-id="{{ $method->id }}" checked>
+                                                        <span class="d-block aiz-megabox-elem p-3">
+                                                            <img src="{{ uploaded_asset($method->photo) }}" class="img-fluid mb-2">
+                                                            <span class="d-block text-center">
+                                                                <span class="d-block fw-600 fs-15">{{ $method->heading }}</span>
+                                                            </span>
+                                                        </span>
+                                                    </label>
+                                                </div>
                                                 @endforeach
-                                            </ul>
+
+                                                @foreach (\App\Models\ManualPaymentMethod::all() as $method)
+                                                    <div id="manual_payment_info_{{ $method->id }}" class="d-none">
+                                                        @php echo $method->description @endphp
+                                                        @if ($method->bank_info != null)
+                                                        <ul>
+                                                            @foreach (json_decode($method->bank_info) as $key => $info)
+                                                            <li>{{ translate('Bank Name') }} -
+                                                                {{ $info->bank_name }},
+                                                                {{ translate('Account Name') }} -
+                                                                {{ $info->account_name }},
+                                                                {{ translate('Account Number') }} -
+                                                                {{ $info->account_number }},
+                                                                {{ translate('Routing Number') }} -
+                                                                {{ $info->routing_number }}
+                                                            </li>
+                                                            @endforeach
+                                                        </ul>
+                                                        @endif
+                                                    </div>
+                                                @endforeach
                                             @endif
-                                        </div>
-                                        @endforeach
                                         @endif
-                                        @endif
+                                        -->
                                     </div>
                                 </div>
                             </div>
@@ -295,18 +321,39 @@
 
 @section('script')
 <script type="text/javascript">
-    function update_payment(el, type) {
+
+    $(document).ready(function() {
+        var defaultPaymentMethod = $('input[name="payment_option"]:checked').val();
+        update_payment($('input[name="payment_option"]:checked'), defaultPaymentMethod);
+    });
+
+    function update_payment(el) {
         var value = $(el).val();
 
-        $('.cup_mlc_payment_note, .qvapay, .cup_payment, .mlc_payment, .total_price_product, .total_price_product_cup, .total_price_product_mlc, .subtotal, .subtotal_cup, .subtotal_mlc, .shipping, .shipping_cup, .shipping_mlc').removeClass('d-block d-none');
+        $('[class*="total_price_product_"]').removeClass('d-block').addClass('d-none');
 
-        if (value == "qvapay") {
-            $('#cup_mlc_payment_note, #cup_payment, #subtotal_cup, #shipping_cup, #mlc_payment, #subtotal_mlc, #shipping_mlc, #total_price_product_cup, #total_price_product_mlc').addClass('d-none');
-        } else if (value == 'cup_payment') {
-            $('#qvapay, #subtotal, #shipping, #total_price_product, #total_price_product_mlc, #mlc_payment, #subtotal_mlc, #shipping_mlc').addClass('d-none');
-        } else if (value == 'mlc_payment') {
-            $('#qvapay, #subtotal, #shipping, #total_price_product, #total_price_product_cup, #cup_payment, #subtotal_cup, #shipping_cup').addClass('d-none');
-        }
+        $('[class*="total_price_product_"]').filter(function() {
+            return $(this).hasClass('total_price_product_' + value);
+        }).removeClass('d-none').addClass('d-block');
+
+        $('[class*="subtotal_"]').removeClass('d-block').addClass('d-none');
+
+        $('[class*="subtotal_"]').filter(function() {
+            return $(this).hasClass('subtotal_' + value);
+        }).removeClass('d-none');
+
+        $('[class*="shipping_"]').removeClass('d-block').addClass('d-none');
+
+        $('[class*="shipping_"]').filter(function() {
+            return $(this).hasClass('shipping_' + value);
+        }).removeClass('d-none');
+
+        $('[class*="payment_"]').removeClass('d-block').addClass('d-none');
+
+        $('[class*="payment_"]').filter(function() {
+            return $(this).hasClass('payment_' + value);
+        }).removeClass('d-none');
+        
     }
 
 

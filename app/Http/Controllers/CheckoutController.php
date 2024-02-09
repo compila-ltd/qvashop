@@ -10,6 +10,7 @@ use App\Models\Carrier;
 use App\Models\Product;
 use App\Models\Shop;
 use App\Models\Category;
+use App\Models\PaymentMethod;
 use App\Models\CouponUsage;
 use Illuminate\Http\Request;
 use App\Models\CombinedOrder;
@@ -24,6 +25,7 @@ class CheckoutController extends Controller
     // Check the selected payment gateway and redirect to that controller accordingly
     public function checkout(Request $request)
     {
+        //dd($request);
         // Minumum order amount check
         if (get_setting('minimum_order_amount_check') == 1) {
 
@@ -40,6 +42,7 @@ class CheckoutController extends Controller
         }
 
         if ($request->payment_option != null) {
+            $payment_method = PaymentMethod::where('short_name', $request->payment_option)->first();
 
             (new OrderController)->store($request);
             $request->session()->put('payment_type', 'cart_payment');
@@ -47,7 +50,6 @@ class CheckoutController extends Controller
             $request->session()->put('payment_data', $data);
 
             if ($request->session()->get('combined_order_id') != null) {
-//dd($request->session()->get('order_code'));
                 // Pay with QvaPay
                 if ($request->payment_option == 'qvapay') {
                     $qvapay = new QvaPayController;
@@ -62,8 +64,8 @@ class CheckoutController extends Controller
                     // Chage this return for a view()
                     return view('frontend.payment.lncpayments', compact('wallet'));
 
-                } elseif ($request->payment_option == 'cup_payment' || $request->payment_option == 'mlc_payment') {
-                    return redirect()->route('order_confirmed')->with('success', 'Su orden ha sido completada, pero aún necesita realizar el pago. Por favor, contáctenos por Telegram para completar el mismo.');
+                } elseif ($payment_method->automatic == 0) {
+                    return redirect()->route('order_confirmed')->with('success', 'Su orden ha sido completada, pero aún necesita realizar el pago. Por favor, contáctenos');
                 } else {
 
                     $combined_order = CombinedOrder::findOrFail($request->session()->get('combined_order_id'));
@@ -363,16 +365,16 @@ class CheckoutController extends Controller
     {
         $combined_order = CombinedOrder::findOrFail(Session::get('combined_order_id'));
         $order = Order::where('combined_order_id', Session::get('combined_order_id'))->first();
+
+        $payment_method = PaymentMethod::where('short_name', $order->payment_type)->first();
         
         Cart::where('user_id', $combined_order->user_id)->delete();
 
-        if($order->payment_type == "cup_payment" || $order->payment_type == "mlc_payment") {
-
-        } else {
+        if($payment_method->automatic == 1) 
             foreach ($combined_order->orders as $order) {
                 NotificationUtility::sendOrderPlacedNotification($order);
             }
-        }
+
         
         return view('frontend.order_confirmed', compact('combined_order'));
     }

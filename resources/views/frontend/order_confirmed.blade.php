@@ -47,30 +47,15 @@
                 <div class="col-xl-8 mx-auto">
                     @php
                         $first_order = $combined_order->orders->first();
-                        //dd($first_order);
+                        $payment_method = \App\Models\PaymentMethod::where('short_name', $first_order->payment_type)->first();
+                        //dd($payment_method);
                     @endphp
                     <div class="text-center py-4 mb-4">
                         <i class="la la-check-circle la-3x text-success mb-3"></i>
                         <h1 class="h3 mb-3 fw-600">{{ translate('Thank You for Your Order!')}}</h1>
-                        @if($first_order->payment_status == 'unpaid' && ($first_order->payment_type == 'cup_payment' || $first_order->payment_type == 'mlc_payment'))
-                            @php 
-                                $payment_type = "";
-                                $total_cost = 0;
-                                
-                                if($first_order->payment_type == 'cup_payment')
-                                {
-                                    $payment_type = "CUP";
-                                    $total_cost = single_price($combined_order->grand_total_cup);
-                                }
-                                
-                                if($first_order->payment_type == 'mlc_payment')
-                                {
-                                    $payment_type = "MLC";
-                                    $total_cost = single_price($combined_order->grand_total_mlc); 
-                                }
-                            @endphp
+                        @if($first_order->payment_status == 'unpaid' && $payment_method->automatic == 0)
                             <p class="h4 opacity-70 font-italic">Usted aún necesita pagar su orden con código: <span class="fw-600"> {{strtotime($combined_order->created_at)}}</span>.</p> 
-                            <p class="h4 opacity-70 font-italic">Contáctenos mediante <a href="https://wa.me/{{ get_setting('helpline_number') }}?text=<?php echo urlencode('Hola. Mi nombre de usuario en QvaShop es: '.json_decode($first_order->shipping_address)->name.' y quiero pagar la orden con código: '.strtotime($combined_order->created_at).' con un importe de '.$total_cost.' '.$payment_type.' '); ?>" target="_blank"><span class="fw-600">WhatsApp</span></a> para realizar su pago.</p>
+                            <p class="h4 opacity-70 font-italic">Contáctenos mediante <a href="https://wa.me/{{ get_setting('helpline_number') }}?text=<?php echo urlencode('Hola. Mi nombre de usuario en QvaShop es: '.json_decode($first_order->shipping_address)->name.' y quiero pagar la orden con código: '.strtotime($combined_order->created_at).' con un importe de '.$combined_order->grand_total * $combined_order->exchange_rate.' '.$first_order->payment_type.' '); ?>" target="_blank"><span class="fw-600">WhatsApp</span></a> para realizar su pago.</p>
                         @else
                             <p class="opacity-70 font-italic">{{  translate('A copy or your order summary has been sent to') }} {{ json_decode($first_order->shipping_address)->email }}</p>
                         @endif
@@ -102,7 +87,7 @@
                                 <table class="table">
                                     <tr>
                                         <td class="w-50 fw-600">{{ translate('Order status')}}:</td>
-                                        @if($first_order->payment_status == 'unpaid' && ($first_order->payment_type == 'cup_payment' || $first_order->payment_type == 'mlc_payment'))
+                                        @if($first_order->payment_status == 'unpaid' && ($first_order->payment_type == 'cup' || $first_order->payment_type == 'mlc'))
                                             <td>Pendiente a pago</td>
                                         @else    
                                             <td>{{ translate(ucfirst(str_replace('_', ' ', $first_order->delivery_status))) }}</td>
@@ -110,15 +95,7 @@
                                     </tr>
                                     <tr>
                                         <td class="w-50 fw-600">{{ translate('Total order amount')}}:</td>
-                                        @if($first_order->payment_type == 'cup_payment')
-                                            <td>{{ single_price($combined_order->grand_total_cup) }}</td>
-                                        @else
-                                            @if($first_order->payment_type == 'mlc_payment')
-                                                <td>{{ single_price($combined_order->grand_total_mlc) }}</td>
-                                            @else
-                                                <td>{{ single_price($combined_order->grand_total) }}</td>
-                                            @endif
-                                        @endif
+                                        <td>{{ single_price($combined_order->grand_total * $combined_order->exchange_rate) }}</td>
                                     </tr>
                                     <tr>
                                         <td class="w-50 fw-600">{{ translate('Shipping')}}:</td>
@@ -126,15 +103,7 @@
                                     </tr>
                                     <tr>
                                         <td class="w-50 fw-600">{{ translate('Payment method')}}:</td>
-                                        @if($first_order->payment_type == 'cup_payment')
-                                            <td>CUP</td>
-                                        @else
-                                            @if($first_order->payment_type == 'mlc_payment')
-                                                <td>MLC</td>
-                                            @else
-                                                <td>{{ translate(ucfirst(str_replace('_', ' ', $first_order->payment_type))) }}</td>
-                                            @endif
-                                        @endif
+                                        <td>{{ $first_order->payment_type }}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -198,16 +167,7 @@
                                                                 @endif
                                                             @endif
                                                         </td>
-                                                        
-                                                        @if($order->payment_type == 'cup_payment')
-                                                            <td class="text-right">{{ single_price($orderDetail->price_cup) }}</td>
-                                                        @else
-                                                            @if($order->payment_type == 'mlc_payment')
-                                                                <td class="text-right">{{ single_price($orderDetail->price_mlc) }}</td>
-                                                            @else
-                                                                <td class="text-right">{{ single_price($orderDetail->price) }}</td>
-                                                            @endif
-                                                        @endif
+                                                        <td class="text-right">{{ single_price($orderDetail->price * $orderDetail->exchange_rate) }}</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -219,82 +179,33 @@
                                                 <tbody>
                                                     <tr>
                                                         <th>{{ translate('Subtotal')}}</th>
-                                                        @if($order->payment_type == 'cup_payment')
-                                                            <td class="text-right">
-                                                                <span class="fw-600">{{ single_price($order->orderDetails->sum('price_cup')) }}</span>
-                                                            </td>
-                                                        @else
-                                                            @if($order->payment_type == 'mlc_payment')
-                                                                <td class="text-right">
-                                                                    <span class="fw-600">{{ single_price($order->orderDetails->sum('price_mlc')) }}</span>
-                                                                </td>
-                                                            @else
-                                                                <td class="text-right">
-                                                                    <span class="fw-600">{{ single_price($order->orderDetails->sum('price')) }}</span>
-                                                                </td>
-                                                            @endif
-                                                        @endif
-                                                        
+                                                        <td class="text-right">
+                                                            <span class="fw-600">{{ single_price($order->orderDetails->sum('price') * $order->exchange_rate) }}</span>
+                                                        </td>                                                        
                                                     </tr>
                                                     <tr>
                                                         <th>{{ translate('Shipping')}}</th>
-                                                        @if($order->payment_type == 'cup_payment')
-                                                            <td class="text-right">
-                                                                <span class="font-italic">{{ single_price($order->orderDetails->sum('shipping_cost_cup')) }}</span>
-                                                            </td>
-                                                        @else
-                                                            @if($order->payment_type == 'mlc_payment')
-                                                                <td class="text-right">
-                                                                    <span class="font-italic">{{ single_price($order->orderDetails->sum('shipping_cost_mlc')) }}</span>
-                                                                </td>
-                                                            @else
-                                                                <td class="text-right">
-                                                                    <span class="font-italic">{{ single_price($order->orderDetails->sum('shipping_cost')) }}</span>
-                                                                </td>
-                                                            @endif
-                                                        @endif
+                                                        <td class="text-right">
+                                                            <span class="font-italic">{{ single_price($order->orderDetails->sum('shipping_cost') * $order->exchange_rate) }}</span>
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <th>{{ translate('Tax')}}</th>
                                                         <td class="text-right">
-                                                            <span class="font-italic">{{ single_price($order->orderDetails->sum('tax')) }}</span>
+                                                            <span class="font-italic">{{ single_price($order->orderDetails->sum('tax') * $order->exchange_rate) }}</span>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <th>{{ translate('Coupon Discount')}}</th>
-                                                        @if($order->payment_type == 'cup_payment')
-                                                            <td class="text-right">
-                                                                <span class="font-italic">{{ single_price($order->coupon_discount_cup) }}</span>
-                                                            </td>
-                                                        @else
-                                                            @if($order->payment_type == 'mlc_payment')
-                                                                <td class="text-right">
-                                                                    <span class="font-italic">{{ single_price($order->coupon_discount_mlc) }}</span>
-                                                                </td>
-                                                            @else
-                                                                <td class="text-right">
-                                                                    <span class="font-italic">{{ single_price($order->coupon_discount) }}</span>
-                                                                </td>
-                                                            @endif
-                                                        @endif
+                                                        <td class="text-right">
+                                                            <span class="font-italic">{{ single_price($order->coupon_discount * $order->exchange_rate) }}</span>
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <th><span class="fw-600">{{ translate('Total')}}</span></th>
-                                                        @if($order->payment_type == 'cup_payment')
-                                                            <td class="text-right">
-                                                                <strong><span>{{ single_price($order->grand_total_cup) }}</span></strong>
-                                                            </td>
-                                                        @else
-                                                            @if($order->payment_type == 'mlc_payment')
-                                                            <td class="text-right">
-                                                                <strong><span>{{ single_price($order->grand_total_mlc) }}</span></strong>
-                                                            </td>
-                                                            @else
-                                                            <td class="text-right">
-                                                                <strong><span>{{ single_price($order->grand_total) }}</span></strong>
-                                                            </td>
-                                                            @endif
-                                                        @endif
+                                                        <td class="text-right">
+                                                            <strong><span>{{ single_price($order->grand_total * $order->exchange_rate) }}</span></strong>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </table>

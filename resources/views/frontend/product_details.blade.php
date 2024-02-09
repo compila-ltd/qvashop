@@ -1000,12 +1000,12 @@ fff
                         <input type="hidden" class="form-control mb-3" name="product_url" value="{{ route('product', $detailedProduct->slug) }}" placeholder="{{ translate('Product URL') }}" required>
                     </div>
                     <div class="form-group">
-                        <textarea class="form-control" rows="8" name="message" required placeholder="{{ translate('Your Question') }}"></textarea>
+                        <textarea class="form-control" rows="8" name="message" id="messageInput" oninput="validateMessage()" required placeholder="{{ translate('Your Question') }}"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary fw-600" data-dismiss="modal">{{ translate('Cancel') }}</button>
-                    <button type="submit" onclick="disable_button()" class="btn btn-primary fw-600">{{ translate('Send') }}</button>
+                    <button type="submit" onclick="disable_button()" id="submitBtn" class="btn btn-primary fw-600" disabled>{{ translate('Send') }}</button>
                 </div>
             </form>
         </div>
@@ -1015,6 +1015,13 @@ fff
 <script>
     function disable_button() {
         $('#chat_modal').modal('hide');
+    }
+
+    function validateMessage() {
+        var messageInput = document.getElementById("messageInput");
+        var submitBtn = document.getElementById("submitBtn");
+
+        submitBtn.disabled = messageInput.value.trim().length <= 10;
     }
 </script>
 

@@ -60,30 +60,6 @@
             <div class="col-6">
                 <div class="bg-grad-4 text-white rounded-lg mb-4 overflow-hidden">
                     <div class="px-3 pt-3">
-                        @php 
-                            $total = 0;
-                            $total_cup = 0;
-                            $total_mlc = 0;
-
-                            $total = \App\Models\Order::selectRaw('SUM(grand_total_cup) as total')
-                                        ->where('payment_status', 'paid')
-                                        ->first();
-                                        
-                            $total_cup = $total->total;
-
-                            $total = \App\Models\Order::selectRaw('SUM(grand_total_mlc) as total')
-                                        ->where('payment_status', 'paid')
-                                        ->first();
-
-                            $total_mlc = $total->total;
-
-                            if($total_cup == null)
-                                $total_cup = 0;
-
-                            if($total_mlc == null)
-                                $total_mlc = 0;
-
-                        @endphp
                         <div class="row">
                             <div class="col-4">
                                 <div class="opacity-50">
@@ -92,20 +68,23 @@
                                 </div>
                                 <div class="h4 fw-700 mb-3">{{ \App\Models\Shop::sum('admin_to_pay') }}</div>
                             </div>
-                            <div class="col-4">
-                                <div class="opacity-50">
-                                        <span class="fs-12 d-block">{{ translate('Total CUP') }}</span>
-                                        {{ translate('Recaudado') }}
+                            @php 
+                                $payment_methods = \App\Models\PaymentMethod::where('status', 1)->get();
+                            @endphp
+                            @foreach($payment_methods as $payment_method)
+                                @php 
+                                    $total = \App\Models\Order::where('payment_type', $payment_method->short_name)
+                                            ->where('payment_status', 'paid')
+                                            ->sum(\DB::raw('grand_total * exchange_rate'));
+                                @endphp
+                                <div class="col-4">
+                                    <div class="opacity-50">
+                                            <span class="fs-12 d-block">{{ translate('Total') }} {{ $payment_method->short_name }}</span>
+                                            {{ translate('Recaudado') }}
+                                    </div>
+                                    <div class="h4 fw-700 mb-3">{{ $total }}</div>
                                 </div>
-                                <div class="h4 fw-700 mb-3">{{ $total_cup}}</div>
-                            </div>
-                            <div class="col-4">
-                                <div class="opacity-50">
-                                        <span class="fs-12 d-block">{{ translate('Total MLC') }}</span>
-                                        {{ translate('Recaudado') }}
-                                </div>
-                                <div class="h4 fw-700 mb-3">{{ $total_mlc }}</div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">

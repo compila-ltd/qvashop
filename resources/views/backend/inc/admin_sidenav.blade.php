@@ -296,6 +296,8 @@
                 <li class="aiz-side-nav-item">
                         @can('view_all_orders')
                         @php
+                            $combined_orders = DB::table('combined_orders')
+
                             $orders = DB::table('orders')
                             ->where('payment_status', 'paid')
                             ->where('delivery_status', '!=' ,'delivered')

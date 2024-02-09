@@ -45,24 +45,7 @@
     </div>
 
     @php
-        $currencies = \App\Models\Currency::where('status', 1)->get();
-        //dd($currencies);
-
-        $cup_exchange_rate = -1;
-        $mlc_exchange_rate = -1;
-
-        $currency = $currencies->where('code', 'MLC')->first();
-
-        if ($currency) 
-            $mlc_exchange_rate = $currency->exchange_rate;
-
-        $currency = $currencies->where('code', 'CUP')->first();
-
-        if ($currency) 
-            $cup_exchange_rate = $currency->exchange_rate;
-                        
-        //dd($cup_exchange_rate);
-
+        $payment_methods = \App\Models\PaymentMethod::where('status', 1)->get();    
     @endphp    
 
     <div class="card-body">
@@ -118,123 +101,78 @@
                                 × {{ $cartItem['quantity'] }}
                             </strong>
                         </td>
-                        <td class="product-total text-right total_price_product" id="total_price_product">
-                            <span
-                                class="pl-4 pr-0">{{ single_price(cart_product_price($cartItem, $cartItem->product, false, false) * $cartItem['quantity']) }}</span>
-                        </td>
-                        <td class="product-total text-right total_price_product_cup d-none" id="total_price_product_cup">
-                            <span
-                                class="pl-4 pr-0">{{ single_price((cart_product_price($cartItem, $cartItem->product, false, false) * $cartItem['quantity']) * $cup_exchange_rate ) }}</span>
-                        </td>
-                        <td class="product-total text-right total_price_product_mlc d-none" id="total_price_product_mlc">
-                            <span
-                                class="pl-4 pr-0">{{ single_price((cart_product_price($cartItem, $cartItem->product, false, false) * $cartItem['quantity']) * $mlc_exchange_rate) }}</span>
-                        </td>
+                        @foreach($payment_methods as $payment_method) 
+                            <td class="product-total text-right total_price_product_{{$payment_method->short_name}} d-none" id="total_price_product_{{$payment_method->short_name}}">
+                                <span
+                                    class="pl-4 pr-0">{{ single_price((cart_product_price($cartItem, $cartItem->product, false, false) * $cartItem['quantity']) * $payment_method->exchange_rate) }}</span>
+                            </td>
+                        @endforeach
                     </tr>
                 @endforeach
             </tbody>
         </table>
         <input type="hidden" id="sub_total" value="{{ $subtotal }}">
         <table class="table">
+            @php
+                $total = $subtotal + $tax + $shipping;
+                if (Session::has('club_point')) {
+                    $total -= Session::get('club_point');
+                }
+                if ($coupon_discount > 0) {
+                    $total -= $coupon_discount;
+                }
+            @endphp
 
             <tfoot>
-                <tr class="cart-subtotal subtotal" id="subtotal">
-                    <th>{{ translate('Subtotal') }} USD</th>
-                    <td class="text-right">
-                        <span class="fw-600">{{ single_price($subtotal) }}</span>
-                    </td>
-                </tr>
-                <tr class="cart-subtotal subtotal_cup d-none" id="subtotal_cup">
-                    <th>{{ translate('Subtotal') }} CUP</th>
-                    <td class="text-right">
-                        <span class="fw-600">{{ single_price($subtotal * $cup_exchange_rate) }}</span>
-                    </td>
-                </tr>
-                <tr class="cart-subtotal subtotal_mlc d-none" id="subtotal_mlc">
-                    <th>{{ translate('Subtotal') }} MLC</th>
-                    <td class="text-right">
-                        <span class="fw-600">{{ single_price($subtotal * $mlc_exchange_rate) }}</span>
-                    </td>
-                </tr>                
+                @foreach($payment_methods as $payment_method) 
+                    <tr class="cart-subtotal d-none subtotal_{{$payment_method->short_name}}" id="subtotal_{{$payment_method->short_name}}">
+                        <th>{{ translate('Subtotal') }} {{ $payment_method->currency->code }}</th>
+                        <td class="text-right">
+                            <span class="fw-600">{{ single_price($subtotal * $payment_method->exchange_rate) }}</span>
+                        </td>
+                    </tr>            
 
-                <tr class="cart-shipping">
-                    <th>{{ translate('Tax') }}</th>
-                    <td class="text-right">
-                        <span class="font-italic">{{ single_price($tax) }}</span>
-                    </td>
-                </tr>
-
-                <tr class="cart-shipping shipping" id="shipping">
-                    <th>{{ translate('Total Shipping') }} USD</th>
-                    <td class="text-right">
-                        <span class="font-italic">{{ single_price($shipping) }}</span>
-                    </td>
-                </tr>
-                <tr class="cart-shipping shipping_cup d-none" id="shipping_cup">
-                    <th>{{ translate('Total Shipping') }} CUP</th>
-                    <td class="text-right">  
-                        <span class="font-italic">{{ single_price($shipping * $cup_exchange_rate) }}</span>
-                    </td>
-                </tr>
-                <tr class="cart-shipping shipping_mlc d-none" id="shipping_mlc">
-                    <th>{{ translate('Total Shipping') }} MLC</th>
-                    <td class="text-right">
-                        <span class="font-italic">{{ single_price($shipping * $mlc_exchange_rate) }}</span>
-                    </td>
-                </tr>
-
-                @if (Session::has('club_point'))
+                    <!--
                     <tr class="cart-shipping">
-                        <th>{{ translate('Redeem point') }}</th>
+                        <th>{{ translate('Tax') }}</th>
                         <td class="text-right">
-                            <span class="font-italic">{{ single_price(Session::get('club_point')) }}</span>
+                            <span class="font-italic">{{ single_price($tax) }}</span>
                         </td>
                     </tr>
-                @endif
+                    -->
 
-                @if ($coupon_discount > 0)
-                    <tr class="cart-shipping">
-                        <th>{{ translate('Coupon Discount') }}</th>
+                    <tr class="cart-shipping d-none shipping_{{$payment_method->short_name}}" id="shipping_{{$payment_method->short_name}}">
+                        <th>{{ translate('Total Shipping') }} {{$payment_method->currency->code}}</th>
                         <td class="text-right">
-                            <span class="font-italic">{{ single_price($coupon_discount) }}</span>
+                            <span class="font-italic">{{ single_price($shipping * $payment_method->exchange_rate) }}</span>
                         </td>
                     </tr>
-                @endif
 
-                @php
-                    $total = $subtotal + $tax + $shipping;
-                    if (Session::has('club_point')) {
-                        $total -= Session::get('club_point');
-                    }
-                    if ($coupon_discount > 0) {
-                        $total -= $coupon_discount;
-                    }
-                @endphp
+                    @if (Session::has('club_point'))
+                        <tr class="cart-shipping d-none clup_point_{{$payment_method->short_name}}" id="clup_point_{{$payment_method->short_name}}">
+                            <th>{{ translate('Redeem point') }} {{$payment_method->currency->code}}</th>
+                            <td class="text-right">
+                                <span class="font-italic">{{ single_price(Session::get('club_point') * $payment_method->exchange_rate) }}</span>
+                            </td>
+                        </tr>
+                    @endif
 
-                <tr class="cart-total qvapay" id="qvapay">
-                    <th><span class="strong-600">{{ translate('Total') }} USD</span></th>
-                    <td class="text-right">
-                        <strong><span>{{ single_price($total) }}</span></strong>
-                    </td>
-                </tr>
-                
-                @if (get_setting('cup_payment') == 1)
-                    <tr class="cart-total cup_payment d-none" id="cup_payment">
-                        <th><span class="strong-600">{{ translate('Total') }} CUP</span></th>
+                    @if ($coupon_discount > 0)
+                        <tr class="cart-shipping d-none coupon_discount_{{$payment_method->short_name}}" id="coupon_discount_{{$payment_method->short_name}}">
+                            <th>{{ translate('Coupon Discount') }} {{$payment_method->currency->code}}</th>
+                            <td class="text-right">
+                                <span class="font-italic">{{ single_price($coupon_discount * $payment_method->exchange_rate) }}</span>
+                            </td>
+                        </tr>
+                    @endif
+
+                    <tr class="cart-total d-none payment_{{$payment_method->short_name}}" id="payment_{{$payment_method->short_name}}">
+                        <th><span class="strong-600">{{ translate('Total') }} {{$payment_method->currency->code}}</span></th>
                         <td class="text-right">
-                            <strong><span>{{ single_price($total * $cup_exchange_rate) }} </span></strong>
+                            <strong><span>{{ single_price($total * $payment_method->exchange_rate) }}</span></strong>
                         </td>
                     </tr>
-                @endif
-
-                @if (get_setting('mlc_payment') == 1)
-                    <tr class="cart-total mlc_payment d-none" id="mlc_payment">
-                        <th><span class="strong-600">{{ translate('Total') }} MLC</span></th>
-                        <td class="text-right">
-                            <strong><span>{{ single_price($total * $mlc_exchange_rate) }}</span></strong>
-                        </td>
-                    </tr>
-                @endif
+                @endforeach
             </tfoot>
         </table>
 

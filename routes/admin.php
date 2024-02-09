@@ -20,6 +20,7 @@ use App\Http\Controllers\SellerController;
 use App\Http\Controllers\CarrierController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WebsiteController;
@@ -182,7 +183,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::post('/facebook_pixel', 'facebook_pixel_update')->name('facebook_pixel.update');
 
         Route::post('/env_key_update', 'env_key_update')->name('env_key_update.update');
-        Route::post('/payment_method_update', 'payment_method_update')->name('payment_method.update');
+        //Route::post('/payment_method_update', 'payment_method_update')->name('payment_method.update');
         Route::post('/google_analytics', 'google_analytics_update')->name('google_analytics.update');
         Route::post('/google_recaptcha', 'google_recaptcha_update')->name('google_recaptcha.update');
         Route::post('/google-map', 'google_map_update')->name('google-map.update');
@@ -210,6 +211,17 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::post('/currency/store', 'store')->name('currency.store');
         Route::post('/currency/currency_edit', 'edit')->name('currency.edit');
         Route::post('/currency/update_status', 'update_status')->name('currency.update_status');
+    });
+
+    //Payment Methods
+    Route::controller(PaymentMethodController::class)->group(function () {
+        Route::get('/payment_method', 'payment_method')->name('payment_method.index');
+        Route::get('/payment_method/create', 'create')->name('payment_method.create');
+        Route::post('/payment_method/activation', 'activation_payment_method')->name('payment_method.activation');
+        Route::post('/payment_method/automatic', 'automatic_payment_method')->name('payment_method.automatic');
+        Route::post('/payment_method/store', 'store')->name('payment_method.store');
+        Route::get('/payment_method/edit/{id}', 'edit')->name('payment_method.edit');
+        Route::post('/payment_method/update/{id}', 'update')->name('payment_method.update');
     });
 
     //Tax
@@ -288,6 +300,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::controller(OrderController::class)->group(function () {
         // All Orders
         Route::get('/combined_orders', 'combined_orders')->name('combined_orders.index');
+        Route::get('/view_combined_order_orders/{id}', 'view_combined_order_orders')->name('view_combined_order_orders.index');
         Route::get('/all_orders', 'all_orders')->name('all_orders.index');
         Route::get('/inhouse-orders', 'all_orders')->name('inhouse_orders.index');
         Route::get('/seller_orders', 'all_orders')->name('seller_orders.index');
