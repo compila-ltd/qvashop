@@ -45,7 +45,7 @@
                         </label>
                     </div>
                     <div class="text-left mb-0 mt-0 h6 pt-3 pt-6 pl-2">{{ translate('Exchange rate') }}: {{ $payment_method->exchange_rate }}</div>
-                    <label class="aiz-switch aiz-switch-success mb-0 float-right"> {{ translate('Autimatic') }}
+                    <label class="aiz-switch aiz-switch-success mb-0 float-right"> {{ translate('Automatic') }}
                         <input type="checkbox" onchange="updatePaymentMethodAutomatic(this, '{{ $payment_method->id }}', '{{ $payment_method->short_name }}')" <?php if ($payment_method->automatic == 1) echo "checked"; ?>>
                         <span class="slider round"></span>
                     </label>
