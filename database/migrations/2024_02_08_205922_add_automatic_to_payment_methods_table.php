@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('payment_methods', function (Blueprint $table) {
-            $table->integer('automatic')->after('status');;
+            $table->integer('automatic')->after('status');
         });
     }
 
