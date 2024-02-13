@@ -42,7 +42,7 @@
                         <label class="col-sm-3 col-from-label" for="manager">{{ translate('Pick-up Point Manager')}}</label>
                         <div class="col-sm-9">
                             <div class="col-sm-9">
-                                <input type="text" placeholder="{{ translate('Name')}}" id="manager" name="manager" class="form-control">
+                                <input type="text" placeholder="{{ translate('Name')}}" id="manager" name="manager" class="form-control" required>
                             </div>
                         </div>
                     </div>
