@@ -83,7 +83,8 @@
                         @endif
                         <th data-breakpoints="md" class="text-center">{{ translate('Published')}}</th>
                         <th data-breakpoints="md" class="text-center">{{ translate('Featured')}}</th>
-                        <th data-breakpoints="md" class="text-center">Solo recogida en almacén</th>
+                        <th data-breakpoints="md" class="text-center">{{ translate('Warehouse pickup only') }}</th>
+                        <th data-breakpoints="md" class="text-center">{{ translate('Negociable transportation') }}</th>
                         <th data-breakpoints="md" class="text-center">{{ translate('Options')}}</th>
                     </tr>
                 </thead>
@@ -137,6 +138,16 @@
                                 <label class="aiz-switch aiz-switch-success mb-0">
                                 @if($product->digital != 1)
                                     <input onchange="update_only_pickup_point(this)" value="{{ $product->id }}" type="checkbox" <?php if($product->only_pickup_point == 1) echo "checked";?> >
+                                    <span class="slider round"></span>
+                                @else
+                                    <span class="">-</span>
+                                @endif
+                                </label>
+                            </td>
+                            <td class="text-center">
+                                <label class="aiz-switch aiz-switch-success mb-0">
+                                @if($product->digital != 1)
+                                    <input onchange="negotiable_transportation(this)" value="{{ $product->id }}" type="checkbox" <?php if($product->negotiable_transportation == 1) echo "checked";?> >
                                     <span class="slider round"></span>
                                 @else
                                     <span class="">-</span>
@@ -200,7 +211,25 @@
             }
             $.post('{{ route('seller.products.only_pickup_point') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
                 if(data == 1){
-                    AIZ.plugins.notify('success', 'Actualizado correctamente');
+                    AIZ.plugins.notify('success', '{{ translate('Updated successfully') }}');
+                }
+                else{
+                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                    location.reload();
+                }
+            });
+        }
+
+        function negotiable_transportation(el){
+            if(el.checked){
+                var status = 1;
+            }
+            else{
+                var status = 0;
+            }
+            $.post('{{ route('seller.products.negotiable_transportation') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
+                if(data == 1){
+                    AIZ.plugins.notify('success', '{{ translate('Updated successfully') }}');
                 }
                 else{
                     AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');

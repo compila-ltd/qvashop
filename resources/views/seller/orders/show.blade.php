@@ -283,7 +283,7 @@
                                 <strong class="text-muted">{{ translate('Shipping') }} :</strong>
                             </td>
                             <td>
-                                {{ single_price($order->orderDetails->sum('shipping_cost')) }}
+                                {{ single_price($order->orderDetails->max('shipping_cost')) }}
                             </td>
                         </tr>
                         <tr>

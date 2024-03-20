@@ -44,6 +44,7 @@
                             <li class="list-group-item">
                                 <div class="row">
                                     @foreach ($permission_group as $key => $permission)
+                                    
                                         @php
                                             $check = true;
                                             $addons = array("offline_payment", "club_point", "pos_system", "seller_subscription", "otp_system", "refund_request", "affiliate_system", "african_pg", "delivery_boy", "auction", "wholesale");

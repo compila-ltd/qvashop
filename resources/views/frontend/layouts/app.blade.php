@@ -62,7 +62,7 @@
     <!-- CSS Files -->
     <link rel="stylesheet" href="{{ asset('assets/css/vendors.css?v=202309211553') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/aiz-core.css?v=202310241553') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/custom-style.css?v=202310041511') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/custom-style.css?v=202403111444') }}">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css?v=202309211553">
 
@@ -243,8 +243,26 @@
                     });
                 });
             };
+            /*
             if ($('#currency-change').length > 0) {
                 $('#currency-change .dropdown-menu a').each(function() {
+                    $(this).on('click', function(e) {
+                        e.preventDefault();
+                        var $this = $(this);
+                        var currency_code = $this.data('currency');
+                        $.post("{{ route('currency.change') }}", {
+                            _token: AIZ.data.csrf,
+                            currency_code: currency_code
+                        }, function(data) {
+                            location.reload();
+                        });
+
+                    });
+                });
+            }
+            */
+            if ($('#currency-change').length > 0) {
+                $('#currency-change .btn').each(function() {
                     $(this).on('click', function(e) {
                         e.preventDefault();
                         var $this = $(this);

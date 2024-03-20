@@ -22,6 +22,7 @@ use App\Models\CombinedOrder;
 use App\Models\SellerPackage;
 use App\Models\BusinessSetting;
 use App\Models\CustomerPackage;
+use App\Models\NegotiableTransportation;
 use App\Utility\SendSMSUtility;
 use App\Utility\CategoryUtility;
 use Illuminate\Support\Facades\App;
@@ -878,23 +879,38 @@ function getShippingCost($carts, $index, $carrier = '')
         
         $city = null;
 
+        $shop_id = 1;
+
         $shop = Shop::where('user_id', $product->user_id)->first();
+        if($shop)
+            $shop_id = $shop->id; 
 
-        if($product->added_by == 'admin'){
-            $city = City::where('id', $shipping_info->city_id)->first();
-        }else{
-            $city = ShopCity::where('shop_id', $shop->id)->where('city_id', $shipping_info->city_id)->first();
+        $negotiable_transportation = NegotiableTransportation::where('user_id', $cartItem->user_id)->where('shop_id', $shop_id)->where('status', 1)->first();
+        
+        if(!$negotiable_transportation && $product->negotiable_transportation == 1)
+            return -1;
+        else
+        if($negotiable_transportation){
+            return $negotiable_transportation->cost;
         }
+        else
+        {
+            if($product->added_by == 'admin'){
+                $city = City::where('id', $shipping_info->city_id)->first();
+            }else{
+                $city = ShopCity::where('shop_id', $shop->id)->where('city_id', $shipping_info->city_id)->first();
+            }
 
-        //dd($city);
+            //dd($city);
 
-        if ($city != null) {
-            if ($product->added_by == 'admin') {
-                //return $city->cost / count($admin_products);
-                return $city->cost;
-            } else {
-                //return $city->cost / count($seller_products[$product->user_id]);
-                return $city->cost;
+            if ($city != null) {
+                if ($product->added_by == 'admin') {
+                    //return $city->cost / count($admin_products);
+                    return $city->cost;
+                } else {
+                    //return $city->cost / count($seller_products[$product->user_id]);
+                    return $city->cost;
+                }
             }
         }
         return 0;
