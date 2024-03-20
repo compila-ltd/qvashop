@@ -48,6 +48,30 @@
     overflow-y: auto;
 }
 
+.home-banner-area .slick-slide img {
+    height: auto !important;
+}
+
+#lang-change .dropdown-menu {
+    min-width: 8rem !important;
+}
+
+#currency-change {
+    margin-top: 3px;
+}
+
+#currency-change .btn-group {
+    height: 28px;
+}
+
+#currency-change .btn-group .btn{
+    padding: 0px 10px 0px 10px !important;
+}
+
+#currency-change .dropdown-menu {
+    min-width: 5rem !important;
+}
+
 @media (min-width: 1500px) {
     .container {
         max-width: 95% !important;

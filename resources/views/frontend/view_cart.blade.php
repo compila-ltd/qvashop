@@ -49,10 +49,23 @@
     <section class="mb-4" id="cart-summary">
         <div class="container">
             @if ($carts && count($carts) > 0)
+                @php 
+                    $user_id = 0;
+                    $user = auth()->user();
+
+                    if($user != null) {
+                        $user_id = $user->id;
+                    }else{
+                        $user_id = Session()->get('temp_user_id');
+                    }   
+
+                    $negotiable_transportation = \App\Models\NegotiableTransportation::where('user_id', $user_id)->where('status', 1)->first();
+                @endphp
+
                 <div class="row">
                     <div class="col-xxl-8 col-xl-10 mx-auto">
                         <div class="shadow-sm bg-white p-3 p-lg-4 rounded text-left">
-                            <div class="mb-4">
+                            <div class="mb-1">
                                 <div class="row gutters-5 d-none d-lg-flex border-bottom mb-3 pb-3">
                                     <div class="col-md-6 fw-600">{{ translate('Product') }}</div>
                                     <div class="col text-center fw-600">{{ translate('Price') }}</div>
@@ -113,24 +126,28 @@
                                                     @if ($cartItem['digital'] != 1 && $product->auction_product == 0)
                                                         <div
                                                             class="row no-gutters align-items-center aiz-plus-minus mr-2 ml-0">
-                                                            <button
-                                                                class="btn col-auto btn-icon btn-sm btn-circle btn-light"
-                                                                type="button" data-type="minus"
-                                                                data-field="quantity[{{ $cartItem['id'] }}]">
-                                                                <i class="las la-minus"></i>
-                                                            </button>
+                                                            @if(empty($negotiable_transportation))
+                                                                <button
+                                                                    class="btn col-auto btn-icon btn-sm btn-circle btn-light"
+                                                                    type="button" data-type="minus"
+                                                                    data-field="quantity[{{ $cartItem['id'] }}]">
+                                                                    <i class="las la-minus"></i>
+                                                                </button>
+                                                            @endif
                                                             <input type="number" name="quantity[{{ $cartItem['id'] }}]"
                                                                 class="col border-0 text-center flex-grow-1 fs-16 input-number"
                                                                 placeholder="1" value="{{ $cartItem['quantity'] }}"
                                                                 min="{{ $product->min_qty }}"
                                                                 max="{{ $product_stock->qty }}"
                                                                 onchange="updateQuantity({{ $cartItem['id'] }}, this)">
-                                                            <button
-                                                                class="btn col-auto btn-icon btn-sm btn-circle btn-light"
-                                                                type="button" data-type="plus"
-                                                                data-field="quantity[{{ $cartItem['id'] }}]">
-                                                                <i class="las la-plus"></i>
-                                                            </button>
+                                                            @if(empty($negotiable_transportation))
+                                                                <button
+                                                                    class="btn col-auto btn-icon btn-sm btn-circle btn-light"
+                                                                    type="button" data-type="plus"
+                                                                    data-field="quantity[{{ $cartItem['id'] }}]">
+                                                                    <i class="las la-plus"></i>
+                                                                </button>
+                                                            @endif
                                                         </div>
                                                     @elseif($product->auction_product == 1)
                                                         <span class="fw-600 fs-16">1</span>
@@ -142,19 +159,37 @@
                                                     <span
                                                         class="fw-600 fs-16 text-primary">{{ single_price(cart_product_price($cartItem, $product, false) * $cartItem['quantity']) }}</span>
                                                 </div>
-                                                <div class="col-lg-auto col-6 order-5 order-lg-0 text-right">
-                                                    <a href="javascript:void(0)"
-                                                        onclick="removeFromCartView(event, {{ $cartItem['id'] }})"
-                                                        class="btn btn-icon btn-sm btn-soft-primary btn-circle">
-                                                        <i class="las la-trash"></i>
-                                                    </a>
-                                                </div>
+                                                @if(!$negotiable_transportation)
+                                                    <div class="col-lg-auto col-6 order-5 order-lg-0 text-right">
+                                                        <a href="javascript:void(0)"
+                                                            onclick="removeFromCartView(event, {{ $cartItem['id'] }})"
+                                                            class="btn btn-icon btn-sm btn-soft-primary btn-circle">
+                                                            <i class="las la-trash"></i>
+                                                        </a>
+                                                    </div>
+                                                @else
+                                                    <div class="col-lg-auto col-6 order-5 order-lg-0 text-right">
+                                                        <div class="pr-4">-</div>
+                                                    </div>
+                                                @endif
                                             </div>
                                         </li>
                                     @endforeach
                                 </ul>
                             </div>
 
+                            @if(count($carts) > 1)
+                                <div class="pl-3 py-2 border-top d-flex justify-content-between">
+                                    <span class="opacity-60 fs-15">{{ translate('Delete all') }}</span>
+                                    <span class="col-lg-auto col-1 text-right">
+                                        <a href="javascript:void(0)"
+                                            onclick="removeFromCartView(event, 'all')"
+                                            class="btn btn-icon btn-sm btn-soft-primary btn-circle">
+                                            <i class="las la-trash"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                            @endif
                             <div class="px-3 py-2 mb-4 border-top d-flex justify-content-between">
                                 <span class="opacity-60 fs-15">{{ translate('Subtotal') }}</span>
                                 <span class="fw-600 fs-17">{{ single_price($total) }}</span>

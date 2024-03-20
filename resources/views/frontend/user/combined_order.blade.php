@@ -32,7 +32,7 @@
                                         </td>
                                         <td class='text-center'>{{ $combined_order->created_at->format('d-m-Y H:i:s') }}</td>
                                         <td class='text-center'>
-                                            {{ single_price($combined_order->grand_total * $combined_order->exchange_rate) }}
+                                            {{ format_price($combined_order->grand_total * $combined_order->exchange_rate) }}
                                         </td>
                                         <td class='text-center'>
                                             {{ $order->payment_type }}

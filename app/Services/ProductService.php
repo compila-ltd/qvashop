@@ -22,6 +22,7 @@ class ProductService
         
         $digital = 0;
         $only_pickup_point = 0;
+        $negotiable_transportation = 0;
 
         if($category->digital == 1){
             $digital = 1;
@@ -31,6 +32,11 @@ class ProductService
                 $only_pickup_point = 1;
             }
             unset($collection['only_pickup_point']);
+
+            if (isset($collection['negotiable_transportation'])) {
+                $negotiable_transportation = 1;
+            }
+            unset($collection['negotiable_transportation']);
         }
 
         //dd($collection);
@@ -160,6 +166,7 @@ class ProductService
             'attributes',
             'published',
             'only_pickup_point',
+            'negotiable_transportation',
             'digital'
         ))->toArray();
 
@@ -178,9 +185,14 @@ class ProductService
             $digital = 1;
             $collection['digital'] = 1;
             $collection['only_pickup_point'] = 0;
+            $collection['negotiable_transportation'] = 0;
         }else{
             if (!isset($collection['only_pickup_point'])) {
                 $collection['only_pickup_point'] = 0;
+            }
+
+            if (!isset($collection['negotiable_transportation'])) {
+                $collection['negotiable_transportation'] = 0;
             }
         }
 

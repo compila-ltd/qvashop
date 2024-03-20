@@ -82,7 +82,7 @@
                                             <span class="fs-12 d-block">{{ translate('Total') }} {{ $payment_method->short_name }}</span>
                                             {{ translate('Recaudado') }}
                                     </div>
-                                    <div class="h4 fw-700 mb-3">{{ $total }}</div>
+                                    <div class="h6 fw-700 mb-3">{{ $total }}</div>
                                 </div>
                             @endforeach
                         </div>

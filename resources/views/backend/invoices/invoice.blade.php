@@ -268,7 +268,7 @@
 							        </tr>
 							        <tr>
 							            <th class="gry-color text-left">{{ translate('Shipping Cost') }}</th>
-							            <td class="currency">{{ single_price($order->orderDetails->sum('shipping_cost') * $order->exchange_rate) }}</td>
+							            <td class="currency">{{ single_price($order->orderDetails->max('shipping_cost') * $order->exchange_rate) }}</td>
 							        </tr>
 							        <tr class="border-bottom">
 							            <th class="gry-color text-left">{{ translate('Total Tax') }}</th>
