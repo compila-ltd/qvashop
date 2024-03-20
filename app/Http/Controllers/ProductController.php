@@ -540,6 +540,18 @@ class ProductController extends Controller
         return 0;
     }
 
+    public function updateNegotiableTransportation(Request $request)
+    {
+        $product = Product::findOrFail($request->id);
+        $product->negotiable_transportation = $request->status;
+        if ($product->save()) {
+            Artisan::call('view:clear');
+            Artisan::call('cache:clear');
+            return 1;
+        }
+        return 0;
+    }
+
     // SKU Combination
     public function sku_combination(Request $request)
     {

@@ -59,7 +59,7 @@ class HomeController extends Controller
 
         // Newest products
         $newest_products = Cache::remember('newest_products', 3600, function () {
-            return filter_products(Product::latest())->limit(48)->get();
+            return filter_products(Product::latest())->limit(96)->get();
         });
 
         // Flash Deals
@@ -130,9 +130,11 @@ class HomeController extends Controller
                 }
             } else {
                 flash(translate('Invalid email or password!'))->warning();
+                return back()->with('danger', translate('Invalid email or password!'));
             }
         } else {
             flash(translate('Invalid email or password!'))->warning();
+            return back()->with('danger', translate('Invalid email or password!'));
         }
 
         return back();
@@ -212,7 +214,7 @@ class HomeController extends Controller
     {
         // Cache featured products
         $featured_products = Cache::remember('featured_products', 3600, function () {
-            return filter_products(Product::where('published', 1)->where('featured', '1'))->limit(12)->get();
+            return filter_products(Product::where('published', 1)->where('featured', '1'))->get();
         });
 
         return view('frontend.partials.featured_products_section', compact('featured_products'));

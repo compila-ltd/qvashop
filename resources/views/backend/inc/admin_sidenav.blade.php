@@ -292,78 +292,87 @@
                 @endif
 
                 <!-- Sale -->
-                @canany(['view_all_orders', 'view_inhouse_orders','view_seller_orders','view_pickup_point_orders'])
-                <li class="aiz-side-nav-item">
-                        @can('view_all_orders')
-                        @php
-                            $orders = DB::table('orders')
-                            ->where('payment_status', 'paid')
-                            ->where('delivery_status', '!=' ,'delivered')
-                            ->where('delivery_status', '!=' ,'cancelled')
-                            ->select('id')
-                            ->count();
+                @canany(['view_all_orders', 'view_inhouse_orders','view_seller_orders','view_pickup_point_orders','view_negotiable_transportation'])
+                    @php
+                        $combined_orders = DB::table('combined_orders');
 
-                            $admin_user_id = DB::table('users')
-                            ->where('user_type', 'admin')->first()->id;
+                        $orders = DB::table('orders')
+                        ->where('payment_status', 'paid')
+                        ->where('delivery_status', '!=' ,'delivered')
+                        ->where('delivery_status', '!=' ,'cancelled')
+                        ->select('id')
+                        ->count();
 
-                            $inhouse_orders = DB::table('orders')
-                            ->where('seller_id', $admin_user_id)
-                            ->where('payment_status', 'paid')
-                            ->where('delivery_status', '!=' ,'delivered')
-                            ->where('delivery_status', '!=' ,'cancelled')
-                            ->select('id')
-                            ->count();
+                        $admin_user_id = DB::table('users')
+                        ->where('user_type', 'admin')->first()->id;
 
-                            $seller_orders = $orders - $inhouse_orders;
+                        $inhouse_orders = DB::table('orders')
+                        ->where('seller_id', $admin_user_id)
+                        ->where('payment_status', 'paid')
+                        ->where('delivery_status', '!=' ,'delivered')
+                        ->where('delivery_status', '!=' ,'cancelled')
+                        ->select('id')
+                        ->count();
 
-                        @endphp
-                    <a href="#" class="aiz-side-nav-link">
-                        <i class="las la-money-bill aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{ translate('Sales') }}</span>
-                        @if($orders > 0)<span class="badge badge-danger">{{ $orders }}</span>@endif
-                        <span class="aiz-side-nav-arrow"></span>
-                    </a>
-                    <!--Submenu-->
-                    <ul class="aiz-side-nav-list level-2">
-                        <li class="aiz-side-nav-item">
-                            <a href="{{ route('combined_orders.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['all_orders.show']) }}">
-                                <span class="aiz-side-nav-text">{{ translate('Combined Orders') }}</span>
-                            </a>
-                        </li>
-                        <li class="aiz-side-nav-item">
-                            <a href="{{ route('all_orders.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['all_orders.index', 'all_orders.show']) }}">
-                                <span class="aiz-side-nav-text">{{ translate('All Orders') }}</span>
-                                @if($orders > 0)<span class="badge badge-danger">{{ $orders }}</span>@endif
-                            </a>
-                        </li>
-                        @endcan
-                        @can('view_inhouse_orders')
-                        <li class="aiz-side-nav-item">
-                            <a href="{{ route('inhouse_orders.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['inhouse_orders.index', 'inhouse_orders.show']) }}">
-                                <span class="aiz-side-nav-text">{{ translate('Inhouse orders') }}</span>
-                                @if($inhouse_orders > 0)<span class="badge badge-danger">{{ $inhouse_orders }}</span>@endif
-                            </a>
-                        </li>
-                        @endcan
+                        $seller_orders = $orders - $inhouse_orders;
+                    @endphp
+                    <li class="aiz-side-nav-item">
+                        <a href="#" class="aiz-side-nav-link">
+                            <i class="las la-money-bill aiz-side-nav-icon"></i>
+                            <span class="aiz-side-nav-text">{{ translate('Sales') }}</span>
+                            @if($orders > 0)<span class="badge badge-danger">{{ $orders }}</span>@endif
+                            <span class="aiz-side-nav-arrow"></span>
+                        </a>
+                        <ul class="aiz-side-nav-list level-2">
+                            @can('view_all_orders')
+                            <!--Submenu-->
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{ route('combined_orders.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['all_orders.show']) }}">
+                                        <span class="aiz-side-nav-text">{{ translate('Combined Orders') }}</span>
+                                    </a>
+                                </li>
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{ route('all_orders.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['all_orders.index', 'all_orders.show']) }}">
+                                        <span class="aiz-side-nav-text">{{ translate('All Orders') }}</span>
+                                        @if($orders > 0)<span class="badge badge-danger">{{ $orders }}</span>@endif
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('view_inhouse_orders')
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{ route('inhouse_orders.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['inhouse_orders.index', 'inhouse_orders.show']) }}">
+                                        <span class="aiz-side-nav-text">{{ translate('Inhouse orders') }}</span>
+                                        @if($inhouse_orders > 0)<span class="badge badge-danger">{{ $inhouse_orders }}</span>@endif
+                                    </a>
+                                </li>
+                            @endcan
 
-                        @can('view_seller_orders')
-                        <li class="aiz-side-nav-item">
-                            <a href="{{ route('seller_orders.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['seller_orders.index', 'seller_orders.show']) }}">
-                                <span class="aiz-side-nav-text">{{ translate('Seller Orders') }}</span>
-                                @if($seller_orders > 0)<span class="badge badge-danger">{{ $seller_orders }}</span>@endif
-                            </a>
-                        </li>
-                        @endcan
+                            @can('view_seller_orders')
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{ route('seller_orders.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['seller_orders.index', 'seller_orders.show']) }}">
+                                        <span class="aiz-side-nav-text">{{ translate('Seller Orders') }}</span>
+                                        @if($seller_orders > 0)<span class="badge badge-danger">{{ $seller_orders }}</span>@endif
+                                    </a>
+                                </li>
+                            @endcan
 
-                        @can('view_pickup_point_orders')
-                        <li class="aiz-side-nav-item">
-                            <a href="{{ route('pick_up_point.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['pick_up_point.index','pick_up_point.order_show']) }}">
-                                <span class="aiz-side-nav-text">{{ translate('Pick-up Point Order') }}</span>
-                            </a>
-                        </li>
-                        @endcan
-                    </ul>
-                </li>
+                            @can('view_pickup_point_orders')
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{ route('pick_up_point.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['pick_up_point.index','pick_up_point.order_show']) }}">
+                                        <span class="aiz-side-nav-text">{{ translate('Pick-up Point Order') }}</span>
+                                    </a>
+                                </li>
+                            @endcan
+
+                            @can('view_negotiable_transportation')
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{ route('negotiable_transportation.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['negotiable_transportation.index','negotiable_transportation.edit']) }}">
+                                        <span class="aiz-side-nav-text">{{ translate('Negociable transportation') }}</span>
+                                    </a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </li>
                 @endcanany
 
                 <!-- Deliver Boy Addon-->

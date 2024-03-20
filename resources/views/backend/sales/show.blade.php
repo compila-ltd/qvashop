@@ -18,7 +18,7 @@
             @endphp
 
             <!--Assign Delivery Boy-->
-            @if ($order->seller_id == $admin_user_id || get_setting('product_manage_by_admin') == 1 || ($order->payment_type == 'cup_payment' && $order->payment_status == 'unpaid') || ($order->payment_type == 'mlc_payment' && $order->payment_status == 'unpaid'))
+            @if ($order->seller_id == $admin_user_id || get_setting('product_manage_by_admin') == 1)
                 @if (addon_is_activated('delivery_boy'))
                     <div class="col-md-3 ml-auto">
                         <label for="assign_deliver_boy">{{ translate('Assign Deliver Boy') }}</label>
@@ -169,36 +169,13 @@
                             <td class="text-main text-bold">{{ translate('Order Date') }} </td>
                             <td class="text-right">{{ date('d-m-Y h:i A', $order->date) }}</td>
                         </tr>
-                        @if($order->payment_type == 'cup_payment')
-                            <tr>
-                                <td class="text-main text-bold">{{ translate('Total amount') }}</td>
-                                <td class="text-right">{{ single_price($order->grand_total_cup) }}</td>
-                            </tr>
-                            <tr>
-                                <td class="text-main text-bold">{{ translate('Payment method') }}</td>
-                                <td class="text-right">CUP</td>
-                            </tr>
-                        @else
-                            @if($order->payment_type == 'mlc_payment')
-                                <tr>
-                                    <td class="text-main text-bold">{{ translate('Total amount') }}</td>
-                                    <td class="text-right">{{ single_price($order->grand_total_mlc) }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-main text-bold">{{ translate('Payment method') }}</td>
-                                    <td class="text-right">MLC</td>
-                                </tr>
-                            @else
-                                <tr>
-                                    <td class="text-main text-bold">{{ translate('Total amount') }}</td>
-                                    <td class="text-right">{{ single_price($order->grand_total_mlc) }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-main text-bold">{{ translate('Payment method') }}</td>
-                                    <td class="text-right">QvaPay</td>
-                                </tr>
-                            @endif
-                            @endif
+                        <tr>
+                            <td class="text-main text-bold">{{ translate('Total amount') }}</td>
+                            <td class="text-right">{{ single_price($order->grand_total * $order->exchange_rate) }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-main text-bold">{{ translate('Payment method') }}</td>
+                            <td class="text-right">{{ $order->payment_type }}</td>
                         </tr>
                         <tr>
                             <td class="text-main text-bold">{{ translate('Additional Info') }}</td>
@@ -292,30 +269,13 @@
                                 <td class="text-center">
                                     {{ $orderDetail->quantity }}
                                 </td>
-                                @if($order->payment_type == 'cup_payment')
-                                    <td class="text-center">
-                                        {{ single_price($orderDetail->price_cup / $orderDetail->quantity) }}
-                                    </td>
-                                    <td class="text-center">
-                                        {{ single_price($orderDetail->price_cup) }}
-                                    </td>
-                                @else
-                                    @if($order->payment_type == 'mlc_payment')
-                                        <td class="text-center">
-                                            {{ single_price($orderDetail->price_mlc / $orderDetail->quantity) }}
-                                        </td>
-                                        <td class="text-center">
-                                            {{ single_price($orderDetail->price_mlc) }}
-                                        </td>
-                                    @else
-                                        <td class="text-center">
-                                            {{ single_price($orderDetail->price / $orderDetail->quantity) }}
-                                        </td>
-                                        <td class="text-center">
-                                            {{ single_price($orderDetail->price) }}
-                                        </td>
-                                    @endif
-                                @endif
+
+                                <td class="text-center">
+                                    {{ single_price(($orderDetail->price * $orderDetail->exchange_rate) / $orderDetail->quantity) }}
+                                </td>
+                                <td class="text-center">
+                                    {{ single_price($orderDetail->price * $orderDetail->exchange_rate) }}
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -324,42 +284,13 @@
         </div>
         <div class="clearfix float-right">
             <table class="table">
-            @php
-					$price = 0;
-					$shipping_cost = 0;
-					$coupon_discount = 0;
-					$grand_total = 0;
-					
-                    if($order->payment_type=='cup_payment')
-                    {
-                        $price = single_price($order->orderDetails->sum('price_cup'));
-                        $shipping_cost = single_price($order->orderDetails->sum('shipping_cost_cup'));
-                        $coupon_discount = single_price($order->coupon_discount_cup);
-                        $grand_total = single_price($order->grand_total_cup);
-                    } else 
-                        if($order->payment_type=='mlc_payment')
-                        {
-                            $price = single_price($order->orderDetails->sum('price_mlc'));
-                            $shipping_cost = single_price($order->orderDetails->sum('shipping_cost_mlc'));
-                            $coupon_discount = single_price($order->coupon_discount_mlc);
-                            $grand_total = single_price($order->grand_total_mlc);
-                        }
-                        else 
-                            if($order->payment_type=='qvapay')
-                            {
-                                $price = single_price($order->orderDetails->sum('price'));
-                                $shipping_cost = single_price($order->orderDetails->sum('shipping_cost'));
-                                $coupon_discount = single_price($order->coupon_discount);
-                                $grand_total = single_price($order->grand_total);
-                            }
-				@endphp
                 <tbody>
                     <tr>
                         <td>
                             <strong class="text-muted">{{ translate('Sub Total') }} :</strong>
                         </td>
                         <td>
-                            {{ $price }}
+                            {{ single_price($order->orderDetails->sum('price') * $order->exchange_rate) }}
                         </td>
                     </tr>
                     <tr>
@@ -367,7 +298,7 @@
                             <strong class="text-muted">{{ translate('Tax') }} :</strong>
                         </td>
                         <td>
-                            {{ single_price($order->orderDetails->sum('tax')) }}
+                            {{ single_price($order->orderDetails->sum('tax')  * $order->exchange_rate) }}
                         </td>
                     </tr>
                     <tr>
@@ -375,7 +306,7 @@
                             <strong class="text-muted">{{ translate('Shipping') }} :</strong>
                         </td>
                         <td>
-                            {{ $shipping_cost }}
+                            {{ single_price($order->orderDetails->max('shipping_cost') * $order->exchange_rate) }}
                         </td>
                     </tr>
                     <tr>
@@ -383,7 +314,7 @@
                             <strong class="text-muted">{{ translate('Coupon') }} :</strong>
                         </td>
                         <td>
-                            {{ $coupon_discount }}
+                            {{ single_price($order->coupon_discount * $order->exchange_rate) }}
                         </td>
                     </tr>
                     <tr>
@@ -391,7 +322,7 @@
                             <strong class="text-muted">{{ translate('TOTAL') }} :</strong>
                         </td>
                         <td class="text-muted h5">
-                            {{ $grand_total }}
+                            {{ single_price($order->grand_total * $order->exchange_rate) }}
                         </td>
                     </tr>
                 </tbody>

@@ -177,46 +177,54 @@
                                 </div>
                             </div>
                         @else
-                            @if($detailedProduct->only_pickup_point == 1)
+                            @if($detailedProduct->negotiable_transportation == 1)
                                 <div class="row align-items-center">
                                     <div class="col-sm-12">
-                                        <div class="my-2">Este no tiene envío a domicilio. Solo se puede recoger en el punto de recogida</div>
+                                        <div class="my-2">{{ translate('Home delivery cost') }}: {{ translate('Negotiable transportation') }}</div>
                                     </div>
                                 </div>
                             @else
-                                @if(Auth::user())
-                                    @if(!$shop_delivery_state)
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-12">
-                                                <div class="my-2 text-danger">No tiene entrega a domicilio en tu provincia, según tu dirección de entrega por defecto</div>
-                                            </div>
-                                        </div>
-                                    @endif
-                                @endif
-
-                                @if(Auth::user())
-                                    @if(($shop_delivery_state)&&(!$shop_delivery_city))
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-12">
-                                                <div class="my-2 text-danger">No tiene entrega a domicilio en tu municipio, según tu dirección de entrega por defecto</div>
-                                            </div>
-                                        </div>
-                                    @endif
-                                @endif
-
-                                @if(($shop_delivery_state)&&($shop_delivery_city))
-                                    <div class="row">
+                                @if($detailedProduct->only_pickup_point == 1)
+                                    <div class="row align-items-center">
                                         <div class="col-sm-12">
-                                            <div class="my-2">Costo de envío a domicilio: 
-                                                @php 
-                                                    if($shop_delivery_city->cost == 0)
-                                                        echo "Gratis";
-                                                    else    
-                                                        echo "$".$shop_delivery_city->cost 
-                                                @endphp
-                                            </div>
+                                            <div class="my-2">Este no tiene envío a domicilio. Solo se puede recoger en el punto de recogida</div>
                                         </div>
                                     </div>
+                                @else
+                                    @if(Auth::user())
+                                        @if(!$shop_delivery_state)
+                                            <div class="row align-items-center">
+                                                <div class="col-sm-12">
+                                                    <div class="my-2 text-danger">No tiene entrega a domicilio en tu provincia, según tu dirección de entrega por defecto</div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endif
+
+                                    @if(Auth::user())
+                                        @if(($shop_delivery_state)&&(!$shop_delivery_city))
+                                            <div class="row align-items-center">
+                                                <div class="col-sm-12">
+                                                    <div class="my-2 text-danger">No tiene entrega a domicilio en tu municipio, según tu dirección de entrega por defecto</div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endif
+
+                                    @if(($shop_delivery_state)&&($shop_delivery_city))
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="my-2">{{ translate('Home delivery cost') }}: 
+                                                    @php 
+                                                        if($shop_delivery_city->cost == 0)
+                                                            echo "(" . translate('Free') . ")";
+                                                        else    
+                                                            echo single_price($shop_delivery_city->cost) 
+                                                    @endphp
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
                                 @endif
                             @endif
                         @endif
@@ -302,7 +310,7 @@
                                                 @endforeach
                                             @else
                                                 <tr>
-                                                    <td colspan="100%" class="text-center">Esta tienda no tiene configurado ningún punto de recogida</td>
+                                                    <td colspan="100%" class="text-center">{{ translate('This store does not have any collection points configured') }}</td>
                                                 </tr>
                                             @endif
                                         </tbody>
@@ -391,7 +399,7 @@
                                     </div>
                                     <div class="col-sm-10">
                                         <div class="">
-                                            <strong class="h2 fw-600 text-primary">
+                                            <strong class="h4 fw-600 text-primary">
                                                 {{ home_discounted_price($detailedProduct) }}
                                             </strong>
                                             @if ($detailedProduct->unit != null)
@@ -407,7 +415,7 @@
                                     </div>
                                     <div class="col-sm-10">
                                         <div class="">
-                                            <strong class="h2 fw-600 text-primary">
+                                            <strong class="h4 fw-600 text-primary">
                                                 {{ home_discounted_price($detailedProduct) }}
                                             </strong>
                                             @if ($detailedProduct->unit != null)
@@ -532,7 +540,7 @@
                                 </div>
                                 <div class="col-sm-10">
                                     <div class="product-price">
-                                        <strong id="chosen_price" class="h4 fw-600 text-primary">
+                                        <strong id="chosen_price" class="h2 fw-600 text-primary">
 fff
                                         </strong>
                                     </div>
@@ -1000,12 +1008,12 @@ fff
                         <input type="hidden" class="form-control mb-3" name="product_url" value="{{ route('product', $detailedProduct->slug) }}" placeholder="{{ translate('Product URL') }}" required>
                     </div>
                     <div class="form-group">
-                        <textarea class="form-control" rows="8" name="message" required placeholder="{{ translate('Your Question') }}"></textarea>
+                        <textarea class="form-control" rows="8" name="message" id="messageInput" oninput="validateMessage()" required placeholder="{{ translate('Your Question') }}"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary fw-600" data-dismiss="modal">{{ translate('Cancel') }}</button>
-                    <button type="submit" onclick="disable_button()" class="btn btn-primary fw-600">{{ translate('Send') }}</button>
+                    <button type="submit" onclick="disable_button()" id="submitBtn" class="btn btn-primary fw-600" disabled>{{ translate('Send') }}</button>
                 </div>
             </form>
         </div>
@@ -1015,6 +1023,13 @@ fff
 <script>
     function disable_button() {
         $('#chat_modal').modal('hide');
+    }
+
+    function validateMessage() {
+        var messageInput = document.getElementById("messageInput");
+        var submitBtn = document.getElementById("submitBtn");
+
+        submitBtn.disabled = messageInput.value.trim().length <= 10;
     }
 </script>
 

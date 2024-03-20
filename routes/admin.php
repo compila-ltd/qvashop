@@ -18,8 +18,10 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\CarrierController;
+use App\Http\Controllers\NegotiableTransportationController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WebsiteController;
@@ -77,6 +79,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::post('/products/todays_deal', 'updateTodaysDeal')->name('products.todays_deal');
         Route::post('/products/featured', 'updateFeatured')->name('products.featured');
         Route::post('/products/only_pickup_point', 'updateOnlyPickupPoint')->name('products.only_pickup_point');
+        Route::post('/products/negotiable_transportation', 'updateNegotiableTransportation')->name('products.negotiable_transportation');
         Route::post('/products/published', 'updatePublished')->name('products.published');
         Route::post('/products/approved', 'updateProductApproval')->name('products.approved');
         Route::post('/products/get_products_by_subcategory', 'get_products_by_subcategory')->name('products.get_products_by_subcategory');
@@ -182,7 +185,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::post('/facebook_pixel', 'facebook_pixel_update')->name('facebook_pixel.update');
 
         Route::post('/env_key_update', 'env_key_update')->name('env_key_update.update');
-        Route::post('/payment_method_update', 'payment_method_update')->name('payment_method.update');
+        //Route::post('/payment_method_update', 'payment_method_update')->name('payment_method.update');
         Route::post('/google_analytics', 'google_analytics_update')->name('google_analytics.update');
         Route::post('/google_recaptcha', 'google_recaptcha_update')->name('google_recaptcha.update');
         Route::post('/google-map', 'google_map_update')->name('google-map.update');
@@ -210,6 +213,28 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::post('/currency/store', 'store')->name('currency.store');
         Route::post('/currency/currency_edit', 'edit')->name('currency.edit');
         Route::post('/currency/update_status', 'update_status')->name('currency.update_status');
+    });
+
+    //Payment Methods
+    Route::controller(PaymentMethodController::class)->group(function () {
+        Route::get('/payment_method', 'payment_method')->name('payment_method.index');
+        Route::get('/payment_method/create', 'create')->name('payment_method.create');
+        Route::post('/payment_method/activation', 'activation_payment_method')->name('payment_method.activation');
+        Route::post('/payment_method/automatic', 'automatic_payment_method')->name('payment_method.automatic');
+        Route::post('/payment_method/store', 'store')->name('payment_method.store');
+        Route::get('/payment_method/edit/{id}', 'edit')->name('payment_method.edit');
+        Route::post('/payment_method/update/{id}', 'update')->name('payment_method.update');
+    });
+
+    //Negociable Transportation   
+    Route::controller(NegotiableTransportationController::class)->group(function () {
+        Route::get('/negotiable_transportation', 'index')->name('negotiable_transportation.index');
+        Route::get('/negotiable_transportation/create', 'create')->name('negotiable_transportation.create');
+        Route::post('/negotiable_transportation/store', 'store')->name('negotiable_transportation.store');
+        Route::get('/negotiable_transportation/edit/{id}', 'edit')->name('negotiable_transportation.edit');
+        Route::post('/negotiable_transportation/update/{id}', 'update')->name('negotiable_transportation.update');
+        Route::get('/negotiable_transportation/destroy/{id}', 'destroy')->name('negotiable_transportation.destroy');
+        Route::post('/negotiable_transportation/get_cart_products', 'get_cart_products')->name('negotiable_transportation.get_cart_products');
     });
 
     //Tax
@@ -288,6 +313,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::controller(OrderController::class)->group(function () {
         // All Orders
         Route::get('/combined_orders', 'combined_orders')->name('combined_orders.index');
+        Route::get('/view_combined_order_orders/{id}', 'view_combined_order_orders')->name('view_combined_order_orders.index');
         Route::get('/all_orders', 'all_orders')->name('all_orders.index');
         Route::get('/inhouse-orders', 'all_orders')->name('inhouse_orders.index');
         Route::get('/seller_orders', 'all_orders')->name('seller_orders.index');

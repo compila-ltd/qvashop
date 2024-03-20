@@ -120,7 +120,7 @@
 						<th width="15%">{{ translate('Delivery Type') }}</th>
 	                    <th width="10%">{{ ucfirst(strtolower(translate('Qty'))) }}</th>
 						@if($order->email_to_customer)
-							<th width="10%">Método de pago</th>
+							<th width="10%">{{ translate('Payment Method') }}</th>
 						@endif
 	                    <th width="15%">{{ translate('Unit Price') }}</th>
 	                    <th width="10%">{{ translate('Tax') }}</th>
@@ -147,26 +147,10 @@
 									<td class="gry-color currency">{{ single_price($orderDetail->tax/$orderDetail->quantity) }}</td>
 									<td class="text-right currency">{{ single_price($orderDetail->price+$orderDetail->tax) }}</td>
 								@else
-									@if($order->payment_type=='cup_payment')
-										<td class="gry-color currency">CUP</td>
-										<td class="gry-color currency">{{ single_price($orderDetail->price_cup/$orderDetail->quantity) }}</td>
-										<td class="gry-color currency">{{ single_price($orderDetail->tax/$orderDetail->quantity) }}</td>
-										<td class="text-right currency">{{ single_price($orderDetail->price_cup+$orderDetail->tax) }}</td>
-									@else
-										@if($order->payment_type=='mlc_payment')
-											<td class="gry-color currency">MLC</td>
-											<td class="gry-color currency">{{ single_price($orderDetail->price_mlc/$orderDetail->quantity) }}</td>
-											<td class="gry-color currency">{{ single_price($orderDetail->tax/$orderDetail->quantity) }}</td>
-											<td class="text-right currency">{{ single_price($orderDetail->price_mlc+$orderDetail->tax) }}</td>
-										@else
-											@if($order->payment_type=='qvapay')
-												<td class="gry-color currency">QvaPay</td>
-												<td class="gry-color currency">{{ single_price($orderDetail->price/$orderDetail->quantity) }}</td>
-												<td class="gry-color currency">{{ single_price($orderDetail->tax/$orderDetail->quantity) }}</td>
-												<td class="text-right currency">{{ single_price($orderDetail->price+$orderDetail->tax) }}</td>
-											@endif
-										@endif
-									@endif
+									<td class="gry-color currency">{{ $order->payment_type }}</td>
+									<td class="gry-color currency">{{ single_price(($orderDetail->price * $orderDetail->exchange_rate)/$orderDetail->quantity) }}</td>
+									<td class="gry-color currency">{{ single_price(($orderDetail->tax * $orderDetail->exchange_rate)/$orderDetail->quantity) }}</td>
+									<td class="text-right currency">{{ single_price(($orderDetail->price  * $orderDetail->exchange_rate)+$orderDetail->tax) }}</td>
 								@endif
 							</tr>
 		                @endif
@@ -186,32 +170,15 @@
 					if(!$order->email_to_customer)
 					{
 						$price = single_price($order->orderDetails->sum('price'));
-						$shipping_cost = single_price($order->orderDetails->sum('shipping_cost'));
+						$shipping_cost = single_price($order->orderDetails->max('shipping_cost'));
 						$coupon_discount = single_price($order->coupon_discount);
 						$grand_total = single_price($order->grand_total);
-					} else 
-						if($order->payment_type=='cup_payment')
-						{
-							$price = single_price($order->orderDetails->sum('price_cup'));
-							$shipping_cost = single_price($order->orderDetails->sum('shipping_cost_cup'));
-							$coupon_discount = single_price($order->coupon_discount_cup);
-							$grand_total = single_price($order->grand_total_cup);
-						} else 
-							if($order->payment_type=='mlc_payment')
-							{
-								$price = single_price($order->orderDetails->sum('price_mlc'));
-								$shipping_cost = single_price($order->orderDetails->sum('shipping_cost_mlc'));
-								$coupon_discount = single_price($order->coupon_discount_mlc);
-								$grand_total = single_price($order->grand_total_mlc);
-							}
-							else 
-								if($order->payment_type=='qvapay')
-								{
-									$price = single_price($order->orderDetails->sum('price'));
-									$shipping_cost = single_price($order->orderDetails->sum('shipping_cost'));
-									$coupon_discount = single_price($order->coupon_discount);
-									$grand_total = single_price($order->grand_total);
-								}
+					} else {
+						$price = single_price($order->orderDetails->sum('price') * $order->exchange_rate);
+						$shipping_cost = single_price($order->orderDetails->max('shipping_cost') * $order->exchange_rate);
+						$coupon_discount = single_price($order->coupon_discount * $order->exchange_rate);
+						$grand_total = single_price($order->grand_total * $order->exchange_rate);
+					}
 				@endphp
 		        <tbody>
 			        <tr>

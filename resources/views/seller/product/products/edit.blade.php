@@ -483,17 +483,26 @@
                 </h5>
             </div>
             <div class="card-body">
-                @if (get_setting('shipping_type') == 'area_wise_shipping')
-                    <div class="form-group row">
-                        <label class="col-md-6 col-from-label">Solo recogida en almacén (Punto de recogida)</label>
-                        <div class="col-md-6">
-                            <label class="aiz-switch aiz-switch-success mb-0">
-                                <input type="checkbox" name="only_pickup_point" value="1" @if($product->only_pickup_point == 1) checked @endif>
-                                <span></span>
-                            </label>
-                        </div>
+                <div class="form-group row">
+                    <label class="col-md-6 col-from-label">{{ translate('Warehouse pick up only') }}</label>
+                    <div class="col-md-6">
+                        <label class="aiz-switch aiz-switch-success mb-0">
+                            <input type="checkbox" name="only_pickup_point" value="1" @if($product->only_pickup_point == 1) checked @endif>
+                            <span></span>
+                        </label>
                     </div>
-                @endif
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="form-group row">
+                    <label class="col-md-6 col-from-label">{{ translate('Negociable transportation') }}</label>
+                    <div class="col-md-6">
+                        <label class="aiz-switch aiz-switch-success mb-0">
+                            <input type="checkbox" name="negotiable_transportation" value="1" @if($product->negotiable_transportation == 1) checked @endif>
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
         <!--

@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Coupon;
 use App\Models\Currency;
+use App\Models\PaymentMethod;
 use App\Models\Address;
 use App\Models\Product;
 use App\Models\CouponUsage;
@@ -55,10 +56,23 @@ class OrderController extends Controller
         return view('backend.sales.combined_order', compact('combined_orders'));
     }
 
+    //View Orders form a Combined Order
+    public function view_combined_order_orders($id)
+    {
+        $date = null;
+        $sort_search = null;
+        $delivery_status = null;
+        $payment_status = '';
+        $payment_type = '';
+
+        $orders = Order::where('combined_order_id', decrypt($id))->orderBy('id', 'desc')->paginate(9);
+
+        return view('backend.sales.index', compact('orders', 'sort_search', 'payment_status', 'payment_type', 'delivery_status', 'date'));
+    }
+
     // All Orders
     public function all_orders(Request $request)
     {
-
         $date = $request->date;
         $sort_search = null;
         $delivery_status = null;
@@ -131,22 +145,10 @@ class OrderController extends Controller
     {
         //dd($request);
 
-        $currencies = Currency::where('status', 1)->get();
-
-        $cup_exchange_rate = -1;
-        $mlc_exchange_rate = -1;
-
-        $currency = $currencies->where('code', 'MLC')->first();
-
-        if ($currency) 
-            $mlc_exchange_rate = $currency->exchange_rate;
-
-        $currency = $currencies->where('code', 'CUP')->first();
-
-        if ($currency) 
-            $cup_exchange_rate = $currency->exchange_rate;
+        $payment_method = PaymentMethod::where('short_name', $request->payment_option)->first();
+        //dd($payment_method->exchange_rate);
         
-        $carts = Cart::where('user_id', Auth::user()->id)->get();
+        $carts = Cart::where('user_id', Auth::user()->id)->orderBy('owner_id', 'desc')->get();
 
         if ($carts->isEmpty())
             return redirect()->route('home')->with('warning', translate('Your cart is empty'));
@@ -231,17 +233,10 @@ class OrderController extends Controller
                 $order_detail->product_referral_code = $cartItem['product_referral_code'];
                 $order_detail->shipping_cost = $cartItem['shipping_cost'];
 
-                $shipping += $order_detail->shipping_cost;
+                if($shipping < $order_detail->shipping_cost)
+                    $shipping = $order_detail->shipping_cost;
 
-                if($order->payment_type == 'cup_payment'){
-                    $order_detail->price_cup = $order_detail->price * $cup_exchange_rate;
-                    $order_detail->shipping_cost_cup = $order_detail->shipping_cost * $cup_exchange_rate;
-                }
-    
-                if($order->payment_type == 'mlc_payment'){
-                    $order_detail->price_mlc = $order_detail->price * $mlc_exchange_rate;
-                    $order_detail->shipping_cost_mlc = $order_detail->shipping_cost * $mlc_exchange_rate;
-                }
+                $order_detail->exchange_rate = $payment_method->currency->exchange_rate;
 
                 $order_detail->quantity = $cartItem['quantity'];
                 $order_detail->save();
@@ -266,17 +261,10 @@ class OrderController extends Controller
             }
 
             $order->grand_total = $subtotal + $tax + $shipping;
+            $order->exchange_rate = $payment_method->currency->exchange_rate;
 
             if ($seller_product[0]->coupon_code != null) {
                 $order->coupon_discount = $coupon_discount;
-
-                if($order->payment_type == 'cup_payment'){
-                    $order->coupon_discount_cup = $order->coupon_discount * $cup_exchange_rate;
-                }
-    
-                if($order->payment_type == 'mlc_payment'){
-                    $order->coupon_discount_mlc = $order->coupon_discount * $mlc_exchange_rate;
-                }
 
                 $order->grand_total -= $coupon_discount;
 
@@ -287,16 +275,7 @@ class OrderController extends Controller
             }
 
             $combined_order->grand_total += $order->grand_total;
-
-            if($order->payment_type == 'cup_payment'){
-                $order->grand_total_cup = $order->grand_total * $cup_exchange_rate;
-                $combined_order->grand_total_cup = $combined_order->grand_total * $cup_exchange_rate;
-            }
-
-            if($order->payment_type == 'mlc_payment'){
-                $order->grand_total_mlc = $order->grand_total * $mlc_exchange_rate;
-                $combined_order->grand_total_mlc = $combined_order->grand_total * $mlc_exchange_rate;
-            }
+            $combined_order->exchange_rate = $payment_method->currency->exchange_rate;
 
             $order->save();
         }
@@ -349,14 +328,7 @@ class OrderController extends Controller
                 $combined_order->delete();
             else
             {
-                if($order->payment_type == 'cup_payment')
-                    $combined_order->grand_total_cup -= $order->grand_total_cup;
-                else
-                    if($order->payment_type == 'mlc_payment')
-                        $combined_order->grand_total_mlc -= $order->grand_total_mlc;
-                    else
-                        $combined_order->grand_total -= $order->grand_total;
-                
+                $combined_order->grand_total -= $order->grand_total;
                 $combined_order->save();
             }
 

@@ -64,15 +64,7 @@
                         <tr>
                             <td class="w-50 fw-600">{{ translate('Total order amount') }}:</td>
                             <td>
-                                @if($order->payment_type == 'cup_payment')
-                                    {{ single_price($order->orderDetails->sum('price_cup') + $order->orderDetails->sum('tax') + $order->orderDetails->sum('shipping_cost_cup')) }}
-                                @else
-                                    @if($order->payment_type == 'mlc_payment')
-                                        {{ single_price($order->orderDetails->sum('price_mlc') + $order->orderDetails->sum('tax') + $order->orderDetails->sum('shipping_cost_mlc')) }}
-                                    @else
-                                        {{ single_price($order->orderDetails->sum('price') + $order->orderDetails->sum('tax') + $order->orderDetails->sum('shipping_cost'))}}
-                                    @endif
-                                @endif                            
+                                {{ format_price(($order->orderDetails->sum('price') + $order->orderDetails->sum('tax') + $order->orderDetails->max('shipping_cost')) * $order->exchange_rate)}}                          
                             </td>
                         </tr>
                         <tr>
@@ -82,15 +74,7 @@
                         <tr>
                             <td class="w-50 fw-600">{{ translate('Payment method') }}:</td>
                             <td>
-                                @if($order->payment_type == 'cup_payment')
-                                    CUP 
-                                @else
-                                    @if($order->payment_type == 'mlc_payment')
-                                        MLC
-                                    @else
-                                        {{ translate(ucfirst(str_replace('_', ' ', $order->payment_type))) }}
-                                    @endif
-                                @endif
+                                {{ $order->payment_type }}
                             </td>
                         </tr>
 
@@ -172,15 +156,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if($order->payment_type == 'cup_payment')
-                                                {{ single_price($orderDetail->price_cup) }}
-                                            @else
-                                                @if($order->payment_type == 'mlc_payment')
-                                                    {{ single_price($orderDetail->price_mlc) }}
-                                                @else
-                                                    {{ single_price($orderDetail->price) }}
-                                                @endif
-                                            @endif
+                                            {{ format_price($orderDetail->price * $order->exchange_rate) }}
                                         </td>
                                         @if (addon_is_activated('refund_request'))
                                             @php
@@ -260,15 +236,7 @@
                                     <td class="w-50 fw-600">{{ translate('Subtotal') }}</td>
                                     <td class="text-right">
                                         <span class="strong-600">
-                                            @if($order->payment_type == 'cup_payment')
-                                                {{ single_price($order->orderDetails->sum('price_cup')) }}
-                                            @else
-                                                @if($order->payment_type == 'mlc_payment')
-                                                    {{ single_price($order->orderDetails->sum('price_mlc')) }}
-                                                @else
-                                                    {{ single_price($order->orderDetails->sum('price')) }}
-                                                @endif
-                                            @endif
+                                            {{ format_price($order->orderDetails->sum('price') * $order->exchange_rate) }}
                                         </span>
                                     </td>
                                 </tr>
@@ -276,15 +244,7 @@
                                     <td class="w-50 fw-600">{{ translate('Shipping') }}</td>
                                     <td class="text-right">
                                         <span class="text-italic">
-                                            @if($order->payment_type == 'cup_payment')
-                                                {{ single_price($order->orderDetails->sum('shipping_cost_cup')) }}
-                                            @else
-                                                @if($order->payment_type == 'mlc_payment')
-                                                    {{ single_price($order->orderDetails->sum('shipping_cost_mlc')) }}
-                                                @else
-                                                    {{ single_price($order->orderDetails->sum('shipping_cost')) }}
-                                                @endif
-                                            @endif
+                                            {{ format_price($order->orderDetails->max('shipping_cost') * $order->exchange_rate) }}
                                         </span>
                                     </td>
                                 </tr>
@@ -292,22 +252,14 @@
                                     <td class="w-50 fw-600">{{ translate('Tax') }}</td>
                                     <td class="text-right">
                                         <span
-                                            class="text-italic">{{ single_price($order->orderDetails->sum('tax')) }}</span>
+                                            class="text-italic">{{ format_price($order->orderDetails->sum('tax') * $order->exchange_rate) }}</span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="w-50 fw-600">{{ translate('Coupon') }}</td>
                                     <td class="text-right">
                                         <span class="text-italic">
-                                            @if($order->payment_type == 'cup_payment')
-                                                {{ single_price($order->coupon_discount_cup) }}
-                                            @else
-                                                @if($order->payment_type == 'mlc_payment')
-                                                    {{ single_price($order->coupon_discount_mlc) }}
-                                                @else
-                                                    {{ single_price($order->coupon_discount) }}
-                                                @endif
-                                            @endif
+                                            {{ format_price($order->coupon_discount * $order->exchange_rate) }}
                                         </span>
                                     </td>
                                 </tr>
@@ -315,15 +267,7 @@
                                     <td class="w-50 fw-600">{{ translate('Total') }}</td>
                                     <td class="text-right">
                                         <strong><span>
-                                            @if($order->payment_type == 'cup_payment')
-                                                {{ single_price($order->grand_total_cup) }}
-                                            @else
-                                                @if($order->payment_type == 'mlc_payment')
-                                                    {{ single_price($order->grand_total_mlc) }}
-                                                @else
-                                                    {{ single_price($order->grand_total) }}
-                                                @endif
-                                            @endif
+                                            {{ format_price($order->grand_total * $order->exchange_rate) }}
                                         </span></strong>
                                     </td>
                                 </tr>

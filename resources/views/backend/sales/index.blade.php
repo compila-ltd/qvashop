@@ -37,11 +37,14 @@
                 </select>
             </div>
             <div class="col-lg-2 ml-auto">
+                @php 
+                    $payment_methods = \App\Models\PaymentMethod::all();
+                @endphp
                 <select class="form-control aiz-selectpicker" name="payment_type" id="payment_type" onchange="sort_orders()">
                     <option value="">{{ translate('Filter by payment type?')}}</option>
-                    <option value="qvapay"  @isset($payment_type) @if($payment_type == 'qvapay') selected @endif @endisset>{{ translate('QvaPay')}}</option>
-                    <option value="cup_payment"  @isset($payment_type) @if($payment_type == 'cup_payment') selected @endif @endisset>{{ translate('CUP')}}</option>
-                    <option value="mlc_payment"  @isset($payment_type) @if($payment_type == 'mlc_payment') selected @endif @endisset>{{ translate('MLC')}}</option>
+                    @foreach($payment_methods as $payment_method)
+                        <option value="{{ $payment_method->short_name }}"  @isset($payment_type) @if($payment_type == '{{ $payment_method->short_name }}') selected @endif @endisset>{{ $payment_method->short_name }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="col-lg-1">
@@ -123,31 +126,11 @@
                                 {{ translate('Inhouse Order') }}
                             @endif
                         </td>
-                        @if($order->payment_type == 'cup_payment')
-                            <td class='text-center align-middle'>
-                                {{ single_price($order->grand_total_cup) }}
-                            </td>
-                        @else
-                            @if($order->payment_type == 'mlc_payment')
-                                <td class='text-center align-middle'>
-                                    {{ single_price($order->grand_total_mlc) }}
-                                </td>
-                            @else
-                                <td class='text-center align-middle'>
-                                    {{ single_price($order->grand_total) }}
-                                </td>
-                            @endif
-                        @endif
+                        <td class='text-center align-middle'>
+                            {{ single_price($order->grand_total * $order->exchange_rate) }}
+                        </td>
 
-                        @if($order->payment_type == 'cup_payment')
-                            <td class='text-center align-middle'>CUP</td>
-                        @else
-                            @if($order->payment_type == 'mlc_payment')
-                                <td class='text-center align-middle'>MLC</td>
-                            @else
-                                <td class='text-center align-middle'>{{ translate(ucfirst(str_replace('_', ' ', $order->payment_type))) }}</td>
-                            @endif
-                        @endif
+                        <td class='text-center align-middle'>{{ $order->payment_type }}</td>
                         
                         <td class='text-center align-middle'>
                             @if ($order->payment_status == 'paid')

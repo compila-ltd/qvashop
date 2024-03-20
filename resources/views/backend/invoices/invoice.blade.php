@@ -163,15 +163,7 @@
                             {{  translate('Payment method') }}:
                         </span> 
                         <span class="strong">
-							@if($order->payment_type == "cup_payment")
-								CUP
-							@else
-								@if($order->payment_type == "mlc_payment")
-									MLC
-								@else
-									{{ translate(ucfirst(str_replace('_', ' ', $order->payment_type))) }}
-								@endif
-							@endif
+							{{ $order->payment_type }}
                         </span>
                     </td>
 				</tr>
@@ -240,23 +232,10 @@
 								</td>
 								<td class="">{{ $orderDetail->quantity }}</td>
 
-								@if($order->payment_type=='cup_payment')
-									<td class="gry-color currency">{{ single_price($orderDetail->price_cup/$orderDetail->quantity) }}</td>
-									<td class="gry-color currency">{{ single_price($orderDetail->tax/$orderDetail->quantity) }}</td>
-									<td class="text-right currency">{{ single_price($orderDetail->price_cup+$orderDetail->tax) }}</td>
-								@else
-									@if($order->payment_type=='mlc_payment')
-										<td class="gry-color currency">{{ single_price($orderDetail->price_mlc/$orderDetail->quantity) }}</td>
-										<td class="gry-color currency">{{ single_price($orderDetail->tax/$orderDetail->quantity) }}</td>
-										<td class="text-right currency">{{ single_price($orderDetail->price_mlc+$orderDetail->tax) }}</td>
-									@else
-										@if($order->payment_type=='qvapay')
-											<td class="gry-color currency">{{ single_price($orderDetail->price/$orderDetail->quantity) }}</td>
-											<td class="gry-color currency">{{ single_price($orderDetail->tax/$orderDetail->quantity) }}</td>
-											<td class="text-right currency">{{ single_price($orderDetail->price+$orderDetail->tax) }}</td>
-										@endif
-									@endif
-								@endif
+								<td class="gry-color currency">{{ single_price(($orderDetail->price * $orderDetail->exchange_rate)/$orderDetail->quantity) }}</td>
+								<td class="gry-color currency">{{ single_price(($orderDetail->tax * $orderDetail->exchange_rate)/$orderDetail->quantity) }}</td>
+								<td class="text-right currency">{{ single_price(($orderDetail->price * $orderDetail->exchange_rate)+$orderDetail->tax) }}</td>
+
 							</tr>
 		                @endif
 					@endforeach
@@ -273,35 +252,6 @@
 	        		</tr>
 	        	</thead>
 		        <tbody>
-					@php
-						$price = 0;
-						$shipping_cost = 0;
-						$coupon_discount = 0;
-						$grand_total = 0;
-						
-						if($order->payment_type=='cup_payment')
-						{
-							$price = single_price($order->orderDetails->sum('price_cup'));
-							$shipping_cost = single_price($order->orderDetails->sum('shipping_cost_cup'));
-							$coupon_discount = single_price($order->coupon_discount_cup);
-							$grand_total = single_price($order->grand_total_cup);
-						} else 
-							if($order->payment_type=='mlc_payment')
-							{
-								$price = single_price($order->orderDetails->sum('price_mlc'));
-								$shipping_cost = single_price($order->orderDetails->sum('shipping_cost_mlc'));
-								$coupon_discount = single_price($order->coupon_discount_mlc);
-								$grand_total = single_price($order->grand_total_mlc);
-							}
-							else 
-								if($order->payment_type=='qvapay')
-								{
-									$price = single_price($order->orderDetails->sum('price'));
-									$shipping_cost = single_price($order->orderDetails->sum('shipping_cost'));
-									$coupon_discount = single_price($order->coupon_discount);
-									$grand_total = single_price($order->grand_total);
-								}
-					@endphp
 			        <tr>
 			            <td class="text-left">
                             @php
@@ -314,23 +264,23 @@
 						        <tbody>
 							        <tr>
 							            <th class="gry-color text-left">{{ translate('Sub Total') }}</th>
-							            <td class="currency">{{ $price }}</td>
+							            <td class="currency">{{ single_price($order->orderDetails->sum('price') * $order->exchange_rate) }}</td>
 							        </tr>
 							        <tr>
 							            <th class="gry-color text-left">{{ translate('Shipping Cost') }}</th>
-							            <td class="currency">{{ $shipping_cost }}</td>
+							            <td class="currency">{{ single_price($order->orderDetails->max('shipping_cost') * $order->exchange_rate) }}</td>
 							        </tr>
 							        <tr class="border-bottom">
 							            <th class="gry-color text-left">{{ translate('Total Tax') }}</th>
-							            <td class="currency">{{ single_price($order->orderDetails->sum('tax')) }}</td>
+							            <td class="currency">{{ single_price($order->orderDetails->sum('tax') * $order->exchange_rate) }}</td>
 							        </tr>
 				                    <tr class="border-bottom">
 							            <th class="gry-color text-left">{{ translate('Coupon Discount') }}</th>
-							            <td class="currency">{{ $coupon_discount }}</td>
+							            <td class="currency">{{ $order->coupon_discount * $order->exchange_rate}}</td>
 							        </tr>
 							        <tr>
 							            <th class="text-left strong">{{ translate('Total') }}</th>
-							            <td class="currency">{{ $grand_total }}</td>
+							            <td class="currency">{{ single_price($order->grand_total * $order->exchange_rate) }}</td>
 							        </tr>
 						        </tbody>
 						    </table>

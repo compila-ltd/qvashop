@@ -6,7 +6,7 @@
     <form class="" action="" id="sort_orders" method="GET">
         <div class="card-header row gutters-5">
             <div class="col">
-                <h5 class="mb-md-0 h6">Órdenes combinadas</h5>
+                <h5 class="mb-md-0 h6">{{ translate('Combined orders') }}</h5>
             </div>
             <div class="col-lg-2">
                 <div class="form-group mb-0">
@@ -44,64 +44,63 @@
                                 $order = \App\Models\Order::where('combined_order_id', $combined_order->id)->first();
                                 //dd($combined_orders);
                             @endphp
-                            @if($order->payment_type == 'qvapay' && $order->payment_status == 'unpaid')
-                                @else
-                                <tr>
-                                    <td>
-                                        {{ strtotime($combined_order->created_at); }}
-                                    </td>
-                                    <td class='text-center'>{{ $combined_order->created_at }}</td>
-                                    <td class='text-center'>
-                                        @if ($order->user != null)
-                                            {{ $order->user->name }}
-                                        @else
-                                            Guest ({{ $order->guest_id }})
-                                        @endif
-                                    </td>
-                                    @if($order->payment_type == 'cup_payment')
-                                        <td class='text-center'>
-                                            {{ single_price($combined_order->grand_total_cup) }}
-                                        </td>
-                                        <td class='text-center'>
-                                            CUP
-                                        </td>
+                            <tr>
+                                <td>
+                                    {{ strtotime($combined_order->created_at); }}
+                                </td>
+                                <td class='text-center'>{{ $combined_order->created_at }}</td>
+                                <td class='text-center'>
+                                    @if ($order->user != null)
+                                        {{ $order->user->name }}
                                     @else
-                                        @if($order->payment_type == 'mlc_payment')
-                                            <td class='text-center'>
-                                                {{ single_price($combined_order->grand_total_mlc) }}
-                                            </td>
-                                            <td class='text-center'>
-                                                MLC
-                                            </td>
-                                        @else
-                                            <td class='text-center'>
-                                                {{ single_price($combined_order->grand_total) }}
-                                            </td>
-                                            <td class='text-center'>
-                                                Qvapay
-                                            </td>
-                                        @endif
+                                        Guest ({{ $order->guest_id }})
                                     @endif
-                                    <td class='text-center'>
-                                        @if ($order->payment_status == 'paid')
-                                            <span class="badge badge-inline badge-success">{{ translate('Paid')}}</span>
-                                        @else
-                                            <span class="badge badge-inline badge-dark">{{ translate('Unpaid')}}</span>
-                                        @endif
-                                    </td>
-                                    @if ($order->payment_status == 'unpaid')
-                                        <td class="text-right">
+                                </td>
+                                <td class='text-center'>
+                                    {{ single_price($combined_order->grand_total * $combined_order->exchange_rate) }}
+                                </td>
+                                <td class='text-center'>
+                                    {{ $order->payment_type }}
+                                </td>
+                                <td class='text-center'>
+                                    @if ($order->payment_status == 'paid')
+                                        <span class="badge badge-inline badge-success">{{ translate('Paid')}}</span>
+                                    @else
+                                        <span class="badge badge-inline badge-dark">{{ translate('Unpaid')}}</span>
+                                    @endif
+                                </td>
+                                <td class="text-right">
+                                    @php 
+                                        $payment_method = \App\Models\PaymentMethod::where('short_name', $order->payment_type)->first();
+                                    @endphp
+                                    @if ($order->payment_status == 'unpaid' && $payment_method->automatic == 0)
+                                        @php 
+                                            $product_availability = true;
+                                            $orders = \App\Models\Order::where('combined_order_id', $combined_order->id)->get();
+                                            foreach($orders as $single_order){
+                                                $order_detail = \App\Models\OrderDetail::where('order_id', $single_order->id)->first();
+                                                $product_stuck = \App\Models\ProductStock::where('product_id', $order_detail->product_id)->first();
+                                                if($product_stuck->qty <= $order_detail->quantity){
+                                                    $product_availability = false;
+                                                    break;
+                                                } 
+                                            }                                                
+                                        @endphp
+                                        @if($product_availability)
                                             <a href="#" class="btn btn-soft-success btn-icon btn-circle btn-sm payment-confirm-complete" data-href="{{route('orders.confirm_payment', $combined_order->id)}}" title="{{ translate('Confirm Payment') }}">
                                                 <i class="las la-money-bill"></i>
                                             </a>
-                                        </td>
-                                    @else
-                                        <td class="text-right">
-                                            -
-                                        </td>
+                                        @else
+                                            <a class="btn btn-soft-danger btn-icon btn-circle btn-sm" title="Existen productos que ya no estan disponibles en esta orden">
+                                                <i class="las la-exclamation-triangle"></i>
+                                            </a>
+                                        @endif
                                     @endif
-                                </tr>
-                            @endif
+                                    <a href="{{route('view_combined_order_orders.index', encrypt($combined_order->id))}}" class="btn btn-soft-info btn-icon btn-circle btn-sm" title="{{ translate('Order Details') }}">
+                                        <i class="las la-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>
