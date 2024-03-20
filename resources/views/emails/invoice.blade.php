@@ -170,12 +170,12 @@
 					if(!$order->email_to_customer)
 					{
 						$price = single_price($order->orderDetails->sum('price'));
-						$shipping_cost = single_price($order->orderDetails->sum('shipping_cost'));
+						$shipping_cost = single_price($order->orderDetails->max('shipping_cost'));
 						$coupon_discount = single_price($order->coupon_discount);
 						$grand_total = single_price($order->grand_total);
 					} else {
 						$price = single_price($order->orderDetails->sum('price') * $order->exchange_rate);
-						$shipping_cost = single_price($order->orderDetails->sum('shipping_cost') * $order->exchange_rate);
+						$shipping_cost = single_price($order->orderDetails->max('shipping_cost') * $order->exchange_rate);
 						$coupon_discount = single_price($order->coupon_discount * $order->exchange_rate);
 						$grand_total = single_price($order->grand_total * $order->exchange_rate);
 					}

@@ -95,7 +95,7 @@
                                     </tr>
                                     <tr>
                                         <td class="w-50 fw-600">{{ translate('Total order amount')}}:</td>
-                                        <td>{{ single_price($combined_order->grand_total * $combined_order->exchange_rate) }}</td>
+                                        <td>{{ format_price($combined_order->grand_total * $combined_order->exchange_rate) }}</td>
                                     </tr>
                                     <tr>
                                         <td class="w-50 fw-600">{{ translate('Shipping')}}:</td>
@@ -167,7 +167,7 @@
                                                                 @endif
                                                             @endif
                                                         </td>
-                                                        <td class="text-right">{{ single_price($orderDetail->price * $orderDetail->exchange_rate) }}</td>
+                                                        <td class="text-right">{{ format_price($orderDetail->price * $orderDetail->exchange_rate) }}</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -180,31 +180,31 @@
                                                     <tr>
                                                         <th>{{ translate('Subtotal')}}</th>
                                                         <td class="text-right">
-                                                            <span class="fw-600">{{ single_price($order->orderDetails->sum('price') * $order->exchange_rate) }}</span>
+                                                            <span class="fw-600">{{ format_price($order->orderDetails->sum('price') * $order->exchange_rate) }}</span>
                                                         </td>                                                        
                                                     </tr>
                                                     <tr>
                                                         <th>{{ translate('Shipping')}}</th>
                                                         <td class="text-right">
-                                                            <span class="font-italic">{{ single_price($order->orderDetails->sum('shipping_cost') * $order->exchange_rate) }}</span>
+                                                            <span class="font-italic">{{ format_price($order->orderDetails->max('shipping_cost') * $order->exchange_rate) }}</span>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <th>{{ translate('Tax')}}</th>
                                                         <td class="text-right">
-                                                            <span class="font-italic">{{ single_price($order->orderDetails->sum('tax') * $order->exchange_rate) }}</span>
+                                                            <span class="font-italic">{{ format_price($order->orderDetails->sum('tax') * $order->exchange_rate) }}</span>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <th>{{ translate('Coupon Discount')}}</th>
                                                         <td class="text-right">
-                                                            <span class="font-italic">{{ single_price($order->coupon_discount * $order->exchange_rate) }}</span>
+                                                            <span class="font-italic">{{ format_price($order->coupon_discount * $order->exchange_rate) }}</span>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <th><span class="fw-600">{{ translate('Total')}}</span></th>
                                                         <td class="text-right">
-                                                            <strong><span>{{ single_price($order->grand_total * $order->exchange_rate) }}</span></strong>
+                                                            <strong><span>{{ format_price($order->grand_total * $order->exchange_rate) }}</span></strong>
                                                         </td>
                                                     </tr>
                                                 </tbody>

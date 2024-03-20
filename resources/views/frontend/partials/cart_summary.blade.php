@@ -74,10 +74,12 @@
             </thead>
             <tbody>
                 @php
+                    //dd($carts);
                     $subtotal = 0;
                     $tax = 0;
                     $shipping = 0;
                     $product_shipping_cost = 0;
+                    $product_user_shipping_costs = [];
                     $shipping_region = $shipping_info['city'];
                 @endphp
                 @foreach ($carts as $key => $cartItem)
@@ -86,8 +88,12 @@
                         $subtotal += cart_product_price($cartItem, $product, false, false) * $cartItem['quantity'];
                         $tax += cart_product_tax($cartItem, $product, false) * $cartItem['quantity'];
                         $product_shipping_cost = $cartItem['shipping_cost'];
-                        
-                        $shipping += $product_shipping_cost;
+
+                        if (isset($product_user_shipping_costs[$product->user_id])) {
+                            $product_user_shipping_costs[$product->user_id] = max($product_user_shipping_costs[$product->user_id], $product_shipping_cost);
+                        } else {
+                            $product_user_shipping_costs[$product->user_id] = $product_shipping_cost;
+                        }
                         
                         $product_name_with_choice = $product->getTranslation('name');
                         if ($cartItem['variant'] != null) {
@@ -104,11 +110,14 @@
                         @foreach($payment_methods as $payment_method) 
                             <td class="product-total text-right total_price_product_{{$payment_method->short_name}} d-none" id="total_price_product_{{$payment_method->short_name}}">
                                 <span
-                                    class="pl-4 pr-0">{{ single_price((cart_product_price($cartItem, $cartItem->product, false, false) * $cartItem['quantity']) * $payment_method->exchange_rate) }}</span>
+                                    class="pl-4 pr-0">{{ format_price((cart_product_price($cartItem, $cartItem->product, false, false) * $cartItem['quantity']) * $payment_method->currency->exchange_rate) }}</span>
                             </td>
                         @endforeach
                     </tr>
                 @endforeach
+                @php 
+                    $shipping += array_sum($product_user_shipping_costs);
+                @endphp
             </tbody>
         </table>
         <input type="hidden" id="sub_total" value="{{ $subtotal }}">
@@ -128,7 +137,7 @@
                     <tr class="cart-subtotal d-none subtotal_{{$payment_method->short_name}}" id="subtotal_{{$payment_method->short_name}}">
                         <th>{{ translate('Subtotal') }} {{ $payment_method->currency->code }}</th>
                         <td class="text-right">
-                            <span class="fw-600">{{ single_price($subtotal * $payment_method->exchange_rate) }}</span>
+                            <span class="fw-600">{{ format_price($subtotal * $payment_method->currency->exchange_rate) }}</span>
                         </td>
                     </tr>            
 
@@ -144,7 +153,7 @@
                     <tr class="cart-shipping d-none shipping_{{$payment_method->short_name}}" id="shipping_{{$payment_method->short_name}}">
                         <th>{{ translate('Total Shipping') }} {{$payment_method->currency->code}}</th>
                         <td class="text-right">
-                            <span class="font-italic">{{ single_price($shipping * $payment_method->exchange_rate) }}</span>
+                            <span class="font-italic">{{ format_price($shipping * $payment_method->currency->exchange_rate) }}</span>
                         </td>
                     </tr>
 
@@ -152,7 +161,7 @@
                         <tr class="cart-shipping d-none clup_point_{{$payment_method->short_name}}" id="clup_point_{{$payment_method->short_name}}">
                             <th>{{ translate('Redeem point') }} {{$payment_method->currency->code}}</th>
                             <td class="text-right">
-                                <span class="font-italic">{{ single_price(Session::get('club_point') * $payment_method->exchange_rate) }}</span>
+                                <span class="font-italic">{{ format_price(Session::get('club_point') * $payment_method->currency->exchange_rate) }}</span>
                             </td>
                         </tr>
                     @endif
@@ -161,7 +170,7 @@
                         <tr class="cart-shipping d-none coupon_discount_{{$payment_method->short_name}}" id="coupon_discount_{{$payment_method->short_name}}">
                             <th>{{ translate('Coupon Discount') }} {{$payment_method->currency->code}}</th>
                             <td class="text-right">
-                                <span class="font-italic">{{ single_price($coupon_discount * $payment_method->exchange_rate) }}</span>
+                                <span class="font-italic">{{ format_price($coupon_discount * $payment_method->currency->exchange_rate) }}</span>
                             </td>
                         </tr>
                     @endif
@@ -169,7 +178,7 @@
                     <tr class="cart-total d-none payment_{{$payment_method->short_name}}" id="payment_{{$payment_method->short_name}}">
                         <th><span class="strong-600">{{ translate('Total') }} {{$payment_method->currency->code}}</span></th>
                         <td class="text-right">
-                            <strong><span>{{ single_price($total * $payment_method->exchange_rate) }}</span></strong>
+                            <strong><span>{{ format_price($total * $payment_method->currency->exchange_rate) }}</span></strong>
                         </td>
                     </tr>
                 @endforeach

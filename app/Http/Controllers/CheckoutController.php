@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Models\Shop;
 use App\Models\Category;
 use App\Models\PaymentMethod;
+use App\Models\NegotiableTransportation;
 use App\Models\CouponUsage;
 use Illuminate\Http\Request;
 use App\Models\CombinedOrder;
@@ -179,7 +180,8 @@ class CheckoutController extends Controller
     // Store Delivery Info
     public function store_delivery_info(Request $request)
     {
-        $carts = Cart::where('user_id', Auth::user()->id)->get();
+        $carts = Cart::where('user_id', Auth::user()->id)->orderBy('owner_id', 'desc')->get();
+        //dd($carts);
 
         // If Cart is empty just redirect to home page
         if ($carts->isEmpty())
@@ -217,6 +219,9 @@ class CheckoutController extends Controller
                     $cartItem['carrier_id'] = $request['carrier_id_' . $product->user_id];
                     $cartItem['shipping_cost'] = getShippingCost($carts, $key, $cartItem['carrier_id']);
                 }
+
+                if($cartItem['shipping_cost'] == -1)
+                    return redirect()->route('home')->with('warning', translate('Contact support if you have products with negotiable transportation'));
 
                 $shipping += $cartItem['shipping_cost'];
                 $cartItem->save();
@@ -369,6 +374,10 @@ class CheckoutController extends Controller
         $payment_method = PaymentMethod::where('short_name', $order->payment_type)->first();
         
         Cart::where('user_id', $combined_order->user_id)->delete();
+
+        NegotiableTransportation::where('user_id', $combined_order->user_id)
+                                ->where('status', 1)
+                                ->update(['status' => 0]);
 
         if($payment_method->automatic == 1) 
             foreach ($combined_order->orders as $order) {

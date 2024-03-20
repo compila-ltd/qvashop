@@ -28,7 +28,7 @@
                                     </td>
                                     <td class='text-center'>{{ date('d-m-Y', $order->date) }}</td>
                                         <td class='text-center'>
-                                            {{ single_price($order->grand_total * $order->exchange_rate) }}
+                                            {{ format_price($order->grand_total * $order->exchange_rate) }}
                                         </td>
                                         <td class='text-center'>
                                             {{ $order->payment_type }}

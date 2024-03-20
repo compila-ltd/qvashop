@@ -37,7 +37,7 @@
 						<div class="col-md-8">
 							<label class="aiz-switch aiz-switch-success mb-0">
 								<input type="hidden" name="types[]" value="show_language_switcher">
-								<input type="checkbox" name="show_language_switcher" @if( get_setting('show_language_switcher') == 'on') checked @endif>
+								<input type="checkbox" name="show_language_switcher" onchange="updateSettings(this, 'show_language_switcher')" @if( get_setting('show_language_switcher') == 1) checked @endif>
 								<span></span>
 							</label>
 						</div>
@@ -47,7 +47,7 @@
 						<div class="col-md-8">
 							<label class="aiz-switch aiz-switch-success mb-0">
 								<input type="hidden" name="types[]" value="show_currency_switcher">
-								<input type="checkbox" name="show_currency_switcher" @if( get_setting('show_currency_switcher') == 'on') checked @endif>
+								<input type="checkbox" name="show_currency_switcher" onchange="updateSettings(this, 'show_currency_switcher')" @if( get_setting('show_currency_switcher') == 1) checked @endif>
 								<span></span>
 							</label>
 						</div>
@@ -159,4 +159,29 @@
 	</div>
 </div>
 
+@endsection
+
+@section('script')
+<script type="text/javascript">
+    function updateSettings(el, type) {
+        if ($(el).is(':checked')) {
+            var value = 1;
+        } else {
+            var value = 0;
+        }
+
+        $.post("{{ route('business_settings.update.activation') }}", {
+                _token: '{{ csrf_token() }}',
+                type: type,
+                value: value
+            },
+            function(data) {
+                if (data == '1') {
+                    AIZ.plugins.notify('success', "{{ translate('Settings updated successfully ') }}");
+                } else {
+                    AIZ.plugins.notify('danger', 'Something went wrong');
+                }
+            });
+    }
+</script>
 @endsection

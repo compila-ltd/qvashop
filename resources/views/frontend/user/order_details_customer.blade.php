@@ -64,7 +64,7 @@
                         <tr>
                             <td class="w-50 fw-600">{{ translate('Total order amount') }}:</td>
                             <td>
-                                {{ single_price(($order->orderDetails->sum('price') + $order->orderDetails->sum('tax') + $order->orderDetails->sum('shipping_cost')) * $order->exchange_rate)}}                          
+                                {{ format_price(($order->orderDetails->sum('price') + $order->orderDetails->sum('tax') + $order->orderDetails->max('shipping_cost')) * $order->exchange_rate)}}                          
                             </td>
                         </tr>
                         <tr>
@@ -156,7 +156,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            {{ single_price($orderDetail->price * $order->exchange_rate) }}
+                                            {{ format_price($orderDetail->price * $order->exchange_rate) }}
                                         </td>
                                         @if (addon_is_activated('refund_request'))
                                             @php
@@ -236,7 +236,7 @@
                                     <td class="w-50 fw-600">{{ translate('Subtotal') }}</td>
                                     <td class="text-right">
                                         <span class="strong-600">
-                                            {{ single_price($order->orderDetails->sum('price') * $order->exchange_rate) }}
+                                            {{ format_price($order->orderDetails->sum('price') * $order->exchange_rate) }}
                                         </span>
                                     </td>
                                 </tr>
@@ -244,7 +244,7 @@
                                     <td class="w-50 fw-600">{{ translate('Shipping') }}</td>
                                     <td class="text-right">
                                         <span class="text-italic">
-                                            {{ single_price($order->orderDetails->sum('shipping_cost') * $order->exchange_rate) }}
+                                            {{ format_price($order->orderDetails->max('shipping_cost') * $order->exchange_rate) }}
                                         </span>
                                     </td>
                                 </tr>
@@ -252,14 +252,14 @@
                                     <td class="w-50 fw-600">{{ translate('Tax') }}</td>
                                     <td class="text-right">
                                         <span
-                                            class="text-italic">{{ single_price($order->orderDetails->sum('tax') * $order->exchange_rate) }}</span>
+                                            class="text-italic">{{ format_price($order->orderDetails->sum('tax') * $order->exchange_rate) }}</span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="w-50 fw-600">{{ translate('Coupon') }}</td>
                                     <td class="text-right">
                                         <span class="text-italic">
-                                            {{ single_price($order->coupon_discount * $order->exchange_rate) }}
+                                            {{ format_price($order->coupon_discount * $order->exchange_rate) }}
                                         </span>
                                     </td>
                                 </tr>
@@ -267,7 +267,7 @@
                                     <td class="w-50 fw-600">{{ translate('Total') }}</td>
                                     <td class="text-right">
                                         <strong><span>
-                                            {{ single_price($order->grand_total * $order->exchange_rate) }}
+                                            {{ format_price($order->grand_total * $order->exchange_rate) }}
                                         </span></strong>
                                     </td>
                                 </tr>

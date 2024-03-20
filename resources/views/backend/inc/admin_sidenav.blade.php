@@ -292,7 +292,7 @@
                 @endif
 
                 <!-- Sale -->
-                @canany(['view_all_orders', 'view_inhouse_orders','view_seller_orders','view_pickup_point_orders'])
+                @canany(['view_all_orders', 'view_inhouse_orders','view_seller_orders','view_pickup_point_orders','view_negotiable_transportation'])
                     @php
                         $combined_orders = DB::table('combined_orders');
 
@@ -360,6 +360,14 @@
                                 <li class="aiz-side-nav-item">
                                     <a href="{{ route('pick_up_point.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['pick_up_point.index','pick_up_point.order_show']) }}">
                                         <span class="aiz-side-nav-text">{{ translate('Pick-up Point Order') }}</span>
+                                    </a>
+                                </li>
+                            @endcan
+
+                            @can('view_negotiable_transportation')
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{ route('negotiable_transportation.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['negotiable_transportation.index','negotiable_transportation.edit']) }}">
+                                        <span class="aiz-side-nav-text">{{ translate('Negociable transportation') }}</span>
                                     </a>
                                 </li>
                             @endcan
