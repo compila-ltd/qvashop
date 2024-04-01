@@ -59,9 +59,15 @@
                                                     }                                                
                                                 @endphp
                                                 @if($product_availability)
-                                                    <a href="https://wa.me/{{ get_setting('helpline_number') }}?text=<?php echo urlencode('Hola. Mi nombre de usuario en QvaShop es: '.json_decode($order->shipping_address)->name.' y quiero pagar la orden con código: '.strtotime($combined_order->created_at).' con un importe de '.$combined_order->grand_total * $combined_order->exchange_rate.' '.$order->payment_type.' '); ?>" target="_blank" class="btn btn-soft-success btn-icon btn-circle btn-sm" title="Pagar orden">
-                                                        <i class="las la-money-bill"></i>
-                                                    </a>
+                                                    @if (!empty(json_decode($order->shipping_address))) 
+                                                        <a href="https://wa.me/{{ get_setting('helpline_number') }}?text=<?php echo urlencode('Hola. Mi nombre de usuario en QvaShop es: '.json_decode($order->shipping_address)->name.' y quiero pagar la orden con código: '.strtotime($combined_order->created_at).' con un importe de '.$combined_order->grand_total * $combined_order->exchange_rate.' '.$order->payment_type.' '); ?>" target="_blank" class="btn btn-soft-success btn-icon btn-circle btn-sm" title="Pagar orden">
+                                                            <i class="las la-money-bill"></i>
+                                                        </a>
+                                                    @else
+                                                        <a href="https://wa.me/{{ get_setting('helpline_number') }}?text=<?php echo urlencode('Hola. Mi nombre de usuario en QvaShop es: '.auth()->user()->name.' y quiero pagar la orden con código: '.strtotime($combined_order->created_at).' con un importe de '.$combined_order->grand_total * $combined_order->exchange_rate.' '.$order->payment_type.' '); ?>" target="_blank" class="btn btn-soft-success btn-icon btn-circle btn-sm" title="Pagar orden">
+                                                            <i class="las la-money-bill"></i>
+                                                        </a>
+                                                    @endif
                                                 @else
                                                     <a class="btn btn-soft-danger btn-icon btn-circle btn-sm" title="Existen productos que ya no estan disponibles en esta orden">
                                                         <i class="las la-exclamation-triangle"></i>

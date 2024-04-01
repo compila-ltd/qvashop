@@ -182,6 +182,7 @@
                                         $order_detail_route = route('inhouse_orders.show', encrypt($order->id));
                                     }
                                 @endphp
+
                                 <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{ $order_detail_route }}" title="{{ translate('View') }}">
                                     <i class="las la-eye"></i>
                                 </a>

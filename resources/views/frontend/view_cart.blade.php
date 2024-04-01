@@ -51,6 +51,7 @@
             @if ($carts && count($carts) > 0)
                 @php 
                     $user_id = 0;
+                    $all_digitals_products = true;
                     $user = auth()->user();
 
                     if($user != null) {
@@ -81,10 +82,17 @@
                                     @foreach ($carts as $key => $cartItem)
                                         @php
                                             $product = \App\Models\Product::find($cartItem['product_id']);
+
+                                            if($product->digital != 1)
+                                                $all_digitals_products = false;
+
                                             $product_stock = $product->stocks->where('variant', $cartItem['variation'])->first();
                                             // $total = $total + ($cartItem['price'] + $cartItem['tax']) * $cartItem['quantity'];
+                                            
                                             $total = $total + cart_product_price($cartItem, $product, false) * $cartItem['quantity'];
+                                            
                                             $product_name_with_choice = $product->getTranslation('name');
+                                            
                                             if ($cartItem['variation'] != null) {
                                                 $product_name_with_choice = $product->getTranslation('name') . ' - ' . $cartItem['variation'];
                                             }
@@ -203,9 +211,15 @@
                                 </div>
                                 <div class="col-md-6 text-center text-md-right">
                                     @if (Auth::check())
-                                        <a href="{{ route('checkout.shipping_info') }}" class="btn btn-primary fw-600">
-                                            {{ translate('Continue to Shipping') }}
-                                        </a>
+                                        @if($all_digitals_products == false)
+                                            <a href="{{ route('checkout.shipping_info', ['all_digitals_products' => $all_digitals_products]) }}" class="btn btn-primary fw-600">
+                                                {{ translate('Continue to Shipping') }}
+                                            </a>
+                                        @else
+                                            <a href="{{ route('checkout.store_shipping_infostore', ['all_digitals_products' => $all_digitals_products]) }}" class="btn btn-primary fw-600">
+                                                {{ translate('Continue to Shipping') }}
+                                            </a>
+                                        @endif
                                     @else
                                         <button class="btn btn-primary fw-600"
                                             onclick="showCheckoutModal()">{{ translate('Continue to Shipping') }}</button>
