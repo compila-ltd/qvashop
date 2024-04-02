@@ -5,13 +5,12 @@
         <div class="card-header">
             <h5 class="mb-0 h6">{{ translate('Order id') }}: {{ $order->code }}</h5>
         </div>
-
+        
         <div class="card-header">
             <h5 class="h6 mb-0">{{ translate('Order Summary') }}</h5>
         </div>
         <div class="card-body">
             <div class="row">
-
                 <div class="col-lg-6">
                     <table class="table-borderless table">
                         <tr>
@@ -20,7 +19,11 @@
                         </tr>
                         <tr>
                             <td class="w-50 fw-600">{{ translate('Customer') }}:</td>
-                            <td>{{ json_decode($order->shipping_address)->name }}</td>
+                            @if(!empty(json_decode($order->shipping_address)))
+                                <td>{{ json_decode($order->shipping_address)->name }}</td>
+                            @else
+                                <td>{{auth()->user()->name}}</td>
+                            @endif
                         </tr>
                         <tr>
                             <td class="w-50 fw-600">{{ translate('Email') }}:</td>
@@ -30,10 +33,16 @@
                         </tr>
                         <tr>
                             <td class="w-50 fw-600">{{ translate('Shipping address') }}:</td>
-                            <td>{{ json_decode($order->shipping_address)->address }},
-                                {{ json_decode($order->shipping_address)->city }},
-                                {{ json_decode($order->shipping_address)->postal_code }},
-                                {{ json_decode($order->shipping_address)->country }}</td>
+                            @if(!empty(json_decode($order->shipping_address)))
+                                <td>
+                                    {{ json_decode($order->shipping_address)->address }},
+                                    {{ json_decode($order->shipping_address)->city }},
+                                    {{ json_decode($order->shipping_address)->postal_code }},
+                                    {{ json_decode($order->shipping_address)->country }}
+                                </td>
+                            @else
+                                <td>-</td>
+                            @endif
                         </tr>
                     </table>
                 </div>

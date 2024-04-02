@@ -55,9 +55,17 @@
                         <h1 class="h3 mb-3 fw-600">{{ translate('Thank You for Your Order!')}}</h1>
                         @if($first_order->payment_status == 'unpaid' && $payment_method->automatic == 0)
                             <p class="h4 opacity-70 font-italic">Usted aún necesita pagar su orden con código: <span class="fw-600"> {{strtotime($combined_order->created_at)}}</span>.</p> 
-                            <p class="h4 opacity-70 font-italic">Contáctenos mediante <a href="https://wa.me/{{ get_setting('helpline_number') }}?text=<?php echo urlencode('Hola. Mi nombre de usuario en QvaShop es: '.json_decode($first_order->shipping_address)->name.' y quiero pagar la orden con código: '.strtotime($combined_order->created_at).' con un importe de '.$combined_order->grand_total * $combined_order->exchange_rate.' '.$first_order->payment_type.' '); ?>" target="_blank"><span class="fw-600">WhatsApp</span></a> para realizar su pago.</p>
+                            @if(!empty(json_decode($first_order->shipping_address)))
+                                <p class="h4 opacity-70 font-italic">Contáctenos mediante <a href="https://wa.me/{{ get_setting('helpline_number') }}?text=<?php echo urlencode('Hola. Mi nombre de usuario en QvaShop es: '.json_decode($first_order->shipping_address)->name.' y quiero pagar la orden con código: '.strtotime($combined_order->created_at).' con un importe de '.$combined_order->grand_total * $combined_order->exchange_rate.' '.$first_order->payment_type.' '); ?>" target="_blank"><span class="fw-600">WhatsApp</span></a> para realizar su pago.</p>
+                            @else
+                                <p class="h4 opacity-70 font-italic">Contáctenos mediante <a href="https://wa.me/{{ get_setting('helpline_number') }}?text=<?php echo urlencode('Hola. Mi nombre de usuario en QvaShop es: '.auth()->user()->name.' y quiero pagar la orden con código: '.strtotime($combined_order->created_at).' con un importe de '.$combined_order->grand_total * $combined_order->exchange_rate.' '.$first_order->payment_type.' '); ?>" target="_blank"><span class="fw-600">WhatsApp</span></a> para realizar su pago.</p>
+                            @endif
                         @else
-                            <p class="opacity-70 font-italic">{{  translate('A copy or your order summary has been sent to') }} {{ json_decode($first_order->shipping_address)->email }}</p>
+                            @if(!empty(json_decode($first_order->shipping_address)))    
+                                <p class="opacity-70 font-italic">{{  translate('A copy or your order summary has been sent to') }} {{ json_decode($first_order->shipping_address)->email }}</p>
+                            @else
+                                <p class="opacity-70 font-italic">{{  translate('A copy or your order summary has been sent to') }} {{ auth()->user()->email }}</p>
+                            @endif
                         @endif
                     </div>
                     <div class="mb-4 bg-white p-4 rounded shadow-sm">
@@ -71,15 +79,28 @@
                                     </tr>
                                     <tr>
                                         <td class="w-50 fw-600">{{ translate('Name')}}:</td>
-                                        <td>{{ json_decode($first_order->shipping_address)->name }}</td>
+                                        
+                                        @if(!empty(json_decode($first_order->shipping_address)))
+                                            <td>{{ json_decode($first_order->shipping_address)->name }}</td>
+                                        @else
+                                            <td>{{ auth()->user()->name }}</td>
+                                        @endif
                                     </tr>
                                     <tr>
                                         <td class="w-50 fw-600">{{ translate('Email')}}:</td>
-                                        <td>{{ json_decode($first_order->shipping_address)->email }}</td>
+                                        @if(!empty(json_decode($first_order->shipping_address)))
+                                            <td>{{ json_decode($first_order->shipping_address)->email }}</td>
+                                        @else
+                                            <td>{{ auth()->user()->email }}</td>
+                                        @endif
                                     </tr>
                                     <tr>
                                         <td class="w-50 fw-600">{{ translate('Shipping address')}}:</td>
-                                        <td>{{ json_decode($first_order->shipping_address)->address }}, {{ json_decode($first_order->shipping_address)->city }}, {{ json_decode($first_order->shipping_address)->country }}</td>
+                                        @if(!empty(json_decode($first_order->shipping_address)))
+                                            <td>{{ json_decode($first_order->shipping_address)->address }}, {{ json_decode($first_order->shipping_address)->city }}, {{ json_decode($first_order->shipping_address)->country }}</td>
+                                        @else
+                                            <td>-</td>
+                                        @endif
                                     </tr>
                                 </table>
                             </div>
