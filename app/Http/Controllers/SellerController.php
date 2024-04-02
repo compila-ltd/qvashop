@@ -237,7 +237,15 @@ class SellerController extends Controller
     {
         $shop = Shop::findOrFail($request->id);
         $shop->verification_status = $request->status;
+        
         if ($shop->save()) {
+            
+            if($request->status == 0)
+            {
+                $user_id = $shop->user_id;
+                Product::where('user_id', $user_id)->update(['published' => 0]);
+            }
+
             Cache::forget('verified_sellers_id');
             return 1;
         }
