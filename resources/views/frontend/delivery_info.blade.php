@@ -714,9 +714,9 @@
                     @endif
 
                     <div class="pt-4 d-flex justify-content-between align-items-center">
-                        <a href="{{ route('checkout.shipping_info') }}">
+                        <a href="{{ route('cart') }}">
                             <i class="la la-angle-left"></i>
-                            {{ translate('Return to Shipping Information') }}
+                            {{ translate('Return to cart') }}
                         </a>
                         
                         @if($all_cart_digitals_products)
