@@ -77,27 +77,28 @@
                             if ($product->added_by == 'admin') {
                                 array_push($admin_products, $cartItem['product_id']);
 
-                                if (!$admin_delivery_address_error_check) {
-                                    $ok_state = \App\Models\State::where('id', $delivery_address->state_id)
-                                    ->where('status', 1)
-                                    ->first();
-
-                                    if ($ok_state) {
-                                        $ok_city = \App\Models\City::where('id', $delivery_address->city_id)
+                                if($delivery_address != null)
+                                    if (!$admin_delivery_address_error_check) {
+                                        $ok_state = \App\Models\State::where('id', $delivery_address->state_id)
                                         ->where('status', 1)
                                         ->first();
 
-                                        if (!$ok_city) {
-                                            array_push($shops_delivery_errors, 'QvaShop');
-                                            $admin_delivery_address_error = true;
-                                        }
-                                    } else {
-                                        $admin_delivery_address_error = true;
-                                        array_push($shops_delivery_errors, 'QvaShop');
-                                    }
+                                        if ($ok_state) {
+                                            $ok_city = \App\Models\City::where('id', $delivery_address->city_id)
+                                            ->where('status', 1)
+                                            ->first();
 
-                                    $admin_delivery_address_error_check = true;
-                                }
+                                            if (!$ok_city) {
+                                                array_push($shops_delivery_errors, 'QvaShop');
+                                                $admin_delivery_address_error = true;
+                                            }
+                                        } else {
+                                            $admin_delivery_address_error = true;
+                                            array_push($shops_delivery_errors, 'QvaShop');
+                                        }
+
+                                        $admin_delivery_address_error_check = true;
+                                    }
                             } else {
                                 $product_ids = [];
                                 
@@ -110,30 +111,31 @@
 
                                 $shop = \App\Models\Shop::where('user_id', $product->user_id)->first();
 
-                                if ($shop_delivery_address == '' || $shop_delivery_address != $shop->name) {
-                                    $ok_state = \App\Models\ShopState::where('shop_id', $shop->id)
-                                                ->where('state_id', $delivery_address->state_id)
-                                                ->where('status', 1)
-                                                ->first();
-
-                                    //dd($ok_state);
-
-                                    if ($ok_state) {
-                                        $ok_city = \App\Models\ShopCity::where('shop_id', $shop->id)
-                                                    ->where('city_id', $delivery_address->city_id)
+                                if($delivery_address != null)
+                                    if ($shop_delivery_address == '' || $shop_delivery_address != $shop->name) {
+                                        $ok_state = \App\Models\ShopState::where('shop_id', $shop->id)
+                                                    ->where('state_id', $delivery_address->state_id)
                                                     ->where('status', 1)
                                                     ->first();
 
-                                        if (!$ok_city) {
+                                        //dd($ok_state);
+
+                                        if ($ok_state) {
+                                            $ok_city = \App\Models\ShopCity::where('shop_id', $shop->id)
+                                                        ->where('city_id', $delivery_address->city_id)
+                                                        ->where('status', 1)
+                                                        ->first();
+
+                                            if (!$ok_city) {
+                                                array_push($shops_delivery_errors, $shop->name);
+                                            }
+                                        }else{
                                             array_push($shops_delivery_errors, $shop->name);
                                         }
-                                    }else{
-                                        array_push($shops_delivery_errors, $shop->name);
-                                    }
 
-                                    $shop_delivery_address = $shop->name;
-                                    
-                                }
+                                        $shop_delivery_address = $shop->name;
+                                        
+                                    }
                             }
                         }
                     @endphp
@@ -147,8 +149,9 @@
                                                     ->get();
                             }
 
-                            $city_admin = \App\Models\City::where('id', $delivery_address->city_id)->first();
-                            //dd($city_admin);
+                            if($delivery_address != null)
+                                $city_admin = \App\Models\City::where('id', $delivery_address->city_id)->first();
+
                         @endphp
                         <div class="card mb-3 shadow-sm border-0 rounded">
                             <div class="card-header p-3">
@@ -287,11 +290,15 @@
                                                                                 <span class="aiz-rounded-check flex-shrink-0 mt-1"></span>
                                                                                 <span class="flex-grow-1 pl-3 fw-600">
                                                                                     {{ translate('Home Delivery') }}: 
-                                                                                    @php 
-                                                                                        if($city_admin->cost == 0)
+                                                                                    @php
+                                                                                        if($delivery_address != null){
+                                                                                            if($city_admin->cost == 0)
+                                                                                                echo "Gratis";
+                                                                                            else    
+                                                                                                echo single_price($city_admin->cost);
+                                                                                        } 
+                                                                                        else
                                                                                             echo "Gratis";
-                                                                                        else    
-                                                                                            echo single_price($city_admin->cost);
                                                                                     @endphp    
                                                                                 </span>
                                                                         </label>
@@ -429,10 +436,10 @@
                                                         ->where('shop_id', $shop->id)
                                                         ->get();
                                 }
+                                
+                                if($delivery_address != null)
+                                    $city_shop = \App\Models\ShopCity::where('shop_id', $shop->id)->where('city_id', $delivery_address->city_id)->first();
 
-                                $city_shop = \App\Models\ShopCity::where('shop_id', $shop->id)->where('city_id', $delivery_address->city_id)->first();
-
-                                //dd($city_shop);
                             @endphp
                             <div class="card mb-3 shadow-sm border-0 rounded">
                                 <div class="card-header p-3">
@@ -574,10 +581,14 @@
                                                                                     <span class="flex-grow-1 pl-3 fw-600">
                                                                                         {{ translate('Home Delivery') }}: 
                                                                                         @php 
-                                                                                            if($city_shop->cost == 0)
+                                                                                            if($delivery_address != null){
+                                                                                                if($city_shop->cost == 0)
+                                                                                                    echo "Gratis";
+                                                                                                else    
+                                                                                                    echo single_price($city_shop->cost); 
+                                                                                            }
+                                                                                            else
                                                                                                 echo "Gratis";
-                                                                                            else    
-                                                                                                echo single_price($city_shop->cost); 
                                                                                         @endphp    
                                                                                     </span>
                                                                                 </span>
@@ -703,9 +714,9 @@
                     @endif
 
                     <div class="pt-4 d-flex justify-content-between align-items-center">
-                        <a href="{{ route('checkout.shipping_info') }}">
+                        <a href="{{ route('cart') }}">
                             <i class="la la-angle-left"></i>
-                            {{ translate('Return to Shipping Information') }}
+                            {{ translate('Return to cart') }}
                         </a>
                         
                         @if($all_cart_digitals_products)

@@ -80,7 +80,8 @@
                     $shipping = 0;
                     $product_shipping_cost = 0;
                     $product_user_shipping_costs = [];
-                    $shipping_region = $shipping_info['city'];
+                    //$shipping_region = $shipping_info['city'];
+                    //dd('ok');
                 @endphp
                 @foreach ($carts as $key => $cartItem)
                     @php

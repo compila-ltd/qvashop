@@ -133,6 +133,7 @@ class CheckoutController extends Controller
     // Get Shipping destination
     public function get_shipping_info(Request $request)
     {
+        //dd('get_shipping_info');
         $carts = Cart::where('user_id', Auth::user()->id)->get();
         
         // if (Session::has('cart') && count(Session::get('cart')) > 0) {
@@ -147,10 +148,17 @@ class CheckoutController extends Controller
 
     // Store Shipping destination
     public function store_shipping_info(Request $request)
-    {
-        //dd($request);
-        if ($request->address_id == null)
-            return back()->with('warning', translate('Please add shipping address'));
+    {           
+        $all_digitals_products = false;
+
+        if ($request->has('all_digitals_products')) 
+            if($request->all_digitals_products == 1)
+                $all_digitals_products = true;  
+
+        if ($request->address_id == null){
+            if($all_digitals_products == false)
+                return back()->with('warning', translate('Please add shipping address'));
+        }
 
         $carts = Cart::where('user_id', Auth::user()->id)->get();
         //dd($carts);
@@ -174,7 +182,7 @@ class CheckoutController extends Controller
             $carrier_list = $carrier_query->get();
         }
 
-        return view('frontend.delivery_info', compact('carts', 'carrier_list'));
+        return view('frontend.delivery_info', compact('carts', 'carrier_list', 'all_digitals_products'));
     }
 
     // Store Delivery Info

@@ -297,9 +297,11 @@ class ProductController extends Controller
     public function admin_product_edit(Request $request, $id)
     {
         $product = Product::findOrFail($id);
+        /*
         if ($product->digital == 1) {
             return redirect('admin/digitalproducts/' . $id . '/edit');
         }
+        */
 
         $lang = $request->lang;
         $tags = json_decode($product->tags);

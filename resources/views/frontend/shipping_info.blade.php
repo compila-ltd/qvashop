@@ -114,7 +114,7 @@
                         <div class="col-md-6 text-center text-md-left order-1 order-md-0">
                             <a href="{{ route('cart') }}" class="btn btn-link">
                                 <i class="las la-arrow-left"></i>
-                                Retornar al carrito
+                                {{ translate('Return to cart')}}
                             </a>
                         </div>
                         <div class="col-md-6 text-center text-md-right">
