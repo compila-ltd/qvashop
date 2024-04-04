@@ -515,7 +515,7 @@
                 @canany(['view_all_seller','seller_payment_history','view_seller_payout_requests','seller_commission_configuration','view_all_seller_packages','seller_verification_form_configuration'])
                 <li class="aiz-side-nav-item">
                     @php
-                        $sellers = \App\Models\Shop::where('verification_status', 0)->where('verification_info', '!=', null)->count();
+                        $sellers = \App\Models\Shop::where('verification_status', 0)->where('verification_info', '!=', null)->where('archive_status', 0)->count();
                         $withdraw_requests = DB::table('seller_withdraw_requests')
                             ->where('status', '0')
                             ->count(['user_id']);
@@ -571,6 +571,13 @@
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('seller_verification_form.index') }}" class="aiz-side-nav-link">
                                 <span class="aiz-side-nav-text">{{ translate('Seller Verification Form') }}</span>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('archive_seller')
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('archived_sellers.index') }}" class="aiz-side-nav-link">
+                                <span class="aiz-side-nav-text">{{ translate('Archived Sellers') }}</span>
                             </a>
                         </li>
                         @endcan
