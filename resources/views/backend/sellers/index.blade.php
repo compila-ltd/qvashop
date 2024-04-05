@@ -144,23 +144,23 @@
                                     </a>
                                     @endcan
                                     @can('ban_seller')
-                                    @if($shop->user->banned != 1)
-                                    <a href="#" onclick="confirm_ban({{route('sellers.ban', $shop->id)}});" class="dropdown-item">
-                                        {{ translate('Ban this seller')}}
-                                        <i class="fa fa-ban text-danger" aria-hidden="true"></i>
-                                    </a>
-                                    @else
-                                    <a href="#" onclick="confirm_unban({{route('sellers.ban', $shop->id)}});" class="dropdown-item">
-                                        {{ translate('Unban this seller')}}
-                                        <i class="fa fa-check text-success" aria-hidden="true"></i>
-                                    </a>
-                                    @endif
+                                        @if($shop->user->banned != 1)
+                                        <a href="#" onclick="confirm_ban({{route('sellers.ban', $shop->id)}});" class="dropdown-item">
+                                            {{ translate('Ban this seller')}}
+                                            <i class="fa fa-ban text-danger" aria-hidden="true"></i>
+                                        </a>
+                                        @else
+                                        <a href="#" onclick="confirm_unban({{route('sellers.ban', $shop->id)}});" class="dropdown-item">
+                                            {{ translate('Unban this seller')}}
+                                            <i class="fa fa-check text-success" aria-hidden="true"></i>
+                                        </a>
+                                        @endif
+                                    @endcan
                                     @can('archive_seller')
                                     <a href="#" class="dropdown-item archive-seller-confirm-complete" data-href="{{route('sellers.archive', $shop->id)}}" >
                                         {{ translate('Archive this seller')}}
                                         <i class="fa fa-ban text-danger" aria-hidden="true"></i>
                                     </a>
-                                    @endif
                                     @endcan
                                     @can('delete_seller')
                                     <a href="#" class="dropdown-item confirm-delete" data-href="{{route('sellers.destroy', $shop->id)}}">
