@@ -29,6 +29,8 @@
     @if (isset($cart) && count($cart) > 0)
         @php 
             $negotiable_transportation = \App\Models\NegotiableTransportation::where('user_id', $user_id)->where('status', 1)->first();
+
+            $all_digitals_products = true;
         @endphp
         <div class="p-3 fs-15 fw-600 p-3 border-bottom">
             {{ translate('Cart Items') }}
@@ -42,6 +44,9 @@
                     $product = \App\Models\Product::find($cartItem['product_id']);
                     // $total = $total + ($cartItem['price'] + $cartItem['tax']) * $cartItem['quantity'];
                     $total = $total + cart_product_price($cartItem, $product, false) * $cartItem['quantity'];
+
+                    if($product->digital != 1)
+                        $all_digitals_products = false;
                 @endphp
                 @if ($product != null)
                     <li class="list-group-item">
@@ -105,11 +110,19 @@
                     </a>
                 </li>
                 @if (Auth::check())
-                    <li class="list-inline-item">
-                        <a href="{{ route('checkout.shipping_info') }}" class="btn btn-primary btn-sm">
-                            {{ translate('Checkout') }}
-                        </a>
-                    </li>
+                    @if($all_digitals_products == false)
+                        <li class="list-inline-item">
+                            <a href="{{ route('checkout.shipping_info', ['all_digitals_products' => $all_digitals_products]) }}" class="btn btn-primary btn-sm">
+                                {{ translate('Checkout') }}
+                            </a>
+                        </li>
+                    @else
+                        <li class="list-inline-item">
+                            <a href="{{ route('checkout.store_shipping_infostore', ['all_digitals_products' => $all_digitals_products]) }}" class="btn btn-primary btn-sm">
+                                {{ translate('Checkout') }}
+                            </a>
+                        </li>    
+                    @endif            
                 @endif
             </ul>
         </div>

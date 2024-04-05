@@ -887,6 +887,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                     on: {
                         "ready.ft.table": function (e, ft) {
                             AIZ.extra.deleteConfirm();
+                            AIZ.extra.archiveSellerConfirm();
                             AIZ.plugins.bootstrapSelect("refresh");
                         },
                     },
@@ -1261,6 +1262,14 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                         .siblings("a")
                         .addClass("level-3-active");
                 }
+            });
+        },
+        archiveSellerConfirm: function () {
+            $(".archive-seller-confirm-complete").click(function (e) {
+                e.preventDefault();
+                var url = $(this).data("href");
+                $("#archive-seller-confirm-modal").modal("show");
+                $("#archive-seller-confirm-link").attr("href", url);
             });
         },
         deleteConfirm: function () {
@@ -1673,6 +1682,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
     AIZ.extra.initActiveMenu();
     AIZ.extra.mobileNavToggle();
     AIZ.extra.deleteConfirm();
+    AIZ.extra.archiveSellerConfirm();
     AIZ.extra.multiModal();
     AIZ.extra.inputRating();
     AIZ.extra.bsCustomFile();
