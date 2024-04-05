@@ -33,7 +33,7 @@
 
     </div><!-- .aiz-main-wrapper -->
     <script src="{{ asset('assets/js/vendors.js') }}"></script>
-    <script src="{{ asset('assets/js/aiz-core.js?v=202402010900') }}"></script>
+    <script src="{{ asset('assets/js/aiz-core.js?v=202404041500') }}"></script>
 
     @yield('script')
 

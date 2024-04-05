@@ -54,6 +54,7 @@ class SellerController extends Controller
             $approved = $request->approved_status;
             $shops = $shops->where('verification_status', $approved);
         }
+        $shops->where('archive_status', 0);
         $shops = $shops->paginate(15);
         return view('backend.sellers.index', compact('shops', 'sort_search', 'approved'));
     }
@@ -203,6 +204,23 @@ class SellerController extends Controller
         return back()->with('error', translate('Something went wrong'));
     }
 
+    // Aprove Seller
+    public function archive_seller($id)
+    {
+        $shop = Shop::findOrFail($id);
+        $shop->archive_status = 1;
+        $shop->verification_status = 0;
+        if ($shop->save()) {
+            $user_id = $shop->user_id;
+            Product::where('user_id', $user_id)->update(['published' => 0]);
+
+            Cache::forget('verified_sellers_id');
+            return redirect()->route('sellers.index')->with('success', translate('Seller has been archived successfully'));
+        }
+
+        return back()->with('error', translate('Something went wrong'));
+    }
+
     // rejest Sellet
     public function reject_seller($id)
     {
@@ -252,6 +270,23 @@ class SellerController extends Controller
         return 0;
     }
 
+    // Update archive
+    public function updateArchived(Request $request)
+    {
+        $shops_temp = Shop::findOrFail($request->id);
+        $shops_temp->archive_status = $request->status;
+        
+        if ($shops_temp->save()) {
+            Cache::forget('verified_sellers_id');
+            $shops = Shop::where('archive_status', 1);
+
+            $shops = $shops->paginate(15);
+
+            return 1;
+        }
+        return 0;
+    }
+
     // Login as Seller
     public function login($id)
     {
@@ -278,4 +313,14 @@ class SellerController extends Controller
         $shop->user->save();
         return back();
     }
+
+    public function viewArchivedSellers(Request $request)
+    {
+        $shops = Shop::where('archive_status', 1);
+
+        $shops = $shops->paginate(15);
+
+        return view('backend.sellers.archived_sellers', compact('shops'));
+    }
+    
 }
