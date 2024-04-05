@@ -160,7 +160,6 @@
                                         {{ translate('Archive this seller')}}
                                         <i class="fa fa-ban text-danger" aria-hidden="true"></i>
                                     </a>
-                                    @endif
                                     @endcan
                                     @can('delete_seller')
                                     <a href="#" class="dropdown-item confirm-delete" data-href="{{route('sellers.destroy', $shop->id)}}">
