@@ -78,6 +78,12 @@
                             </a>
                         </li>
                         @endif
+
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('commercial_activation.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['commercial_activation.index']) }}">
+                                <span class="aiz-side-nav-text">{{ translate('Activate commercial') }}</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 @endcanany
