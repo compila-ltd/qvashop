@@ -205,6 +205,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
 
         // Order Configuration
         Route::get('/order-configuration', 'order_configuration')->name('order_configuration.index');
+
+        // Commercial Activation
+        Route::get('/commercial_activation', 'commercial_activation')->name('commercial_activation.index');
+        Route::post('/commercial_activation/activate', 'update_active_commercial')->name('commercial_activation.activate');
     });
 
     //Currency
