@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\BusinessSetting;
+use App\Models\Staff;
 use Illuminate\Support\Facades\Artisan;
 
 class BusinessSettingsController extends Controller
@@ -503,5 +504,35 @@ class BusinessSettingsController extends Controller
     public function order_configuration()
     {
         return view('backend.setup_configurations.order_configuration.index');
+    }
+
+    public function commercial_activation(){
+        $staffs = Staff::where('role_id', 3)->get();
+
+        $active_commercial = BusinessSetting::where('type', 'helpline_number')->first();
+
+        $active_staff = null;
+
+        foreach($staffs as $staff){
+            if($staff->user->phone == $active_commercial->value){
+                $active_staff = $staff;
+                break;
+            }
+        }
+        return view('backend.staff.commercial_activation.index', compact('staffs', 'active_staff'));
+    }
+
+    public function update_active_commercial(Request $request){
+        $staff = Staff::findOrFail($request->id);
+        $user = $staff->user;
+
+        $business_settings = BusinessSetting::where('type', 'helpline_number')->first();
+        $business_settings->value = $user->phone;
+        if($business_settings->save()){
+            Artisan::call('cache:clear');
+            return 1;
+        }else{
+            return 0;
+        }
     }
 }
