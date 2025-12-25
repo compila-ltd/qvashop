@@ -106,23 +106,20 @@ return [
 
     'redis' => [
 
-        'client' => env('REDIS_CLIENT', 'phpredis'),
+        'client' => env('REDIS_CLIENT', 'predis'),
 
         'default' => [
-            'host' => env('REDIS_HOST', '127.0.0.1'),
-            'password' => env('REDIS_PASSWORD', null),
-            'port' => env('REDIS_PORT', 6379),
-            'database' => env('REDIS_DB', 0),
-            //'url' => 'tls://user:password@127.0.0.1:6380?database=1',
+            'url' => env('REDIS_URL'),
+            'scheme' => env('REDIS_SCHEME', 'tcp'),
+            'tls' => env('REDIS_TLS', false),
+            'database' => 0, // <-- obligatorio
         ],
 
         'cache' => [
-            'scheme' => 'tls',
-            'host' => env('REDIS_HOST', '127.0.0.1'),
-            'password' => env('REDIS_PASSWORD', null),
-            'port' => env('REDIS_PORT', 6379),
-            'database' => env('REDIS_CACHE_DB', 1),
-            //'url' => 'tls://user:password@127.0.0.1:6380?database=1',
+            'url' => env('REDIS_URL'),
+            'scheme' => env('REDIS_SCHEME', 'tcp'),
+            'tls' => env('REDIS_TLS', false),
+            'database' => 0, // <-- Upstash NO permite DB 1
         ],
 
     ],

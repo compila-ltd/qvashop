@@ -1,12 +1,14 @@
 {
     "name": "laravel/laravel",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
     "license": "MIT",
     "type": "project",
     "require": {
         "php": "^8.1",
-        "ext-memcached": "*",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^7.3",
         "intervention/image": "^2.5",
@@ -20,6 +22,7 @@
         "lcobucci/jwt": "^4.2.1",
         "league/flysystem-aws-s3-v3": "^3.0",
         "niklasravnsborg/laravel-pdf": "^4.0",
+        "predis/predis": "^3.3",
         "renatomarinho/laravel-page-speed": "^2.1",
         "sentry/sentry-laravel": "^2.13",
         "simplesoftwareio/simple-qrcode": "^4.2",
@@ -52,7 +55,9 @@
         "psr-4": {
             "App\\": "app/"
         },
-        "files": ["app/Http/Helpers.php"]
+        "files": [
+            "app/Http/Helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -61,8 +66,7 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": [
-            ]
+            "dont-discover": []
         }
     },
     "scripts": {
