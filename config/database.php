@@ -105,27 +105,17 @@ return [
     */
 
     'redis' => [
-
-        'client' => env('REDIS_CLIENT', 'predis'),
-
-        'default' => [
-            'url' => env('REDIS_URL'),
-            'scheme' => env('REDIS_SCHEME', 'tcp'),
-            'tls' => env('REDIS_TLS', false),
-            'database' => 0, // <-- obligatorio
-        ],
-
-        'cache' => [
-            'url' => env('REDIS_URL'),
-            'scheme' => env('REDIS_SCHEME', 'tcp'),
-            'tls' => env('REDIS_TLS', false),
-            'database' => 0, // <-- Upstash NO permite DB 1
-            'options' => [
-                'ssl' => [
-                    'verify_peer' => false,
-                    'verify_peer_name' => false,
-                ],
-            ]
-        ],
+    'client' => 'predis', // or 'phpredis'
+    'options' => [
+        'cluster' => 'redis',
+        'prefix' => Str::slug(env('APP_NAME', 'laravel'), '_').'_database_',
     ],
+    'default' => [
+        'url' => env('REDIS_URL'),
+        'host' => env('REDIS_HOST', '127.0.0.1'),
+        'password' => env('REDIS_PASSWORD', null),
+        'port' => env('REDIS_PORT', 6379),
+        'database' => env('REDIS_DB', 0),
+    ],
+],
 ];
