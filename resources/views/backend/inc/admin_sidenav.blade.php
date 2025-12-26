@@ -373,7 +373,7 @@
                             @can('view_negotiable_transportation')
                                 <li class="aiz-side-nav-item">
                                     <a href="{{ route('negotiable_transportation.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['negotiable_transportation.index','negotiable_transportation.edit']) }}">
-                                        <span class="aiz-side-nav-text">{{ translate('Negociable transportation') }}</span>
+                                        <span class="aiz-side-nav-text">{{ translate('Negotiable transportation') }}</span>
                                     </a>
                                 </li>
                             @endcan

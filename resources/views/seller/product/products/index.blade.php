@@ -84,7 +84,7 @@
                         <th data-breakpoints="md" class="text-center">{{ translate('Published')}}</th>
                         <th data-breakpoints="md" class="text-center">{{ translate('Featured')}}</th>
                         <th data-breakpoints="md" class="text-center">{{ translate('Warehouse pickup only') }}</th>
-                        <th data-breakpoints="md" class="text-center">{{ translate('Negociable transportation') }}</th>
+                        <th data-breakpoints="md" class="text-center">{{ translate('Negotiable transportation') }}</th>
                         <th data-breakpoints="md" class="text-center">{{ translate('Options')}}</th>
                     </tr>
                 </thead>
