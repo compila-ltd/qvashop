@@ -106,10 +106,6 @@ return [
 
     'redis' => [
     'client' => 'predis', // or 'phpredis'
-    'options' => [
-        'cluster' => 'redis',
-        'prefix' => Str::slug(env('APP_NAME', 'laravel'), '_').'_database_',
-        ],
     'default' => [
         'url' => env('REDIS_URL'),
         'host' => env('REDIS_HOST', '127.0.0.1'),
