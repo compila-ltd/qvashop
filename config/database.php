@@ -120,8 +120,12 @@ return [
             'scheme' => env('REDIS_SCHEME', 'tcp'),
             'tls' => env('REDIS_TLS', false),
             'database' => 0, // <-- Upstash NO permite DB 1
+            'options' => [
+                'ssl' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                ],
+            ]
         ],
-
     ],
-
 ];
