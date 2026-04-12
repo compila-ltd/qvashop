@@ -52,10 +52,12 @@ return [
             'prefix' => '',
             'strict' => false,
             'engine' => null,
-            'options' => env('DB_SSL_MODE') ? [
-                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => env('DB_SSL_VERIFY_CERT', true),
-                PDO::ATTR_TIMEOUT => env('DB_TIMEOUT', 30),
-            ] : [],
+            'options' => [
+                PDO::MYSQL_ATTR_SSL_CA => false,
+                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+                PDO::ATTR_TIMEOUT => 60,
+                PDO::ATTR_PERSISTENT => false,
+            ],
         ],
 
         'pgsql' => [
