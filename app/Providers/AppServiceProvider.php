@@ -18,8 +18,8 @@ class AppServiceProvider extends ServiceProvider
    */
   public function register()
   {
-    //Ignore default migration from here
-    Sanctum::ignoreMigrations();
+    //Ignore default migration from here - Commented out for Laravel 11/Sanctum v4 compatibility
+    // Sanctum::ignoreMigrations();
   }
 
   /**

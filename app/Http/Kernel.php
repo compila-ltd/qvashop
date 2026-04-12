@@ -26,10 +26,11 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
 
-        \RenatoMarinho\LaravelPageSpeed\Middleware\InlineCss::class,
-        \RenatoMarinho\LaravelPageSpeed\Middleware\ElideAttributes::class,
-        \RenatoMarinho\LaravelPageSpeed\Middleware\InsertDNSPrefetch::class,
-        \RenatoMarinho\LaravelPageSpeed\Middleware\RemoveComments::class,
+        // Laravel Page Speed middlewares comentados (paquete no instalado)
+        // \RenatoMarinho\LaravelPageSpeed\Middleware\InlineCss::class,
+        // \RenatoMarinho\LaravelPageSpeed\Middleware\ElideAttributes::class,
+        // \RenatoMarinho\LaravelPageSpeed\Middleware\InsertDNSPrefetch::class,
+        // \RenatoMarinho\LaravelPageSpeed\Middleware\RemoveComments::class,
     ];
 
     /**
@@ -64,7 +65,7 @@ class Kernel extends HttpKernel
      *
      * @var array
      */
-    protected $routeMiddleware = [
+    protected $middlewareAliases = [
         'app_language' => AppLanguage::class,
         
         'admin' => IsAdmin::class,

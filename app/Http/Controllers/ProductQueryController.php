@@ -35,7 +35,7 @@ class ProductQueryController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $request->validate([
             'question' => 'required|string',
         ]);
         $product = Product::find($request->product);
@@ -56,7 +56,7 @@ class ProductQueryController extends Controller
 
     public function reply(Request $request, $id)
     {
-        $this->validate($request, [
+        $request->validate([
             'reply' => 'required',
         ]);
         $query = ProductQuery::find($id);
