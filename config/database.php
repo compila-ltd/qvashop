@@ -119,21 +119,19 @@ return [
         ],
 
         'default' => [
-            'scheme'   => env('REDIS_SCHEME', 'tls'),
+            'scheme'   => env('REDIS_SCHEME', 'tcp'),
             'host'     => env('REDIS_HOST', '127.0.0.1'),
             'password' => env('REDIS_PASSWORD', null),
             'port'     => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_DB', '0'),
-            'ssl'      => ['verify_peer' => false, 'verify_peer_name' => false],
         ],
 
         'cache' => [
-            'scheme'   => env('REDIS_SCHEME', 'tls'),
+            'scheme'   => env('REDIS_SCHEME', 'tcp'),
             'host'     => env('REDIS_HOST', '127.0.0.1'),
             'password' => env('REDIS_PASSWORD', null),
             'port'     => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_CACHE_DB', '0'),
-            'ssl'      => ['verify_peer' => false, 'verify_peer_name' => false],
         ],
     ],
 
