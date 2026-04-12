@@ -117,7 +117,7 @@ class AizUploadController extends Controller
                     }
                 }
 
-                $path = $request->file('aiz_file')->store('uploads/all', 'local');
+                $path = $request->file('aiz_file')->store('uploads/all');
                 $size = $request->file('aiz_file')->getSize();
 
                 // Return MIME type ala mimetype extension
