@@ -45,7 +45,7 @@ use App\Http\Controllers\DigitalProductController;
 use App\Http\Controllers\CustomerPackageController;
 use App\Http\Controllers\CustomerProductController;
 use App\Http\Controllers\BusinessSettingsController;
-use App\Http\Controllers\ProductBulkUploadController;
+use App\Http\Controllers\Seller\ProductBulkUploadController;
 use App\Http\Controllers\SellerWithdrawRequestController;
 
 Route::get('/admin', [AdminController::class, 'admin_dashboard'])->name('admin.dashboard')->middleware(['auth', 'admin']);
