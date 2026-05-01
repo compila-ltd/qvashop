@@ -154,18 +154,16 @@
                         @endif
                     </ul>
                 </div>
-                {{-- Disable the Apply Button for a seller option
-                    @if (get_setting('vendor_system_activation') == 1)
-                    <div class="text-center text-md-left mt-4">
-                        <h4 class="fs-13 text-uppercase fw-600 border-bottom border-gray-900 pb-2 mb-4">
-                            {{ translate('Be a Seller') }}
-                        </h4>
-                        <a href="{{ route('shops.create') }}" class="btn btn-primary btn-sm shadow-md">
-                            {{ translate('Apply Now') }}
-                        </a>
-                    </div>
-                    @endif    
-                --}}
+                @if (get_setting('vendor_system_activation') == 1)
+                <div class="text-center text-md-left mt-4">
+                    <h4 class="fs-13 text-uppercase fw-600 border-bottom border-gray-900 pb-2 mb-4">
+                        {{ translate('Be a Seller') }}
+                    </h4>
+                    <a href="{{ route('shops.create') }}" class="btn btn-primary btn-sm shadow-md">
+                        {{ translate('Apply Now') }}
+                    </a>
+                </div>
+                @endif
             </div>
         </div>
     </div>
