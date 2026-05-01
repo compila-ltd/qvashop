@@ -113,6 +113,7 @@ Route::controller(HomeController::class)->group(function () {
         Route::post('/best_selling', 'load_best_selling_section')->name('home.section.best_selling');
         Route::post('/home_categories', 'load_home_categories_section')->name('home.section.home_categories');
         Route::post('/best_sellers', 'load_best_sellers_section')->name('home.section.best_sellers');
+        Route::post('/auction_products', 'load_auction_products_section')->name('home.section.auction_products');
     });
 
     //category dropdown menu ajax call
