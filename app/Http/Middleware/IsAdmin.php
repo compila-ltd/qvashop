@@ -16,10 +16,14 @@ class IsAdmin
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::check() && (Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'staff')) {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+        
+        if (Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'staff') {
             return $next($request);
         }
         
-        abort(404);
+        abort(403, 'Acceso no autorizado');
     }
 }
