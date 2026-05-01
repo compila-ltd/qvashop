@@ -84,7 +84,7 @@ Route::post('/email/resend', [App\Http\Controllers\Auth\VerificationController::
 
 // Login
 Route::controller(LoginController::class)->group(function () {
-    Route::get('/logout', 'logout');
+    Route::get('/logout', 'logout')->name('logout');
     Route::get('/social-login/redirect/{provider}', 'redirectToProvider')->name('social.login');
     Route::get('/social-login/{provider}/callback', 'handleProviderCallback')->name('social.callback');
 });
