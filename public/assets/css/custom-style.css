@@ -138,3 +138,28 @@
     }
 }
 
+/* Fix para Best Sellers - Imágenes con altura uniforme */
+.aiz-carousel .carousel-box .box-3 {
+    height: 100%;
+    min-height: 120px;
+}
+
+.aiz-carousel .carousel-box .box-3 .col-4 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.aiz-carousel .carousel-box .box-3 .col-4 img {
+    width: 100% !important;
+    height: 80px !important;
+    object-fit: cover !important;
+    object-position: center !important;
+}
+
+.aiz-carousel .carousel-box .box-3 .col-8 {
+    display: flex;
+    align-items: center;
+    min-height: 120px;
+}
+
