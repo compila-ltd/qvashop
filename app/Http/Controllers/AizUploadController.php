@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Upload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 
@@ -102,74 +103,100 @@ class AizUploadController extends Controller
             "xlsx" => "document"
         );
 
-        if ($request->hasFile('aiz_file')) {
+        if (!$request->hasFile('aiz_file')) {
+            return response()->json(['error' => 'No file uploaded'], 400);
+        }
+
+        $file = $request->file('aiz_file');
+        $extension = strtolower($file->getClientOriginalExtension());
+
+        if (!isset($type[$extension])) {
+            return response()->json(['error' => 'File type not allowed'], 400);
+        }
+
+        try {
             $upload = new Upload;
-            $extension = strtolower($request->file('aiz_file')->getClientOriginalExtension());
-
-            if (isset($type[$extension])) {
-                $upload->file_original_name = null;
-                $arr = explode('.', $request->file('aiz_file')->getClientOriginalName());
-                for ($i = 0; $i < count($arr) - 1; $i++) {
-                    if ($i == 0) {
-                        $upload->file_original_name .= $arr[$i];
-                    } else {
-                        $upload->file_original_name .= "." . $arr[$i];
-                    }
+            
+            $upload->file_original_name = null;
+            $arr = explode('.', $file->getClientOriginalName());
+            for ($i = 0; $i < count($arr) - 1; $i++) {
+                if ($i == 0) {
+                    $upload->file_original_name .= $arr[$i];
+                } else {
+                    $upload->file_original_name .= "." . $arr[$i];
                 }
+            }
 
-                $path = $request->file('aiz_file')->store('uploads/all');
-                $size = $request->file('aiz_file')->getSize();
+            $path = $file->store('uploads/all');
+            $size = $file->getSize();
 
-                // Return MIME type ala mimetype extension
-                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            // Get the MIME type of the file
+            $file_mime = $file->getMimeType();
 
-                // Get the MIME type of the file
-                $file_mime = finfo_file($finfo, base_path('public/') . $path);
-
-                if ($type[$extension] == 'image' && get_setting('disable_image_optimization') != 1) {
-                    try {
-                        $img = Image::make($request->file('aiz_file')->getRealPath())->encode();
-                        $height = $img->height();
-                        $width = $img->width();
-                        if ($width > $height && $width > 1500) {
-                            $img->resize(1500, null, function ($constraint) {
-                                $constraint->aspectRatio();
-                            });
-                        } elseif ($height > 1500) {
-                            $img->resize(null, 800, function ($constraint) {
-                                $constraint->aspectRatio();
-                            });
-                        }
-                        $img->save(base_path('public/') . $path);
-                        clearstatcache();
-                        $size = $img->filesize();
-                    } catch (\Exception $e) {
-                        //dd($e);
+            if ($type[$extension] == 'image' && get_setting('disable_image_optimization') != 1) {
+                try {
+                    $manager = new ImageManager(new Driver());
+                    $img = $manager->read($file->getRealPath());
+                    $height = $img->height();
+                    $width = $img->width();
+                    
+                    if ($width > $height && $width > 1500) {
+                        $img->scale(width: 1500);
+                    } elseif ($height > 1500) {
+                        $img->scale(height: 800);
                     }
+                    
+                    $img->save(base_path('public/') . $path);
+                    clearstatcache();
+                    $size = filesize(base_path('public/') . $path);
+                } catch (\Exception $e) {
+                    \Log::warning('Image optimization failed: ' . $e->getMessage());
                 }
+            }
 
-                if (env('FILESYSTEM_DRIVER') == 's3') {
+            if (env('FILESYSTEM_DRIVER') == 's3') {
+                try {
                     Storage::disk('s3')->put(
                         $path,
                         file_get_contents(base_path('public/') . $path),
                         [
                             'visibility' => 'public',
-                            'ContentType' =>  $extension == 'svg' ? 'image/svg+xml' : $file_mime
+                            'ContentType' =>  $extension == 'svg' ? 'image/svg+xml' : $file_mime,
+                            'CacheControl' => 'max-age=31536000'
                         ]
                     );
-                    if ($arr[0] != 'updates') {
+                    
+                    // Only unlink if file exists and upload was successful
+                    if ($arr[0] != 'updates' && file_exists(base_path('public/') . $path)) {
                         unlink(base_path('public/') . $path);
                     }
+                } catch (\Exception $e) {
+                    \Log::error('S3 Upload failed: ' . $e->getMessage());
+                    return response()->json(['error' => 'S3 upload failed: ' . $e->getMessage()], 500);
                 }
-
-                $upload->extension = $extension;
-                $upload->file_name = $path;
-                $upload->user_id = Auth::user()->id;
-                $upload->type = $type[$upload->extension];
-                $upload->file_size = $size;
-                $upload->save();
             }
-            return '{}';
+
+            $upload->extension = $extension;
+            $upload->file_name = $path;
+            $upload->user_id = Auth::user()->id;
+            $upload->type = $type[$upload->extension];
+            $upload->file_size = $size;
+            
+            if (!$upload->save()) {
+                return response()->json(['error' => 'Failed to save upload record'], 500);
+            }
+
+            return response()->json([
+                'success' => true,
+                'file_id' => $upload->id,
+                'file_name' => $upload->file_name,
+                'original_name' => $upload->file_original_name,
+                'file_size' => $upload->file_size
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Upload failed: ' . $e->getMessage());
+            return response()->json(['error' => 'Upload failed: ' . $e->getMessage()], 500);
         }
     }
 

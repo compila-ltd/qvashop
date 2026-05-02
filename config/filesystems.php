@@ -63,6 +63,9 @@ return [
             'bucket' => env('DO_BUCKET'),
             'url' => env('DO_URL'),
             'endpoint' => env('DO_ENDPOINT'),
+            'use_path_style_endpoint' => true,
+            'visibility' => 'public',
+            'throw' => false,
         ],
     ],
 ];
