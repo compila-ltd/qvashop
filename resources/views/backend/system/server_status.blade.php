@@ -34,7 +34,7 @@
                             <td>MySQL</td>
                             <td>
                                 @php
-                                $results = DB::select( DB::raw("select version()") );
+                                $results = DB::select("select version()");
                                 $mysql_version =  $results[0]->{'version()'};
                                 @endphp
                                 {{ $mysql_version }}
