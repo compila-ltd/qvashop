@@ -453,7 +453,7 @@
         </div>
         <div class="card-body">
             <div class="form-group row">
-                <label class="col-md-6 col-from-label">{{ translate('Negociable transportation') }}</label>
+                <label class="col-md-6 col-from-label">{{ translate('Negotiable transportation') }}</label>
                 <div class="col-md-6">
                     <label class="aiz-switch aiz-switch-success mb-0">
                         <input type="checkbox" name="negotiable_transportation" value="1" @if($product->negotiable_transportation == 1) checked @endif>

@@ -6,7 +6,7 @@
     <div class="col-lg-5 mx-auto">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">{{ translate('Negociable transportation')}}</h5>
+                <h5 class="mb-0 h6">{{ translate('Negotiable transportation')}}</h5>
             </div>
             <form action="{{ route('negotiable_transportation.store') }}" method="POST">
             	@csrf

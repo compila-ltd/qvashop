@@ -58,7 +58,7 @@
                         <div class="p-3">
                             <div class="form-group">
                                 <label>{{ translate('Shop Name')}} <span class="text-primary">*</span></label>
-                                <input type="text" class="form-control" placeholder="{{ translate('Shop Name')}}" name="name" required>
+                                <input type="text" class="form-control" placeholder="{{ translate('Shop Name')}}" name="shop_name" required>
                             </div>
                             <div class="form-group">
                                 <label>{{ translate('Address')}} <span class="text-primary">*</span></label>

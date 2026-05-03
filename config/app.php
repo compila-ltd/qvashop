@@ -171,7 +171,6 @@ return [
         Laracasts\Flash\FlashServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         // niklasravnsborg\LaravelPdf\PdfServiceProvider::class,
-        Intervention\Image\ImageServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
 
         /*
@@ -238,7 +237,7 @@ return [
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'PDF' => niklasravnsborg\LaravelPdf\Facades\Pdf::class,
         'Str' => Illuminate\Support\Str::class,
-        'Image' => Intervention\Image\Facades\Image::class,
+        'Image' => Intervention\Image\Laravel\Facades\Image::class,
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class
     ],
 

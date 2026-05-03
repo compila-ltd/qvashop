@@ -25,7 +25,7 @@ class SitemapController extends Controller
         $blog_categories = BlogCategory::all();
         
         // get blog posts
-        $blogs = Blog::orderBy('created_at', 'desc');
+        $blogs = Blog::orderBy('created_at', 'desc')->get();
         
         // get blog tags
 

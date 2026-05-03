@@ -5,11 +5,11 @@
 <div class="aiz-titlebar text-left mt-2 mb-3">
 	<div class="row align-items-center">
 		<div class="col-md-6">
-			<h1 class="h3">{{ translate('Negociable transportation')}}</h1>
+			<h1 class="h3">{{ translate('Negotiable transportation')}}</h1>
 		</div>
 		<div class="col-md-6 text-md-right">
 			<a href="{{ route('negotiable_transportation.create') }}" class="btn btn-circle btn-info">
-				<span>{{ translate('Negociable transportation')}}</span>
+				<span>{{ translate('Negotiable transportation')}}</span>
 			</a>
 		</div>
 	</div>
@@ -19,7 +19,7 @@
     <form class="" id="sort_negotiable_transportation" action="" method="GET">
         <div class="card-header row gutters-5">
             <div class="col text-center text-md-left">
-                <h5 class="mb-md-0 h6">{{ translate('Negociable transportation') }}</h5>
+                <h5 class="mb-md-0 h6">{{ translate('Negotiable transportation') }}</h5>
             </div>
             <div class="col-md-4">
                 <select class="form-control aiz-selectpicker" name="user_search_id" id="user_search_id" data-live-search="true" onchange="sort_negotiable_transportation()">

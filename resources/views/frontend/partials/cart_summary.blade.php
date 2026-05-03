@@ -138,7 +138,7 @@
                     <tr class="cart-subtotal d-none subtotal_{{$payment_method->short_name}}" id="subtotal_{{$payment_method->short_name}}">
                         <th>{{ translate('Subtotal') }} {{ $payment_method->currency->code }}</th>
                         <td class="text-right">
-                            <span class="fw-600">{{ format_price($subtotal * $payment_method->currency->exchange_rate) }}</span>
+                            <span class="fw-600">{{ format_price($subtotal * $payment_method->currency->exchange_rate * $payment_method->exchange_rate) }}</span>
                         </td>
                     </tr>            
 
@@ -154,7 +154,7 @@
                     <tr class="cart-shipping d-none shipping_{{$payment_method->short_name}}" id="shipping_{{$payment_method->short_name}}">
                         <th>{{ translate('Total Shipping') }} {{$payment_method->currency->code}}</th>
                         <td class="text-right">
-                            <span class="font-italic">{{ format_price($shipping * $payment_method->currency->exchange_rate) }}</span>
+                            <span class="font-italic">{{ format_price($shipping * $payment_method->currency->exchange_rate * $payment_method->exchange_rate) }}</span>
                         </td>
                     </tr>
 
@@ -162,7 +162,7 @@
                         <tr class="cart-shipping d-none clup_point_{{$payment_method->short_name}}" id="clup_point_{{$payment_method->short_name}}">
                             <th>{{ translate('Redeem point') }} {{$payment_method->currency->code}}</th>
                             <td class="text-right">
-                                <span class="font-italic">{{ format_price(Session::get('club_point') * $payment_method->currency->exchange_rate) }}</span>
+                                <span class="font-italic">{{ format_price(Session::get('club_point') * $payment_method->currency->exchange_rate * $payment_method->exchange_rate) }}</span>
                             </td>
                         </tr>
                     @endif
@@ -171,7 +171,7 @@
                         <tr class="cart-shipping d-none coupon_discount_{{$payment_method->short_name}}" id="coupon_discount_{{$payment_method->short_name}}">
                             <th>{{ translate('Coupon Discount') }} {{$payment_method->currency->code}}</th>
                             <td class="text-right">
-                                <span class="font-italic">{{ format_price($coupon_discount * $payment_method->currency->exchange_rate) }}</span>
+                                <span class="font-italic">{{ format_price($coupon_discount * $payment_method->currency->exchange_rate * $payment_method->exchange_rate) }}</span>
                             </td>
                         </tr>
                     @endif
@@ -179,7 +179,7 @@
                     <tr class="cart-total d-none payment_{{$payment_method->short_name}}" id="payment_{{$payment_method->short_name}}">
                         <th><span class="strong-600">{{ translate('Total') }} {{$payment_method->currency->code}}</span></th>
                         <td class="text-right">
-                            <strong><span>{{ format_price($total * $payment_method->currency->exchange_rate) }}</span></strong>
+                            <strong><span>{{ format_price($total * $payment_method->currency->exchange_rate * $payment_method->exchange_rate) }}</span></strong>
                         </td>
                     </tr>
                 @endforeach

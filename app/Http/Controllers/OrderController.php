@@ -150,6 +150,7 @@ class OrderController extends Controller
         //dd($request);
 
         $payment_method = PaymentMethod::where('short_name', $request->payment_option)->first();
+        $order_exchange_rate = $payment_method->currency->exchange_rate * $payment_method->exchange_rate;
         //dd($payment_method->exchange_rate);
         
         $carts = Cart::where('user_id', Auth::user()->id)->orderBy('owner_id', 'desc')->get();
@@ -240,7 +241,7 @@ class OrderController extends Controller
                 if($shipping < $order_detail->shipping_cost)
                     $shipping = $order_detail->shipping_cost;
 
-                $order_detail->exchange_rate = $payment_method->currency->exchange_rate;
+                $order_detail->exchange_rate = $order_exchange_rate;
 
                 $order_detail->quantity = $cartItem['quantity'];
                 $order_detail->save();
@@ -265,7 +266,7 @@ class OrderController extends Controller
             }
 
             $order->grand_total = $subtotal + $tax + $shipping;
-            $order->exchange_rate = $payment_method->currency->exchange_rate;
+            $order->exchange_rate = $order_exchange_rate;
 
             if ($seller_product[0]->coupon_code != null) {
                 $order->coupon_discount = $coupon_discount;
@@ -279,7 +280,9 @@ class OrderController extends Controller
             }
 
             $combined_order->grand_total += $order->grand_total;
-            $combined_order->exchange_rate = $payment_method->currency->exchange_rate;
+            $combined_order->exchange_rate = $order_exchange_rate;
+
+             // Finally Save the Order
 
             $order->save();
         }

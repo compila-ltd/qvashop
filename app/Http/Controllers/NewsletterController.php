@@ -23,8 +23,9 @@ class NewsletterController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::all();
-        $subscribers = Subscriber::all();
+        // Solo cargar emails para evitar memory exhausted en producción
+        $users = User::select('email')->whereNotNull('email')->get();
+        $subscribers = Subscriber::select('email')->whereNotNull('email')->get();
 
         return view('backend.marketing.newsletters.index', compact('users', 'subscribers'));
     }

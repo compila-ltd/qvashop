@@ -32,7 +32,7 @@ class ProductQueryController extends Controller
      */
     public function reply(Request $request, $id)
     {
-        $this->validate($request, [
+        $request->validate([
             'reply' => 'required',
         ]);
         $query = ProductQuery::find($id);
