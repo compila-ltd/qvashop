@@ -14,7 +14,10 @@ class AizUploadController extends Controller
 {
     public function index(Request $request)
     {
-        $all_uploads = (auth()->user()->user_type == 'seller') ? Upload::where('user_id', auth()->user()->id) : Upload::query();
+        // Admin y staff ven todos los archivos, otros usuarios solo los suyos
+        $all_uploads = (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff') 
+            ? Upload::query() 
+            : Upload::where('user_id', auth()->user()->id);
         $search = null;
         $sort_by = null;
 
@@ -203,7 +206,12 @@ class AizUploadController extends Controller
     // Get uploaded File
     public function get_uploaded_files(Request $request)
     {
-        $uploads = Upload::where('user_id', Auth::user()->id);
+        // Admin y staff ven TODOS los archivos
+        // Sellers, customers y delivery_boys solo ven los suyos
+        $uploads = (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff') 
+            ? Upload::query() 
+            : Upload::where('user_id', Auth::user()->id);
+            
         if ($request->search != null) {
             $uploads->where('file_original_name', 'like', '%' . $request->search . '%');
         }
@@ -234,8 +242,11 @@ class AizUploadController extends Controller
     {
         $upload = Upload::findOrFail($id);
 
-        if (auth()->user()->user_type == 'seller' && $upload->user_id != auth()->user()->id)
+        // Usuarios (excepto admin/staff) solo pueden borrar sus propios archivos
+        $isAdminOrStaff = auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff';
+        if (!$isAdminOrStaff && $upload->user_id != auth()->user()->id) {
             return back()->with('error', translate("You don't have permission for deleting this!"));
+        }
 
         try {
             if (env('FILESYSTEM_DRIVER') == 's3') {
