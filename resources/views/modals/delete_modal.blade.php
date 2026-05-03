@@ -9,7 +9,11 @@
             <div class="modal-body text-center">
                 <p class="mt-1">{{ translate('Are you sure to delete this?')}}</p>
                 <button type="button" class="btn btn-link mt-2" data-dismiss="modal">{{ translate('Cancel')}}</button>
-                <a href="" id="delete-link" class="btn btn-primary mt-2">{{ translate('Delete')}}</a>
+                <form id="delete-form" action="" method="POST" style="display: inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-primary mt-2">{{ translate('Delete')}}</button>
+                </form>
             </div>
         </div>
     </div>

@@ -1284,7 +1284,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                 e.preventDefault();
                 var url = $(this).data("href");
                 $("#delete-modal").modal("show");
-                $("#delete-link").attr("href", url);
+                $("#delete-form").attr("action", url);
             });
 
             $(".confirm-cancel").click(function (e) {

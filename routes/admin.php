@@ -295,7 +295,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     });
 
     // Staff
-    Route::resource('staffs', StaffController::class);
+    Route::resource('staffs', StaffController::class)->except('show');
     //Route::get('/staffs/destroy/{id}', [StaffController::class, 'destroy'])->name('staffs.destroy');
 
     // Flash Deal
