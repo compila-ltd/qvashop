@@ -13,7 +13,7 @@ use App\Http\Controllers\CheckoutController;
 
 class QvaPayController extends Controller
 {
-    private $base_url = "https://qvapay.com/api/v2/create_invoice";
+    private $base_url = "https://api.qvapay.com/v2/";
     private $app_key;
     private $app_secret;
 
