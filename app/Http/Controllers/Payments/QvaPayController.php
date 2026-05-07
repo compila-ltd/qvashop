@@ -57,17 +57,6 @@ class QvaPayController extends Controller
     public function webhook(Request $request)
     {
         try {
-            // Verificar firma HMAC
-            $signature = $request->header('x-qvapay-signature');
-            $rawBody = $request->getContent();
-            
-            if (!$this->verifyWebhookSignature($rawBody, $signature)) {
-                \Log::error('QvaPay Webhook: Firma inválida', [
-                    'signature' => $signature
-                ]);
-                return response()->json(['error' => 'Invalid signature'], 401);
-            }
-
             // Parsear el payload
             $payload = $request->all();
             
@@ -76,36 +65,39 @@ class QvaPayController extends Controller
             ]);
 
             // Verificar que tenga los campos requeridos
-            if (!isset($payload['remote_id']) || !isset($payload['status'])) {
+            if (!isset($payload['remote_id']) || !isset($payload['uuid'])) {
                 \Log::error('QvaPay Webhook: Datos incompletos', [
                     'payload' => $payload
                 ]);
                 return response()->json(['error' => 'Missing required fields'], 400);
             }
 
-            // Verificar que el pago esté completado
-            if ($payload['status'] !== 'paid') {
-                \Log::info('QvaPay Webhook: Estado no pagado', [
-                    'status' => $payload['status'],
+            // IMPORTANTE: Verificar el estado de la transacción en QvaPay para evitar fraudes
+            $isPaid = $this->checkTransactionStatus($payload['uuid']);
+            
+            if (!$isPaid) {
+                \Log::warning('QvaPay Webhook: Transacción no pagada o inválida', [
+                    'uuid' => $payload['uuid'],
                     'remote_id' => $payload['remote_id']
                 ]);
-                return response()->json(['message' => 'Payment not completed'], 200);
+                return response()->json(['message' => 'Payment not confirmed'], 200);
             }
 
             // Procesar el pago
             $payment_details = json_encode([
-                'transaction_uuid' => $payload['uuid'] ?? null,
+                'transaction_uuid' => $payload['uuid'],
                 'method' => 'QvaPay',
                 'amount' => $payload['amount'] ?? 0,
                 'description' => $payload['description'] ?? '',
-                'status' => $payload['status']
+                'status' => 'paid'
             ]);
 
             // Completar la orden
             $result = (new CheckoutController)->checkout_done($payload['remote_id'], $payment_details);
             
             \Log::info('QvaPay Webhook procesado exitosamente', [
-                'remote_id' => $payload['remote_id']
+                'remote_id' => $payload['remote_id'],
+                'uuid' => $payload['uuid']
             ]);
 
             return response()->json(['message' => 'Webhook processed successfully'], 200);
@@ -120,6 +112,51 @@ class QvaPayController extends Controller
             \Sentry\captureException($e);
             
             return response()->json(['error' => 'Internal server error'], 500);
+        }
+    }
+
+    /**
+     * Verificar el estado de una transacción en QvaPay
+     * Retorna true si la transacción está pagada, false en caso contrario
+     */
+    private function checkTransactionStatus($uuid)
+    {
+        try {
+            $response = Http::withHeaders([
+                'accept' => 'application/json',
+                'app-id' => $this->app_key,
+                'app-secret' => $this->app_secret
+            ])->post($this->base_url . 'transactions/' . $uuid);
+
+            if ($response->successful()) {
+                $transaction = $response->json();
+                
+                \Log::info('QvaPay Transaction Status', [
+                    'uuid' => $uuid,
+                    'status' => $transaction['transaction']['status'] ?? 'unknown',
+                    'response' => $transaction
+                ]);
+                
+                if (isset($transaction['transaction']['status']) && $transaction['transaction']['status'] == 'paid') {
+                    return true;
+                }
+            } else {
+                \Log::error('QvaPay checkTransactionStatus: Error en la respuesta', [
+                    'uuid' => $uuid,
+                    'status' => $response->status(),
+                    'body' => $response->body()
+                ]);
+            }
+            
+            return false;
+        } catch (\Exception $e) {
+            \Log::error('QvaPay checkTransactionStatus Exception', [
+                'uuid' => $uuid,
+                'message' => $e->getMessage()
+            ]);
+            
+            \Sentry\captureException($e);
+            return false;
         }
     }
 
@@ -141,28 +178,29 @@ class QvaPayController extends Controller
     // Método legacy para retrocompatibilidad (si aún se usa)
     public function success(Request $request)
     {
-        if ($request->has('remote_id') && $request->has('id') && $request->has('uuid')) {
+        if ($request->has('remote_id') && $request->has('uuid')) {
+            
+            // Verificar el estado de la transacción en QvaPay
+            $isPaid = $this->checkTransactionStatus($request->input('uuid'));
+            
+            if (!$isPaid) {
+                \Log::warning('QvaPay Success (legacy): Transacción no pagada', [
+                    'uuid' => $request->input('uuid'),
+                    'remote_id' => $request->input('remote_id')
+                ]);
+                return redirect()->route('home');
+            }
 
             $input = $request->all();
-            $payment_details = json_encode(array('id' => $request['id'], 'method' => 'QvaPay', 'amount' => "", 'currency' => 'USD'));
+            $payment_details = json_encode([
+                'transaction_uuid' => $request->input('uuid'),
+                'id' => $request->input('id'),
+                'method' => 'QvaPay',
+                'amount' => $request->input('amount', ''),
+                'status' => 'paid'
+            ]);
 
-            $payment_type = 'cart_payment';
-
-            // Always process this data
-            if ($payment_type == 'cart_payment')
-                return (new CheckoutController)->checkout_done($input['remote_id'], $payment_details);
-
-            /*
-            if ($payment_type == 'wallet_payment') {
-                return (new WalletController)->wallet_payment_done(json_decode($request->opt_c), json_encode($request->all()));
-            }
-            if ($payment_type == 'customer_package_payment') {
-                return (new CustomerPackageController)->purchase_payment_done(json_decode($request->opt_c), json_encode($request->all()));
-            }
-            if ($payment_type == 'seller_package_payment') {
-                return (new SellerPackageController)->purchase_payment_done(json_decode($request->opt_c), json_encode($request->all()));
-            }
-            */
+            return (new CheckoutController)->checkout_done($input['remote_id'], $payment_details);
         }
 
         return redirect()->route('home');
@@ -182,25 +220,30 @@ class QvaPayController extends Controller
     {
         try {
             // Preparar datos del request según API v2
+            $amount = $combined_order->grand_total;
+            $amount = str_replace(',', '.', (string)$amount); // convierte 12,50 → 12.50
+            $amount = (float)$amount;                         // ahora sí es 12.50 real
+            $amount = round($amount, 2);                      // asegura 2 decimales
+            
             $data = [
-                "amount" => $combined_order->grand_total,
+                "amount" => $amount,
                 "description" => "QvaShop order " . $combined_order->id,
-                "remote_id" => (string) $combined_order->id,
-                "webhook" => route('payment.qvapay')
+                "remote_id" => (string) $combined_order->id
             ];
 
             // Log del request para debugging
             \Log::info('QvaPay Request', [
                 'order_id' => $combined_order->id,
-                'amount' => $combined_order->grand_total,
+                'amount' => $amount,
                 'data' => $data
             ]);
 
             // Realizar request con autenticación en headers (API v2)
             $response = Http::withHeaders([
+                'accept' => 'application/json',
                 'app-id' => $this->app_key,
                 'app-secret' => $this->app_secret
-            ])->post($this->base_url, $data);
+            ])->post($this->base_url . 'create_invoice', $data);
 
             // Log de la respuesta
             \Log::info('QvaPay Response', [
@@ -208,8 +251,8 @@ class QvaPayController extends Controller
                 'body' => $response->body()
             ]);
 
-            // Check if the response is successful
-            if ($response->successful()) {
+            // Check if the response is successful (status 200)
+            if ($response->status() == 200) {
                 // Get the response body
                 $response_body = $response->json();
                 // Check if the response body is successful (API v2 usa 'url')
@@ -222,12 +265,13 @@ class QvaPayController extends Controller
                     ]);
                     
                     // Reportar a Sentry
-                    \Sentry\captureMessage($errorMessage, \Sentry\Severity::error(), [
-                        'extra' => [
+                    \Sentry\withScope(function (\Sentry\State\Scope $scope) use ($errorMessage, $response_body, $combined_order) {
+                        $scope->setContext('qvapay', [
                             'response' => $response_body,
                             'order_id' => $combined_order->id
-                        ]
-                    ]);
+                        ]);
+                        \Sentry\captureMessage($errorMessage, \Sentry\Severity::error());
+                    });
                 }
             } else {
                 $errorMessage = 'QvaPay API Error - Status: ' . $response->status();
@@ -238,13 +282,14 @@ class QvaPayController extends Controller
                 ]);
                 
                 // Reportar a Sentry
-                \Sentry\captureMessage($errorMessage, \Sentry\Severity::error(), [
-                    'extra' => [
+                \Sentry\withScope(function (\Sentry\State\Scope $scope) use ($errorMessage, $response, $combined_order) {
+                    $scope->setContext('qvapay', [
                         'status' => $response->status(),
                         'body' => $response->body(),
                         'order_id' => $combined_order->id
-                    ]
-                ]);
+                    ]);
+                    \Sentry\captureMessage($errorMessage, \Sentry\Severity::error());
+                });
             }
         } catch (\Exception $e) {
             \Log::error('QvaPay Exception', [
@@ -255,11 +300,12 @@ class QvaPayController extends Controller
             ]);
             
             // Reportar excepción a Sentry
-            \Sentry\captureException($e, [
-                'extra' => [
+            \Sentry\withScope(function (\Sentry\State\Scope $scope) use ($e, $combined_order) {
+                $scope->setContext('qvapay', [
                     'order_id' => $combined_order->id
-                ]
-            ]);
+                ]);
+                \Sentry\captureException($e);
+            });
         }
         
         // Si algo salió mal, devolver null
