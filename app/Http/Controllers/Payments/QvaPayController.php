@@ -195,6 +195,78 @@ class QvaPayController extends Controller
     }
 
     /**
+     * Manejar el retorno del usuario desde QvaPay después del pago
+     */
+    public function return(Request $request)
+    {
+        try {
+            \Log::info('QvaPay Return - Usuario regresó de QvaPay', [
+                'params' => $request->all()
+            ]);
+
+            // QvaPay envía estos parámetros en el redirect
+            if (!$request->has('remote_id') || !$request->has('uuid')) {
+                flash(translate('Información de pago incompleta'))->error();
+                return redirect()->route('home');
+            }
+
+            $remote_id = $request->input('remote_id');
+            $uuid = $request->input('uuid');
+
+            // Verificar el estado de la transacción en QvaPay
+            $isPaid = $this->checkTransactionStatus($uuid);
+            
+            if (!$isPaid) {
+                \Log::warning('QvaPay Return: Transacción no pagada aún', [
+                    'uuid' => $uuid,
+                    'remote_id' => $remote_id
+                ]);
+                flash(translate('El pago aún no ha sido confirmado. Por favor espere unos momentos.'))->warning();
+                return redirect()->route('home');
+            }
+
+            // Si está pagado, procesar la orden
+            $payment_details = json_encode([
+                'transaction_uuid' => $uuid,
+                'method' => 'QvaPay',
+                'amount' => $request->input('amount', 0),
+                'status' => 'paid'
+            ]);
+
+            \Log::info('QvaPay Return: Procesando orden pagada', [
+                'remote_id' => $remote_id,
+                'uuid' => $uuid
+            ]);
+
+            return (new CheckoutController)->checkout_done($remote_id, $payment_details);
+            
+        } catch (\Exception $e) {
+            \Log::error('QvaPay Return Exception', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ]);
+            
+            \Sentry\captureException($e);
+            flash(translate('Error procesando el pago'))->error();
+            return redirect()->route('home');
+        }
+    }
+
+    /**
+     * Manejar la cancelación del pago en QvaPay
+     */
+    public function cancel(Request $request)
+    {
+        \Log::info('QvaPay Cancel - Usuario canceló el pago', [
+            'params' => $request->all()
+        ]);
+
+        flash(translate('Pago cancelado'))->warning();
+        return redirect()->route('home');
+    }
+
+    /**
      * Get an invoice from QvaPay
      *
      *    "id" => 6
