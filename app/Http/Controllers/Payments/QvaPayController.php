@@ -61,7 +61,8 @@ class QvaPayController extends Controller
             $payload = $request->all();
             
             \Log::info('QvaPay Webhook recibido', [
-                'payload' => $payload
+                'payload' => $payload,
+                'headers' => $request->headers->all()
             ]);
 
             // Verificar que tenga los campos requeridos
@@ -97,7 +98,8 @@ class QvaPayController extends Controller
             
             \Log::info('QvaPay Webhook procesado exitosamente', [
                 'remote_id' => $payload['remote_id'],
-                'uuid' => $payload['uuid']
+                'uuid' => $payload['uuid'],
+                'result' => $result
             ]);
 
             return response()->json(['message' => 'Webhook processed successfully'], 200);
@@ -106,7 +108,8 @@ class QvaPayController extends Controller
             \Log::error('QvaPay Webhook Exception', [
                 'message' => $e->getMessage(),
                 'file' => $e->getFile(),
-                'line' => $e->getLine()
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
             ]);
             
             \Sentry\captureException($e);
@@ -158,21 +161,6 @@ class QvaPayController extends Controller
             \Sentry\captureException($e);
             return false;
         }
-    }
-
-    /**
-     * Verificar la firma HMAC del webhook
-     */
-    private function verifyWebhookSignature($rawBody, $signatureHeader)
-    {
-        if (!$signatureHeader || !str_starts_with($signatureHeader, 'sha256=')) {
-            return false;
-        }
-        
-        $provided = substr($signatureHeader, 7);
-        $expected = hash_hmac('sha256', $rawBody, $this->app_secret);
-        
-        return hash_equals($expected, $provided);
     }
 
     // Método legacy para retrocompatibilidad (si aún se usa)
@@ -228,7 +216,8 @@ class QvaPayController extends Controller
             $data = [
                 "amount" => $amount,
                 "description" => "QvaShop order " . $combined_order->id,
-                "remote_id" => (string) $combined_order->id
+                "remote_id" => (string) $combined_order->id,
+                "webhook" => route('payment.qvapay')
             ];
 
             // Log del request para debugging
