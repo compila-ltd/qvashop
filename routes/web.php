@@ -301,8 +301,10 @@ Route::group(['middleware' => ['auth']], function () {
 Route::resource('shops', ShopController::class)->except('store');
 Route::post('/shops/store', [ShopController::class, 'store'])->name('shops.store');
 
-// QvaPay WebHook
+// QvaPay WebHook y Return
 Route::post('/qvapay/webhook', [QvaPayController::class, 'webhook'])->name('payment.qvapay');
+Route::get('/qvapay/return', [QvaPayController::class, 'return'])->name('payment.qvapay.return');
+Route::get('/qvapay/cancel', [QvaPayController::class, 'cancel'])->name('payment.qvapay.cancel');
 
 // Lncpayments WebHook
 Route::get('/lncpayments/check', [LightningController::class, 'check'])->name('payment.lncpayments_check');
