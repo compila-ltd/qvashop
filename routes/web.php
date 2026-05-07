@@ -302,7 +302,7 @@ Route::resource('shops', ShopController::class)->except('store');
 Route::post('/shops/store', [ShopController::class, 'store'])->name('shops.store');
 
 // QvaPay WebHook
-Route::post('/qvapay/webhook/' . config('qvapay.callback_secret'), [QvaPayController::class, 'webhook'])->name('payment.qvapay');
+Route::post('/qvapay/webhook', [QvaPayController::class, 'webhook'])->name('payment.qvapay');
 
 // Lncpayments WebHook
 Route::get('/lncpayments/check', [LightningController::class, 'check'])->name('payment.lncpayments_check');
