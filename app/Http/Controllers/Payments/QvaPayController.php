@@ -59,11 +59,6 @@ class QvaPayController extends Controller
         try {
             // Parsear el payload
             $payload = $request->all();
-            
-            \Log::info('QvaPay Webhook recibido', [
-                'payload' => $payload,
-                'headers' => $request->headers->all()
-            ]);
 
             // Verificar que tenga los campos requeridos
             if (!isset($payload['remote_id']) || !isset($payload['uuid'])) {
@@ -95,12 +90,6 @@ class QvaPayController extends Controller
 
             // Completar la orden
             $result = (new CheckoutController)->checkout_done($payload['remote_id'], $payment_details);
-            
-            \Log::info('QvaPay Webhook procesado exitosamente', [
-                'remote_id' => $payload['remote_id'],
-                'uuid' => $payload['uuid'],
-                'result' => $result
-            ]);
 
             return response()->json(['message' => 'Webhook processed successfully'], 200);
             
@@ -133,12 +122,6 @@ class QvaPayController extends Controller
 
             if ($response->successful()) {
                 $transaction = $response->json();
-                
-                \Log::info('QvaPay Transaction Status', [
-                    'uuid' => $uuid,
-                    'status' => $transaction['transaction']['status'] ?? 'unknown',
-                    'response' => $transaction
-                ]);
                 
                 if (isset($transaction['transaction']['status']) && $transaction['transaction']['status'] == 'paid') {
                     return true;
@@ -200,10 +183,6 @@ class QvaPayController extends Controller
     public function return(Request $request)
     {
         try {
-            \Log::info('QvaPay Return - Usuario regresó de QvaPay', [
-                'params' => $request->all()
-            ]);
-
             // QvaPay envía estos parámetros en el redirect
             if (!$request->has('remote_id') || !$request->has('uuid')) {
                 flash(translate('Información de pago incompleta'))->error();
@@ -233,11 +212,6 @@ class QvaPayController extends Controller
                 'status' => 'paid'
             ]);
 
-            \Log::info('QvaPay Return: Procesando orden pagada', [
-                'remote_id' => $remote_id,
-                'uuid' => $uuid
-            ]);
-
             return (new CheckoutController)->checkout_done($remote_id, $payment_details);
             
         } catch (\Exception $e) {
@@ -258,10 +232,6 @@ class QvaPayController extends Controller
      */
     public function cancel(Request $request)
     {
-        \Log::info('QvaPay Cancel - Usuario canceló el pago', [
-            'params' => $request->all()
-        ]);
-
         flash(translate('Pago cancelado'))->warning();
         return redirect()->route('home');
     }
@@ -292,25 +262,12 @@ class QvaPayController extends Controller
                 "webhook" => route('payment.qvapay')
             ];
 
-            // Log del request para debugging
-            \Log::info('QvaPay Request', [
-                'order_id' => $combined_order->id,
-                'amount' => $amount,
-                'data' => $data
-            ]);
-
             // Realizar request con autenticación en headers (API v2)
             $response = Http::withHeaders([
                 'accept' => 'application/json',
                 'app-id' => $this->app_key,
                 'app-secret' => $this->app_secret
             ])->post($this->base_url . 'create_invoice', $data);
-
-            // Log de la respuesta
-            \Log::info('QvaPay Response', [
-                'status' => $response->status(),
-                'body' => $response->body()
-            ]);
 
             // Check if the response is successful (status 200)
             if ($response->status() == 200) {
