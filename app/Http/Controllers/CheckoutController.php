@@ -374,8 +374,78 @@ class CheckoutController extends Controller
     }
 
     // Order COnfirmed
-    public function order_confirmed()
+    public function order_confirmed(Request $request)
     {
+        // Si viene de QvaPay con parámetros de pago, procesar primero
+        if ($request->has('transaction_uuid') && $request->has('remote_id')) {
+            try {
+                $uuid = $request->input('transaction_uuid');
+                $remote_id = $request->input('remote_id');
+                
+                // Verificar el estado del pago en QvaPay
+                $qvapay = new \App\Http\Controllers\Payments\QvaPayController();
+                $reflection = new \ReflectionClass($qvapay);
+                $method = $reflection->getMethod('checkTransactionStatus');
+                $method->setAccessible(true);
+                $isPaid = $method->invoke($qvapay, $uuid);
+                
+                if ($isPaid) {
+                    // Procesar el pago
+                    $payment_details = json_encode([
+                        'transaction_uuid' => $uuid,
+                        'method' => 'QvaPay',
+                        'status' => 'paid'
+                    ]);
+                    
+                    // Marcar la orden como pagada
+                    $combined_order = CombinedOrder::findOrFail($remote_id);
+                    foreach ($combined_order->orders as $order) {
+                        $order->payment_status = 'paid';
+                        $order->payment_details = $payment_details;
+                        $order->save();
+                        
+                        // Actualizar stock y comisiones
+                        foreach ($order->orderDetails as $order_detail) {
+                            $quantity = $order_detail->quantity;
+                            
+                            $product = $order_detail->product;
+                            $product->num_of_sale += $quantity;
+                            $product->current_stock -= $quantity;
+                            $product->save();
+                            
+                            if ($product->stocks && $product->stocks->first()) {
+                                $product_stock = $product->stocks->first();
+                                $product_stock->qty -= $quantity;
+                                $product_stock->save();
+                            }
+                            
+                            if ($product->added_by == 'seller') {
+                                $shop = $product->user->shop;
+                                $shop->num_of_sale += $quantity;
+                                $shop->save();
+                            }
+                        }
+                        
+                        // Calcular comisiones
+                        calculateCommissionAffilationClubPoint($order);
+                    }
+                    
+                    Session::put('combined_order_id', $remote_id);
+                } else {
+                    flash(translate('El pago aún no ha sido confirmado. Por favor espere.'))->warning();
+                    return redirect()->route('home');
+                }
+            } catch (\Exception $e) {
+                \Log::error('Error procesando pago de QvaPay en order_confirmed', [
+                    'message' => $e->getMessage(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine()
+                ]);
+                flash(translate('Error procesando el pago'))->error();
+                return redirect()->route('home');
+            }
+        }
+        
         $combined_order = CombinedOrder::findOrFail(Session::get('combined_order_id'));
         $order = Order::where('combined_order_id', Session::get('combined_order_id'))->first();
 
